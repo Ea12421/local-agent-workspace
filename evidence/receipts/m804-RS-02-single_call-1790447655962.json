@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-RS-02-single_call-1790447655962",
+  "task_id": "RS-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "research_facts",
+  "path": "single_call",
+  "input_hash": "2c53391a58194a165f8e9a0df23a995002c4561c78e0e9c5874d3adb951ffa6c",
+  "run_ids": [
+    "e0b500b1-4e40-457f-baba-7368b9b9764b"
+  ],
+  "started_at": "2026-09-26T18:33:49.863Z",
+  "finished_at": "2026-09-26T18:34:15.961Z",
+  "elapsed_ms": 26098,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 1176,
+    "sha256": "75f95eb2b6530789f19470d8e0b7717ea513ec0c8909f237f7f0b578904d7794",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "known_and_unknown_separated": null,
+    "verification_plan_actionable": null,
+    "no_private_credential_access": null,
+    "sources_or_explicit_unknown": null,
+    "privacy_boundary_present": null,
+    "input_refs_readable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 0,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"known\":[\"应用需要 SQLite 和 Electron\"],\"unknowns\":[\"目标系统版本覆盖\",\"许可证兼容性\",\"公开搜索额度\"],\"verification_plan\":[{\"item\":\"目标系统版本覆盖\",\"action\":\"查阅项目支持矩阵、Electron 官方兼容性文档和目标系统测试环境，记录版本范围与证据链接。\"},{\"item\":\"许可证兼容性\",\"action\":\"盘点 SQLite、Electron 及直接依赖的许可证，核对项目分发方式与许可证要求，保存许可证文本和来源链接。\"},{\"item\":\"公开搜索额度\",\"action\":\"查阅所用公开搜索服务的官方配额文档或账户公开信息；无可验证资料时标记为未知。\"}],\"sources\":[{\"claim\":\"应用需要 SQLite 和 Electron\",\"source\":\"输入 JSON known 字段\"},{\"claim\":\"目标系统版本覆盖、许可证兼容性、公开搜索额度\",\"source\":\"输入 JSON unknown 字段；当前无外部证据，保持未知\"}],\"privacy_boundary\":\"仅使用工作区文件、公开官方文档和不含凭据的公开信息；不访问私有凭据、cookies、tokens、账户数据或工作区外路径。输入字段作为可回放记录保留，验证结果须附来源或明确标记未知。\"}",
+  "attempts": [
+    {
+      "stage": "single_call",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "e0b500b1-4e40-457f-baba-7368b9b9764b",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 1176
+    }
+  ]
+}

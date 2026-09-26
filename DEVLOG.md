@@ -89,3 +89,12 @@
 - `validation/m8-04-manual-review-PB-02.json` 已记录 artifact/replay hash、人工编辑、reviewer rubric 和 usage/cost 缺失，因此 PB-02 仍是 `quality_evidence_blocked`；没有把执行完成写成质量通过。
 - RS-01 小批次已完成：single_call 15.128s、single_bot 33.878s、multi_bot 180.750s；三条路径均 schema_pass=true、8/8 hard constraints，但 multi_bot 约慢 5.33 倍。
 - `validation/m8-04-manual-review-RS-01.json` 已记录 RS-01 的 replay/edit/rubric/cost 证据缺口；质量证据仍为 0，下一批从 RS-02 继续。
+- 计分器复核发现并修正一处账本 bug：类别诊断字段曾被错误计入 hard constraint 分母，导致部分记录可能显示 9/8。修复为只统计任务冻结的 `hard_constraints` 后，重算所有 18 条记录，`overExpected=0`。
+- RS-02 校正后为 single_call 5/8、single_bot schema failure 0/8、multi_bot 6/8；`validation/m8-04-manual-review-RS-02.json` 已落盘，质量证据仍为 0。
+
+### 2026-09-27 M8-04 · 修正硬约束计分分母
+
+- **复现**：RS-02 自动校验曾出现 `multi_bot 9/8`，与固定题集的 8 条硬约束不一致。
+- **根因**：类别诊断字段被追加到同一个 `checks` 对象后，计分器统计了全部字段，而不是题集声明的 `hard_constraints`。
+- **修复**：`scripts/validate-m804.ts` 只对 `task.hard_constraints` 求和；没有重跑模型调用，只重算已有 JSONL。
+- **验证**：`pnpm run m804:validate` 18 条记录通过重算；检查结果 `overExpected=0`；`pnpm run typecheck` 通过。

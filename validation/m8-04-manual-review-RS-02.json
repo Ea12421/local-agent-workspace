@@ -1,44 +1,45 @@
 {
   "review_version": "m8-04.manual-review.v1",
   "reviewed_at": "2026-09-27",
-  "task_id": "RS-01",
+  "task_id": "RS-02",
   "source_results": "validation/m8-04-results.jsonl",
   "source_summary": "validation/m8-04-validation-summary.json",
   "reviewer": {
     "kind": "local_read_only_pilot_audit",
-    "scope": "RS-01 provider records and automated contract output",
+    "scope": "RS-02 provider records and corrected automated contract output",
     "file_mutation": false
   },
   "records": [
     {
-      "receipt_id": "m804-RS-01-single_call-1790447302297",
+      "receipt_id": "m804-RS-02-single_call-1790447655962",
       "path": "single_call",
       "schema_pass": true,
-      "hard_pass": "7/8",
-      "elapsed_ms": 15128
+      "hard_pass": "5/8",
+      "elapsed_ms": 26098
     },
     {
-      "receipt_id": "m804-RS-01-single_bot-1790447343306",
+      "receipt_id": "m804-RS-02-single_bot-1790447709535",
       "path": "single_bot",
-      "schema_pass": true,
-      "hard_pass": "7/8",
-      "elapsed_ms": 33878
+      "schema_pass": false,
+      "hard_pass": "0/8",
+      "elapsed_ms": 43686
     },
     {
-      "receipt_id": "m804-RS-01-multi_bot-1790447533776",
+      "receipt_id": "m804-RS-02-multi_bot-1790447848373",
       "path": "multi_bot",
       "schema_pass": true,
-      "hard_pass": "7/8",
-      "elapsed_ms": 180750
+      "hard_pass": "6/8",
+      "elapsed_ms": 130409
     }
   ],
   "comparability": {
     "same_task_and_input_hash": true,
     "same_provider_identity": true,
-    "multi_bot_to_single_bot_latency_ratio": 5.33,
+    "multi_bot_to_single_bot_latency_ratio": 2.98,
     "two_x_latency_threshold_met": false
   },
   "blocking_findings": [
+    "single_bot does not satisfy the required output schema",
     "artifact.id and artifact.valid are null for all three records",
     "artifact replay hash/result is not independently recorded",
     "manual edit steps and characters are null",
@@ -47,5 +48,5 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "RS-01 is schema-readable and passes 7/8 frozen hard constraints on all three paths; artifact_replayable is the remaining failed hard constraint. It does not establish a quality or default-routing advantage; multi_bot is 5.33x slower than single_bot and replay/edit/cost evidence is missing."
+  "conclusion": "RS-02 has mixed contract results after corrected scoring: single_call 5/8, single_bot schema failure 0/8, multi_bot 6/8. Multi_bot is 2.98x slower than single_bot and no quality default can be chosen from this task."
 }

@@ -112,7 +112,10 @@ function validate(task: Task, result: Result) {
       checks.schema_complete = schemaPass;
     }
   }
-  const hardPassCount = Object.values(checks).filter((value) => value === true).length;
+  // Category-specific diagnostics may add extra keys to `checks`, but the
+  // score must count only the task's frozen hard_constraints. Otherwise a
+  // record can incorrectly report values such as 9/8.
+  const hardPassCount = task.hard_constraints.filter((key) => checks[key] === true).length;
   const expectedCount = task.hard_constraints.length;
   return { output_json_found: Boolean(output), schema_pass: schemaPass, hard_constraints: checks, hard_pass_count: hardPassCount, expected_count: expectedCount };
 }

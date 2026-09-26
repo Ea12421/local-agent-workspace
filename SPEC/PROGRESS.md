@@ -45,8 +45,9 @@
 - Run segment/fallback resume 已完成：provider 未完成或抛错时，同一逻辑 Run 追加 segment、snapshot 和 resume 事件，并把已校验的 ContextPacket 传给下一段；专项恢复测试通过。
 - Product Builder checkpoint 已完成：4 个 Handoff、5 个 Artifact、1 个 Approval 生成稳定幂等键；边界事件和 Snapshot 追加到 JSONL，重放同一 Run 会跳过已记录工作。
 - M9-05 Context Continuity 验证已完成并写入 `validation/m9-context-continuity-results.json`：synthetic provider limit、同一 Run 恢复、snapshot 重启/篡改校验、重复 checkpoint、跨项目隔离和原始事件保留均通过；这是契约证据，不是模型质量或现实使用证据。
-- M8-04 PB-02 已完成三条 Codex subscription 路径并自动校验：single_call、single_bot、multi_bot 均 schema 通过但仅 6/8 hard constraints；`multi_bot` 为 167466ms，约为 `single_bot` 的 3.27 倍，不能据此设为默认。人工复核记录已落盘，质量证据仍阻断。
-- M8-04 RS-01 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、8/8 hard constraints；`multi_bot` 为 180750ms，约为 `single_bot` 的 5.33 倍。Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 仍缺失，人工复核记录已落盘，质量证据仍阻断。
+- M8-04 PB-02 已完成三条 Codex subscription 路径并自动校验：修正计分器后均 schema 通过、4/8 frozen hard constraints；`multi_bot` 为 167466ms，约为 `single_bot` 的 3.27 倍，不能据此设为默认。人工复核记录已更新，质量证据仍阻断。
+- M8-04 RS-01 已完成三条 Codex subscription 路径并自动校验：修正计分器后三条均 schema 通过、7/8 hard constraints；`multi_bot` 为 180750ms，约为 `single_bot` 的 5.33 倍。Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 仍缺失，人工复核记录已更新，质量证据仍阻断。
+- M8-04 RS-02 已完成三条 Codex subscription 路径并自动校验：single_call 5/8、single_bot schema failure 0/8、multi_bot 6/8；`multi_bot` 约为 `single_bot` 的 2.98 倍。人工复核已落盘，质量证据仍阻断。
 
 ## 当前卡点
 

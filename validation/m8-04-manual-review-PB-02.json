@@ -15,7 +15,7 @@
       "path": "single_call",
       "execution_status": "provider_completed_pending_review",
       "schema_pass": true,
-      "hard_pass": "6/8",
+      "hard_pass": "4/8",
       "elapsed_ms": 43260
     },
     {
@@ -23,7 +23,7 @@
       "path": "single_bot",
       "execution_status": "provider_completed_pending_review",
       "schema_pass": true,
-      "hard_pass": "6/8",
+      "hard_pass": "4/8",
       "elapsed_ms": 51279
     },
     {
@@ -31,7 +31,7 @@
       "path": "multi_bot",
       "execution_status": "provider_completed_pending_review",
       "schema_pass": true,
-      "hard_pass": "6/8",
+      "hard_pass": "4/8",
       "elapsed_ms": 167466
     }
   ],
@@ -50,5 +50,5 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "PB-02 shows the three Codex execution paths completed and produced schema-readable output. All paths currently pass the same 6/8 hard constraints; multi_bot is 3.27x slower than single_bot, so this task provides no evidence to make multi_bot the default."
+  "conclusion": "PB-02 shows the three Codex execution paths completed and produced schema-readable output. After correcting the validator denominator, all paths pass 4/8 frozen hard constraints; multi_bot is 3.27x slower than single_bot, so this task provides no evidence to make multi_bot the default."
 }
