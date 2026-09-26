@@ -46,7 +46,7 @@
   - Web Vite production build 已通过；Firefox Computer Use 已打开 `localhost:5173` 并完成审批按钮交互
   - arm64 Electron DMG 已生成并且打包进程已启动；Computer Use 读取 Electron 窗口连续超时，所以桌面可见性仍是 PARTIAL
   - DeepSeek 尚未用用户 Key 实跑；Codex Product Builder 端到端 Run、取消和恢复仍待验证
-  - M8-04 仅完成 PB-01；剩余 9 题未执行
+  - M8-04 已完成 PB-01 试跑与 PB-02 三路径小批次；RS-01 至 EX-02 仍未执行，PB-01/PB-02 质量证据均未解阻
   - PB-01 当前有 9 条真实 provider 记录（8 条完成、1 条 provider_incomplete），全部是 `quality_eligible=false`；可解析的 multi Bot receipts 自动校验为 7/8，另有前缀/拼接输出被严格拒绝，必须先人工复核，不能据此宣称单/多 Bot 质量优劣
   - 为同步最新桌面入口而重打包时，`.app` 编译成功，但 `hdiutil` 报 `设备未配置`；已有 DMG 保留，需在 DiskManagement 可用的 macOS 环境再复验封装
   - 尚未做 3 个非敏感真实任务的 reality validation
@@ -65,7 +65,7 @@
 2. 隔离 clean-room 源码副本已从零安装、setup、10 tests 通过；literal GitHub clone 仍待仓库 remote。
 3. Context Continuity M9-01 至 M9-05 已完成：同一逻辑 Run 的不可变 snapshot、JSONL 存储、segment/fallback resume、ContextPacket 传递、Product Builder 边界幂等和契约验证已通过专项测试，账本为 `validation/m9-context-continuity-results.json`。
 4. M8-04 PB-02 三条 Codex subscription 路径已完成并校验为 schema_pass=true、6/8 hard constraints；multi_bot 比 single_bot 慢约 3.27 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-PB-02.json`。
-5. 下一步继续 M8-04：先补 PB-01 质量证据缺口，再执行 PB-03 至 EX-02，每批最多 3 条路径，批后校验并 checkpoint。
+5. 下一步继续 M8-04：先补 PB-01 质量证据缺口，再执行 RS-01 至 EX-02，每批最多 3 条路径，批后校验并 checkpoint。
 5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
 6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
 

@@ -60,7 +60,7 @@
 
 ## 当前唯一下一步
 
-继续 M8-04：先补 PB-01 质量证据缺口，再按每批最多 3 条 provider 路径执行 PB-03 至 EX-02；每批后运行 `pnpm run m804:validate`、`pnpm run validate:state` 并保存 receipt。
+继续 M8-04：先补 PB-01 质量证据缺口，再按每批最多 3 条 provider 路径执行 RS-01 至 EX-02；每批后运行 `pnpm run m804:validate`、`pnpm run validate:state` 并保存 receipt。
 
 ## 网络恢复后的下一步
 
