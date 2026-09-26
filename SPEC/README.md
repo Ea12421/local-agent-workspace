@@ -7,6 +7,7 @@
 - **追踪矩阵**：`TRACEABILITY.md`，把目标映射到 SPEC、代码、测试和证据。
 - **当前进度**：`PROGRESS.md`，只记录当前阶段、已完成、阻塞和唯一下一步。
 - **AI 执行协议**：`AI-EXECUTION-PROTOCOL.md`，规定每次如何恢复、实现、验证和更新状态。
+- **长窗口恢复契约**：`07-context-compaction-and-recovery.md`，规定 Snapshot、segment、压缩、交接和 fallback resume。
 
 ## 推荐阅读顺序
 

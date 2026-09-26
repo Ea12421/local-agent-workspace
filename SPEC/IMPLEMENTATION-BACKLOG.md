@@ -104,6 +104,16 @@
 | M8-05 | 3 个现实任务 | `validation/` | M8-01, M8-02 | TODO | reality-card，不能用模型自评替代 |
 | M8-06 | 面试掌握包 | `docs/interview-playbook.md` | M8-04 | PARTIAL | 初稿存在；需要真实证据映射 |
 
+## Milestone M9：Context Continuity
+
+| ID | 任务 | 文件/区域 | 依赖 | 状态 | 完成标准 |
+|---|---|---|---|---|---|
+| M9-01 | ContextSnapshot 纯函数契约 | `packages/core/src/context.ts`, `types.ts` | M1 | IN_PROGRESS | 阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 有专项测试 |
+| M9-02 | JSONL Snapshot 持久化 | `apps/server/src/persistence.ts` | M9-01 | TODO | snapshot 写入、读取、校验和重启 hydration |
+| M9-03 | Run segment 与 fallback resume | `packages/adapters`, `apps/server/src/runtime.ts` | M9-01 | TODO | Provider limit/中断后同一 Run 创建新 segment，receipt 可追溯 |
+| M9-04 | Product Builder 长窗口接入 | `packages/workflow`, `apps/server` | M9-02, M9-03 | TODO | Handoff、Approval、Artifact 后自动 checkpoint，恢复不重复工作 |
+| M9-05 | Context Continuity 验证 | `validation/`, `SPEC/07` | M9-04 | TODO | synthetic limit、崩溃恢复、重复提交、跨项目隔离通过 |
+
 ## 当前唯一优先级
 
 当前执行顺序先走已可用的 Codex CLI，再补网络依赖；M8-04 采用小批次执行，每批最多 3 条 provider 路径，批后立即校验和 checkpoint，执行顺序固定为：
@@ -111,7 +121,7 @@
 ```text
 M3-04/M8-03（Codex CLI bridge）
 → M6-06 → M7-01/M7-02 → M7-03 → M8-01
-→ M8-02（DeepSeek 可选对比）→ M8-04（PB-01 已完成试跑，剩余 9 题分批）→ M8-05 → M8-06
+→ M9-01/M9-02（ContextSnapshot 与恢复基础）→ M8-04（PB-01 已完成试跑，剩余 9 题分批）→ M9-03/M9-04 → M8-05 → M8-06 → M8-02（DeepSeek 可选对比）
 ```
 
 在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。

@@ -8,6 +8,10 @@ release/
 !.env.example
 data/*.db
 data/*.db-*
+data/*.jsonl
+
+# Retained local duplicate from an earlier scaffold; it is outside the root build.
+/Agent开发。/
 .DS_Store
 *.log
 *.tsbuildinfo

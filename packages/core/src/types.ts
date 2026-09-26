@@ -18,6 +18,7 @@ export type ApprovalRequestId = Brand<string, "ApprovalRequestId">;
 export type ArtifactId = Brand<string, "ArtifactId">;
 export type SourceId = Brand<string, "SourceId">;
 export type MemoryItemId = Brand<string, "MemoryItemId">;
+export type ContextSnapshotId = Brand<string, "ContextSnapshotId">;
 
 export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue = JsonPrimitive | JsonValue[] | { [key: string]: JsonValue };
@@ -62,7 +63,14 @@ export type RunEventType =
   | "handoff.created"
   | "handoff.completed"
   | "handoff.failed"
-  | "artifact.created";
+  | "artifact.created"
+  | "context.compaction_started"
+  | "context.snapshot_created"
+  | "context.compaction_failed"
+  | "run.segment_started"
+  | "run.segment_completed"
+  | "run.resume_requested"
+  | "run.resume_failed";
 
 export type EventActor =
   | { type: "system" }
@@ -302,6 +310,101 @@ export interface MemoryItem {
   sourceRefs: SourceId[];
   createdAt: string;
   updatedAt: string;
+}
+
+export type ContextTrigger =
+  | "threshold"
+  | "handoff"
+  | "approval"
+  | "interrupt"
+  | "provider_limit"
+  | "manual";
+
+export type ContextPriority = "critical" | "important" | "normal";
+
+export interface ContextFact {
+  id: string;
+  text: string;
+  eventRefs: string[];
+  sourceRefs: string[];
+  priority: ContextPriority;
+}
+
+export interface ContextDecision {
+  id: string;
+  text: string;
+  status: "proposed" | "accepted" | "rejected" | "superseded";
+  actor: "user" | "bot" | "system";
+  eventRefs: string[];
+}
+
+export interface ContextItem {
+  id: string;
+  kind: "conversation" | "tool_result" | "handoff" | "artifact" | "source" | "memory";
+  content: string;
+  eventRefs: string[];
+  sourceRefs: string[];
+  priority: ContextPriority;
+  createdAt: string;
+}
+
+export interface ContextLedger {
+  projectId: ProjectId;
+  runId: RunId;
+  objective: string;
+  constraints: string[];
+  durableFacts: ContextFact[];
+  decisions: ContextDecision[];
+  unknowns: string[];
+  pendingApprovalRefs: string[];
+  activeHandoffRefs: string[];
+  artifactRefs: string[];
+  sourceRefs: string[];
+  nextAction: string;
+  items: ContextItem[];
+  events: RunEvent[];
+}
+
+export interface ContextPolicy {
+  softThresholdTokens: number;
+  hardThresholdTokens: number;
+  reserveOutputTokens: number;
+  maxSummaryTokens: number;
+  maxTailEvents: number;
+}
+
+export interface ContextSnapshot {
+  id: ContextSnapshotId;
+  schemaVersion: "context.snapshot.v1";
+  projectId: ProjectId;
+  runId: RunId;
+  parentSnapshotId?: ContextSnapshotId;
+  covers: { fromSequence: number; toSequence: number };
+  trigger: ContextTrigger;
+  summary: {
+    objective: string;
+    durableFacts: ContextFact[];
+    decisions: ContextDecision[];
+    constraints: string[];
+    unknowns: string[];
+    pendingApprovalRefs: string[];
+    activeHandoffRefs: string[];
+    artifactRefs: string[];
+    sourceRefs: string[];
+    nextAction: string;
+  };
+  tailEventIds: string[];
+  tokenEstimate: number;
+  summaryTokenEstimate: number;
+  contentSha256: string;
+  createdAt: string;
+  createdBy: "system" | "user" | "bot";
+}
+
+export interface ContextPacket {
+  snapshot: ContextSnapshot;
+  tailEvents: RunEvent[];
+  continuationInstruction: string;
 }
 
 export interface CreateRunInput {
