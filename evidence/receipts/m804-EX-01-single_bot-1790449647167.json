@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-EX-01-single_bot-1790449647167",
+  "task_id": "EX-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "execution_plan",
+  "path": "single_bot",
+  "input_hash": "fdcfb914e2488d02b94264666635eb977257915aa5e43913388786390ba0c60d",
+  "run_ids": [
+    "58eb8b9b-7edb-488e-ae5c-5782e8804f8e"
+  ],
+  "started_at": "2026-09-26T19:06:22.166Z",
+  "finished_at": "2026-09-26T19:07:27.167Z",
+  "elapsed_ms": 65001,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 3664,
+    "sha256": "278887bf6ac22570ab47338dad73e0609ca8cf298fb179f951daede283c290f0",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "milestones_ordered": null,
+    "dependencies_explicit": null,
+    "approvals_explicit": null,
+    "stop_conditions_present": null,
+    "artifacts_traceable": null,
+    "no_unattended_external_publish": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"milestones\":[{\"id\":\"M1\",\"period\":\"第1-2天\",\"name\":\"范围与约束冻结\",\"exit\":\"明确核心用户流程、验收标准、权限边界\"},{\"id\":\"M2\",\"period\":\"第3-5天\",\"name\":\"本地工作台原型\",\"exit\":\"可创建、编辑、保存产品设计文档\"},{\"id\":\"M3\",\"period\":\"第6-9天\",\"name\":\"AI 辅助流程\",\"exit\":\"可在本地触发 AI 草稿生成并查看运行记录\"},{\"id\":\"M4\",\"period\":\"第10-12天\",\"name\":\"审批与可诊断性\",\"exit\":\"高风险操作需逐次审批，所有运行有事件与 receipt\"},{\"id\":\"M5\",\"period\":\"第13-14天\",\"name\":\"验收与交付包\",\"exit\":\"固定任务通过验收，产物可离线重放\"}],\"tasks\":[{\"id\":\"T1\",\"milestone\":\"M1\",\"description\":\"定义 MVP：项目、页面、组件、提示词、版本记录\",\"owner\":\"一名开发者\"},{\"id\":\"T2\",\"milestone\":\"M1\",\"description\":\"定义权限：只读、工作区写入、完全访问；标记需审批的外发、删除、凭据读取、发布操作\",\"owner\":\"一名开发者\"},{\"id\":\"T3\",\"milestone\":\"M2\",\"description\":\"实现本地数据模型、编辑器、保存与版本回溯\",\"owner\":\"一名开发者\"},{\"id\":\"T4\",\"milestone\":\"M3\",\"description\":\"接入可替换 ModelProvider；无 Key 时仅使用 FixtureAdapter 并明确标注\",\"owner\":\"一名开发者\"},{\"id\":\"T5\",\"milestone\":\"M3\",\"description\":\"记录 RunEvent、输入摘要、输出、时间和 receipt\",\"owner\":\"一名开发者\"},{\"id\":\"T6\",\"milestone\":\"M4\",\"description\":\"实现逐次审批流程和拒绝后安全停止\",\"owner\":\"一名开发者\"},{\"id\":\"T7\",\"milestone\":\"M5\",\"description\":\"使用固定任务进行功能、权限、离线重放验收并整理交付包\",\"owner\":\"一名开发者\"}],\"dependencies\":[{\"from\":\"T3\",\"to\":\"T4\",\"reason\":\"AI 流程依赖本地项目与版本数据模型\"},{\"from\":\"T4\",\"to\":\"T5\",\"reason\":\"运行记录依赖 Provider 调用接口\"},{\"from\":\"T5\",\"to\":\"T6\",\"reason\":\"审批审计依赖可诊断运行记录\"},{\"from\":\"T6\",\"to\":\"T7\",\"reason\":\"验收依赖完整权限与审计链路\"}],\"approvals\":[{\"action\":\"调用真实外部模型或发送数据\",\"required\":\"逐次人工审批\",\"default\":\"拒绝\"},{\"action\":\"删除重要数据或修改旧工作台\",\"required\":\"逐次人工审批\",\"default\":\"拒绝\"},{\"action\":\"读取凭据、访问敏感路径、生产配置\",\"required\":\"逐次人工审批\",\"default\":\"拒绝\"},{\"action\":\"发布、部署或向外部服务写入\",\"required\":\"逐次人工审批\",\"default\":\"禁止无人值守\"},{\"action\":\"本地编辑、保存和使用 FixtureAdapter\",\"required\":\"无需额外审批\",\"boundary\":\"仅限工作区内\"}],\"stop_conditions\":[\"核心验收标准在第12天前仍未冻结\",\"任何未审批的外发、删除、凭据读取或发布尝试\",\"运行缺少 RunEvent 或可诊断 receipt，导致无法追溯\",\"固定任务无法在离线环境重放\",\"真实模型效果证据不可用时不得宣称已验证\"],\"artifacts\":[{\"id\":\"A1\",\"name\":\"MVP 范围与验收清单\",\"source_tasks\":[\"T1\",\"T2\"],\"trace\":\"需求→任务→验收标准\"},{\"id\":\"A2\",\"name\":\"本地数据模型与版本记录\",\"source_tasks\":[\"T3\"],\"trace\":\"项目数据→版本快照\"},{\"id\":\"A3\",\"name\":\"运行记录与 receipt 集合\",\"source_tasks\":[\"T4\",\"T5\",\"T6\"],\"trace\":\"输入摘要→RunEvent→审批结果→输出\"},{\"id\":\"A4\",\"name\":\"固定任务验收报告\",\"source_tasks\":[\"T7\"],\"trace\":\"固定输入→执行记录→结果→判定\"},{\"id\":\"A5\",\"name\":\"离线重放包\",\"source_tasks\":[\"T3\",\"T5\",\"T7\"],\"trace\":\"版本快照、事件、Fixture 输出可复现重放\"},{\"id\":\"A6\",\"name\":\"交付说明与未验证项清单\",\"source_tasks\":[\"T7\"],\"trace\":\"已完成能力、未知证据、禁止外部发布状态\"}]}",
+  "attempts": [
+    {
+      "stage": "single_bot",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "58eb8b9b-7edb-488e-ae5c-5782e8804f8e",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3664
+    }
+  ]
+}
