@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-EX-02-multi_bot-1790450669189",
+  "task_id": "EX-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "execution_plan",
+  "path": "multi_bot",
+  "input_hash": "95eddd45582690710a9013177cd1ebea162b2c6bc01138fe7c398bd3cec2b727",
+  "run_ids": [
+    "2d591051-6fab-45e0-888c-6983faac486f",
+    "c4d9e719-5f4a-45fc-8ce0-e1dcae10b955",
+    "ef37ce7d-e210-4623-ac38-fca210364758",
+    "826466b0-6eff-4e13-8d9f-a70f1745f712"
+  ],
+  "started_at": "2026-09-26T19:16:28.725Z",
+  "finished_at": "2026-09-26T19:24:29.188Z",
+  "elapsed_ms": 480462,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 173,
+    "sha256": "9d90cedaa6783cd3062eaa5c1a27b659a689b65ade23a12ccaf1857c7db4889b",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "audiences_separated": null,
+    "every_claim_has_evidence_or_pending_label": null,
+    "unsigned_dmg_limitation_present": null,
+    "fixture_not_quality_claim": null,
+    "limitations_present": null,
+    "evidence_paths_readable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 141,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "EX-02",
+      "output_ref": "stage-1",
+      "event_count": 37
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 34
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 36
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 34
+    }
+  ],
+  "output_excerpt": "老黄，我会按 Research → Product → Architecture → Evaluation 四阶段推进，先读取工作区证据与可回放入口，再汇总冲突并输出严格 JSON。",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 37,
+      "completed": true,
+      "runId": "2d591051-6fab-45e0-888c-6983faac486f",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 539
+    },
+    {
+      "stage": "Product",
+      "eventCount": 34,
+      "completed": true,
+      "runId": "c4d9e719-5f4a-45fc-8ce0-e1dcae10b955",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 151
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 36,
+      "completed": true,
+      "runId": "ef37ce7d-e210-4623-ac38-fca210364758",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 216
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 34,
+      "completed": true,
+      "runId": "826466b0-6eff-4e13-8d9f-a70f1745f712",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 173
+    }
+  ]
+}

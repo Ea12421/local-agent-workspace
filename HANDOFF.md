@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 已完成 PB-02/RS-01/RS-02/AR-01/AR-02/EV-01/EV-02/EX-01 小批次，Desktop 仍部分验证
-- 阶段：`m8-04-ex01-validated`
+- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 10 题机械执行已收口但质量证据阻断，Desktop 仍部分验证
+- 阶段：`m8-04-mechanical-complete-quality-blocked`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -38,6 +38,8 @@
   - `validation/m8-04-manual-review-EV-01.json`：EV-01 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-manual-review-EV-02.json`：EV-02 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-manual-review-EX-01.json`：EX-01 三条路径自动结果和质量证据阻断项
+  - `validation/m8-04-manual-review-EX-02.json`：EX-02 三条路径自动结果和质量证据阻断项
+  - `validation/m8-04-aggregate-summary.json`：M8-04 全套机械执行汇总
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -79,7 +81,8 @@
 9. M8-04 EV-01 三条路径已完成并校验为 6/8、0/8、6/8；single_bot schema failure，multi_bot 比 single_bot 慢约 3.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EV-01.json`。
 10. M8-04 EV-02 三条路径已完成并校验为 6/8、6/8、6/8；multi_bot 比 single_bot 慢约 6.53 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EV-02.json`。
 11. M8-04 EX-01 三条路径已完成并校验为 7/8、7/8、7/8；multi_bot 比 single_bot 慢约 3.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-01.json`。
-12. 下一步完成最后一题 EX-02 三条路径，随后冻结 M8-04 质量结论并转入 3 个现实任务验证。
+12. M8-04 EX-02 三条路径已完成并校验为 7/8、0/8、0/8；single_bot/multi_bot schema failure，multi_bot 比 single_bot 慢约 6.18 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-02.json`。
+13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`。下一步是补质量证据或转入 3 个非敏感现实任务验证，不能把机械通过写成产品价值。
 5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
 6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
 

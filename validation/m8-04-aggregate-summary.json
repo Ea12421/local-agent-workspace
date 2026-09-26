@@ -1,0 +1,60 @@
+{
+  "suite": "m8-04.v1",
+  "generated_at": "2026-09-27",
+  "status": "MECHANICAL_ONLY_QUALITY_BLOCKED",
+  "records_total": 36,
+  "unique_task_path_combinations": 30,
+  "quality_eligible_records": 0,
+  "path_totals": {
+    "single_call": {
+      "records": 10,
+      "schema_pass_records": 10,
+      "hard_pass_sum": 64,
+      "elapsed_ms_sum": 470185
+    },
+    "single_bot": {
+      "records": 11,
+      "schema_pass_records": 8,
+      "hard_pass_sum": 54,
+      "elapsed_ms_sum": 566129
+    },
+    "multi_bot": {
+      "records": 15,
+      "schema_pass_records": 9,
+      "hard_pass_sum": 58,
+      "elapsed_ms_sum": 3057654
+    }
+  },
+  "task_results": {
+    "PB-01": "quality_evidence_blocked_with_late_retries",
+    "PB-02": "quality_evidence_blocked",
+    "RS-01": "quality_evidence_blocked",
+    "RS-02": "quality_evidence_blocked",
+    "AR-01": "quality_evidence_blocked",
+    "AR-02": "quality_evidence_blocked",
+    "EV-01": "quality_evidence_blocked",
+    "EV-02": "quality_evidence_blocked",
+    "EX-01": "quality_evidence_blocked",
+    "EX-02": "quality_evidence_blocked"
+  },
+  "interpretation": [
+    "All records use the real Codex subscription execution bridge; fixture records are excluded.",
+    "The corrected validator counts only each task's frozen hard_constraints; overExpected is zero.",
+    "PB-01 has late duplicate/retry receipts; receipt_id is the audit key and historical lines were not rewritten.",
+    "No path is promoted to a quality default because artifact/replay, manual-edit, reviewer-rubric, and usage/cost evidence are incomplete.",
+    "This is not a reality validation result and does not establish multi_bot superiority."
+  ],
+  "source_files": [
+    "validation/m8-04-results.jsonl",
+    "validation/m8-04-validation-summary.json",
+    "validation/m8-04-manual-review-PB-01.json",
+    "validation/m8-04-manual-review-PB-02.json",
+    "validation/m8-04-manual-review-RS-01.json",
+    "validation/m8-04-manual-review-RS-02.json",
+    "validation/m8-04-manual-review-AR-01.json",
+    "validation/m8-04-manual-review-AR-02.json",
+    "validation/m8-04-manual-review-EV-01.json",
+    "validation/m8-04-manual-review-EV-02.json",
+    "validation/m8-04-manual-review-EX-01.json"
+  ]
+}

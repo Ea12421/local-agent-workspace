@@ -20,7 +20,7 @@
 | SQLite persistence | MASTER 10 | `persistence.ts` | schema + fallback test | PARTIAL |
 | clean-room 安装 | MASTER 10/11 | README/SPEC | registry blocked | BLOCKED |
 | DeepSeek 真实验证 | MASTER 11 | adapter + validation plan | 无真实 Key | BLOCKED |
-| 10 任务消融 | MASTER 11 | backlog M8-04 | 尚未运行 | TODO |
+| 10 任务消融 | MASTER 11 | backlog M8-04 | `validation/m8-04-aggregate-summary.json` | PARTIAL：机械执行收口，质量证据阻断 |
 | 3 个现实任务 | MASTER 11 | backlog M8-05 | 尚未运行 | TODO |
 
 ## 证据等级

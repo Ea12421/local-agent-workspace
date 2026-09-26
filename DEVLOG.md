@@ -96,6 +96,8 @@
 - EV-01 三路径校正后为 single_call 6/8、single_bot schema failure 0/8、multi_bot 6/8；multi_bot 约为 single_bot 的 3.98 倍，`validation/m8-04-manual-review-EV-01.json` 已落盘，质量证据仍为 0。
 - EV-02 三路径校正后均为 6/8；multi_bot 约为 single_bot 的 6.53 倍，`validation/m8-04-manual-review-EV-02.json` 已落盘，质量证据仍为 0。
 - EX-01 三路径校正后均为 7/8；multi_bot 约为 single_bot 的 3.98 倍，`validation/m8-04-manual-review-EX-01.json` 已落盘，质量证据仍为 0。
+- EX-02 三路径校正后为 single_call 7/8、single_bot schema failure 0/8、multi_bot schema failure 0/8；multi_bot 480.462s，约为 single_bot 的 6.18 倍，`validation/m8-04-manual-review-EX-02.json` 已落盘。
+- M8-04 机械执行收口：36 条 receipt、30 个唯一 task×path 组合、`overExpected=0`、`quality_eligible=0`；`validation/m8-04-aggregate-summary.json` 明确记录了质量证据阻断和 PB-01 晚到重试。下一步只做质量补证或 3 个现实任务验证，不把自动校验当作提效证明。
 
 ### 2026-09-27 M8-04 · 修正硬约束计分分母
 

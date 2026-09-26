@@ -53,13 +53,15 @@
 - M8-04 EV-01 已完成三条 Codex subscription 路径并自动校验：single_call 6/8、single_bot schema failure 0/8、multi_bot 6/8；`multi_bot` 约为 `single_bot` 的 3.98 倍。人工复核已落盘，质量证据仍阻断。
 - M8-04 EV-02 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、6/8 hard constraints；`multi_bot` 约为 `single_bot` 的 6.53 倍。人工复核已落盘，质量证据仍阻断。
 - M8-04 EX-01 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、7/8 hard constraints；`multi_bot` 约为 `single_bot` 的 3.98 倍。人工复核已落盘，质量证据仍阻断。
+- M8-04 EX-02 已完成三条 Codex subscription 路径并自动校验：single_call 7/8，single_bot 和 multi_bot schema failure 0/8；`multi_bot` 为 480462ms，约为 `single_bot` 的 6.18 倍。人工复核已落盘，质量证据仍阻断。
+- M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、`overExpected=0`、`quality_eligible=0`；总账本为 `validation/m8-04-aggregate-summary.json`。这不是多 Bot 优势结论，也不是现实使用验证。
 
 ## 当前卡点
 
 1. 本次依赖安装通过了受控主机网络；普通 Codex 沙箱仍会出现 registry DNS 失败。没有修改 VPN。后续安装应继续使用明确的受控网络命令，不能把网络恢复写成永久环境保证。
 2. Electron arm64 App 已启动并被系统登记为运行中，但 Computer Use 读取其窗口连续超时，因此“进程启动”已验证，“桌面窗口可见性”仍是 PARTIAL。
 3. DeepSeek 尚未真实调用；它是可选对比通道，需要用户提供 Key 后才能做真实模型验证。
-4. Codex Run 的 resume、10 个固定任务真实运行和 3 个现实任务验证仍未完成。
+4. Codex 原生 resume 尚未接通；M8-04 10 题机械执行已完成但质量证据仍阻断，3 个现实任务验证尚未完成。
 5. 当前工作区和隔离源码副本安装已通过；literal GitHub clone 仍待仓库 remote。
 6. M8-04 的长批次在第一次 `--path all` 运行中只完成了 `single_call`，随后外层执行会话结束；按单路径重试后成功，说明下一批必须拆成小批并依赖 JSONL/receipt 恢复，不能把一次长会话当作唯一状态。
 7. 2026-09-27 重打包时 `.app` 编译成功，但 `hdiutil create` 因系统 DiskManagement framework 不可用而失败；已有 DMG 保留，不把本次封装失败写成应用代码失败。
@@ -67,7 +69,7 @@
 
 ## 当前唯一下一步
 
-继续 M8-04：先补 PB-01 质量证据缺口，再按每批最多 3 条 provider 路径执行 RS-01 至 EX-02；每批后运行 `pnpm run m804:validate`、`pnpm run validate:state` 并保存 receipt。
+冻结 M8-04 机械结果为 `quality_evidence_blocked`；补齐 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 后，再进入 3 个非敏感现实任务验证。
 
 ## 网络恢复后的下一步
 

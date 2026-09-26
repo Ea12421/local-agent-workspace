@@ -1,6 +1,6 @@
 {
   "suite_version": "m8-04.v1",
-  "generated_at": "2026-09-26T19:12:09.203Z",
+  "generated_at": "2026-09-26T19:28:10.013Z",
   "quality_eligible_records": 0,
   "note": "Automated validation only. No record is promoted to quality evidence without manual review and real-user gates.",
   "records": [
@@ -833,6 +833,78 @@
         "evidence_paths_readable": false
       },
       "hard_pass_count": 7,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "EX-02",
+      "path": "single_call",
+      "attempt": 1,
+      "receipt_id": "m804-EX-02-single_call-1790450087395",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "audiences_separated": true,
+        "every_claim_has_evidence_or_pending_label": true,
+        "unsigned_dmg_limitation_present": true,
+        "fixture_not_quality_claim": true,
+        "limitations_present": true,
+        "evidence_paths_readable": true,
+        "artifact_replayable": false,
+        "milestones_ordered": false,
+        "dependencies_explicit": false,
+        "approvals_explicit": false,
+        "stop_conditions_present": false,
+        "artifacts_traceable": true,
+        "no_unattended_external_publish": true
+      },
+      "hard_pass_count": 7,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "EX-02",
+      "path": "single_bot",
+      "attempt": 1,
+      "receipt_id": "m804-EX-02-single_bot-1790450179052",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": false,
+      "schema_pass": false,
+      "hard_constraints": {
+        "schema_complete": false,
+        "audiences_separated": false,
+        "every_claim_has_evidence_or_pending_label": false,
+        "unsigned_dmg_limitation_present": false,
+        "fixture_not_quality_claim": false,
+        "limitations_present": false,
+        "evidence_paths_readable": false,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 0,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "EX-02",
+      "path": "multi_bot",
+      "attempt": 1,
+      "receipt_id": "m804-EX-02-multi_bot-1790450669189",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": false,
+      "schema_pass": false,
+      "hard_constraints": {
+        "schema_complete": false,
+        "audiences_separated": false,
+        "every_claim_has_evidence_or_pending_label": false,
+        "unsigned_dmg_limitation_present": false,
+        "fixture_not_quality_claim": false,
+        "limitations_present": false,
+        "evidence_paths_readable": false,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 0,
       "expected_count": 8,
       "quality_eligible": false
     }

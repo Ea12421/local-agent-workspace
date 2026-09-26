@@ -48,9 +48,9 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-04-ex01-validated",
+  "phase": "m8-04-mechanical-complete-quality-blocked",
   "progress": {
-    "completed_units": 20,
+    "completed_units": 21,
     "total_units": 22
   },
   "retry": {
@@ -65,7 +65,7 @@
     "blocking_corrections_left": 1
   },
   "blocked_reason": "Electron arm64 DMG 曾成功生成并启动过，但 Computer Use 无法在超时内绑定窗口；2026-09-27 重打包时 .app 编译成功，hdiutil 因当前环境 DiskManagement framework 不可用而失败。DeepSeek、literal GitHub clone、Codex resume 和真实 AI/现实任务验证仍未完成。",
-  "next_action": "完成 M8-04 最后一题 EX-02 三条 provider 路径；校验后写入总账本和人工复核，随后冻结 M8-04 质量结论并转入 3 个现实任务验证。",
-  "last_evidence": "2026-09-27：M9-01 至 M9-05 已完成；修正 M8-04 计分器后，PB-02 为 4/8，RS-01 为 7/8，RS-02 为 5/8、0/8、6/8，AR-01 为 8/8、7/8、8/8，AR-02 为 7/8、7/8、0/8，EV-01 为 6/8、0/8、6/8，EV-02 为 6/8、6/8、6/8，EX-01 为 7/8、7/8、7/8。EX-01 multi_bot 比 single_bot 慢约 3.98 倍；质量证据仍因 replay/edit/rubric/cost 缺口阻断，人工复核已落盘。DeepSeek 后置。",
+  "next_action": "冻结 M8-04 机械结果为 quality_evidence_blocked；补齐 PB-01/PB-02/其余路径的 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 后，再进入 3 个非敏感现实任务验证。",
+  "last_evidence": "2026-09-27：M8-04 10 题三路径执行已完成（36 条 receipt、30 个唯一 task×path 组合）；校验器修正后 overExpected=0、quality_eligible=0。EX-02 为 single_call 7/8、single_bot 0/8 schema failure、multi_bot 0/8 schema failure，multi_bot 480462ms，约为 single_bot 的 6.18 倍。完整机械汇总和人工复核已落盘；这不是质量通过或现实提效结论，DeepSeek 后置。",
   "updated_at": "2026-09-27T00:00:00+08:00"
 }

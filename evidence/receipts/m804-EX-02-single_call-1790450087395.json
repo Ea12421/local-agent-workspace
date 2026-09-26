@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-EX-02-single_call-1790450087395",
+  "task_id": "EX-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "execution_plan",
+  "path": "single_call",
+  "input_hash": "95eddd45582690710a9013177cd1ebea162b2c6bc01138fe7c398bd3cec2b727",
+  "run_ids": [
+    "099ebc6b-e2f2-4954-8f1c-684496062878"
+  ],
+  "started_at": "2026-09-26T19:13:40.677Z",
+  "finished_at": "2026-09-26T19:14:47.394Z",
+  "elapsed_ms": 66716,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2707,
+    "sha256": "7a850c5aa1179df5cc568c59dbb87c5027c01a8fb7b719a808a1e12eecc7324c",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "audiences_separated": null,
+    "every_claim_has_evidence_or_pending_label": null,
+    "unsigned_dmg_limitation_present": null,
+    "fixture_not_quality_claim": null,
+    "limitations_present": null,
+    "evidence_paths_readable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 0,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"demo_script\":{\"audience\":\"面试官\",\"steps\":[{\"step\":\"展示项目运行入口与核心流程\",\"status\":\"pending\",\"evidence\":\"未提供可读取的运行入口或录屏路径\"},{\"step\":\"展示测试结果\",\"claim\":\"10 tests passed\",\"evidence\":\"known_evidence: 10 tests passed\"},{\"step\":\"展示只读执行记录\",\"claim\":\"存在 Codex read-only run receipt\",\"evidence\":\"known_evidence: Codex read-only run receipt\"},{\"step\":\"说明构建产物\",\"claim\":\"存在 DMG unsigned build\",\"evidence\":\"known_evidence: DMG unsigned build\"}]},\"mastery_pack\":{\"audience\":\"本人\",\"items\":[{\"topic\":\"测试状态\",\"knowledge\":\"已知有 10 个测试通过；测试覆盖范围未知\",\"evidence\":\"10 tests passed\"},{\"topic\":\"执行审计\",\"knowledge\":\"已有 Codex 只读运行回执；具体字段与路径未知\",\"evidence\":\"Codex read-only run receipt\"},{\"topic\":\"构建限制\",\"knowledge\":\"DMG 未签名，不能据此声称可直接信任或已完成发布\",\"evidence\":\"DMG unsigned build\"},{\"topic\":\"FixtureAdapter\",\"knowledge\":\"不得把 fixture 结果表述为真实模型质量或效果验证\",\"evidence\":\"pending: 未提供真实模型效果证据\"}]},\"interviewer_pack\":{\"audience\":\"面试官\",\"talking_points\":[{\"claim\":\"当前可确认的是 10 个测试通过。\",\"evidence\":\"10 tests passed\"},{\"claim\":\"当前可确认存在 Codex 只读运行回执。\",\"evidence\":\"Codex read-only run receipt\"},{\"claim\":\"当前可确认有未签名 DMG 构建。\",\"evidence\":\"DMG unsigned build\"},{\"claim\":\"真实模型质量、生产发布状态和外部用户效果尚无证据。\",\"evidence\":\"pending: 未提供相关证据\"}],\"do_not_claim\":[\"不要把 FixtureAdapter 或演示数据称为真实模型质量证据。\",\"不要把未签名 DMG 称为已签名、已公证或可直接发布。\"]},\"evidence_map\":[{\"evidence\":\"10 tests passed\",\"path\":\"unknown\",\"readable\":false,\"status\":\"provided_as_text\"},{\"evidence\":\"Codex read-only run receipt\",\"path\":\"unknown\",\"readable\":false,\"status\":\"provided_as_text\"},{\"evidence\":\"DMG unsigned build\",\"path\":\"unknown\",\"readable\":false,\"status\":\"provided_as_text\"},{\"evidence\":\"真实模型质量/用户效果\",\"path\":\"unknown\",\"readable\":false,\"status\":\"pending\"}],\"limitations\":[\"证据未提供可读取文件路径，因此无法独立复核或重放。\",\"DMG 未签名；签名、公证和发布可用性均为 pending。\",\"10 个测试通过不等于覆盖完整、无缺陷或达到生产质量。\",\"FixtureAdapter 仅可作为演示适配器；没有真实模型效果证据。\"],\"artifact_replayable\":{\"status\":\"pending\",\"reason\":\"缺少可读取的脚本、命令、构建产物路径和运行入口；目前只能按已提供的三条证据进行口头演示。\"}}",
+  "attempts": [
+    {
+      "stage": "single_call",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "099ebc6b-e2f2-4954-8f1c-684496062878",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2707
+    }
+  ]
+}

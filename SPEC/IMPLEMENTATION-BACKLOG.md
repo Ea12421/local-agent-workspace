@@ -100,7 +100,7 @@
 | M8-01 | clean-room install | README/SPEC | M6-06 | PARTIAL | 当前工作区 `pnpm install`、`pnpm run setup` 已通过；全新 clone 仍待验证 |
 | M8-02 | DeepSeek 真实调用 | `.env`（不提交） | M3-02 | BLOCKED | receipt 和失败诊断存在 |
 | M8-03 | Codex 真实执行桥 | Adapter + receipt | M3-04 | PARTIAL | 真实只读 Product Builder Run、适配器取消和控制面取消竞态已通过；resume 与 Web 端到端仍待验证 |
-| M8-04 | 10 任务消融实验 | `validation/` | M4 | PARTIAL | 题集和评分规则已冻结；PB-01 三条路径已真实执行并自动校验（5 条真实记录，0 条质量证据），剩余 9 题与人工复核待完成 |
+| M8-04 | 10 任务消融实验 | `validation/` | M4 | PARTIAL | 10 题三路径机械执行已收口（36 条 receipt、30 个唯一 task×path、0 条 quality evidence）；Artifact/replay、人工编辑、rubric、usage/cost 仍阻断质量结论 |
 | M8-05 | 3 个现实任务 | `validation/` | M8-01, M8-02 | TODO | reality-card，不能用模型自评替代 |
 | M8-06 | 面试掌握包 | `docs/interview-playbook.md` | M8-04 | PARTIAL | 初稿存在；需要真实证据映射 |
 
@@ -116,12 +116,12 @@
 
 ## 当前唯一优先级
 
-当前执行顺序先走已可用的 Codex CLI，再补网络依赖；M8-04 采用小批次执行，每批最多 3 条 provider 路径，批后立即校验和 checkpoint，执行顺序固定为：
+当前执行顺序先走已可用的 Codex CLI，再补网络依赖；M8-04 机械执行已收口，下一阶段补质量证据或进入 M8-05 现实验证，执行顺序固定为：
 
 ```text
 M3-04/M8-03（Codex CLI bridge）
 → M6-06 → M7-01/M7-02 → M7-03 → M8-01
-→ M9-01/M9-02（ContextSnapshot 与恢复基础）→ M8-04（PB-01 已完成试跑，剩余 9 题分批）→ M9-03/M9-04 → M8-05 → M8-06 → M8-02（DeepSeek 可选对比）
+→ M9-01/M9-02/M9-03/M9-04/M9-05（Context Continuity）→ M8-04（10 题机械执行收口，质量证据阻断）→ M8-05（现实任务）→ M8-06 → M8-02（DeepSeek 可选对比）
 ```
 
 在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。

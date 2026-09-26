@@ -1,0 +1,53 @@
+{
+  "review_version": "m8-04.manual-review.v1",
+  "reviewed_at": "2026-09-27",
+  "task_id": "EX-02",
+  "source_results": "validation/m8-04-results.jsonl",
+  "source_summary": "validation/m8-04-validation-summary.json",
+  "reviewer": {
+    "kind": "local_read_only_pilot_audit",
+    "scope": "EX-02 provider records and corrected automated contract output",
+    "file_mutation": false
+  },
+  "records": [
+    {
+      "receipt_id": "m804-EX-02-single_call-1790450087395",
+      "path": "single_call",
+      "schema_pass": true,
+      "hard_pass": "7/8",
+      "elapsed_ms": 66716
+    },
+    {
+      "receipt_id": "m804-EX-02-single_bot-1790450179052",
+      "path": "single_bot",
+      "schema_pass": false,
+      "hard_pass": "0/8",
+      "elapsed_ms": 77787
+    },
+    {
+      "receipt_id": "m804-EX-02-multi_bot-1790450669189",
+      "path": "multi_bot",
+      "schema_pass": false,
+      "hard_pass": "0/8",
+      "elapsed_ms": 480462
+    }
+  ],
+  "comparability": {
+    "same_task_and_input_hash": true,
+    "same_provider_identity": true,
+    "multi_bot_to_single_bot_latency_ratio": 6.18,
+    "two_x_latency_threshold_met": false
+  },
+  "blocking_findings": [
+    "single_bot and multi_bot final outputs fail the required JSON schema contract",
+    "artifact_replayable is false or absent",
+    "artifact.id and artifact.valid are null for all three records",
+    "artifact replay hash/result is not independently recorded",
+    "manual edit steps and characters are null",
+    "reviewer rubric and usage/cost are null",
+    "all three records remain quality_eligible=false",
+    "multi_bot took 480462ms, the longest observed path in the suite"
+  ],
+  "decision": "quality_evidence_blocked",
+  "conclusion": "EX-02 has one schema-readable 7/8 path and two schema failures. Multi_bot is 6.18x slower than single_bot and provides no evidence for default routing."
+}
