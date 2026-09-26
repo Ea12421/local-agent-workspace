@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.1",
+  "status": "running",
+  "objective": "在当前空目录交付可从 GitHub 复现的本地 Agent Workspace v1：一个 control plane 管理 Project、Bot、Run、Handoff、Approval 与 Artifact，并提供无 Key Fixture 演示、DeepSeek 模型通道、Codex 执行桥探针、Web UI 和 Electron 薄壳。",
+  "done_definition": [
+    "SPEC/00-06 与架构/面试材料落盘并与实现一致",
+    "核心状态机、事件回放、交接与权限契约有可执行测试",
+    "本地 server 可在无 Key 下运行 fixture demo，并提供 HTTP API",
+    "Web UI 能展示项目、Bot、Run、审批、来源和 Artifact",
+    "DeepSeek 与 Codex 适配器边界清晰，失败时可诊断",
+    "clean-room 命令、已知限制和未完成的安装验证被如实记录"
+  ],
+  "anti_goals": [
+    "不把旧 AI 产品经理工作台的未提交改动接入或覆盖",
+    "不把模型自评或 fixture 结果写成真实生产效果",
+    "不把 ChatGPT 订阅伪装成 DeepSeek/API 额度",
+    "不在首版加入云端多用户、后台监听或无人审批的自我扩张",
+    "不把聊天连续性当作唯一状态源"
+  ],
+  "recent_corrections": [
+    {
+      "at": "2026-09-26T19:50:00+08:00",
+      "source_ref": "runtime-landscape",
+      "rejected": "Codex 订阅没有任何公开嵌入路径",
+      "required": "使用官方 Codex SDK/CLI 作为本地 ExecutionAgentAdapter 探针；它不是通用 ModelProvider，能力和账号状态必须单独记录"
+    },
+    {
+      "at": "2026-09-26T19:50:00+08:00",
+      "source_ref": "environment-check",
+      "rejected": "当前可直接 pnpm install 并完成打包",
+      "required": "先落盘依赖和代码；网络恢复后再做依赖安装、Vite 构建和 Electron 打包验证"
+    }
+  ],
+  "scope": {
+    "allowed": [
+      "当前目录内新建 monorepo、SPEC、核心运行时、server、Web、Electron 壳、fixture、测试和诊断脚本",
+      "读取旧工作台文档作为只读参考"
+    ],
+    "forbidden": [
+      "修改 /Users/m4air/AI产品经理工作台",
+      "读取或逆向凭据、Cookie、Token 文件",
+      "删除文件、数据库迁移、外发消息、发布或支付"
+    ]
+  },
+  "phase": "m9-context-continuity-git",
+  "progress": {
+    "completed_units": 8,
+    "total_units": 8
+  },
+  "retry": {
+    "error_fingerprint": "electron-window-ax-timeout",
+    "attempt": 1,
+    "max_attempts": 1
+  },
+  "review": {
+    "level": "R1",
+    "budget": 1,
+    "used": 0,
+    "blocking_corrections_left": 1
+  },
+  "blocked_reason": "Electron arm64 DMG 曾成功生成并启动过，但 Computer Use 无法在超时内绑定窗口；2026-09-27 重打包时 .app 编译成功，hdiutil 因当前环境 DiskManagement framework 不可用而失败。DeepSeek、literal GitHub clone、Codex resume 和真实 AI/现实任务验证仍未完成。",
+  "next_action": "建立本地 Git 基线并冻结 Context Continuity v1 契约：定义受保护上下文、压缩快照、事件范围、Handoff 和恢复校验；然后实现 packages/core 的纯函数与专项测试。",
+  "last_evidence": "2026-09-27：用户授权继续推进、后置 DeepSeek、使用本地非敏感真实任务、建立 Git 存档，并要求为单窗口长时间使用增加接近 Codex 的压缩/交接/恢复机制。当前仍有 8 个基础实现单元完成，M8-04 质量证据为 0，现进入 M9 Context Continuity 与 Git 持久化增量。",
+  "updated_at": "2026-09-26T17:20:01.875Z"
+}

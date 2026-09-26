@@ -1,0 +1,93 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-PB-01-single_call-1790437768283",
+  "task_id": "PB-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "product_definition",
+  "path": "single_call",
+  "input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+  "run_ids": [
+    null
+  ],
+  "started_at": "2026-09-26T15:49:28.282Z",
+  "finished_at": "2026-09-26T15:49:28.282Z",
+  "elapsed_ms": 0,
+  "provider": {
+    "harness": "fixture",
+    "provider": "dry-run",
+    "model": "none",
+    "authMode": "local",
+    "billingSource": "local",
+    "isMock": true
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 30,
+    "sha256": "10acd914416079845e8f0ccd0a0daf7b09b038fac0e807ba34e89a5de874c4f7",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "user_explicit": null,
+    "scenario_concrete": null,
+    "pain_and_value_separated": null,
+    "mvp_has_in_scope_and_out_of_scope": null,
+    "unknowns_explicit": null,
+    "success_metrics_testable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "harness_dry_run",
+  "quality_exclusion_reason": "provider_not_called",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": {
+    "kind": "provider_incomplete_or_dry_run",
+    "message": "Provider completion or real execution was not established.",
+    "retryable": true
+  },
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 0,
+  "event_count": 0,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "dry_run",
+  "structured_handoffs": [],
+  "output_excerpt": "[dry-run: provider not called]",
+  "attempts": [
+    {
+      "stage": "single_call",
+      "eventCount": 0,
+      "completed": false,
+      "runId": null,
+      "identity": {
+        "harness": "fixture",
+        "provider": "dry-run",
+        "model": "none",
+        "authMode": "local",
+        "billingSource": "local",
+        "isMock": true
+      },
+      "output_bytes": 30
+    }
+  ]
+}

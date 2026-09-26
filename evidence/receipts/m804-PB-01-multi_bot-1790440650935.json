@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-PB-01-multi_bot-1790440650935",
+  "task_id": "PB-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 4,
+  "category": "product_definition",
+  "path": "multi_bot",
+  "input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+  "run_ids": [
+    "7dd84dcc-1980-47e6-ba22-37554c2a3787",
+    "e35d6ddf-242e-4c42-a46c-3f2c5b303268",
+    "6a9a8593-27c4-45a0-84e2-920311239add",
+    "3361afdb-0673-4056-8448-668baf11589a"
+  ],
+  "started_at": "2026-09-26T16:32:22.511Z",
+  "finished_at": "2026-09-26T16:37:30.930Z",
+  "elapsed_ms": 308418,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2166,
+    "sha256": "d2a908a56aa6aa86b2c8b5bde91f9b2b6d882e474e4c2fc7c1e711eb2ab0937c",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "user_explicit": null,
+    "scenario_concrete": null,
+    "pain_and_value_separated": null,
+    "mvp_has_in_scope_and_out_of_scope": null,
+    "unknowns_explicit": null,
+    "success_metrics_testable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 29,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "PB-01",
+      "output_ref": "stage-1",
+      "event_count": 14
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 5
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 5
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 5
+    }
+  ],
+  "output_excerpt": "老黄，{\"user\":\"独立开发者\",\"scenario\":\"个人创作者准备发布一条30–90秒短视频时，在同一工作区输入主题和素材，生成脚本、分镜、字幕与配音草稿，人工确认后导出可继续剪辑的粗剪成片。\",\"pain\":\"脚本、分镜、配音、字幕和剪辑分散在多个工具中，创作者需要重复搬运内容；实际耗时、返工量和付费意愿尚无证据。\",\"value\":\"把主题到可编辑粗剪整合为连续流程，减少重复操作，让创作者更快得到可修改初稿，并保留人工确认与修改控制。\",\"mvp\":{\"in_scope\":[\"主题输入与脚本生成\",\"脚本转分镜清单\",\"上传素材并按分镜排列\",\"基础字幕与可选配音草稿\",\"导出时间线或视频草稿\"],\"out_of_scope\":[\"自动发布\",\"复杂特效与高级调色\",\"自动版权判断\",\"多人协作\",\"长视频和批量生产\"],\"artifact_replayable\":{\"fixed_input\":[\"主题\",\"脚本参数\",\"素材文件\",\"声音设置\"],\"steps\":[\"创建任务\",\"生成脚本\",\"确认脚本\",\"生成分镜\",\"绑定素材\",\"生成字幕或配音草稿\",\"导出\"],\"stored_artifacts\":[\"输入快照\",\"每步RunEvent与receipt\",\"中间文本与时间线\",\"最终导出文件\"],\"replay_rule\":\"使用同一输入快照、版本化提示词和配置，按事件顺序重放并比较各阶段产物。\"}},\"success_metrics\":[{\"metric\":\"端到端完成率\",\"test\":\"至少10名目标用户各完成2条固定任务，达到可编辑粗剪的任务占比≥70%\",\"source\":\"待实测\"},{\"metric\":\"中位耗时下降\",\"test\":\"相对用户原有流程，中位耗时下降≥30%\",\"source\":\"待实测\"},{\"metric\":\"返工次数\",\"test\":\"每条任务从脚本确认到导出的退回修改次数中位数≤2\",\"source\":\"待实测\"},{\"metric\":\"主观可用性\",\"test\":\"试用后问卷平均评分≥4/5\",\"source\":\"待实测\"}],\"unknowns\":[\"目标创作者的主要平台、题材和月产量\",\"可接受的生成等待时间与成本\",\"现有剪辑工具及所需导出格式\",\"素材版权、配音授权和平台合规要求\",\"自动生成内容的质量阈值\",\"上述指标的真实基线需通过访谈、固定任务和真人试用验证\"]}",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 14,
+      "completed": true,
+      "runId": "7dd84dcc-1980-47e6-ba22-37554c2a3787",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 143
+    },
+    {
+      "stage": "Product",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "e35d6ddf-242e-4c42-a46c-3f2c5b303268",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2835
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "6a9a8593-27c4-45a0-84e2-920311239add",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2596
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "3361afdb-0673-4056-8448-668baf11589a",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2166
+    }
+  ]
+}

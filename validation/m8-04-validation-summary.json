@@ -1,0 +1,206 @@
+{
+  "suite_version": "m8-04.v1",
+  "generated_at": "2026-09-26T16:49:08.726Z",
+  "quality_eligible_records": 0,
+  "note": "Automated validation only. No record is promoted to quality evidence without manual review and real-user gates.",
+  "records": [
+    {
+      "task_id": "PB-01",
+      "path": "single_call",
+      "attempt": 1,
+      "receipt_id": "m804-PB-01-single_call-1790437934892",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "user_explicit": true,
+        "scenario_concrete": true,
+        "pain_and_value_separated": true,
+        "mvp_has_in_scope_and_out_of_scope": true,
+        "unknowns_explicit": true,
+        "success_metrics_testable": true,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 7,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "single_bot",
+      "attempt": 1,
+      "receipt_id": "m804-PB-01-single_bot-1790438007747",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "user_explicit": true,
+        "scenario_concrete": true,
+        "pain_and_value_separated": true,
+        "mvp_has_in_scope_and_out_of_scope": true,
+        "unknowns_explicit": true,
+        "success_metrics_testable": true,
+        "artifact_replayable": true
+      },
+      "hard_pass_count": 8,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "single_bot",
+      "attempt": 2,
+      "receipt_id": "m804-PB-01-single_bot-1790438087354",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "user_explicit": true,
+        "scenario_concrete": true,
+        "pain_and_value_separated": true,
+        "mvp_has_in_scope_and_out_of_scope": true,
+        "unknowns_explicit": true,
+        "success_metrics_testable": true,
+        "artifact_replayable": true
+      },
+      "hard_pass_count": 8,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 1,
+      "receipt_id": "m804-PB-01-multi_bot-1790438219289",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": false,
+      "schema_pass": false,
+      "hard_constraints": {
+        "schema_complete": false,
+        "user_explicit": false,
+        "scenario_concrete": false,
+        "pain_and_value_separated": false,
+        "mvp_has_in_scope_and_out_of_scope": false,
+        "unknowns_explicit": false,
+        "success_metrics_testable": false,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 0,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 2,
+      "receipt_id": "m804-PB-01-multi_bot-1790438299998",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": false,
+      "schema_pass": false,
+      "hard_constraints": {
+        "schema_complete": false,
+        "user_explicit": false,
+        "scenario_concrete": false,
+        "pain_and_value_separated": false,
+        "mvp_has_in_scope_and_out_of_scope": false,
+        "unknowns_explicit": false,
+        "success_metrics_testable": false,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 0,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 3,
+      "receipt_id": "m804-PB-01-multi_bot-1790439923800",
+      "execution_status": "provider_incomplete",
+      "output_json_found": false,
+      "schema_pass": false,
+      "hard_constraints": {
+        "schema_complete": false,
+        "user_explicit": false,
+        "scenario_concrete": false,
+        "pain_and_value_separated": false,
+        "mvp_has_in_scope_and_out_of_scope": false,
+        "unknowns_explicit": false,
+        "success_metrics_testable": false,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 0,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 4,
+      "receipt_id": "m804-PB-01-multi_bot-1790440371983",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "user_explicit": true,
+        "scenario_concrete": true,
+        "pain_and_value_separated": true,
+        "mvp_has_in_scope_and_out_of_scope": true,
+        "unknowns_explicit": true,
+        "success_metrics_testable": true,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 7,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 4,
+      "receipt_id": "m804-PB-01-multi_bot-1790440498449",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "user_explicit": true,
+        "scenario_concrete": true,
+        "pain_and_value_separated": true,
+        "mvp_has_in_scope_and_out_of_scope": true,
+        "unknowns_explicit": true,
+        "success_metrics_testable": true,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 7,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 4,
+      "receipt_id": "m804-PB-01-multi_bot-1790440650935",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": false,
+      "schema_pass": false,
+      "hard_constraints": {
+        "schema_complete": false,
+        "user_explicit": false,
+        "scenario_concrete": false,
+        "pain_and_value_separated": false,
+        "mvp_has_in_scope_and_out_of_scope": false,
+        "unknowns_explicit": false,
+        "success_metrics_testable": false,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 0,
+      "expected_count": 8,
+      "quality_eligible": false
+    }
+  ]
+}

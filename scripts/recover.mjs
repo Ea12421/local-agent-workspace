@@ -1,0 +1,12 @@
+import { readFile } from 'node:fs/promises';
+const state = JSON.parse(await readFile('RUN_STATE.json', 'utf8'));
+const handoff = await readFile('HANDOFF.md', 'utf8');
+console.log('# Local Agent Workspace recovery');
+console.log(`status: ${state.status}`);
+console.log(`phase: ${state.phase}`);
+console.log(`progress: ${state.progress.completed_units}/${state.progress.total_units}`);
+console.log(`next_action: ${state.next_action || '(none)'}`);
+console.log(`last_evidence: ${state.last_evidence}`);
+console.log(`retry: ${state.retry.error_fingerprint} ${state.retry.attempt}/${state.retry.max_attempts}`);
+console.log(`handoff_bytes: ${Buffer.byteLength(handoff, 'utf8')}`);
+console.log('rule: execute only next_action; do not infer completion from the interrupted chat turn.');

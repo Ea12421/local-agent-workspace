@@ -1,0 +1,182 @@
+{
+  "receipt_version": "1.0",
+  "kind": "build_and_ui_validation",
+  "captured_at": "2026-09-27T00:00:00+08:00",
+  "project_root": "/Users/m4air/Work Agent开发。",
+  "network_boundary": {
+    "normal_sandbox_registry_result": "DNS ENOTFOUND for registry.npmjs.org",
+    "controlled_host_registry_result": "HTTP 200 and npm view pnpm version returned 12.6.0",
+    "vpn_changed": false,
+    "dns_changed": false,
+    "proxy_or_firewall_changed": false,
+    "interpretation": "The package registry is reachable through the host network while the ordinary Codex shell sandbox has restricted DNS/egress. The project does not require changing the user's VPN."
+  },
+  "dependency_install": {
+    "command": "COREPACK_HOME=./.corepack pnpm install",
+    "status": "succeeded",
+    "summary": "440 packages installed; pnpm-lock.yaml generated; deprecated subdependency warnings did not fail installation"
+  },
+  "setup": {
+    "command": "COREPACK_HOME=./.corepack pnpm run setup",
+    "status": "succeeded",
+    "note": "The project script is pnpm run setup. The pnpm setup command itself is not used because it edits the user's shell configuration."
+  },
+  "web": {
+    "command": "COREPACK_HOME=./.corepack pnpm --filter @agent-workspace/web build",
+    "status": "succeeded",
+    "vite": "8.3.1",
+    "artifacts": [
+      "apps/web/dist/index.html",
+      "apps/web/dist/assets/index-CiDhaOrz.js",
+      "apps/web/dist/assets/index-DgZn-w_3.css"
+    ],
+    "offline_hardening": "Removed Google Fonts runtime import; UI now uses local system font fallbacks."
+  },
+  "electron": {
+    "command": "COREPACK_HOME=./.corepack pnpm package:mac",
+    "status": "succeeded_with_unsigned_limit",
+    "electron_builder": "25.1.8",
+    "electron": "34.5.8",
+    "arch": "arm64",
+    "artifact": "release/Local Agent Workspace-0.1.0-arm64.dmg",
+    "unsigned": true,
+    "unsigned_reason": "No valid Developer ID Application identity was available on this machine.",
+    "computer_use": {
+      "process_seen_running": true,
+      "window_ax_read": "timeout",
+      "interpretation": "The packaged process launched, but desktop window visibility is not claimed as fully verified."
+    },
+    "repack_attempt_2026_09_27": {
+      "command": "COREPACK_HOME=/Users/m4air/Work Agent开发。/.corepack pnpm package:mac",
+      "desktop_entry_compile": "succeeded",
+      "native_dependency_rebuild": "succeeded",
+      "dmg": "failed_at_hdiutil",
+      "direct_reproduction": "hdiutil create failed - 设备未配置",
+      "diskutil": "DiskManagement framework unavailable in current execution environment",
+      "interpretation": "System image creation limitation; not an application, dependency, VPN, DNS, proxy, or firewall failure. Existing previously generated DMG remains on disk."
+    }
+  },
+  "computer_use": {
+    "browser": "Firefox",
+    "web_url": "http://localhost:5173/",
+    "verified": [
+      "local service status visible",
+      "AI Product Builder Demo project visible",
+      "Run timeline visible",
+      "approval card visible",
+      "Bots management view visible",
+      "Codex probe returned codex-cli 0.155.1 available",
+      "approval interaction changed UI to '已确认，Architecture Bot 将继续工作'"
+    ],
+    "environment_note": "localhost worked in Firefox; the Codex in-app browser execution context could not reach the separately started 127.0.0.1 listener. This is recorded as a tooling-context difference, not an application health failure.",
+    "web_recheck_after_restart": {
+      "server_session_restarted": true,
+      "vite_session_restarted": true,
+      "visible": "local service normal, Product Builder project, timeline, approval card, Bots and Fixture provider",
+      "interaction": "approval click produced 已确认，Architecture Bot 将继续工作"
+    }
+  },
+  "remaining_gates": [
+    "literal GitHub clone clean-room installation once a repository remote exists",
+    "DeepSeek real call when a user-provided key is available",
+    "M8-04 PB-01 manual review plus 9 remaining fixed tasks",
+    "3 non-sensitive real-task reality validation"
+  ],
+  "codex_cancellation": {
+    "status": "succeeded",
+    "tests": [
+      "packages/adapters/src/adapters.test.ts: child process cancellation emits SIGTERM termination event",
+      "apps/server/src/runtime.test.ts: control-plane cancellation wins the startup race and persists run.cancelled"
+    ],
+    "suite": "pnpm test:all: 10 passed"
+  },
+  "verification": {
+    "tests": "pnpm test:all: 10 passed",
+    "typecheck": "pnpm run typecheck: syntax + server/packages + web + desktop passed",
+    "state": "pnpm run validate:state: valid running/m8-04-pilot-contract-fixed",
+    "final_package": "previously succeeded; 2026-09-27 consistency repack compiled .app but hdiutil DMG creation was blocked by unavailable DiskManagement framework"
+  },
+  "clean_room": {
+    "status": "passed_source_staging",
+    "path": "/private/tmp/local-agent-workspace-clean-room-20260926",
+    "method": "fresh source copy excluding node_modules, release, data, and build outputs",
+    "commands": [
+      "pnpm install",
+      "pnpm run setup",
+      "pnpm test:all"
+    ],
+    "result": "10 tests passed",
+    "limitation": "This workspace has no Git remote yet; a literal fresh GitHub clone is still a separate check."
+  },
+  "m8_04_freeze": {
+    "status": "task_set_frozen_pb01_pilot_executed",
+    "tasks": "validation/m8-04-tasks.json",
+    "scoring": "validation/README.md",
+    "results": "validation/m8-04-results.jsonl",
+    "count": 10,
+    "categories": [
+      "product_definition",
+      "research_facts",
+      "architecture_tradeoff",
+      "evaluation_design",
+      "execution_plan"
+    ],
+    "note": "PB-01 has real Codex execution-pilot records for all three paths. Automated validation is recorded separately; no Fixture or model self-evaluation is counted as real AI quality evidence."
+  },
+  "m8_04_pilot": {
+    "status": "executed_pending_manual_review",
+    "task_id": "PB-01",
+    "paths": [
+      "single_call",
+      "single_bot",
+      "multi_bot"
+    ],
+    "provider_records": 9,
+    "completed_records": 8,
+    "incomplete_records": 1,
+    "retries": {
+      "single_bot": 2,
+      "multi_bot": 6,
+      "note": "The first --path all session ended after single_call. Individual runs were appended to JSONL. One ordinary-sandbox multi_bot attempt failed before output because Codex CLI state DB was read-only; the controlled read-only retry completed."
+    },
+    "latest_receipt": "evidence/receipts/m804-PB-01-multi_bot-1790440498449.json",
+    "multi_bot_stages": [
+      "Research",
+      "Product",
+      "Architecture",
+      "Evaluation"
+    ],
+    "latest_multi_bot_handoff_depth": 4,
+    "latest_multi_bot_event_count": [
+      27,
+      19,
+      29
+    ],
+    "automated_validation": {
+      "command": "pnpm run m804:validate",
+      "validated_records": 9,
+      "quality_eligible_records": 0,
+      "current_results": {
+        "single_call": "7/8",
+        "single_bot": "8/8 on both attempts",
+        "old_multi_bot_attempts": "strict JSON rejected because stage objects were concatenated",
+        "latest_multi_bot": "7/8; artifact_replayable missing",
+        "multi_bot": "two readable final JSON records 7/8; concatenated/prefixed outputs rejected"
+      },
+      "summary": "validation/m8-04-validation-summary.json"
+    },
+    "output_contract_fix": {
+      "pilot": "scripts/m804-pilot.ts now stores only the final multi_bot stage as the Artifact output",
+      "validator": "scripts/validate-m804.ts now requires exactly one complete JSON object",
+      "historical_records_preserved": true
+    },
+    "evidence_tier": "execution_pilot",
+    "limitation": "Manual replay, artifact id/valid, edit counts, reviewer rubric, and cost/latency evidence are still required before any path can be promoted to quality evidence.",
+    "manual_review": "validation/m8-04-manual-review-PB-01.json",
+    "latest_successful_receipts": [
+      "evidence/receipts/m804-PB-01-multi_bot-1790440371983.json",
+      "evidence/receipts/m804-PB-01-multi_bot-1790440498449.json"
+    ],
+    "concurrency_note": "Three late multi_bot completions reused numeric attempt=4 because overlapping outer sessions computed the attempt before appending. Use unique receipt_id as audit key; no historical line was rewritten."
+  }
+}

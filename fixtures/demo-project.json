@@ -1,0 +1,33 @@
+{
+  "project": {
+    "id": "project-product-builder",
+    "name": "AI Product Builder Demo",
+    "description": "用结构化 Bot 交接把一个产品想法推进为可执行方案。",
+    "status": "active"
+  },
+  "bots": [
+    {"id":"bot-product-builder","name":"Product Builder","role":"总控：澄清目标、调度交接、汇总冲突","permission":"workspace_write","provider":"fixture"},
+    {"id":"bot-research","name":"Research Bot","role":"收集外部事实并保留来源","permission":"read_only","provider":"fixture"},
+    {"id":"bot-architecture","name":"Architecture Bot","role":"判断实现路线、依赖和风险","permission":"read_only","provider":"fixture"},
+    {"id":"bot-evaluation","name":"Evaluation Bot","role":"定义成功指标与坏案例","permission":"read_only","provider":"fixture"}
+  ],
+  "run": {
+    "id":"run-fixture-001",
+    "status":"succeeded",
+    "goal":"设计一个面向独立开发者的 AI 视频产品",
+    "provider":{"harness":"fixture","provider":"fixture","model":"deterministic-demo","authMode":"local","billingSource":"local","isMock":true},
+    "createdAt":"2026-09-26T10:00:00.000Z",
+    "events":[
+      {"id":"evt-001","type":"run.created","at":"2026-09-26T10:00:00.000Z","summary":"创建 Product Builder 运行"},
+      {"id":"evt-002","type":"handoff.succeeded","at":"2026-09-26T10:00:01.000Z","summary":"Research Bot 交付 3 条带来源事实"},
+      {"id":"evt-003","type":"handoff.succeeded","at":"2026-09-26T10:00:02.000Z","summary":"Architecture Bot 交付技术选择与风险"},
+      {"id":"evt-004","type":"approval.requested","at":"2026-09-26T10:00:03.000Z","summary":"等待用户确认 MVP 范围"},
+      {"id":"evt-005","type":"approval.approved","at":"2026-09-26T10:00:04.000Z","summary":"用户确认生成执行计划"},
+      {"id":"evt-006","type":"artifact.created","at":"2026-09-26T10:00:05.000Z","summary":"生成 Product Brief 与执行计划"}
+    ],
+    "artifacts":[
+      {"id":"artifact-brief","kind":"product_brief","title":"Product Brief","status":"ready","excerpt":"目标用户：独立开发者；首个 MVP：从想法到可执行的产品方案。"},
+      {"id":"artifact-plan","kind":"execution_plan","title":"Execution Plan","status":"ready","excerpt":"先做结构化单 Bot 基线，再用固定任务验证多 Bot 是否降低人工返工。"}
+    ]
+  }
+}

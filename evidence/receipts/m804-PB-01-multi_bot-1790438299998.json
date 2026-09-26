@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-PB-01-multi_bot-1790438299998",
+  "task_id": "PB-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "product_definition",
+  "path": "multi_bot",
+  "input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+  "run_ids": [
+    "c1a8b32a-a893-4319-8abb-2750c5ce5055",
+    "80b179ee-53e6-4b7d-b18e-16b30bad7993",
+    "b86f7e93-93a3-4f04-a1f7-7e97b3c4f7f7",
+    "4d801847-942c-4f8f-9496-c717f5a5f307"
+  ],
+  "started_at": "2026-09-26T15:55:32.685Z",
+  "finished_at": "2026-09-26T15:58:19.997Z",
+  "elapsed_ms": 167312,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 9638,
+    "sha256": "dc81f904a23537943af436971d6d7fc95d9b98caf60179937f49c70ad08089c9",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "user_explicit": null,
+    "scenario_concrete": null,
+    "pain_and_value_separated": null,
+    "mvp_has_in_scope_and_out_of_scope": null,
+    "unknowns_explicit": null,
+    "success_metrics_testable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 20,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "PB-01",
+      "output_ref": "stage-1",
+      "event_count": 5
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 5
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 5
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 5
+    }
+  ],
+  "output_excerpt": "{\"user\":\"独立开发者\",\"scenario\":\"Research：证据不足，基于输入假设；Product：个人创作者独立完成短视频时，在脚本确定后，需要快速生成可发布初稿；Architecture：采用单项目工作流，保存脚本、素材、时间线和导出结果；Evaluation：以固定任务回放验证。\",\"pain\":\"脚本、素材整理、字幕、配音、剪辑和导出分散在多个工具中，重复操作多，独立开发者难以稳定、快速完成初稿。上述判断来自输入推断，尚无用户访谈或行为数据支持。\",\"value\":\"在一个项目中串联脚本整理、素材匹配、字幕/配音生成和基础时间线编辑，减少重复操作，让创作者更快得到可发布的短视频初稿。\",\"mvp\":{\"in_scope\":[\"输入或粘贴脚本\",\"按镜头拆分脚本并生成基础分镜\",\"上传图片或视频素材并手动关联镜头\",\"生成字幕文件或字幕轨道\",\"生成可预览的基础时间线\",\"导出带字幕的视频初稿\"],\"out_of_scope\":[\"自动拍摄\",\"复杂特效与高级调色\",\"全自动素材版权判断\",\"多平台自动发布\",\"团队协作与商业化计费\"],\"architecture_notes\":\"业务状态、操作和导出结果均记录为可回放事件；无真实模型凭据时使用明确标注的演示适配器。\"},\"success_metrics\":[{\"metric\":\"端到端完成率\",\"test\":\"10个固定脚本任务中，至少8个能从脚本生成并导出视频初稿\"},{\"metric\":\"制作耗时\",\"test\":\"同一创作者完成固定任务的中位耗时较基线人工流程降低30%；基线待测\"},{\"metric\":\"导出成功率\",\"test\":\"10次导出中至少9次生成可播放文件\"},{\"metric\":\"回放一致性\",\"test\":\"同一输入和版本重复运行，关键事件序列与输出元数据一致率达到100%\"}],\"unknowns\":{\"research\":[\"目标创作者的主要平台、视频时长、内容类型和现有工具未知\",\"真实痛点强度、可接受价格和模型质量要求未知\"],\"product\":[\"首要场景应优先脚本到粗剪、字幕，还是配音与素材匹配，尚未验证\"],\"architecture\":[\"目标设备、模型供应商、视频处理性能预算和存储方案未知\"],\"evaluation\":[\"缺少真实用户基线、样本量和可接受画质/字幕/配音阈值\"],\"conflicts\":[\"Research无外部证据；Product需先选单一核心场景；Architecture可实现范围可能超过首版；Evaluation缺少基线，因此耗时提升指标暂为待测。\"],\"replayability\":\"输入、假设、MVP范围、事件记录和评估任务集应保存版本号，以便按同一输入重放。\"}}\n{\"user\":\"独立开发者\",\"scenario\":\"Research：暂无外部证据，基于输入假设。Product：个人创作者在脚本确定后，需要快速完成可发布短视频初稿。Architecture：单项目工作流保存脚本、素材、时间线和导出结果。Evaluation：用固定任务回放验证。\",\"pain\":\"脚本、素材整理、字幕、配音、剪辑和导出分散在多个工具中，重复操作多，难以稳定、快速完成初稿；该判断尚未由用户访谈或行为数据验证。\",\"value\":\"在一个项目中串联脚本拆分、素材关联、字幕/配音生成和基础时间线编辑，帮助创作者更快得到可发布的短视频初稿。\",\"mvp\":{\"in_scope\":[\"粘贴脚本\",\"按镜头拆分并生成基础分镜\",\"上传并手动关联图片或视频素材\",\"生成字幕轨道或字幕文件\",\"生成可预览的基础时间线\",\"导出带字幕的视频初稿\"],\"out_of_scope\":[\"自动拍摄\",\"复杂特效和高级调色\",\"自动版权判断\",\"多平台发布\",\"团队协作和计费\"],\"replayability\":\"保存输入、版本、操作事件、输出元数据；无真实模型凭据时使用明确标注的演示适配器。\"},\"success_metrics\":[{\"metric\":\"端到端完成率\",\"test\":\"10个固定脚本任务中至少8个成功导出视频初稿\"},{\"metric\":\"制作耗时\",\"test\":\"同一创作者完成固定任务的中位耗时较人工基线降低30%；基线待测\"},{\"metric\":\"导出成功率\",\"test\":\"10次导出中至少9次生成可播放文件\"},{\"metric\":\"回放一致性\",\"test\":\"同一输入和版本重复运行时，关键事件序列与输出元数据一致率为100%\"}],\"unknowns\":{\"research\":[\"主要平台、视频时长、内容类型、现有工具和痛点强度未知\"],\"product\":[\"首要场景应优先脚本到粗剪、字幕、配音还是素材匹配，尚未验证\"],\"architecture\":[\"目标设备、模型供应商、视频处理性能预算和存储方案未知\"],\"evaluation\":[\"真实用户基线、样本量及画质、字幕、配音可接受阈值未知\"],\"conflicts\":[\"Research缺少外部证据；Product需收窄单一核心场景；Architecture范围可能超过首版；Evaluation缺少基线，因此耗时指标暂为待测\"]},\"stage_outputs\":{\"Research\":\"证据不足，以上为输入推断。\",\"Product\":\"聚焦脚本到可发布视频初稿。\",\"Architecture\":\"采用可回放的单项目工作流。\",\"Evaluation\":\"使用固定任务、导出检查和重复回放验证。\"}}\n{\"user\":\"独立开发者\",\"scenario\":\"个人创作者已有短视频脚本，需要在单个项目中完成镜头拆分、素材关联、字幕生成、基础剪辑并导出视频初稿。\",\"pain\":\"脚本、素材、字幕、配音、剪辑和导出分散在多个工具中，重复操作多，难以稳定快速完成初稿；痛点强度尚未通过用户访谈或行为数据验证。\",\"value\":\"将脚本到视频初稿的关键步骤串联在一个可回放项目中，减少工具切换和重复操作。\",\"mvp\":{\"in_scope\":[\"粘贴脚本\",\"按镜头拆分并生成基础分镜\",\"上传并手动关联图片或视频素材\",\"生成字幕轨道或字幕文件\",\"生成可预览的基础时间线\",\"导出带字幕的视频初稿\"],\"out_of_scope\":[\"自动拍摄\",\"复杂特效和高级调色\",\"自动版权判断\",\"多平台发布\",\"团队协作和计费\"],\"replayability\":\"保存输入、版本、操作事件、输出元数据；无真实模型凭据时使用明确标注的演示适配器。\"},\"success_metrics\":[{\"metric\":\"端到端完成率\",\"test\":\"10个固定脚本任务中至少8个成功导出视频初稿\"},{\"metric\":\"制作耗时\",\"test\":\"同一创作者完成固定任务的中位耗时较人工基线降低30%；基线待测\"},{\"metric\":\"导出成功率\",\"test\":\"10次导出中至少9次生成可播放文件\"},{\"metric\":\"回放一致性\",\"test\":\"同一输入和版本重复运行时，关键事件序列与输出元数据一致率达到100%\"}],\"unknowns\":{\"research\":[\"主要平台、视频时长、内容类型、现有工具和痛点强度未知\"],\"product\":[\"首要场景应优先脚本到粗剪、字幕、配音还是素材匹配，尚未验证\"],\"architecture\":[\"目标设备、模型供应商、视频处理性能预算和存储方案未知\"],\"evaluation\":[\"真实用户基线、样本量及画质、字幕、配音可接受阈值未知\"],\"conflicts\":[\"Research缺少外部证据；Product需收窄单一核心场景；Architecture范围可能超过首版；Evaluation缺少基线，因此耗时指标暂为待测\"]},\"stage_outputs\":{\"Research\":\"基于输入假设，暂无外部证据。\",\"Product\":\"聚焦脚本到可发布视频初稿。\",\"Architecture\":\"采用可回放的单项目工作流。\",\"Evaluation\":\"使用固定任务、导出检查和重复回放验证。\"}}\n{\"user\":\"独立开发者\",\"scenario\":\"个人创作者已有短视频脚本，希望在一个项目中完成镜头拆分、素材关联、字幕生成、基础剪辑，并导出可预览的视频初稿。\",\"pain\":\"脚本、素材、字幕、配音、剪辑和导出分散在多个工具中，重复操作多，初稿制作速度和稳定性难以保证；痛点强度尚未验证。\",\"value\":\"把脚本到视频初稿的关键步骤串联在一个可回放项目中，减少工具切换与重复操作。\",\"mvp\":{\"in_scope\":[\"粘贴脚本\",\"按镜头拆分并生成基础分镜\",\"上传并手动关联图片或视频素材\",\"生成字幕轨道或字幕文件\",\"生成可预览的基础时间线\",\"导出带字幕的视频初稿\"],\"out_of_scope\":[\"自动拍摄\",\"复杂特效和高级调色\",\"自动版权判断\",\"多平台发布\",\"团队协作和计费\"],\"replayability\":\"保存输入、版本、操作事件、输出元数据；无真实模型凭据时使用明确标注的演示适配器。\"},\"success_metrics\":[{\"metric\":\"端到端完成率\",\"test\":\"10个固定脚本任务中至少8个成功导出视频初稿\"},{\"metric\":\"制作耗时\",\"test\":\"同一创作者完成固定任务的中位耗时较人工基线降低30%；基线待测\"},{\"metric\":\"导出成功率\",\"test\":\"10次导出中至少9次生成可播放文件\"},{\"metric\":\"回放一致性\",\"test\":\"相同输入和版本重复运行时，关键事件序列与输出元数据一致率达到100%\"}],\"unknowns\":{\"research\":[\"主要平台、视频时长、内容类型、现有工具及痛点强度未知，暂无外部证据\"],\"product\":[\"首要核心场景应是粗剪、字幕、配音还是素材匹配，尚未验证\"],\"architecture\":[\"目标设备、模型供应商、视频处理性能预算和存储方案未知\"],\"evaluation\":[\"真实用户基线、样本量及画质、字幕、配音可接受阈值未知\"],\"conflicts\":[\"Research证据不足；Product需收窄单一核心场景；Architecture可能超出首版范围；Evaluation缺少基线，耗时指标暂为待测\"],\"stage_outputs\":{\"Research\":\"基于输入假设，暂无外部证据。\",\"Product\":\"聚焦脚本到可预览视频初稿。\",\"Architecture\":\"采用单项目、可回放工作流。\",\"Evaluation\":\"使用固定任务、导出检查和重复回放验证。\"}}}",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "c1a8b32a-a893-4319-8abb-2750c5ce5055",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2580
+    },
+    {
+      "stage": "Product",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "80b179ee-53e6-4b7d-b18e-16b30bad7993",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2462
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "b86f7e93-93a3-4f04-a1f7-7e97b3c4f7f7",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2298
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "4d801847-942c-4f8f-9496-c717f5a5f307",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2295
+    }
+  ]
+}

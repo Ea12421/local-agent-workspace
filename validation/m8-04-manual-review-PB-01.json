@@ -1,0 +1,138 @@
+{
+  "review_version": "m8-04.manual-review.v1",
+  "reviewed_at": "2026-09-27T00:40:00+08:00",
+  "task_id": "PB-01",
+  "source_results": "validation/m8-04-results.jsonl",
+  "source_summary": "validation/m8-04-validation-summary.json",
+  "reviewer": {
+    "kind": "read_only_subagent_review",
+    "scope": "PB-01 provider records only; no file mutation",
+    "review_reference": "m804_audit"
+  },
+  "record_groups": {
+    "single_call": [
+      {
+        "receipt_id": "m804-PB-01-single_call-1790437934892",
+        "status": "candidate_execution_pilot",
+        "hard_pass": "7/8",
+        "blocking_findings": [
+          "artifact_replayable is false",
+          "artifact.id and artifact.valid are null",
+          "manual edit counts, traceability, reviewer rubric, and usage/cost are null"
+        ]
+      }
+    ],
+    "single_bot": [
+      {
+        "receipt_id": "m804-PB-01-single_bot-1790438007747",
+        "status": "candidate_execution_pilot",
+        "hard_pass": "8/8",
+        "blocking_findings": [
+          "artifact.id and artifact.valid are null",
+          "no independent replay hash/result",
+          "manual edit counts, traceability, reviewer rubric, and usage/cost are null"
+        ]
+      },
+      {
+        "receipt_id": "m804-PB-01-single_bot-1790438087354",
+        "status": "candidate_execution_pilot",
+        "hard_pass": "8/8",
+        "blocking_findings": [
+          "replayability is described but no artifact/replay receipt is bound",
+          "manual edit counts, traceability, reviewer rubric, and usage/cost are null"
+        ]
+      }
+    ],
+    "multi_bot": [
+      {
+        "receipt_id": "m804-PB-01-multi_bot-1790438219289",
+        "status": "rejected_output_contract",
+        "hard_pass": "0/8 after strict validation",
+        "blocking_findings": [
+          "four stage JSON objects were concatenated into one output_excerpt"
+        ]
+      },
+      {
+        "receipt_id": "m804-PB-01-multi_bot-1790438299998",
+        "status": "rejected_output_contract",
+        "hard_pass": "0/8 after strict validation",
+        "blocking_findings": [
+          "four stage JSON objects were concatenated into one output_excerpt"
+        ]
+      },
+      {
+        "receipt_id": "m804-PB-01-multi_bot-1790439923800",
+        "status": "provider_incomplete",
+        "hard_pass": "0/8",
+        "blocking_findings": [
+          "ordinary sandbox could not let Codex CLI write its own state database; no provider output"
+        ]
+      },
+      {
+        "receipt_id": "m804-PB-01-multi_bot-1790440371983",
+        "status": "candidate_execution_pilot",
+        "hard_pass": "7/8",
+        "blocking_findings": [
+          "final JSON is now strict and readable",
+          "artifact_replayable is missing",
+          "artifact.id and artifact.valid are null",
+          "manual edit counts, traceability, reviewer rubric, and usage/cost are null"
+        ]
+      },
+      {
+        "receipt_id": "m804-PB-01-multi_bot-1790440498449",
+        "status": "candidate_execution_pilot",
+        "hard_pass": "7/8",
+        "blocking_findings": [
+          "final JSON is strict and readable",
+          "artifact_replayable is not present in the accepted top-level or MVP replay fields",
+          "artifact.id and artifact.valid are null",
+          "manual edit counts, traceability, reviewer rubric, and usage/cost are null"
+        ]
+      },
+      {
+        "receipt_id": "m804-PB-01-multi_bot-1790440650935",
+        "status": "rejected_output_contract",
+        "hard_pass": "0/8 after strict validation",
+        "blocking_findings": [
+          "provider prefixed the JSON with prose (老黄，), so the JSON-only contract was not met"
+        ]
+      }
+    ]
+  },
+  "comparability": {
+    "same_task_and_input_hash": true,
+    "same_provider_identity": true,
+    "path_overhead_is_different": true,
+    "single_call_elapsed_ms": 49307,
+    "single_bot_elapsed_ms": [
+      72852,
+      61325
+    ],
+    "multi_bot_completed_elapsed_ms": [
+      211540,
+      167312,
+      227246,
+      308418
+    ],
+    "usage_and_cost_available": false,
+    "multi_bot_quality_advantage_decidable": false,
+    "reason": "manual edits, reviewer rubric, artifact replay and cost/usage evidence are missing"
+  },
+  "decision": "quality_evidence_blocked",
+  "quality_eligible_records": 0,
+  "minimum_next_evidence": [
+    "Persist a non-null artifact id, valid flag and sha256 for the selected final artifact",
+    "Replay PB-01 with the same input and record replay status plus output hash",
+    "Blindly count manual edit steps and characters using m8-04.manual-edit.v1",
+    "Fill a reviewer rubric and notes for each selected path",
+    "Record usage/cost when available; otherwise state that the cost threshold is undecidable",
+    "Do not promote multi_bot without the 10-task threshold and the 20% edit reduction or one-level rubric improvement rule"
+  ],
+  "conclusion": "PB-01 proves the Codex execution and structured handoff chain can run. After the output-contract fix, some final JSON objects are readable, but duplicate late completions and missing replay/edit/cost evidence keep all paths quality-ineligible. It does not prove that multi_bot is better than single_bot or that the product improves real user work.",
+  "concurrency_note": {
+    "observed": true,
+    "detail": "Three late multi_bot completions received the same numeric attempt=4 because overlapping outer sessions computed the attempt before appending. receipt_id remains unique and is the audit key; no historical line was rewritten.",
+    "prevention": "Future pilot runs must be one process at a time; compare and cite receipt_id rather than attempt."
+  }
+}

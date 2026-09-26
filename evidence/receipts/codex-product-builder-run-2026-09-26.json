@@ -1,0 +1,24 @@
+{
+  "kind": "provider_run_receipt",
+  "startedAt": "2026-09-26T14:22:00Z",
+  "endedAt": "2026-09-26T14:22:38Z",
+  "runId": "run_dabface1-e16b-449c-99a0-214c90def682",
+  "harness": "codex-cli",
+  "provider": "openai-codex",
+  "model": "codex-managed-session",
+  "authMode": "subscription",
+  "billingSource": "unknown",
+  "isMock": false,
+  "sandbox": "read-only",
+  "userConfigIgnored": true,
+  "result": {
+    "runStatus": "succeeded",
+    "providerEventCount": 5,
+    "lastProviderEvent": { "status": "completed", "exitCode": 0 },
+    "projectStateTransition": "running -> succeeded"
+  },
+  "promptBoundary": "Structured Product Builder evaluation; no tools, no file reads or writes.",
+  "networkChanges": false,
+  "credentialsRead": false,
+  "deepSeekUsed": false
+}

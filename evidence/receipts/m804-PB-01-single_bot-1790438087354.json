@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-PB-01-single_bot-1790438087354",
+  "task_id": "PB-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "product_definition",
+  "path": "single_bot",
+  "input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+  "run_ids": [
+    "2271bc98-dd0f-4ef1-b49b-80a98294c689"
+  ],
+  "started_at": "2026-09-26T15:53:46.027Z",
+  "finished_at": "2026-09-26T15:54:47.353Z",
+  "elapsed_ms": 61325,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 1893,
+    "sha256": "17a7febe1fb476b6f8a65b0d4226bd6489a02f892218a40bd1ee1bcbd086d3f1",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "user_explicit": null,
+    "scenario_concrete": null,
+    "pain_and_value_separated": null,
+    "mvp_has_in_scope_and_out_of_scope": null,
+    "unknowns_explicit": null,
+    "success_metrics_testable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"user\":\"独立开发者\",\"scenario\":\"个人创作者独立完成一条短视频：输入主题和脚本，生成分镜、配音或字幕草稿，剪辑后导出可发布成片。\",\"pain\":[\"脚本、分镜、素材整理、配音、字幕和剪辑分散在多个工具中，切换成本高。\",\"缺少稳定的制作流程，难以快速发现脚本与成片之间的问题。\"],\"value\":\"将脚本转化为可编辑的分镜、素材清单、字幕和成片草稿，并保留人工修改入口，减少重复操作和工具切换。\",\"mvp\":{\"in_scope\":[\"粘贴或编辑脚本\",\"按段落生成分镜表和素材清单\",\"生成可编辑字幕稿与基础时间轴\",\"上传素材并按分镜排列\",\"导出带字幕的基础短视频\",\"保存项目版本与输入输出记录\"],\"out_of_scope\":[\"自动拍摄真实画面\",\"复杂特效与高级调色\",\"多平台自动发布\",\"团队协作与权限管理\",\"保证生成内容的商业或传播效果\"],\"replayable_flow\":\"固定输入同一份脚本和素材，依次执行脚本解析、分镜生成、素材绑定、字幕生成、时间轴组装和导出；每一步保存输入、输出、版本号与失败信息。\"},\"success_metrics\":[\"在固定测试脚本集上，至少80%的项目可在一次流程中导出可播放成片。\",\"从脚本导入到首个可播放草稿的中位时间不超过10分钟（待基线确认）。\",\"用户对生成分镜或字幕的人工修改次数较基线减少30%（待建立基线）。\",\"至少5名目标用户完成3次端到端任务，其中80%的任务无需人工绕过系统。\"],\"unknowns\":[\"目标短视频平台、视频时长和画幅尚未确定。\",\"用户最愿意自动化的环节尚未通过访谈或使用记录验证。\",\"可用的模型、素材版权边界、成本上限和部署方式未知。\",\"成功指标中的时间、修改次数和样本量为待验证的产品假设。\"]}",
+  "attempts": [
+    {
+      "stage": "single_bot",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "2271bc98-dd0f-4ef1-b49b-80a98294c689",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 1893
+    }
+  ]
+}

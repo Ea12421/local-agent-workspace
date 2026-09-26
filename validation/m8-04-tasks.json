@@ -1,0 +1,91 @@
+{
+  "version": "m8-04.v1",
+  "purpose": "固定比较 single_call、single_bot、multi_bot 三条路径；本文件只冻结输入和硬约束，不包含任何模型质量结论。",
+  "paths": [
+    "single_call",
+    "single_bot",
+    "multi_bot"
+  ],
+  "tasks": [
+    {
+      "task_id": "PB-01",
+      "category": "product_definition",
+      "objective": "为独立开发者设计一个 AI 视频产品的第一版方案。",
+      "input": { "user": "独立开发者", "idea": "帮助个人创作者更快完成短视频从脚本到成片的流程" },
+      "required_schema": ["user", "scenario", "pain", "value", "mvp", "success_metrics", "unknowns"],
+      "hard_constraints": ["schema_complete", "user_explicit", "scenario_concrete", "pain_and_value_separated", "mvp_has_in_scope_and_out_of_scope", "unknowns_explicit", "success_metrics_testable", "artifact_replayable"]
+    },
+    {
+      "task_id": "PB-02",
+      "category": "product_definition",
+      "objective": "为企业内部知识问答工具定义 MVP，明确使用边界和人工审批点。",
+      "input": { "user": "50-200 人公司的内部运营团队", "idea": "基于内部文档回答流程问题，并在高风险回答前请求确认" },
+      "required_schema": ["user", "scenario", "pain", "value", "mvp", "approval_boundary", "success_metrics", "unknowns"],
+      "hard_constraints": ["schema_complete", "user_explicit", "mvp_scope_bounded", "approval_boundary_present", "no_autonomous_external_send", "success_metrics_testable", "unknowns_explicit", "artifact_replayable"]
+    },
+    {
+      "task_id": "RS-01",
+      "category": "research_facts",
+      "objective": "根据混合资料整理研究结论，区分已知事实、推断和未知项。",
+      "input": { "materials": ["资料 A：用户在过去 30 天内平均每周发布 3 条视频。", "资料 B：某竞品声称可提升效率，但没有公开测试方法。", "资料 C：没有定价信息。"] },
+      "required_schema": ["facts", "sources", "inferences", "unknowns", "confidence"],
+      "hard_constraints": ["schema_complete", "every_external_fact_has_source_or_unknown", "claim_and_inference_separated", "missing_pricing_marked_unknown", "unsupported_competitor_result_not_presented_as_fact", "confidence_present", "input_refs_readable", "artifact_replayable"]
+    },
+    {
+      "task_id": "RS-02",
+      "category": "research_facts",
+      "objective": "为本地优先 Agent Workspace 选择需要继续核验的外部事实。",
+      "input": { "known": ["应用需要 SQLite 和 Electron"], "unknown": ["目标系统版本覆盖", "许可证兼容性", "公开搜索额度"], "constraint": "不能访问私有凭据" },
+      "required_schema": ["known", "unknowns", "verification_plan", "sources", "privacy_boundary"],
+      "hard_constraints": ["schema_complete", "known_and_unknown_separated", "verification_plan_actionable", "no_private_credential_access", "sources_or_explicit_unknown", "privacy_boundary_present", "input_refs_readable", "artifact_replayable"]
+    },
+    {
+      "task_id": "AR-01",
+      "category": "architecture_tradeoff",
+      "objective": "为本地优先 Agent Workspace 比较 SQLite JSONL fallback 和云端数据库，给出可执行建议。",
+      "input": { "requirements": ["离线可运行", "事件可回放", "单用户本地优先", "未来可替换存储"], "options": ["SQLite + JSONL fallback", "云端 Postgres"] },
+      "required_schema": ["options", "tradeoffs", "dependencies", "cost", "risks", "recommendation", "rollback"],
+      "hard_constraints": ["schema_complete", "at_least_two_options", "tradeoffs_explicit", "dependencies_present", "cost_and_risk_present", "recommendation_matches_offline_requirement", "rollback_present", "artifact_replayable"]
+    },
+    {
+      "task_id": "AR-02",
+      "category": "architecture_tradeoff",
+      "objective": "在 Codex subscription、DeepSeek API 和 Fixture 三条通道之间设计 provider 路由策略。",
+      "input": { "requirements": ["不冒充计费来源", "无 Key 可演示", "支持真实执行", "保留 reasoning/tool 字段"], "providers": ["Codex subscription", "DeepSeek API", "Fixture"] },
+      "required_schema": ["provider_matrix", "routing_rules", "identity", "billing", "failure_modes", "recommendation"],
+      "hard_constraints": ["schema_complete", "three_providers_distinguished", "billing_source_explicit", "fixture_marked_mock", "failure_modes_actionable", "reasoning_and_tool_fields_preserved", "no_subscription_as_api_claim", "artifact_replayable"]
+    },
+    {
+      "task_id": "EV-01",
+      "category": "evaluation_design",
+      "objective": "为 Product Builder 设计成功指标、固定题集和坏案例。",
+      "input": { "system": "自然语言想法经过规划、Research、Product、Architecture、Evaluation 后生成执行计划" },
+      "required_schema": ["metrics", "fixed_tasks", "bad_cases", "thresholds", "review_process"],
+      "hard_constraints": ["schema_complete", "metrics_measurable", "fixed_tasks_present", "bad_cases_present", "thresholds_frozen", "review_process_separates_fixture_and_reality", "manual_edit_rule_present", "artifact_replayable"]
+    },
+    {
+      "task_id": "EV-02",
+      "category": "evaluation_design",
+      "objective": "为 Run 中断、取消、重试和恢复设计验证方案。",
+      "input": { "states": ["queued", "running", "waiting_user", "succeeded", "failed", "cancelled"], "requirement": "事件 append-only 且重复提交幂等" },
+      "required_schema": ["scenarios", "expected_events", "idempotency_keys", "recovery_result", "failure_diagnostics"],
+      "hard_constraints": ["schema_complete", "all_states_covered", "cancel_sends_provider_signal", "recovery_replays_events", "duplicate_submission_is_idempotent", "failure_diagnostic_present", "approval_boundary_preserved", "artifact_replayable"]
+    },
+    {
+      "task_id": "EX-01",
+      "category": "execution_plan",
+      "objective": "把一个 AI 产品想法整理为可执行的两周计划，并标出审批边界。",
+      "input": { "idea": "本地优先的 AI 产品设计工作台", "duration": "两周", "team": "一名开发者" },
+      "required_schema": ["milestones", "tasks", "dependencies", "approvals", "stop_conditions", "artifacts"],
+      "hard_constraints": ["schema_complete", "milestones_ordered", "dependencies_explicit", "approvals_explicit", "stop_conditions_present", "artifacts_traceable", "no_unattended_external_publish", "artifact_replayable"]
+    },
+    {
+      "task_id": "EX-02",
+      "category": "execution_plan",
+      "objective": "把面试展示项目拆成演示脚本、掌握包和证据包，不能把假设说成已验证。",
+      "input": { "project": "Local Agent Workspace", "audience": ["本人", "面试官"], "known_evidence": ["10 tests passed", "Codex read-only run receipt", "DMG unsigned build"] },
+      "required_schema": ["demo_script", "mastery_pack", "interviewer_pack", "evidence_map", "limitations"],
+      "hard_constraints": ["schema_complete", "audiences_separated", "every_claim_has_evidence_or_pending_label", "unsigned_dmg_limitation_present", "fixture_not_quality_claim", "limitations_present", "evidence_paths_readable", "artifact_replayable"]
+    }
+  ]
+}
