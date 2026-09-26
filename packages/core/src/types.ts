@@ -171,6 +171,20 @@ export interface Run {
   error?: RunError;
 }
 
+export type RunSegmentStatus = "queued" | "running" | "succeeded" | "failed";
+
+export interface RunSegment {
+  id: string;
+  runId: RunId;
+  sequence: number;
+  status: RunSegmentStatus;
+  provider: ProviderIdentity;
+  contextSnapshotId?: ContextSnapshotId;
+  startedAt: string;
+  completedAt?: string;
+  failureCode?: string;
+}
+
 export interface RunError {
   code: string;
   message: string;

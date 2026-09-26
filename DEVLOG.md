@@ -78,4 +78,6 @@
 - 本地 Git 已建立 `main` 基线并提交 `2da7256`、`cd73718`；没有配置 remote，也没有 push。
 - `packages/core/src/context.ts` 实现不可变 `ContextSnapshot`、结构化摘要、事件范围、tail、content hash 和恢复 Packet；原始 RunEvent 不删除。
 - `apps/server/src/persistence.ts` 新增 `JsonlContextSnapshotStore`：append-only、重复 snapshot id 拒绝、重启读取、按 project/run 隔离 latest。
-- 验证结果：`pnpm test:all` 14/14、`pnpm run typecheck` 通过。M9-03 的 provider segment/fallback resume 仍未实现；DeepSeek 和 M8-04 质量证据不受本次测试结果替代。
+- M9-02 验证结果：`pnpm test:all` 14/14、`pnpm run typecheck` 通过；随后继续实现 M9-03。DeepSeek 和 M8-04 质量证据不受本次测试结果替代。
+- M9-03 已完成：`executeCodexRun` 在 provider 未完成或抛错时保持同一 `runId`，追加 `run.segment_*`、`context.snapshot_created` 和 `run.resume_requested`，把经过 hash/事件范围校验的 `ContextPacket` 传入下一段；测试适配器证明第一段失败、第二段成功的恢复链。
+- M9-03 验证结果：`pnpm test:all` 15/15、`pnpm run typecheck` 通过。该结果证明恢复契约和事件链，不证明真实 Codex/DeepSeek 在所有限额场景都能原生 resume。

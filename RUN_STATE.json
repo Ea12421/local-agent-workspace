@@ -48,9 +48,9 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m9-context-jsonl-persistence",
+  "phase": "m9-segment-fallback-resume",
   "progress": {
-    "completed_units": 9,
+    "completed_units": 10,
     "total_units": 10
   },
   "retry": {
@@ -65,7 +65,7 @@
     "blocking_corrections_left": 1
   },
   "blocked_reason": "Electron arm64 DMG 曾成功生成并启动过，但 Computer Use 无法在超时内绑定窗口；2026-09-27 重打包时 .app 编译成功，hdiutil 因当前环境 DiskManagement framework 不可用而失败。DeepSeek、literal GitHub clone、Codex resume 和真实 AI/现实任务验证仍未完成。",
-  "next_action": "实现 Run segment 与 fallback resume：同一逻辑 Run 在 provider 超限或中断后追加 segment 事件，使用已验证 ContextPacket 重新启动执行，并补专项恢复测试。",
-  "last_evidence": "2026-09-27：本地 Git 已建立并提交 baseline 与 Context Continuity core；packages/core 专项测试 12/12、typecheck 通过。当前正在补 JsonlContextSnapshotStore 持久化与重启/重复/隔离测试；M8-04 质量证据仍为 0，DeepSeek 后置。",
+  "next_action": "把 Context Continuity 接入 Product Builder：在 Handoff、Approval、Artifact 边界自动 checkpoint，恢复时阻止重复工作；随后执行 synthetic limit、崩溃恢复和跨项目隔离验证。",
+  "last_evidence": "2026-09-27：M9-01/M9-02/M9-03 已完成；Jsonl snapshot 重启、重复拒绝、项目/运行隔离、同一 Run 的 segment fallback resume 和 ContextPacket 传递均有专项测试。pnpm test:all 15/15、typecheck 通过。M8-04 质量证据仍为 0，DeepSeek 后置。",
   "updated_at": "2026-09-27T00:00:00+08:00"
 }

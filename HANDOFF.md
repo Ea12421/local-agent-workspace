@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Git 与 Context Continuity 基础已落盘，Desktop 仍部分验证
-- 阶段：`m9-context-jsonl-persistence`
+- `RUN_STATE.json`：当前为 `running`，Git 与 Context Continuity segment 恢复基础已落盘，Desktop 仍部分验证
+- 阶段：`m9-segment-fallback-resume`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -60,9 +60,10 @@
 
 1. Codex Run 取消专项测试已经通过并写入 receipt；Electron 进程已启动但窗口 AX 读取超时，保留为 PARTIAL。
 2. 隔离 clean-room 源码副本已从零安装、setup、10 tests 通过；literal GitHub clone 仍待仓库 remote。
-3. Context Continuity M9-01/M9-02 已完成：同一逻辑 Run 的不可变 snapshot 纯函数与 JSONL 存储已通过专项测试。下一步实现 M9-03 的 Run segment/fallback resume，并让 provider limit/中断留下可恢复事件。
-4. M8-04 先保留 PB-01 质量证据阻断状态；M9-03 完成后再把剩余 9 题拆成每批最多 3 条 provider 路径执行。DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
-5. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
+3. Context Continuity M9-01/M9-02/M9-03 已完成：同一逻辑 Run 的不可变 snapshot、JSONL 存储、segment/fallback resume 和 ContextPacket 传递已通过专项测试。
+4. 下一步是 M9-04：把 checkpoint 接入 Product Builder 的 Handoff、Approval、Artifact 边界，恢复时阻止重复工作；完成后做 M9-05 synthetic limit、崩溃恢复和跨项目隔离验证。
+5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
+6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
 
 ## 重要文件
 

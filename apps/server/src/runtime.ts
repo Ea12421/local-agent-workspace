@@ -1,6 +1,8 @@
-import { InMemoryRunStore, createRunEvent, type BotId, type JsonValue, type ProjectId, type Run, type RunEvent, type RunId, type RunHandle } from '../../../packages/core/src/index.ts';
+import { InMemoryRunStore, buildContextPacket, buildContextSnapshot, createOpaqueId, createRunEvent, type BotId, type ContextLedger, type ContextPacket, type ContextPolicy, type ContextSnapshotId, type JsonValue, type ProjectId, type ProviderAdapter, type Run, type RunEvent, type RunId, type RunHandle } from '../../../packages/core/src/index.ts';
 import type { JsonObject } from '../../../packages/core/src/types.ts';
 import { CodexExternalAdapter } from '../../../packages/adapters/src/index.ts';
+import { JsonlContextSnapshotStore, type ContextSnapshotStore } from './persistence.ts';
+import path from 'node:path';
 
 const projectId = 'project-product-builder' as ProjectId;
 const productBuilderId = 'bot-product-builder' as BotId;
@@ -8,11 +10,64 @@ const productBuilderId = 'bot-product-builder' as BotId;
 export const runtimeStore = new InMemoryRunStore();
 let seededRun: Run | undefined;
 type ActiveCodexRun = {
-  adapter: CodexExternalAdapter;
+  adapter: ProviderAdapter;
   handle?: RunHandle;
   cancellationRequested: boolean;
 };
 const activeCodexRuns = new Map<RunId, ActiveCodexRun>();
+
+export type CodexExecutionOptions = {
+  maxSegments?: number;
+  adapterFactory?: (segment: number, packet?: ContextPacket) => ProviderAdapter;
+  contextSnapshotStore?: ContextSnapshotStore;
+  contextPolicy?: ContextPolicy;
+};
+
+const defaultContextPolicy: ContextPolicy = {
+  softThresholdTokens: 6_000,
+  hardThresholdTokens: 8_000,
+  reserveOutputTokens: 1_000,
+  maxSummaryTokens: 2_000,
+  maxTailEvents: 12,
+};
+
+function defaultContextSnapshotStore(): ContextSnapshotStore {
+  return new JsonlContextSnapshotStore(path.join(process.cwd(), 'data', 'context-snapshots.jsonl'));
+}
+
+async function appendRuntimeEvent(runId: RunId, type: RunEvent['type'], data: JsonObject, actor: RunEvent['actor'] = { type: 'system' }) {
+  const current = await runtimeStore.listEvents(runId);
+  const event = createRunEvent(runId, type, data, current.length + 1, actor);
+  await runtimeStore.appendEvent(event);
+  return event;
+}
+
+async function createRecoverySnapshot(run: Run, events: RunEvent[], store: ContextSnapshotStore, policy: ContextPolicy, trigger: 'provider_limit' | 'interrupt'): Promise<{ snapshot: Awaited<ReturnType<typeof buildContextSnapshot>>; packet: ContextPacket }> {
+  const ledger: ContextLedger = {
+    projectId: run.projectId,
+    runId: run.id,
+    objective: run.request.objective,
+    constraints: [...(run.request.constraints ?? [])],
+    durableFacts: [],
+    decisions: [],
+    unknowns: ['上一个 provider segment 未完成，需在恢复后确认是否产生了外部副作用。'],
+    pendingApprovalRefs: [],
+    activeHandoffRefs: [],
+    artifactRefs: [],
+    sourceRefs: [...(run.request.inputRefs ?? [])],
+    nextAction: '使用已保存上下文继续同一逻辑 Run，并避免重复已完成的工具或产物工作。',
+    items: [],
+    events,
+  };
+  const snapshot = buildContextSnapshot(ledger, policy, {
+    id: createOpaqueId('snapshot') as ContextSnapshotId,
+    createdAt: new Date().toISOString(),
+    trigger,
+  });
+  await store.append(snapshot);
+  const packet = buildContextPacket(snapshot, events);
+  return { snapshot, packet };
+}
 
 export async function ensureSeeded() {
   if (seededRun) return seededRun;
@@ -47,64 +102,113 @@ export async function createRuntimeRun(objective: string) {
  * source of truth. The adapter only supplies provider events; state transitions
  * remain owned by the control plane.
  */
-export async function executeCodexRun(objective: string, input: JsonValue = {}) {
+export async function executeCodexRun(objective: string, input: JsonValue = {}, options: CodexExecutionOptions = {}) {
   const created = await runtimeStore.createRun({
     projectId,
     botId: productBuilderId,
     request: { objective, input, metadata: { provider: 'openai-codex', executionAgent: 'codex-cli' } },
   });
   const started = await runtimeStore.transition(created.id, 'start');
-  const adapter = new CodexExternalAdapter(process.env.CODEX_BIN ?? 'codex');
-  const active: ActiveCodexRun = { adapter, cancellationRequested: false };
+  const maxSegments = Math.max(1, Math.floor(options.maxSegments ?? 1));
+  const snapshotStore = options.contextSnapshotStore ?? defaultContextSnapshotStore();
+  const contextPolicy = options.contextPolicy ?? defaultContextPolicy;
+  const adapterFactory = options.adapterFactory ?? (() => new CodexExternalAdapter(process.env.CODEX_BIN ?? 'codex'));
+  const active: ActiveCodexRun = { adapter: adapterFactory(1), cancellationRequested: false };
   activeCodexRuns.set(created.id, active);
   let handle: RunHandle | undefined;
   const providerEvents: RunEvent[] = [];
+  let packet: ContextPacket | undefined;
+  let lastProvider: RunHandle['provider'] | undefined;
   try {
-    handle = await adapter.startRun({ objective, input, metadata: { runId: created.id, provider: 'openai-codex' } });
-    active.handle = handle;
-    if (active.cancellationRequested) {
-      const events = await runtimeStore.listEvents(created.id);
-      return { run: (await runtimeStore.getRun(created.id))!, startEvent: started.event, providerEvents, finalEvent: events.find((item) => item.type === 'run.cancelled'), provider: handle.provider };
+    for (let segment = 1; segment <= maxSegments; segment += 1) {
+      const adapter = segment === 1 ? active.adapter : adapterFactory(segment, packet);
+      active.adapter = adapter;
+      await appendRuntimeEvent(created.id, 'run.segment_started', {
+        segment,
+        contextSnapshotId: packet?.snapshot.id ?? null,
+        provider: 'execution-adapter',
+      });
+      try {
+        handle = await adapter.startRun({
+          objective,
+          input,
+          metadata: {
+            runId: created.id,
+            provider: 'openai-codex',
+            segment,
+            contextSnapshot: packet?.snapshot ?? null,
+            contextTailEventIds: packet?.tailEvents.map((event) => String(event.id)) ?? [],
+          } as JsonObject,
+        });
+        lastProvider = handle.provider;
+        active.handle = handle;
+        if (active.cancellationRequested) {
+          const events = await runtimeStore.listEvents(created.id);
+          return { run: (await runtimeStore.getRun(created.id))!, startEvent: started.event, providerEvents, finalEvent: events.find((item) => item.type === 'run.cancelled'), provider: handle.provider };
+        }
+        let completed = false;
+        for await (const providerEvent of adapter.streamEvents(handle)) {
+          const stored = await appendRuntimeEvent(created.id, 'provider.event', providerEvent.data, providerEvent.actor);
+          providerEvents.push(stored);
+          completed ||= providerEvent.data.status === 'completed';
+        }
+        const current = await runtimeStore.getRun(created.id);
+        if (active.cancellationRequested || current?.status === 'cancelled') {
+          const events = await runtimeStore.listEvents(created.id);
+          return { run: current!, startEvent: started.event, providerEvents, finalEvent: [...events].reverse().find((item) => item.type === 'run.cancelled') ?? events.at(-1), provider: handle.provider };
+        }
+        if (completed) {
+          await appendRuntimeEvent(created.id, 'run.segment_completed', { segment, status: 'succeeded', contextSnapshotId: packet?.snapshot.id ?? null });
+          const providerSummary: JsonObject = {
+            harness: handle.provider.harness,
+            provider: handle.provider.provider,
+            model: handle.provider.model,
+            authMode: handle.provider.authMode,
+            billingSource: handle.provider.billingSource,
+            isMock: handle.provider.isMock,
+          };
+          const final = await runtimeStore.transition(created.id, 'succeed', { result: { provider: providerSummary, eventCount: providerEvents.length, segmentCount: segment } });
+          return { run: final.run, startEvent: started.event, providerEvents, finalEvent: final.event, provider: handle.provider };
+        }
+        await appendRuntimeEvent(created.id, 'run.segment_completed', { segment, status: 'failed', code: 'provider_incomplete' });
+        if (segment < maxSegments) {
+          const events = await runtimeStore.listEvents(created.id);
+          const recovery = await createRecoverySnapshot((await runtimeStore.getRun(created.id))!, events, snapshotStore, contextPolicy, 'provider_limit');
+          packet = recovery.packet;
+          await appendRuntimeEvent(created.id, 'context.snapshot_created', { snapshotId: recovery.snapshot.id, contentSha256: recovery.snapshot.contentSha256, covers: recovery.snapshot.covers });
+          await appendRuntimeEvent(created.id, 'run.resume_requested', { fromSegment: segment, toSegment: segment + 1, snapshotId: recovery.snapshot.id });
+          continue;
+        }
+        const final = await runtimeStore.transition(created.id, 'fail', { reason: 'Codex execution did not complete', error: { code: 'provider_incomplete', message: 'Codex CLI did not emit a completed event.', retryable: true } });
+        return { run: final.run, startEvent: started.event, providerEvents, finalEvent: final.event, provider: handle.provider };
+      } catch (error) {
+        const current = await runtimeStore.getRun(created.id);
+        if (active.cancellationRequested || current?.status === 'cancelled') {
+          const events = await runtimeStore.listEvents(created.id);
+          return { run: current!, startEvent: started.event, providerEvents, finalEvent: [...events].reverse().find((item) => item.type === 'run.cancelled') ?? events.at(-1), provider: handle?.provider ?? (await adapter.probeCapabilities()).identity };
+        }
+        await appendRuntimeEvent(created.id, 'run.segment_completed', { segment, status: 'failed', code: 'provider_error', message: error instanceof Error ? error.message : String(error) });
+        if (segment < maxSegments) {
+          const events = await runtimeStore.listEvents(created.id);
+          const recovery = await createRecoverySnapshot((await runtimeStore.getRun(created.id))!, events, snapshotStore, contextPolicy, 'interrupt');
+          packet = recovery.packet;
+          await appendRuntimeEvent(created.id, 'context.snapshot_created', { snapshotId: recovery.snapshot.id, contentSha256: recovery.snapshot.contentSha256, covers: recovery.snapshot.covers });
+          await appendRuntimeEvent(created.id, 'run.resume_requested', { fromSegment: segment, toSegment: segment + 1, snapshotId: recovery.snapshot.id });
+          continue;
+        }
+        const final = await runtimeStore.transition(created.id, 'fail', { reason: 'Codex execution failed', error: { code: 'provider_error', message: error instanceof Error ? error.message : String(error), retryable: true } });
+        return { run: final.run, startEvent: started.event, providerEvents, finalEvent: final.event, provider: handle?.provider ?? (await adapter.probeCapabilities()).identity };
+      }
     }
-    for await (const providerEvent of adapter.streamEvents(handle)) {
-      const current = await runtimeStore.listEvents(created.id);
-      const stored = createRunEvent(
-        created.id,
-        'provider.event',
-        providerEvent.data,
-        current.length + 1,
-        providerEvent.actor,
-        providerEvent.occurredAt,
-      );
-      await runtimeStore.appendEvent(stored);
-      providerEvents.push(stored);
-    }
-    const current = await runtimeStore.getRun(created.id);
-    if (active.cancellationRequested || current?.status === 'cancelled') {
-      const events = await runtimeStore.listEvents(created.id);
-      return { run: current!, startEvent: started.event, providerEvents, finalEvent: [...events].reverse().find((item) => item.type === 'run.cancelled') ?? events.at(-1), provider: handle.provider };
-    }
-    const completed = providerEvents.some((item) => item.data.status === 'completed');
-    const providerSummary: JsonObject = {
-      harness: handle.provider.harness,
-      provider: handle.provider.provider,
-      model: handle.provider.model,
-      authMode: handle.provider.authMode,
-      billingSource: handle.provider.billingSource,
-      isMock: handle.provider.isMock,
-    };
-    const final = completed
-      ? await runtimeStore.transition(created.id, 'succeed', { result: { provider: providerSummary, eventCount: providerEvents.length } })
-      : await runtimeStore.transition(created.id, 'fail', { reason: 'Codex execution did not complete', error: { code: 'provider_incomplete', message: 'Codex CLI did not emit a completed event.', retryable: true } });
-    return { run: final.run, startEvent: started.event, providerEvents, finalEvent: final.event, provider: handle.provider };
+    throw new Error('Execution loop ended without a terminal result');
   } catch (error) {
     const current = await runtimeStore.getRun(created.id);
     if (active.cancellationRequested || current?.status === 'cancelled') {
       const events = await runtimeStore.listEvents(created.id);
-      return { run: current!, startEvent: started.event, providerEvents, finalEvent: [...events].reverse().find((item) => item.type === 'run.cancelled') ?? events.at(-1), provider: handle?.provider ?? (await adapter.probeCapabilities()).identity };
+      return { run: current!, startEvent: started.event, providerEvents, finalEvent: [...events].reverse().find((item) => item.type === 'run.cancelled') ?? events.at(-1), provider: handle?.provider ?? (await active.adapter.probeCapabilities()).identity };
     }
     const final = await runtimeStore.transition(created.id, 'fail', { reason: 'Codex execution failed', error: { code: 'provider_error', message: error instanceof Error ? error.message : String(error), retryable: true } });
-    return { run: final.run, startEvent: started.event, providerEvents, finalEvent: final.event, provider: handle?.provider ?? (await adapter.probeCapabilities()).identity };
+    return { run: final.run, startEvent: started.event, providerEvents, finalEvent: final.event, provider: handle?.provider ?? lastProvider };
   } finally {
     activeCodexRuns.delete(created.id);
   }

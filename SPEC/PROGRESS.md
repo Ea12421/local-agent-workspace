@@ -42,6 +42,7 @@
 - M8-04 试跑、重试和校验均写入 `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json` 和 `evidence/receipts/m804-*.json`
 - Context Continuity v1 纯函数已完成：软/硬阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 均有专项测试。
 - `JsonlContextSnapshotStore` 已完成：快照追加、重启读取、重复 ID 拒绝、按 project/run 查询 latest，并保持原始 RunEvent 不变。
+- Run segment/fallback resume 已完成：provider 未完成或抛错时，同一逻辑 Run 追加 segment、snapshot 和 resume 事件，并把已校验的 ContextPacket 传给下一段；专项恢复测试通过。
 
 ## 当前卡点
 
@@ -56,7 +57,7 @@
 
 ## 当前唯一下一步
 
-实现 Run segment 与 fallback resume：同一逻辑 Run 在 provider 超限或中断后追加 segment 事件，使用已验证 ContextPacket 重新启动执行，并补专项恢复测试。完成后再恢复 M8-04 小批次真实任务验证。
+把 Context Continuity 接入 Product Builder：在 Handoff、Approval、Artifact 边界自动 checkpoint，恢复时阻止重复工作；随后执行 synthetic limit、崩溃恢复和跨项目隔离验证。
 
 ## 网络恢复后的下一步
 
