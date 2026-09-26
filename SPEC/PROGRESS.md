@@ -43,6 +43,8 @@
 - Context Continuity v1 纯函数已完成：软/硬阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 均有专项测试。
 - `JsonlContextSnapshotStore` 已完成：快照追加、重启读取、重复 ID 拒绝、按 project/run 查询 latest，并保持原始 RunEvent 不变。
 - Run segment/fallback resume 已完成：provider 未完成或抛错时，同一逻辑 Run 追加 segment、snapshot 和 resume 事件，并把已校验的 ContextPacket 传给下一段；专项恢复测试通过。
+- Product Builder checkpoint 已完成：4 个 Handoff、5 个 Artifact、1 个 Approval 生成稳定幂等键；边界事件和 Snapshot 追加到 JSONL，重放同一 Run 会跳过已记录工作。
+- M9-05 Context Continuity 验证已完成并写入 `validation/m9-context-continuity-results.json`：synthetic provider limit、同一 Run 恢复、snapshot 重启/篡改校验、重复 checkpoint、跨项目隔离和原始事件保留均通过；这是契约证据，不是模型质量或现实使用证据。
 
 ## 当前卡点
 
@@ -57,7 +59,7 @@
 
 ## 当前唯一下一步
 
-把 Context Continuity 接入 Product Builder：在 Handoff、Approval、Artifact 边界自动 checkpoint，恢复时阻止重复工作；随后执行 synthetic limit、崩溃恢复和跨项目隔离验证。
+恢复 M8-04：先完成 PB-01 人工复核账本，再按每批最多 3 条 provider 路径执行剩余 9 个固定任务；每批后运行 `pnpm run m804:validate`、`pnpm run validate:state` 并保存 receipt。
 
 ## 网络恢复后的下一步
 

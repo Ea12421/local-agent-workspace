@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Git 与 Context Continuity segment 恢复基础已落盘，Desktop 仍部分验证
-- 阶段：`m9-segment-fallback-resume`
+- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，Desktop 仍部分验证
+- 阶段：`m9-context-continuity-verified`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -28,6 +28,8 @@
   - `validation/m8-04-manual-review-PB-01.json`：PB-01 人工复核、可比性和质量证据阻断项
   - `packages/core/src/context.ts`、`packages/core/src/context.test.ts`：ContextSnapshot 纯函数与恢复校验
   - `apps/server/src/persistence.ts`、`apps/server/src/persistence.test.ts`：JSONL ContextSnapshot 持久化与隔离测试
+  - `apps/server/src/product-builder-continuity.ts`、`apps/server/src/product-builder-continuity.test.ts`：Product Builder 边界 checkpoint 与重放幂等
+  - `validation/m9-context-continuity-results.json`：M9 契约验证账本
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -60,8 +62,8 @@
 
 1. Codex Run 取消专项测试已经通过并写入 receipt；Electron 进程已启动但窗口 AX 读取超时，保留为 PARTIAL。
 2. 隔离 clean-room 源码副本已从零安装、setup、10 tests 通过；literal GitHub clone 仍待仓库 remote。
-3. Context Continuity M9-01/M9-02/M9-03 已完成：同一逻辑 Run 的不可变 snapshot、JSONL 存储、segment/fallback resume 和 ContextPacket 传递已通过专项测试。
-4. 下一步是 M9-04：把 checkpoint 接入 Product Builder 的 Handoff、Approval、Artifact 边界，恢复时阻止重复工作；完成后做 M9-05 synthetic limit、崩溃恢复和跨项目隔离验证。
+3. Context Continuity M9-01 至 M9-05 已完成：同一逻辑 Run 的不可变 snapshot、JSONL 存储、segment/fallback resume、ContextPacket 传递、Product Builder 边界幂等和契约验证已通过专项测试，账本为 `validation/m9-context-continuity-results.json`。
+4. 下一步恢复 M8-04：先完成 PB-01 人工复核，再把剩余 9 个固定任务拆成每批最多 3 条 provider 路径执行；每批后校验并 checkpoint。
 5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
 6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
 

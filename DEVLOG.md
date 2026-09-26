@@ -81,3 +81,7 @@
 - M9-02 验证结果：`pnpm test:all` 14/14、`pnpm run typecheck` 通过；随后继续实现 M9-03。DeepSeek 和 M8-04 质量证据不受本次测试结果替代。
 - M9-03 已完成：`executeCodexRun` 在 provider 未完成或抛错时保持同一 `runId`，追加 `run.segment_*`、`context.snapshot_created` 和 `run.resume_requested`，把经过 hash/事件范围校验的 `ContextPacket` 传入下一段；测试适配器证明第一段失败、第二段成功的恢复链。
 - M9-03 验证结果：`pnpm test:all` 15/15、`pnpm run typecheck` 通过。该结果证明恢复契约和事件链，不证明真实 Codex/DeepSeek 在所有限额场景都能原生 resume。
+- M9-04 已完成：Product Builder 为 4 个 Handoff、5 个 Artifact、1 个 Approval 生成稳定幂等 checkpoint；server 将边界事件与 snapshot 追加到 JSONL，重放同一 `runId` 时跳过已记录 checkpoint。
+- M9-04 验证结果：`pnpm test:all` 17/17、`pnpm run typecheck` 通过。该结果证明本地契约和重复恢复行为，不替代 M8-04 的真实模型质量证据。
+- M9-05 已完成：将 synthetic provider limit、同一 Run 恢复、JSONL 重启读取、hash/事件范围校验、重复 Product Builder checkpoint、跨项目隔离和原始事件保留写入 `validation/m9-context-continuity-results.json`；状态为 `PASS_CONTRACT_ONLY`。
+- M9 全部完成后，唯一下一步回到 M8-04：PB-01 人工复核与剩余 9 个固定任务的小批量真实 Codex subscription execution bridge 运行。DeepSeek 仍后置。

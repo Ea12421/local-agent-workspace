@@ -17,8 +17,18 @@ export type ProductBuilderResult = {
   sources: Source[];
   artifacts: Artifact[];
   approval: ApprovalRequest;
+  checkpoints: ProductBuilderCheckpoint[];
   executionPlan: string[];
   receipt: { harness: 'fixture'; provider: 'fixture'; model: 'deterministic-product-builder'; isMock: true };
+};
+
+export type ProductBuilderCheckpoint = {
+  idempotencyKey: string;
+  boundary: 'handoff' | 'artifact' | 'approval';
+  ref: string;
+  label: string;
+  order: number;
+  resumeBehavior: 'skip_if_recorded';
 };
 
 const bot = (id: string) => id as BotId;
@@ -47,5 +57,31 @@ export function runProductBuilder(input: ProductBuilderInput): ProductBuilderRes
     handoff(input.projectId, 'bot-product-builder', 'bot-evaluation', '把成功标准变成固定评测', [architecture.id], 'evaluation_plan'),
   ];
   const approval: ApprovalRequest = { id: `approval-${randomUUID()}` as ApprovalRequest['id'], projectId: input.projectId, runId: input.runId as ApprovalRequest['runId'], action: 'confirm_product_scope', description: '确认目标用户与 MVP 范围后继续', permissionTier: 'read_only', status: 'pending', requestedAt: now };
-  return { status: 'waiting_user', handoffs, sources: [source], artifacts: [research, product, architecture, evaluation, plan], approval, executionPlan: input.constraints ?? ['确认目标用户', '补充外部来源', '执行固定评测'], receipt: { harness: 'fixture', provider: 'fixture', model: 'deterministic-product-builder', isMock: true } };
+  const checkpoints: ProductBuilderCheckpoint[] = [
+    ...handoffs.map((item, index) => ({
+      idempotencyKey: `${input.runId}:handoff:${item.toBotId}`,
+      boundary: 'handoff' as const,
+      ref: item.id as string,
+      label: `交接：${item.objective}`,
+      order: index + 1,
+      resumeBehavior: 'skip_if_recorded' as const,
+    })),
+    ...[research, product, architecture, evaluation, plan].map((item, index) => ({
+      idempotencyKey: `${input.runId}:artifact:${item.kind}`,
+      boundary: 'artifact' as const,
+      ref: item.id as string,
+      label: `产物：${item.name}`,
+      order: handoffs.length + index + 1,
+      resumeBehavior: 'skip_if_recorded' as const,
+    })),
+    {
+      idempotencyKey: `${input.runId}:approval:${approval.action}`,
+      boundary: 'approval' as const,
+      ref: approval.id as string,
+      label: `审批：${approval.description}`,
+      order: handoffs.length + 6,
+      resumeBehavior: 'skip_if_recorded',
+    },
+  ];
+  return { status: 'waiting_user', handoffs, sources: [source], artifacts: [research, product, architecture, evaluation, plan], approval, checkpoints, executionPlan: input.constraints ?? ['确认目标用户', '补充外部来源', '执行固定评测'], receipt: { harness: 'fixture', provider: 'fixture', model: 'deterministic-product-builder', isMock: true } };
 }

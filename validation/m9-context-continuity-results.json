@@ -1,0 +1,28 @@
+{
+  "suite": "M9 Context Continuity v1",
+  "generated_at": "2026-09-27",
+  "status": "PASS_CONTRACT_ONLY",
+  "command": "COREPACK_HOME=/Users/m4air/Work Agent开发。/.corepack pnpm test:all",
+  "tests_passed": 17,
+  "checks": {
+    "synthetic_provider_limit_creates_new_segment": true,
+    "same_logical_run_id_is_preserved": true,
+    "verified_context_packet_reaches_next_segment": true,
+    "jsonl_snapshot_survives_reload": true,
+    "snapshot_hash_and_event_range_are_verified": true,
+    "duplicate_product_builder_checkpoint_is_skipped": true,
+    "cross_project_restore_is_rejected": true,
+    "raw_events_are_append_only": true
+  },
+  "evidence": [
+    "apps/server/src/runtime.test.ts",
+    "apps/server/src/persistence.test.ts",
+    "apps/server/src/product-builder-continuity.test.ts",
+    "packages/core/src/context.test.ts"
+  ],
+  "limitations": [
+    "This validates the local contract and deterministic recovery path; it does not prove native Codex or DeepSeek resume.",
+    "No real DeepSeek API key was used.",
+    "This is not M8-04 model quality evidence or reality validation."
+  ]
+}

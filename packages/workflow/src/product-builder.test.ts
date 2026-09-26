@@ -10,5 +10,18 @@ test('Product Builder emits structured handoffs, evidence and an approval bounda
   assert.equal(result.approval.status, 'pending');
   assert.equal(result.artifacts.length, 5);
   assert.ok(result.artifacts.every((item) => item.sourceRefs.length > 0));
+  assert.equal(result.checkpoints.length, 10);
+  assert.equal(new Set(result.checkpoints.map((item) => item.idempotencyKey)).size, 10);
+  assert.ok(result.checkpoints.every((item) => item.resumeBehavior === 'skip_if_recorded'));
   assert.equal(result.receipt.isMock, true);
+});
+
+test('Product Builder checkpoint keys remain stable across replay', () => {
+  const input = { projectId: 'p1' as any, runId: 'r1', idea: '同一想法' };
+  const first = runProductBuilder(input);
+  const second = runProductBuilder(input);
+  assert.deepEqual(
+    first.checkpoints.map((item) => item.idempotencyKey),
+    second.checkpoints.map((item) => item.idempotencyKey),
+  );
 });
