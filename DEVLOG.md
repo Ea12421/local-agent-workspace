@@ -93,6 +93,7 @@
 - RS-02 校正后为 single_call 5/8、single_bot schema failure 0/8、multi_bot 6/8；`validation/m8-04-manual-review-RS-02.json` 已落盘，质量证据仍为 0。
 - AR-01 三路径校正后为 single_call 8/8、single_bot 7/8、multi_bot 8/8；multi_bot 约为 single_bot 的 3.97 倍，`validation/m8-04-manual-review-AR-01.json` 已落盘，质量证据仍为 0。
 - AR-02 三路径校正后为 single_call 7/8、single_bot 7/8、multi_bot schema failure 0/8；multi_bot 约为 single_bot 的 2.71 倍，`validation/m8-04-manual-review-AR-02.json` 已落盘，质量证据仍为 0。
+- EV-01 三路径校正后为 single_call 6/8、single_bot schema failure 0/8、multi_bot 6/8；multi_bot 约为 single_bot 的 3.98 倍，`validation/m8-04-manual-review-EV-01.json` 已落盘，质量证据仍为 0。
 
 ### 2026-09-27 M8-04 · 修正硬约束计分分母
 

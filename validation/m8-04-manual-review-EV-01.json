@@ -1,0 +1,52 @@
+{
+  "review_version": "m8-04.manual-review.v1",
+  "reviewed_at": "2026-09-27",
+  "task_id": "EV-01",
+  "source_results": "validation/m8-04-results.jsonl",
+  "source_summary": "validation/m8-04-validation-summary.json",
+  "reviewer": {
+    "kind": "local_read_only_pilot_audit",
+    "scope": "EV-01 provider records and corrected automated contract output",
+    "file_mutation": false
+  },
+  "records": [
+    {
+      "receipt_id": "m804-EV-01-single_call-1790448778009",
+      "path": "single_call",
+      "schema_pass": true,
+      "hard_pass": "6/8",
+      "elapsed_ms": 64215
+    },
+    {
+      "receipt_id": "m804-EV-01-single_bot-1790448823786",
+      "path": "single_bot",
+      "schema_pass": false,
+      "hard_pass": "0/8",
+      "elapsed_ms": 36956
+    },
+    {
+      "receipt_id": "m804-EV-01-multi_bot-1790448981342",
+      "path": "multi_bot",
+      "schema_pass": true,
+      "hard_pass": "6/8",
+      "elapsed_ms": 147230
+    }
+  ],
+  "comparability": {
+    "same_task_and_input_hash": true,
+    "same_provider_identity": true,
+    "multi_bot_to_single_bot_latency_ratio": 3.98,
+    "two_x_latency_threshold_met": false
+  },
+  "blocking_findings": [
+    "single_bot final output fails the required JSON schema contract",
+    "artifact_replayable and manual_edit_rule are absent from the accepted outputs",
+    "artifact.id and artifact.valid are null for all three records",
+    "artifact replay hash/result is not independently recorded",
+    "manual edit steps and characters are null",
+    "reviewer rubric and usage/cost are null",
+    "all three records remain quality_eligible=false"
+  ],
+  "decision": "quality_evidence_blocked",
+  "conclusion": "EV-01 has two schema-readable 6/8 paths and a single_bot schema failure. Multi_bot is 3.98x slower than single_bot and provides no evidence for default routing."
+}

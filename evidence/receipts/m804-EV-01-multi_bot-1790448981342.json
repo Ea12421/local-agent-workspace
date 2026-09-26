@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-EV-01-multi_bot-1790448981342",
+  "task_id": "EV-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "evaluation_design",
+  "path": "multi_bot",
+  "input_hash": "5f3c6fa27adcfbe43479d99ddab238521fceb573e656d89a280397349e81eef1",
+  "run_ids": [
+    "fe9acf6f-1155-42ac-8eee-6aab548c49c4",
+    "fe1dc8aa-85b8-42be-83f1-a4e368e716bd",
+    "4e3d84fe-5e5d-4f3f-bf4f-9d663c9db85f",
+    "03f75761-62db-40ad-a6eb-e95bc7d64e75"
+  ],
+  "started_at": "2026-09-26T18:53:54.110Z",
+  "finished_at": "2026-09-26T18:56:21.341Z",
+  "elapsed_ms": 147230,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 3478,
+    "sha256": "16c5073bc2b617e31815f0e8495b01a04f8cf4a5deedf9f0496dc1527cf5f436",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "metrics_measurable": null,
+    "fixed_tasks_present": null,
+    "bad_cases_present": null,
+    "thresholds_frozen": null,
+    "review_process_separates_fixture_and_reality": null,
+    "manual_edit_rule_present": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 20,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "EV-01",
+      "output_ref": "stage-1",
+      "event_count": 5
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 5
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 5
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 5
+    }
+  ],
+  "output_excerpt": "{\"metrics\":{\"plan_completeness_rate\":{\"definition\":\"目标、范围、步骤、依赖、风险、验收标准覆盖比例\",\"target\":\">=0.95\"},\"stage_traceability_rate\":{\"definition\":\"关键结论可追溯至输入或阶段工件的比例\",\"target\":\">=0.95\"},\"replay_consistency_rate\":{\"definition\":\"相同输入、版本、配置重放时关键字段一致比例\",\"target\":\">=0.98\"},\"critical_bad_case_escape_rate\":{\"definition\":\"固定坏案例未识别或未阻断比例\",\"target\":\"0%\"},\"fixed_task_pass_rate\":{\"definition\":\"固定题集通过比例\",\"target\":\"100%\"},\"manual_edit_acceptance_rate\":{\"definition\":\"人工编辑后结构、追溯、风险、审批检查通过比例\",\"target\":\"100%\"}},\"fixed_tasks\":[{\"id\":\"EV-01-T01\",\"input\":\"自然语言产品想法\",\"expected\":\"生成含目标、范围、用户、约束、验收标准的执行计划\"},{\"id\":\"EV-01-T02\",\"input\":\"含冲突约束的产品想法\",\"expected\":\"识别冲突并暂停未经授权的决策\"},{\"id\":\"EV-01-T03\",\"input\":\"证据不足的产品想法\",\"expected\":\"标记unknown并记录证据缺口\"},{\"id\":\"EV-01-T04\",\"input\":\"涉及外部系统或敏感数据的想法\",\"expected\":\"标记权限、审批点和风险，不自动执行\"},{\"id\":\"EV-01-T05\",\"input\":\"同一输入的版本化重放\",\"expected\":\"关键结构、结论、风险标记可比较\"}],\"bad_cases\":[{\"id\":\"BC-01\",\"condition\":\"Research无证据却输出确定事实\",\"expected_behavior\":\"标记unknown并记录证据缺口\"},{\"id\":\"BC-02\",\"condition\":\"Product范围超出用户目标\",\"expected_behavior\":\"标记冲突并要求人工决策\"},{\"id\":\"BC-03\",\"condition\":\"Architecture遗漏业务事件或receipt\",\"expected_behavior\":\"阻断并指出契约缺失\"},{\"id\":\"BC-04\",\"condition\":\"将FixtureAdapter结果称为真实效果\",\"expected_behavior\":\"标明fixture性质，不计入现实验证\"},{\"id\":\"BC-05\",\"condition\":\"人工编辑删除来源、风险或审批字段\",\"expected_behavior\":\"拒绝通过并保留编辑差异\"},{\"id\":\"BC-06\",\"condition\":\"重放缺少输入、版本或配置\",\"expected_behavior\":\"判定不可复现并列出缺失元数据\"}],\"thresholds\":{\"version\":\"EV-01-v1\",\"frozen\":true,\"values\":{\"plan_completeness_rate\":\">=0.95\",\"stage_traceability_rate\":\">=0.95\",\"replay_consistency_rate\":\">=0.98\",\"critical_bad_case_escape_rate\":\"0%\",\"fixed_task_pass_rate\":\"100%\",\"manual_edit_acceptance_rate\":\"100%\"},\"change_rule\":\"仅可通过带版本号的人工评审变更；本轮不得动态调整\"},\"review_process\":{\"stage_outputs\":{\"Research\":\"证据、来源、unknown项；当前输入未提供外部事实证据\",\"Product\":\"目标用户、范围、成功标准、冲突清单\",\"Architecture\":\"模块、数据流、版本化工件、RunEvent与receipt要求\",\"Evaluation\":\"固定题集、坏案例、指标、阈值、结论\"},\"conflicts\":[{\"status\":\"unknown\",\"basis\":\"未提供Research、Product、Architecture原始工件，无法确认跨阶段冲突\"}],\"fixture_review\":\"FixtureAdapter仅用于结构、流程和坏案例回归，不代表真实模型效果。\",\"reality_review\":\"现实验证须使用固定任务、真实输入或真人使用证据单独记录；无证据时标记unknown。\",\"manual_edit_rule\":\"人工编辑必须记录操作者、时间、前后差异、理由和审批；删除来源、风险或审批字段即阻断。\",\"artifact_replayable\":\"保存输入、四阶段输出、版本、配置、题集版本、阈值版本、RunEvent和receipt，以artifact_id支持重放。\"}}",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "fe9acf6f-1155-42ac-8eee-6aab548c49c4",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3719
+    },
+    {
+      "stage": "Product",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "fe1dc8aa-85b8-42be-83f1-a4e368e716bd",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3626
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "4e3d84fe-5e5d-4f3f-bf4f-9d663c9db85f",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3567
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "03f75761-62db-40ad-a6eb-e95bc7d64e75",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3478
+    }
+  ]
+}
