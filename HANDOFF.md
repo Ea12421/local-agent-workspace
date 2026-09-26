@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，Desktop 仍部分验证
-- 阶段：`m9-context-continuity-verified`
+- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 已完成 PB-02 小批次，Desktop 仍部分验证
+- 阶段：`m8-04-pb02-validated`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -30,6 +30,7 @@
   - `apps/server/src/persistence.ts`、`apps/server/src/persistence.test.ts`：JSONL ContextSnapshot 持久化与隔离测试
   - `apps/server/src/product-builder-continuity.ts`、`apps/server/src/product-builder-continuity.test.ts`：Product Builder 边界 checkpoint 与重放幂等
   - `validation/m9-context-continuity-results.json`：M9 契约验证账本
+  - `validation/m8-04-manual-review-PB-02.json`：PB-02 三条路径自动结果和质量证据阻断项
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -63,7 +64,8 @@
 1. Codex Run 取消专项测试已经通过并写入 receipt；Electron 进程已启动但窗口 AX 读取超时，保留为 PARTIAL。
 2. 隔离 clean-room 源码副本已从零安装、setup、10 tests 通过；literal GitHub clone 仍待仓库 remote。
 3. Context Continuity M9-01 至 M9-05 已完成：同一逻辑 Run 的不可变 snapshot、JSONL 存储、segment/fallback resume、ContextPacket 传递、Product Builder 边界幂等和契约验证已通过专项测试，账本为 `validation/m9-context-continuity-results.json`。
-4. 下一步恢复 M8-04：先完成 PB-01 人工复核，再把剩余 9 个固定任务拆成每批最多 3 条 provider 路径执行；每批后校验并 checkpoint。
+4. M8-04 PB-02 三条 Codex subscription 路径已完成并校验为 schema_pass=true、6/8 hard constraints；multi_bot 比 single_bot 慢约 3.27 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-PB-02.json`。
+5. 下一步继续 M8-04：先补 PB-01 质量证据缺口，再执行 PB-03 至 EX-02，每批最多 3 条路径，批后校验并 checkpoint。
 5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
 6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
 

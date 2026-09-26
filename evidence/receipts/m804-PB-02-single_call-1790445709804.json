@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-PB-02-single_call-1790445709804",
+  "task_id": "PB-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "product_definition",
+  "path": "single_call",
+  "input_hash": "87af7121089f982dbd46d4847b1f48a78c1a4fc2883e3f06dd5ed510429e4ae4",
+  "run_ids": [
+    "df026724-64c8-4c32-b68d-658d564ac419"
+  ],
+  "started_at": "2026-09-26T18:01:06.542Z",
+  "finished_at": "2026-09-26T18:01:49.803Z",
+  "elapsed_ms": 43260,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 1738,
+    "sha256": "e5258e3d1e06a2f84212e6f0c9c6ac85986c5707e2d71951803191d8e8a7f766",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "user_explicit": null,
+    "mvp_scope_bounded": null,
+    "approval_boundary_present": null,
+    "no_autonomous_external_send": null,
+    "success_metrics_testable": null,
+    "unknowns_explicit": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 0,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"user\":\"50-200 人公司的内部运营团队\",\"scenario\":\"员工依据内部文档查询流程、政策和操作步骤；涉及高风险事项时，系统先生成依据与建议并请求人工确认。\",\"pain\":\"内部文档分散、更新不一致，流程查询耗时；错误回答可能导致合规、财务、人事或客户影响。\",\"value\":\"在限定的内部文档范围内提供可追溯的流程答案、引用依据和不确定性提示，减少重复咨询，同时保留人工决策权。\",\"mvp\":\"支持上传或连接一个限定的内部文档库；按文档内容回答流程问题；展示引用段落、文档版本和更新时间；无法找到依据时明确拒答；对预先定义的高风险类别进入人工确认队列；仅提供答案草稿和操作建议，不执行外部发送、数据修改或流程提交。\",\"approval_boundary\":\"涉及财务付款或承诺、人事处分或敏感信息、法律或合规判断、客户或供应商沟通、权限变更、删除或修改业务数据时，必须由指定人工逐次确认；未经确认不得发送消息、修改记录、提交流程或代表团队作出承诺。\",\"success_metrics\":\"在固定的代表性问题集上，至少90%的回答包含可核对文档依据；无依据问题的误答率低于10%；高风险问题100%进入人工确认；人工确认前不产生外部发送或业务数据变更；运营人员完成一次查询的中位耗时较现状基线下降，具体基线与目标值待测量后冻结。\",\"unknowns\":\"尚无真实文档样本、问题分布、现有查询耗时、可接受误答率、风险分类清单、审批角色与响应时限；需要通过文档盘点、固定问题集测试和运营人员试用确定。\"}",
+  "attempts": [
+    {
+      "stage": "single_call",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "df026724-64c8-4c32-b68d-658d564ac419",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 1738
+    }
+  ]
+}

@@ -85,3 +85,5 @@
 - M9-04 验证结果：`pnpm test:all` 17/17、`pnpm run typecheck` 通过。该结果证明本地契约和重复恢复行为，不替代 M8-04 的真实模型质量证据。
 - M9-05 已完成：将 synthetic provider limit、同一 Run 恢复、JSONL 重启读取、hash/事件范围校验、重复 Product Builder checkpoint、跨项目隔离和原始事件保留写入 `validation/m9-context-continuity-results.json`；状态为 `PASS_CONTRACT_ONLY`。
 - M9 全部完成后，唯一下一步回到 M8-04：PB-01 人工复核与剩余 9 个固定任务的小批量真实 Codex subscription execution bridge 运行。DeepSeek 仍后置。
+- PB-02 小批次已完成：single_call 43.260s、single_bot 51.279s、multi_bot 167.466s；三条路径 schema 均通过但均为 6/8 hard constraints。multi_bot 约为 single_bot 的 3.27 倍，不能据此设为默认路径。
+- `validation/m8-04-manual-review-PB-02.json` 已记录 artifact/replay hash、人工编辑、reviewer rubric 和 usage/cost 缺失，因此 PB-02 仍是 `quality_evidence_blocked`；没有把执行完成写成质量通过。
