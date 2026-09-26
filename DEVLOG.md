@@ -105,3 +105,17 @@
 - **根因**：类别诊断字段被追加到同一个 `checks` 对象后，计分器统计了全部字段，而不是题集声明的 `hard_constraints`。
 - **修复**：`scripts/validate-m804.ts` 只对 `task.hard_constraints` 求和；没有重跑模型调用，只重算已有 JSONL。
 - **验证**：`pnpm run m804:validate` 18 条记录通过重算；检查结果 `overExpected=0`；`pnpm run typecheck` 通过。
+
+### 2026-09-27 M8-05 · 窄范围现实验证与同 Run 恢复
+
+- **预注册**：`validation/m8-05-reality-card-v1.json` 冻结了三个非敏感本地状态任务、白名单、结构化追踪 rubric、3/3 阈值、恢复护栏和排除项；脚本版本绑定到 `513fae8`。
+- **真实输入**：使用本地 Codex CLI subscription execution bridge，`isMock=false`，没有调用 DeepSeek；REAL-01 读取当前项目 `AGENTS.md/RUN_STATE.json/SPEC/PROGRESS.md/HANDOFF.md`，REAL-02 读取 Pi-Agent-Workbench 的 `AGENTS.md/STATE.md`，REAL-03 读取 personal-knowledge-mcp-mvp 的 `AGENTS.md/STATE.md`。被测项目均只读。
+- **结果**：3/3 任务输出单个 JSON 对象，必填键齐全，`source_refs` 均在预注册白名单内，显式列出 `unknowns` 和一个 `next_action`。原始回执在 `validation/m8-05-raw/`。
+- **恢复 smoke**：真实 provider 第一段在 `thread.started` 后人为中断；控制面保持同一 `runId`，追加 1 个 `ContextSnapshot`、1 个 `run.resume_requested`，第二段完成并进入 `run.succeeded`。这证明 fallback 执行链恢复，不等于 Codex 原生 resume。
+- **内容边界**：恢复 smoke 的第二段模型输出因提示要求“不要执行读取命令”而返回 blocked；因此只把“运行链恢复”计为 PASS，不把它写成业务任务内容完成。M8-05 不覆盖人工 baseline、人工编辑、费用、用户再次使用、多 Bot 质量或 DeepSeek parity。
+- **环境与授权**：第一次尝试被自动审批阻止，原因是向订阅模型传递本地文件范围未单独确认；用户随后明确授权本卡白名单文件只读处理。没有修改 VPN、DNS、代理、被测项目或凭据。
+
+## 当前恢复入口
+
+1. 读取 `RUN_STATE.json`、`HANDOFF.md` 和 `validation/m8-05-review.md`。
+2. 若继续验证，先为一个真实 Product Builder/技术路线任务冻结 paired baseline card；不要重跑 M8-05 三个任务或 recovery smoke。

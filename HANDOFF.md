@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 10 题机械执行已收口但质量证据阻断，Desktop 仍部分验证
-- 阶段：`m8-04-mechanical-complete-quality-blocked`
+- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 质量证据仍阻断；M8-05 已完成窄范围真实输入与同 Run 恢复验证，Desktop 仍部分验证
+- 阶段：`m8-05-narrow-real-input-pass-quality-still-blocked`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -40,6 +40,10 @@
   - `validation/m8-04-manual-review-EX-01.json`：EX-01 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-manual-review-EX-02.json`：EX-02 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-aggregate-summary.json`：M8-04 全套机械执行汇总
+  - `validation/m8-05-reality-card-v1.json`：M8-05 执行前冻结卡与结果状态
+  - `validation/m8-05-reality-results.json`：3 个真实本地任务与 recovery smoke 汇总
+  - `validation/m8-05-raw/REAL-01.json`、`REAL-02.json`、`REAL-03.json`：原始 provider 回执
+  - `validation/m8-05-review.md`：窄范围结论、恢复内容阻断说明与未验证项
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -55,10 +59,10 @@
   - Web Vite production build 已通过；Firefox Computer Use 已打开 `localhost:5173` 并完成审批按钮交互
   - arm64 Electron DMG 已生成并且打包进程已启动；Computer Use 读取 Electron 窗口连续超时，所以桌面可见性仍是 PARTIAL
   - DeepSeek 尚未用用户 Key 实跑；Codex Product Builder 端到端 Run、取消和恢复仍待验证
-  - M8-04 已完成 PB-01 试跑与 PB-02 三路径小批次；RS-01 至 EX-02 仍未执行，PB-01/PB-02 质量证据均未解阻
+  - M8-04 10 题三路径机械执行已完成；所有记录仍缺质量补证，不能写成多 Bot 质量或提效通过
   - PB-01 当前有 9 条真实 provider 记录（8 条完成、1 条 provider_incomplete），全部是 `quality_eligible=false`；可解析的 multi Bot receipts 自动校验为 7/8，另有前缀/拼接输出被严格拒绝，必须先人工复核，不能据此宣称单/多 Bot 质量优劣
   - 为同步最新桌面入口而重打包时，`.app` 编译成功，但 `hdiutil` 报 `设备未配置`；已有 DMG 保留，需在 DiskManagement 可用的 macOS 环境再复验封装
-  - 尚未做 3 个非敏感真实任务的 reality validation
+  - M8-05 窄范围 reality validation 已完成；它只覆盖状态简报追踪和一次 provider 中断恢复，不覆盖 Product Builder 业务质量或人工提效
 
 ## 不要重新打开的决定
 
@@ -82,9 +86,14 @@
 10. M8-04 EV-02 三条路径已完成并校验为 6/8、6/8、6/8；multi_bot 比 single_bot 慢约 6.53 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EV-02.json`。
 11. M8-04 EX-01 三条路径已完成并校验为 7/8、7/8、7/8；multi_bot 比 single_bot 慢约 3.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-01.json`。
 12. M8-04 EX-02 三条路径已完成并校验为 7/8、0/8、0/8；single_bot/multi_bot schema failure，multi_bot 比 single_bot 慢约 6.18 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-02.json`。
-13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`。下一步是补质量证据或转入 3 个非敏感现实任务验证，不能把机械通过写成产品价值。
-5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
-6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
+13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`；质量证据仍阻断。
+14. M8-05 已完成：3/3 真实本地状态任务通过预注册追踪门；一次真实 Codex provider 中断后，同一 `runId` 追加 Snapshot 和 resume segment 并成功收口。Recovery 内容本身因提示禁止读取命令而返回 blocked，已单独记录，不能写成业务任务完成。
+15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。下一步是为一个真实 Product Builder/技术路线任务冻结 paired baseline，不先声称提效。
+16. Git 已在本地建立 `main` 基线并提交；当前没有 remote，不 push。
+
+### 当前唯一下一步
+
+冻结一个真实 Product Builder 或技术路线任务的 paired baseline card，执行前记录手工流程、人工整理步骤、耗时和阈值；不接 DeepSeek，不把 M8-05 窄门 PASS 扩大为产品完成。
 
 ## 重要文件
 

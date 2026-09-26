@@ -1,0 +1,237 @@
+{
+  "record_version": "m8-05.real-task.v1",
+  "task_id": "REAL-01",
+  "root": "/Users/m4air/Work Agent开发。",
+  "read_allowlist": [
+    "AGENTS.md",
+    "RUN_STATE.json",
+    "SPEC/PROGRESS.md",
+    "HANDOFF.md"
+  ],
+  "started_at": "2026-09-26T19:58:54.566Z",
+  "finished_at": "2026-09-26T20:00:01.094Z",
+  "elapsed_ms": 66527,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+  "event_count": 8,
+  "provider_completed": true,
+  "output_sha256": "54fc55161590d6edd3c6ef60ce54c73cc5229c64a096da1492031b600ddfe8ed",
+  "raw_output": "老黄，我将只读取指定的四个文件，并据其内容返回单个 JSON 对象。\n{\"task_id\":\"REAL-01\",\"summary\":\"项目代码实现已完成，但最终验收处于质量证据阻断状态，桌面窗口验证为部分完成。\",\"facts\":[\"RUN_STATE.json 的 status 为 running，phase 为 m8-04-mechanical-complete-quality-blocked，进度为 21/22 单元。\",\"M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、overExpected=0、quality_eligible=0。\",\"Context Continuity M9 契约验证已完成；快照、恢复、分段和幂等测试证据已记录。\",\"Electron .app 编译成功，但 2026-09-27 的 DMG 重打包因 DiskManagement framework 不可用失败；已有 DMG 保留，桌面可见性仍为 PARTIAL。\",\"DeepSeek 真实调用、Codex 原生 resume、literal GitHub clone 和 3 个非敏感现实任务验证尚未完成。\",\"项目规则要求不把 fixture、模型自评或机械测试写成真实效果或现实提效结论。\"],\"unknowns\":[\"质量证据所需的 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 尚未补齐。\",\"DeepSeek 真实模型验证结果未知，需用户提供 Key。\",\"3 个非敏感现实任务的真实使用验证结果未知。\",\"Electron 窗口是否能在 DiskManagement 可用环境中完成可见性与封装复验，尚未确认。\",\"literal GitHub clone 复现结果未知，因为仓库尚无 remote。\"],\"source_refs\":[\"AGENTS.md\",\"RUN_STATE.json\",\"SPEC/PROGRESS.md\",\"HANDOFF.md\"],\"next_action\":\"冻结 M8-04 机械结果为 quality_evidence_blocked，补齐 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 后，再进入 3 个非敏感现实任务验证。\",\"completion_state\":\"blocked\"}",
+  "parsed_output": {
+    "task_id": "REAL-01",
+    "summary": "项目代码实现已完成，但最终验收处于质量证据阻断状态，桌面窗口验证为部分完成。",
+    "facts": [
+      "RUN_STATE.json 的 status 为 running，phase 为 m8-04-mechanical-complete-quality-blocked，进度为 21/22 单元。",
+      "M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、overExpected=0、quality_eligible=0。",
+      "Context Continuity M9 契约验证已完成；快照、恢复、分段和幂等测试证据已记录。",
+      "Electron .app 编译成功，但 2026-09-27 的 DMG 重打包因 DiskManagement framework 不可用失败；已有 DMG 保留，桌面可见性仍为 PARTIAL。",
+      "DeepSeek 真实调用、Codex 原生 resume、literal GitHub clone 和 3 个非敏感现实任务验证尚未完成。",
+      "项目规则要求不把 fixture、模型自评或机械测试写成真实效果或现实提效结论。"
+    ],
+    "unknowns": [
+      "质量证据所需的 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 尚未补齐。",
+      "DeepSeek 真实模型验证结果未知，需用户提供 Key。",
+      "3 个非敏感现实任务的真实使用验证结果未知。",
+      "Electron 窗口是否能在 DiskManagement 可用环境中完成可见性与封装复验，尚未确认。",
+      "literal GitHub clone 复现结果未知，因为仓库尚无 remote。"
+    ],
+    "source_refs": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "SPEC/PROGRESS.md",
+      "HANDOFF.md"
+    ],
+    "next_action": "冻结 M8-04 机械结果为 quality_evidence_blocked，补齐 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 后，再进入 3 个非敏感现实任务验证。",
+    "completion_state": "blocked"
+  },
+  "structural_check": {
+    "json_object": true,
+    "missing_required_keys": [],
+    "source_refs_declared": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "SPEC/PROGRESS.md",
+      "HANDOFF.md"
+    ],
+    "undeclared_source_refs": [],
+    "traceability_pass": true
+  },
+  "provider_events": [
+    {
+      "id": "provider-event-0a834a15-9b55-4355-8e50-d468b8d3259e",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T19:58:57.122Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "thread.started",
+          "thread_id": "01a0df4c-a3ce-76d2-b524-0e2abe1a15a3"
+        }
+      }
+    },
+    {
+      "id": "provider-event-53863bcb-57ea-492a-830d-46e25885da44",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T19:58:57.131Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.started"
+        }
+      }
+    },
+    {
+      "id": "provider-event-54f63c75-9b9e-4636-ae7f-15f8734c4347",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T19:59:15.969Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_0",
+            "type": "agent_message",
+            "text": "老黄，我将只读取指定的四个文件，并据其内容返回单个 JSON 对象。"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-f1bd65a7-7197-4a71-96e9-fe735375fd39",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T19:59:18.054Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.started",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md RUN_STATE.json SPEC/PROGRESS.md HANDOFF.md'",
+            "aggregated_output": "",
+            "exit_code": null,
+            "status": "in_progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-08bad34c-546c-42e3-8740-eed92d39ef8c",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T19:59:18.054Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md RUN_STATE.json SPEC/PROGRESS.md HANDOFF.md'",
+            "aggregated_output": "# Local Agent Workspace 协作规则\n\n- 业务事实源是 `packages/core` 的版本化类型、状态机和 append-only 事件；Web 与 Electron 不复制业务逻辑。\n- 任何 Provider、工具调用和审批都必须留下 `RunEvent` 与可诊断 receipt。\n- `FixtureAdapter` 只用于无 Key 演示，不得标成真实模型效果；DeepSeek 是 ModelProvider，Codex SDK/CLI 是 ExecutionAgent。\n- 默认中文 UI 权限为“只读 / 工作区写入 / 完全访问”。外发、删除重要数据、访问敏感路径、生产配置、支付/发布和凭据读取始终逐次审批。\n- 不自动监听、不上传、不修改旧工作台；真实效果要用固定任务和真人使用证据验证。\n{\n  \"schema_version\": \"1.1\",\n  \"status\": \"running\",\n  \"objective\": \"在当前空目录交付可从 GitHub 复现的本地 Agent Workspace v1：一个 control plane 管理 Project、Bot、Run、Handoff、Approval 与 Artifact，并提供无 Key Fixture 演示、DeepSeek 模型通道、Codex 执行桥探针、Web UI 和 Electron 薄壳。\",\n  \"done_definition\": [\n    \"SPEC/00-06 与架构/面试材料落盘并与实现一致\",\n    \"核心状态机、事件回放、交接与权限契约有可执行测试\",\n    \"本地 server 可在无 Key 下运行 fixture demo，并提供 HTTP API\",\n    \"Web UI 能展示项目、Bot、Run、审批、来源和 Artifact\",\n    \"DeepSeek 与 Codex 适配器边界清晰，失败时可诊断\",\n    \"clean-room 命令、已知限制和未完成的安装验证被如实记录\"\n  ],\n  \"anti_goals\": [\n    \"不把旧 AI 产品经理工作台的未提交改动接入或覆盖\",\n    \"不把模型自评或 fixture 结果写成真实生产效果\",\n    \"不把 ChatGPT 订阅伪装成 DeepSeek/API 额度\",\n    \"不在首版加入云端多用户、后台监听或无人审批的自我扩张\",\n    \"不把聊天连续性当作唯一状态源\"\n  ],\n  \"recent_corrections\": [\n    {\n      \"at\": \"2026-09-26T19:50:00+08:00\",\n      \"source_ref\": \"runtime-landscape\",\n      \"rejected\": \"Codex 订阅没有任何公开嵌入路径\",\n      \"required\": \"使用官方 Codex SDK/CLI 作为本地 ExecutionAgentAdapter 探针；它不是通用 ModelProvider，能力和账号状态必须单独记录\"\n    },\n    {\n      \"at\": \"2026-09-26T19:50:00+08:00\",\n      \"source_ref\": \"environment-check\",\n      \"rejected\": \"当前可直接 pnpm install 并完成打包\",\n      \"required\": \"先落盘依赖和代码；网络恢复后再做依赖安装、Vite 构建和 Electron 打包验证\"\n    },\n    {\n      \"at\": \"2026-09-27T00:00:00+08:00\",\n      \"source_ref\": \"user-2026-09-27\",\n      \"rejected\": \"依赖聊天连续性或立即接 DeepSeek 作为主线\",\n      \"required\": \"先持久化 ContextSnapshot、执行 segment 和 fallback recovery；DeepSeek 后置\"\n    }\n  ],\n  \"scope\": {\n    \"allowed\": [\n      \"当前目录内新建 monorepo、SPEC、核心运行时、server、Web、Electron 壳、fixture、测试和诊断脚本\",\n      \"读取旧工作台文档作为只读参考\"\n    ],\n    \"forbidden\": [\n      \"修改 /Users/m4air/AI产品经理工作台\",\n      \"读取或逆向凭据、Cookie、Token 文件\",\n      \"删除文件、数据库迁移、外发消息、发布或支付\"\n    ]\n  },\n  \"phase\": \"m8-04-mechanical-complete-quality-blocked\",\n  \"progress\": {\n    \"completed_units\": 21,\n    \"total_units\": 22\n  },\n  \"retry\": {\n    \"error_fingerprint\": \"electron-window-ax-timeout\",\n    \"attempt\": 1,\n    \"max_attempts\": 1\n  },\n  \"review\": {\n    \"level\": \"R1\",\n    \"budget\": 1,\n    \"used\": 0,\n    \"blocking_corrections_left\": 1\n  },\n  \"blocked_reason\": \"Electron arm64 DMG 曾成功生成并启动过，但 Computer Use 无法在超时内绑定窗口；2026-09-27 重打包时 .app 编译成功，hdiutil 因当前环境 DiskManagement framework 不可用而失败。DeepSeek、literal GitHub clone、Codex resume 和真实 AI/现实任务验证仍未完成。\",\n  \"next_action\": \"冻结 M8-04 机械结果为 quality_evidence_blocked；补齐 PB-01/PB-02/其余路径的 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 后，再进入 3 个非敏感现实任务验证。\",\n  \"last_evidence\": \"2026-09-27：M8-04 10 题三路径执行已完成（36 条 receipt、30 个唯一 task×path 组合）；校验器修正后 overExpected=0、quality_eligible=0。EX-02 为 single_call 7/8、single_bot 0/8 schema failure、multi_bot 0/8 schema failure，multi_bot 480462ms，约为 single_bot 的 6.18 倍。完整机械汇总和人工复核已落盘；这不是质量通过或现实提效结论，DeepSeek 后置。\",\n  \"updated_at\": \"2026-09-27T00:00:00+08:00\"\n}\n# 当前推进进度\n\n更新时间：2026-09-27\n\n## 总状态\n\n`context-continuity-jsonl-verified-m9-02-desktop-partial`\n\n这表示：代码实现单元已完成，但项目最终验收没有完成。\n\n## 已完成\n\n- 产品定义和边界\n- 领域类型与 Run 状态机\n- append-only event 和幂等\n- Provider/Fixture/Codex 探针\n- Codex CLI 订阅执行桥最小真实调用；receipt 已落盘，默认 read-only\n- Codex 子进程取消和控制面取消竞态专项测试通过（10 tests passed）\n- CodexExternalAdapter 已接入 control plane；真实 Product Builder Run 从 `running` 到 `succeeded`，5 条 provider 事件已进入项目事件流\n- 中文权限策略\n- Product Builder Fixture workflow\n- 4 个 Handoff、5 个 Artifact、1 个 Approval\n- Server/API 源代码\n- Web UI 源代码\n- Electron 薄壳源代码\n- 限额/上下文中断恢复机制\n- 10 个原生测试（包含 Codex 适配器和控制面取消专项）\n- 无端口 HTTP handler smoke test\n- Electron health-ready 轮询\n- npm workspace 安装回退入口\n- Web 明确显示本地服务或 Fixture 数据来源\n- Fixture demo\n- 受控主机网络下 `pnpm install` 已完成；没有修改 VPN、DNS、代理或防火墙\n- Web Vite production build 已通过\n- arm64 Electron DMG 已生成：`release/Local Agent Workspace-0.1.0-arm64.dmg`\n- Firefox Computer Use 已打开本地 Web，确认项目、Run 时间线、审批卡、Bot 管理和 Codex probe；审批按钮交互后显示“已确认，Architecture Bot 将继续工作”\n- 去除 Web 对 Google Fonts 的运行时依赖，断网时不再等待外部字体\n- 隔离 clean-room 源码副本从零 `pnpm install`、`pnpm run setup`、`pnpm test:all` 通过（10 tests passed）\n- M8-04 10 题固定任务集、统一记录字段和单/多 Bot 判定阈值已冻结\n- M8-04 PB-01 已用真实 Codex subscription execution bridge 跑通 `single_call`、`single_bot`、`multi_bot`；multi Bot 成功记录形成 4 个结构化阶段，单次记录为 19–29 条 provider 事件\n- M8-04 自动校验已完成：9 条真实 provider 记录（其中 8 条完成、1 条 provider_incomplete）均有 JSON/schema 校验结果；当前有效完成记录为 `single_call` 7/8、`single_bot` 两次 8/8、旧 `multi_bot` 拼接/前缀输出被严格拒绝、可解析的 `multi_bot` 记录为 7/8；没有记录被提升为质量证据\n- M8-04 试跑、重试和校验均写入 `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json` 和 `evidence/receipts/m804-*.json`\n- Context Continuity v1 纯函数已完成：软/硬阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 均有专项测试。\n- `JsonlContextSnapshotStore` 已完成：快照追加、重启读取、重复 ID 拒绝、按 project/run 查询 latest，并保持原始 RunEvent 不变。\n- Run segment/fallback resume 已完成：provider 未完成或抛错时，同一逻辑 Run 追加 segment、snapshot 和 resume 事件，并把已校验的 ContextPacket 传给下一段；专项恢复测试通过。\n- Product Builder checkpoint 已完成：4 个 Handoff、5 个 Artifact、1 个 Approval 生成稳定幂等键；边界事件和 Snapshot 追加到 JSONL，重放同一 Run 会跳过已记录工作。\n- M9-05 Context Continuity 验证已完成并写入 `validation/m9-context-continuity-results.json`：synthetic provider limit、同一 Run 恢复、snapshot 重启/篡改校验、重复 checkpoint、跨项目隔离和原始事件保留均通过；这是契约证据，不是模型质量或现实使用证据。\n- M8-04 PB-02 已完成三条 Codex subscription 路径并自动校验：修正计分器后均 schema 通过、4/8 frozen hard constraints；`multi_bot` 为 167466ms，约为 `single_bot` 的 3.27 倍，不能据此设为默认。人工复核记录已更新，质量证据仍阻断。\n- M8-04 RS-01 已完成三条 Codex subscription 路径并自动校验：修正计分器后三条均 schema 通过、7/8 hard constraints；`multi_bot` 为 180750ms，约为 `single_bot` 的 5.33 倍。Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 仍缺失，人工复核记录已更新，质量证据仍阻断。\n- M8-04 RS-02 已完成三条 Codex subscription 路径并自动校验：single_call 5/8、single_bot schema failure 0/8、multi_bot 6/8；`multi_bot` 约为 `single_bot` 的 2.98 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 AR-01 已完成三条 Codex subscription 路径并自动校验：single_call 8/8、single_bot 7/8、multi_bot 8/8；`multi_bot` 约为 `single_bot` 的 3.97 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 AR-02 已完成三条 Codex subscription 路径并自动校验：single_call 7/8、single_bot 7/8、multi_bot schema failure 0/8；`multi_bot` 约为 `single_bot` 的 2.71 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EV-01 已完成三条 Codex subscription 路径并自动校验：single_call 6/8、single_bot schema failure 0/8、multi_bot 6/8；`multi_bot` 约为 `single_bot` 的 3.98 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EV-02 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、6/8 hard constraints；`multi_bot` 约为 `single_bot` 的 6.53 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EX-01 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、7/8 hard constraints；`multi_bot` 约为 `single_bot` 的 3.98 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EX-02 已完成三条 Codex subscription 路径并自动校验：single_call 7/8，single_bot 和 multi_bot schema failure 0/8；`multi_bot` 为 480462ms，约为 `single_bot` 的 6.18 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、`overExpected=0`、`quality_eligible=0`；总账本为 `validation/m8-04-aggregate-summary.json`。这不是多 Bot 优势结论，也不是现实使用验证。\n\n## 当前卡点\n\n1. 本次依赖安装通过了受控主机网络；普通 Codex 沙箱仍会出现 registry DNS 失败。没有修改 VPN。后续安装应继续使用明确的受控网络命令，不能把网络恢复写成永久环境保证。\n2. Electron arm64 App 已启动并被系统登记为运行中，但 Computer Use 读取其窗口连续超时，因此“进程启动”已验证，“桌面窗口可见性”仍是 PARTIAL。\n3. DeepSeek 尚未真实调用；它是可选对比通道，需要用户提供 Key 后才能做真实模型验证。\n4. Codex 原生 resume 尚未接通；M8-04 10 题机械执行已完成但质量证据仍阻断，3 个现实任务验证尚未完成。\n5. 当前工作区和隔离源码副本安装已通过；literal GitHub clone 仍待仓库 remote。\n6. M8-04 的长批次在第一次 `--path all` 运行中只完成了 `single_call`，随后外层执行会话结束；按单路径重试后成功，说明下一批必须拆成小批并依赖 JSONL/receipt 恢复，不能把一次长会话当作唯一状态。\n7. 2026-09-27 重打包时 `.app` 编译成功，但 `hdiutil create` 因系统 DiskManagement framework 不可用而失败；已有 DMG 保留，不把本次封装失败写成应用代码失败。\n8. multi Bot 校验器已修正为严格单 JSON 对象；旧的拼接/前缀输出被拒绝，3 个晚到的受控复测 receipt 以唯一 `receipt_id` 追踪；可解析记录因缺少完整 replay 证据仍为 7/8，不能升格质量证据。\n\n## 当前唯一下一步\n\n冻结 M8-04 机械结果为 `quality_evidence_blocked`；补齐 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 后，再进入 3 个非敏感现实任务验证。\n\n## 网络恢复后的下一步\n\n```bash\npnpm run recover\npnpm run validate:state\npnpm install\npnpm --filter @agent-workspace/web build\npnpm package:mac\n```\n\n随后按 `IMPLEMENTATION-BACKLOG.md` 的 M8 顺序继续，不重新设计产品。\n# Recovery Handoff\n\n更新时间：2026-09-27（Asia/Shanghai）\n\n## 当前目标\n\n在 `/Users/m4air/Work Agent开发。` 交付可从 GitHub 复现的 Local Agent Workspace v1：单一本地 control plane 管理 Project、Bot、Run、Handoff、Approval 和 Artifact；首个内置 Bot 是 Product Builder。\n\n## 当前状态\n\n- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 10 题机械执行已收口但质量证据阻断，Desktop 仍部分验证\n- 阶段：`m8-04-mechanical-complete-quality-blocked`\n- 已完成：\n  - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本\n  - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`\n  - `packages/core`：类型契约、显式 Run 状态机、append-only 事件、幂等事件仓储、测试\n  - `packages/adapters`：DeepSeek 模型通道、Fixture 通道、Codex CLI/SDK 执行桥、权限策略\n  - `packages/workflow`：Product Builder 确定性 workflow，4 个结构化交接、5 个来源关联 Artifact 和待审批边界\n  - `apps/server`：HTTP control plane、fixture API、core snapshot API、Codex 版本探针、JSONL 事件回退和 SQLite schema 边界\n  - `apps/server/src/http-smoke.test.ts`：不打开端口也能验证 health 和 Product Builder API\n  - `apps/web`：React/Vite 中文工作台、项目/Bot/Run/审批/Artifact/Provider 视图，优先走本地 HTTP、失败回退 fixture，并明确显示数据来源\n  - `apps/desktop`：启动本地 server、加载同一 Web UI 的 Electron 薄壳文件\n  - `apps/desktop/src/main.ts`：health-ready 轮询后再打开窗口\n  - `apps/desktop/tsconfig.json`、`scripts/build-desktop-entry.mjs`：确保 electron-builder 使用真实的 CommonJS 入口\n  - `evidence/receipts/build-and-ui-validation-2026-09-26.json`：依赖、构建、Web Computer Use 和 DMG 证据\n  - `scripts/m804-pilot.ts`、`scripts/validate-m804.ts`：固定任务试跑和自动校验入口\n  - `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json`：PB-01 试跑账本与校验摘要\n  - `validation/m8-04-manual-review-PB-01.json`：PB-01 人工复核、可比性和质量证据阻断项\n  - `packages/core/src/context.ts`、`packages/core/src/context.test.ts`：ContextSnapshot 纯函数与恢复校验\n  - `apps/server/src/persistence.ts`、`apps/server/src/persistence.test.ts`：JSONL ContextSnapshot 持久化与隔离测试\n  - `apps/server/src/product-builder-continuity.ts`、`apps/server/src/product-builder-continuity.test.ts`：Product Builder 边界 checkpoint 与重放幂等\n  - `validation/m9-context-continuity-results.json`：M9 契约验证账本\n  - `validation/m8-04-manual-review-PB-02.json`：PB-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-RS-01.json`：RS-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-RS-02.json`：RS-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-AR-01.json`：AR-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-AR-02.json`：AR-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EV-01.json`：EV-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EV-02.json`：EV-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EX-01.json`：EX-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EX-02.json`：EX-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-aggregate-summary.json`：M8-04 全套机械执行汇总\n- `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口\n- `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断\n- 验证通过：\n  - `pnpm test:all`：14 tests passed\n  - `npm run typecheck`：server TypeScript syntax check passed\n  - `npm run setup`：passed\n  - `npm run demo`：fixture demo passed，输出 4 handoffs / 5 artifacts / pending approval\n  - `npm run diagnose`：记录 Node 22.23.1、codex-cli 0.155.1\n  - Codex 订阅路径真实最小调用：`codex exec --json` 返回约定 JSON；receipt 为 `evidence/receipts/codex-cli-probe-2026-09-26.json`\n  - CodexExternalAdapter 已接入 control plane；真实只读 Product Builder Run `run_dabface1-e16b-449c-99a0-214c90def682` 成功，receipt 为 `evidence/receipts/codex-product-builder-run-2026-09-26.json`\n- 真实验证缺口：\n  - 普通 Codex 沙箱访问 registry 时仍可能 DNS 失败；使用受控主机网络后 `pnpm install` 已成功，未修改 VPN/DNS/代理/防火墙\n  - Web Vite production build 已通过；Firefox Computer Use 已打开 `localhost:5173` 并完成审批按钮交互\n  - arm64 Electron DMG 已生成并且打包进程已启动；Computer Use 读取 Electron 窗口连续超时，所以桌面可见性仍是 PARTIAL\n  - DeepSeek 尚未用用户 Key 实跑；Codex Product Builder 端到端 Run、取消和恢复仍待验证\n  - M8-04 已完成 PB-01 试跑与 PB-02 三路径小批次；RS-01 至 EX-02 仍未执行，PB-01/PB-02 质量证据均未解阻\n  - PB-01 当前有 9 条真实 provider 记录（8 条完成、1 条 provider_incomplete），全部是 `quality_eligible=false`；可解析的 multi Bot receipts 自动校验为 7/8，另有前缀/拼接输出被严格拒绝，必须先人工复核，不能据此宣称单/多 Bot 质量优劣\n  - 为同步最新桌面入口而重打包时，`.app` 编译成功，但 `hdiutil` 报 `设备未配置`；已有 DMG 保留，需在 DiskManagement 可用的 macOS 环境再复验封装\n  - 尚未做 3 个非敏感真实任务的 reality validation\n\n## 不要重新打开的决定\n\n- 旧 `/Users/m4air/AI产品经理工作台` 只读参考，不接管未提交改动。\n- control plane 自建状态机是事实源；LangGraph/Agents SDK/Pi/Hermes/OpenHands 只能作为可替换执行层。\n- DeepSeek 是 `ModelProviderAdapter`；Codex 是 `ExecutionAgentAdapter`，不得混成同一种 Provider。\n- 权限 UI 固定使用“只读 / 工作区写入 / 完全访问”，代码值分别是 `read_only/workspace_write/full_access`。\n- 首版不做云端多用户、后台监听、自动外发/发布、无人审批的 Bot 自我扩张或 Computer Use 硬验收。\n\n## 下一步\n\n1. Codex Run 取消专项测试已经通过并写入 receipt；Electron 进程已启动但窗口 AX 读取超时，保留为 PARTIAL。\n2. 隔离 clean-room 源码副本已从零安装、setup、10 tests 通过；literal GitHub clone 仍待仓库 remote。\n3. Context Continuity M9-01 至 M9-05 已完成：同一逻辑 Run 的不可变 snapshot、JSONL 存储、segment/fallback resume、ContextPacket 传递、Product Builder 边界幂等和契约验证已通过专项测试，账本为 `validation/m9-context-continuity-results.json`。\n4. M8-04 PB-02 三条 Codex subscription 路径已完成并校验为 schema_pass=true、6/8 hard constraints；multi_bot 比 single_bot 慢约 3.27 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-PB-02.json`。\n5. M8-04 RS-01 三条路径已完成并校验为 schema_pass=true、7/8 hard constraints；multi_bot 比 single_bot 慢约 5.33 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-RS-01.json`。\n6. M8-04 RS-02 三条路径已完成并校验为 5/8、0/8、6/8；single_bot schema failure，multi_bot 比 single_bot 慢约 2.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-RS-02.json`。\n7. M8-04 AR-01 三条路径已完成并校验为 8/8、7/8、8/8；multi_bot 比 single_bot 慢约 3.97 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-AR-01.json`。\n8. M8-04 AR-02 三条路径已完成并校验为 7/8、7/8、0/8；multi_bot schema failure 且比 single_bot 慢约 2.71 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-AR-02.json`。\n9. M8-04 EV-01 三条路径已完成并校验为 6/8、0/8、6/8；single_bot schema failure，multi_bot 比 single_bot 慢约 3.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EV-01.json`。\n10. M8-04 EV-02 三条路径已完成并校验为 6/8、6/8、6/8；multi_bot 比 single_bot 慢约 6.53 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EV-02.json`。\n11. M8-04 EX-01 三条路径已完成并校验为 7/8、7/8、7/8；multi_bot 比 single_bot 慢约 3.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-01.json`。\n12. M8-04 EX-02 三条路径已完成并校验为 7/8、0/8、0/8；single_bot/multi_bot schema failure，multi_bot 比 single_bot 慢约 6.18 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-02.json`。\n13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`。下一步是补质量证据或转入 3 个非敏感现实任务验证，不能把机械通过写成产品价值。\n5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。\n6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。\n\n## 重要文件\n\n- `RUN_STATE.json`：机器可读续接状态\n- `SPEC/MASTER-SPEC.md`：详细产品与工程说明书\n- `SPEC/IMPLEMENTATION-BACKLOG.md`：逐项推进清单\n- `SPEC/AI-EXECUTION-PROTOCOL.md`：AI 执行与恢复协议\n- `SPEC/00-product-contract.md` … `SPEC/06-validation-and-interview-evidence.md`：冻结契约\n- `packages/core/src/`：领域事实源\n- `packages/adapters/src/`：Provider/权限适配层\n- `apps/server/src/index.ts`：本地 HTTP control plane\n- `apps/server/src/runtime.ts`：core 运行时 fixture\n- `apps/server/src/persistence.ts`：事件 JSONL 与 ContextSnapshot JSONL 存储\n- `apps/web/src/`：Web UI\n- `apps/desktop/src/main.ts`：Electron 薄壳\n- `fixtures/demo-project.json`：无 Key 演示输入\n\n## 恢复规则\n\n先读本文件和 `RUN_STATE.json`，再只检查上面“下一步”涉及的文件。若状态是 `blocked_environment`，先解决状态中列出的环境条件，再把状态恢复为 `running` 并写入唯一下一步。不要根据旧聊天重新设计产品，不要修改旧工作台，不要将 fixture/机械测试写成真实使用通过。\n",
+            "exit_code": 0,
+            "status": "completed"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-410ce28e-08c0-40dc-b17d-bd02e7dfd614",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T19:59:58.124Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_2",
+            "type": "agent_message",
+            "text": "{\"task_id\":\"REAL-01\",\"summary\":\"项目代码实现已完成，但最终验收处于质量证据阻断状态，桌面窗口验证为部分完成。\",\"facts\":[\"RUN_STATE.json 的 status 为 running，phase 为 m8-04-mechanical-complete-quality-blocked，进度为 21/22 单元。\",\"M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、overExpected=0、quality_eligible=0。\",\"Context Continuity M9 契约验证已完成；快照、恢复、分段和幂等测试证据已记录。\",\"Electron .app 编译成功，但 2026-09-27 的 DMG 重打包因 DiskManagement framework 不可用失败；已有 DMG 保留，桌面可见性仍为 PARTIAL。\",\"DeepSeek 真实调用、Codex 原生 resume、literal GitHub clone 和 3 个非敏感现实任务验证尚未完成。\",\"项目规则要求不把 fixture、模型自评或机械测试写成真实效果或现实提效结论。\"],\"unknowns\":[\"质量证据所需的 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 尚未补齐。\",\"DeepSeek 真实模型验证结果未知，需用户提供 Key。\",\"3 个非敏感现实任务的真实使用验证结果未知。\",\"Electron 窗口是否能在 DiskManagement 可用环境中完成可见性与封装复验，尚未确认。\",\"literal GitHub clone 复现结果未知，因为仓库尚无 remote。\"],\"source_refs\":[\"AGENTS.md\",\"RUN_STATE.json\",\"SPEC/PROGRESS.md\",\"HANDOFF.md\"],\"next_action\":\"冻结 M8-04 机械结果为 quality_evidence_blocked，补齐 Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 后，再进入 3 个非敏感现实任务验证。\",\"completion_state\":\"blocked\"}"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-00b4a65b-78b8-418a-a111-213a19cf3778",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T19:59:58.324Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 54067,
+            "cached_input_tokens": 40448,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 777,
+            "reasoning_output_tokens": 251
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-aa7bf9b0-77d2-490c-b8e4-98b349447ed4",
+      "runId": "external-e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:00:01.093Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "status": "completed",
+        "exitCode": 0
+      }
+    }
+  ]
+}

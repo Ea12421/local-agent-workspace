@@ -1,0 +1,400 @@
+{
+  "record_version": "m8-05.reality-results.v1",
+  "card_id": "m8-05-local-real-tasks-v1",
+  "executed_at": "2026-09-26T20:03:28.013Z",
+  "implementation_commit": "513fae88a43f46d8b6034d174f4438cc4793d0de",
+  "status": "PASS",
+  "task_count": 3,
+  "traceable_task_count": 3,
+  "primary_threshold": "3/3 tasks pass the traceability rubric",
+  "recovery": {
+    "record_version": "m8-05.recovery.v1",
+    "run_id": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+    "final_status": "succeeded",
+    "provider": {
+      "authMode": "subscription",
+      "billingSource": "unknown",
+      "isMock": false,
+      "harness": "codex-cli",
+      "provider": "openai-codex",
+      "model": "codex-managed-session"
+    },
+    "segment_count": 2,
+    "snapshot_count": 1,
+    "resume_count": 1,
+    "same_logical_run": true,
+    "recovery_pass": true,
+    "event_types": [
+      "run.created",
+      "run.started",
+      "run.segment_started",
+      "provider.event",
+      "run.segment_completed",
+      "context.snapshot_created",
+      "run.resume_requested",
+      "run.segment_started",
+      "provider.event",
+      "provider.event",
+      "provider.event",
+      "provider.event",
+      "provider.event",
+      "run.segment_completed",
+      "run.succeeded"
+    ],
+    "events": [
+      {
+        "id": "event_f3ee972e-57a5-4ca0-9229-fb98fd4b44fb",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "sequence": 1,
+        "type": "run.created",
+        "occurredAt": "2026-09-26T20:02:44.625Z",
+        "actor": {
+          "type": "system"
+        },
+        "data": {
+          "status": "queued",
+          "projectId": "project-product-builder",
+          "botId": "bot-product-builder",
+          "objective": "M8-05 recovery smoke. Read only AGENTS.md, RUN_STATE.json, SPEC/PROGRESS.md, and HANDOFF.md in the current workspace.\n\nReturn one concise JSON object with keys summary, facts, unknowns, source_refs, next_action, completion_state.\n\nDo not write, run commands, access secrets, or perform external actions.\n\nThis provider segment will be intentionally interrupted after its first real event. The next segment must use the saved context packet and finish the same logical Run."
+        }
+      },
+      {
+        "id": "event_3c5acabb-9660-4832-ab00-e50969e76542",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "sequence": 2,
+        "type": "run.started",
+        "occurredAt": "2026-09-26T20:02:44.625Z",
+        "actor": {
+          "type": "system"
+        },
+        "data": {
+          "action": "start",
+          "fromStatus": "queued",
+          "toStatus": "running"
+        }
+      },
+      {
+        "id": "event_b1a04bcd-2d15-44fd-8f71-634d9de90ce0",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "run.segment_started",
+        "data": {
+          "segment": 1,
+          "contextSnapshotId": null,
+          "provider": "execution-adapter"
+        },
+        "sequence": 3,
+        "actor": {
+          "type": "system"
+        },
+        "occurredAt": "2026-09-26T20:02:44.625Z"
+      },
+      {
+        "id": "event_d00f3f43-6ab1-47fc-9e05-b6b2a91365ae",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "provider.event",
+        "data": {
+          "bridge": "codex-cli",
+          "stream": {
+            "type": "thread.started",
+            "thread_id": "01a0df50-26d5-7ba2-a0be-77c83ffaca1e"
+          }
+        },
+        "sequence": 4,
+        "actor": {
+          "type": "provider",
+          "provider": "openai-codex"
+        },
+        "occurredAt": "2026-09-26T20:02:47.256Z"
+      },
+      {
+        "id": "event_7b498956-01b4-4eb7-a11f-e6166e5626b6",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "run.segment_completed",
+        "data": {
+          "segment": 1,
+          "status": "failed",
+          "code": "provider_error",
+          "message": "m8-05 synthetic interruption after first real provider event"
+        },
+        "sequence": 5,
+        "actor": {
+          "type": "system"
+        },
+        "occurredAt": "2026-09-26T20:02:47.256Z"
+      },
+      {
+        "id": "event_e82a0f24-64ef-4e8b-92e4-fa5ad29217f1",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "context.snapshot_created",
+        "data": {
+          "snapshotId": "snapshot_53417783-62b2-443e-9d36-107226a75401",
+          "contentSha256": "dd317012e1fd007bdafe654ea17e2ec7b999641638d87f4126e3e08edcf3d703",
+          "covers": {
+            "fromSequence": 1,
+            "toSequence": 5
+          }
+        },
+        "sequence": 6,
+        "actor": {
+          "type": "system"
+        },
+        "occurredAt": "2026-09-26T20:02:47.270Z"
+      },
+      {
+        "id": "event_39f53b04-74eb-474b-a98e-825cc0fb3ac4",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "run.resume_requested",
+        "data": {
+          "fromSegment": 1,
+          "toSegment": 2,
+          "snapshotId": "snapshot_53417783-62b2-443e-9d36-107226a75401"
+        },
+        "sequence": 7,
+        "actor": {
+          "type": "system"
+        },
+        "occurredAt": "2026-09-26T20:02:47.270Z"
+      },
+      {
+        "id": "event_73162bb3-d2f2-4033-8302-a67624bc530c",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "run.segment_started",
+        "data": {
+          "segment": 2,
+          "contextSnapshotId": "snapshot_53417783-62b2-443e-9d36-107226a75401",
+          "provider": "execution-adapter"
+        },
+        "sequence": 8,
+        "actor": {
+          "type": "system"
+        },
+        "occurredAt": "2026-09-26T20:02:47.270Z"
+      },
+      {
+        "id": "event_82c8fa07-3dfd-4dd5-8683-2b9b67be2330",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "provider.event",
+        "data": {
+          "bridge": "codex-cli",
+          "stream": {
+            "type": "thread.started",
+            "thread_id": "01a0df50-27f3-72b3-91da-c921bc59d196"
+          }
+        },
+        "sequence": 9,
+        "actor": {
+          "type": "provider",
+          "provider": "openai-codex"
+        },
+        "occurredAt": "2026-09-26T20:02:47.482Z"
+      },
+      {
+        "id": "event_ae5fc6c2-b620-4aff-8764-ba059684a200",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "provider.event",
+        "data": {
+          "bridge": "codex-cli",
+          "stream": {
+            "type": "turn.started"
+          }
+        },
+        "sequence": 10,
+        "actor": {
+          "type": "provider",
+          "provider": "openai-codex"
+        },
+        "occurredAt": "2026-09-26T20:02:47.483Z"
+      },
+      {
+        "id": "event_7f323ed2-9956-4dda-9a05-72b88b6c276e",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "provider.event",
+        "data": {
+          "bridge": "codex-cli",
+          "stream": {
+            "type": "item.completed",
+            "item": {
+              "id": "item_0",
+              "type": "agent_message",
+              "text": "{\"summary\":\"Unable to complete recovery smoke.\",\"facts\":[],\"unknowns\":[\"RUN_STATE.json\",\"SPEC/PROGRESS.md\",\"HANDOFF.md could not be read under the no-command constraint.\"],\"source_refs\":[\"AGENTS.md content provided in prompt\"],\"next_action\":\"Provide readable file contents or permit read-only file access.\",\"completion_state\":\"blocked\"}"
+            }
+          }
+        },
+        "sequence": 11,
+        "actor": {
+          "type": "provider",
+          "provider": "openai-codex"
+        },
+        "occurredAt": "2026-09-26T20:03:24.763Z"
+      },
+      {
+        "id": "event_8df1ed92-7417-4fef-bc2c-edf178c23fa2",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "provider.event",
+        "data": {
+          "bridge": "codex-cli",
+          "stream": {
+            "type": "turn.completed",
+            "usage": {
+              "input_tokens": 23259,
+              "cached_input_tokens": 17152,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 463,
+              "reasoning_output_tokens": 387
+            }
+          }
+        },
+        "sequence": 12,
+        "actor": {
+          "type": "provider",
+          "provider": "openai-codex"
+        },
+        "occurredAt": "2026-09-26T20:03:24.791Z"
+      },
+      {
+        "id": "event_8aef816e-fb76-49fd-9f4e-a3e8449fedfc",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "provider.event",
+        "data": {
+          "bridge": "codex-cli",
+          "status": "completed",
+          "exitCode": 0
+        },
+        "sequence": 13,
+        "actor": {
+          "type": "provider",
+          "provider": "openai-codex"
+        },
+        "occurredAt": "2026-09-26T20:03:28.013Z"
+      },
+      {
+        "id": "event_e7665cea-acc2-40d3-9b35-3258f4e56bc7",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "type": "run.segment_completed",
+        "data": {
+          "segment": 2,
+          "status": "succeeded",
+          "contextSnapshotId": "snapshot_53417783-62b2-443e-9d36-107226a75401"
+        },
+        "sequence": 14,
+        "actor": {
+          "type": "system"
+        },
+        "occurredAt": "2026-09-26T20:03:28.013Z"
+      },
+      {
+        "id": "event_96d520bd-0dfa-4572-842d-04fb3b025549",
+        "runId": "run_304494dd-bf41-4761-b2a3-04d197224d1c",
+        "sequence": 15,
+        "type": "run.succeeded",
+        "occurredAt": "2026-09-26T20:03:28.013Z",
+        "actor": {
+          "type": "system"
+        },
+        "data": {
+          "action": "succeed",
+          "fromStatus": "running",
+          "toStatus": "succeeded",
+          "result": {
+            "provider": {
+              "harness": "codex-cli",
+              "provider": "openai-codex",
+              "model": "codex-managed-session",
+              "authMode": "subscription",
+              "billingSource": "unknown",
+              "isMock": false
+            },
+            "eventCount": 6,
+            "segmentCount": 2
+          }
+        }
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "REAL-01",
+      "run_id": "e988321f-09f8-4ae2-b7e9-07af04a6daa2",
+      "elapsed_ms": 66527,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "raw_receipt": "validation/m8-05-raw/REAL-01.json",
+      "structural_check": {
+        "json_object": true,
+        "missing_required_keys": [],
+        "source_refs_declared": [
+          "AGENTS.md",
+          "RUN_STATE.json",
+          "SPEC/PROGRESS.md",
+          "HANDOFF.md"
+        ],
+        "undeclared_source_refs": [],
+        "traceability_pass": true
+      }
+    },
+    {
+      "task_id": "REAL-02",
+      "run_id": "2230bb89-3d46-44a2-bedf-e248deb15132",
+      "elapsed_ms": 86479,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "raw_receipt": "validation/m8-05-raw/REAL-02.json",
+      "structural_check": {
+        "json_object": true,
+        "missing_required_keys": [],
+        "source_refs_declared": [
+          "AGENTS.md",
+          "STATE.md"
+        ],
+        "undeclared_source_refs": [],
+        "traceability_pass": true
+      }
+    },
+    {
+      "task_id": "REAL-03",
+      "run_id": "f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "elapsed_ms": 77050,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "raw_receipt": "validation/m8-05-raw/REAL-03.json",
+      "structural_check": {
+        "json_object": true,
+        "missing_required_keys": [],
+        "source_refs_declared": [
+          "AGENTS.md",
+          "STATE.md"
+        ],
+        "undeclared_source_refs": [],
+        "traceability_pass": true
+      }
+    }
+  ],
+  "facts": [
+    "3/3 real local task receipts passed the frozen structural traceability rubric.",
+    "Recovery smoke final status was succeeded; segment_count=2, snapshot_count=1, resume_count=1."
+  ],
+  "inferences": [],
+  "unknowns": [
+    "Manual edit count, paired baseline time, cost, and user willingness were not measured by this gate.",
+    "Provider model quality and DeepSeek parity remain untested."
+  ],
+  "next_decision": "Retain continuity as the next engineering path and design a separate paired baseline before claiming productivity improvement."
+}

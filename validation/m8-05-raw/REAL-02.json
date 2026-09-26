@@ -1,0 +1,210 @@
+{
+  "record_version": "m8-05.real-task.v1",
+  "task_id": "REAL-02",
+  "root": "/Users/m4air/总控/projects/Pi-Agent-Workbench",
+  "read_allowlist": [
+    "AGENTS.md",
+    "STATE.md"
+  ],
+  "started_at": "2026-09-26T20:00:01.095Z",
+  "finished_at": "2026-09-26T20:01:27.574Z",
+  "elapsed_ms": 86479,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "2230bb89-3d46-44a2-bedf-e248deb15132",
+  "event_count": 7,
+  "provider_completed": true,
+  "output_sha256": "4d1290880225932db8c8b27163d9f59c8305f44e1c40d71fb0e2a341b637d6d7",
+  "raw_output": "{\"task_id\":\"REAL-02\",\"summary\":\"项目当前为 active，P12 UI 增量已完成实现与本地验证，但整体仍为 PARTIAL（6/12）；当前无自动下一步。\",\"facts\":[\"P12 当前状态为 active，液态玻璃侧栏与浅色主界面视觉收敛已完成并通过本地验证。\",\"P12 候选基于 clean baseline c9a19439648f5de02a53891ce55b6dde0e305b04，当前有 17 个未提交变更。\",\"Desktop typecheck、production build、git diff --check 及本轮液态玻璃视觉门均通过。\",\"GitHub 私有单仓 Ea12421/Pi-Agent-Workbench 已完成推送，远端 main 精确回读为 c9a19439648f5de02a53891ce55b6dde0e305b04。\",\"当前安装包 /Applications/pi-gui.app 与该整合主线 clean HEAD 绑定，identity、strict codesign、packaged smoke 和 installed visible readback 均通过。\",\"项目整体判定为 PARTIAL；历史 accepted increments 为 6/11，扩展 P11-A 后总口径为 6/12。\",\"STATE 明确记录唯一下一步为无自动动作；如用户明确要求替换安装，应重新独立打包、核对身份并替换。\",\"项目停止条件包括不得自动 commit、push、publish 或 deploy，以及不得读取或复制 secret。\"],\"unknowns\":[\"当前安装版尚缺新的日常使用主观验收，因此不能提升为 user_accepted。\",\"notarization 未执行，当前安装包不能描述为公开分发包。\",\"完整 Required 场景仍存在明确缺口，包括跨 workspace/清除浏览数据、P7-C、P8-G、P9-E 等。\",\"本次仅允许读取 AGENTS.md 与 STATE.md，未核验其他项目文件、Git 工作区实时状态或运行结果。\"],\"source_refs\":[\"AGENTS.md\",\"STATE.md\"],\"next_action\":\"NO_ACTION\",\"completion_state\":\"active\"}",
+  "parsed_output": {
+    "task_id": "REAL-02",
+    "summary": "项目当前为 active，P12 UI 增量已完成实现与本地验证，但整体仍为 PARTIAL（6/12）；当前无自动下一步。",
+    "facts": [
+      "P12 当前状态为 active，液态玻璃侧栏与浅色主界面视觉收敛已完成并通过本地验证。",
+      "P12 候选基于 clean baseline c9a19439648f5de02a53891ce55b6dde0e305b04，当前有 17 个未提交变更。",
+      "Desktop typecheck、production build、git diff --check 及本轮液态玻璃视觉门均通过。",
+      "GitHub 私有单仓 Ea12421/Pi-Agent-Workbench 已完成推送，远端 main 精确回读为 c9a19439648f5de02a53891ce55b6dde0e305b04。",
+      "当前安装包 /Applications/pi-gui.app 与该整合主线 clean HEAD 绑定，identity、strict codesign、packaged smoke 和 installed visible readback 均通过。",
+      "项目整体判定为 PARTIAL；历史 accepted increments 为 6/11，扩展 P11-A 后总口径为 6/12。",
+      "STATE 明确记录唯一下一步为无自动动作；如用户明确要求替换安装，应重新独立打包、核对身份并替换。",
+      "项目停止条件包括不得自动 commit、push、publish 或 deploy，以及不得读取或复制 secret。"
+    ],
+    "unknowns": [
+      "当前安装版尚缺新的日常使用主观验收，因此不能提升为 user_accepted。",
+      "notarization 未执行，当前安装包不能描述为公开分发包。",
+      "完整 Required 场景仍存在明确缺口，包括跨 workspace/清除浏览数据、P7-C、P8-G、P9-E 等。",
+      "本次仅允许读取 AGENTS.md 与 STATE.md，未核验其他项目文件、Git 工作区实时状态或运行结果。"
+    ],
+    "source_refs": [
+      "AGENTS.md",
+      "STATE.md"
+    ],
+    "next_action": "NO_ACTION",
+    "completion_state": "active"
+  },
+  "structural_check": {
+    "json_object": true,
+    "missing_required_keys": [],
+    "source_refs_declared": [
+      "AGENTS.md",
+      "STATE.md"
+    ],
+    "undeclared_source_refs": [],
+    "traceability_pass": true
+  },
+  "provider_events": [
+    {
+      "id": "provider-event-8775963e-9bcd-4806-91d1-d175ce552d8a",
+      "runId": "external-2230bb89-3d46-44a2-bedf-e248deb15132",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:00:03.695Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "thread.started",
+          "thread_id": "01a0df4d-a81b-74b0-88e4-51a3256df0c3"
+        }
+      }
+    },
+    {
+      "id": "provider-event-89619f5e-f2da-4253-a76c-d1cdae711926",
+      "runId": "external-2230bb89-3d46-44a2-bedf-e248deb15132",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:00:03.697Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.started"
+        }
+      }
+    },
+    {
+      "id": "provider-event-fbff4db0-cee8-4c62-8d1a-26ca18fa281a",
+      "runId": "external-2230bb89-3d46-44a2-bedf-e248deb15132",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:00:43.895Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.started",
+          "item": {
+            "id": "item_0",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc \"cat AGENTS.md && printf '\\\\n---STATE---\\\\n' && cat STATE.md\"",
+            "aggregated_output": "",
+            "exit_code": null,
+            "status": "in_progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-81df9b5e-991f-44d6-9240-10b50ca0926c",
+      "runId": "external-2230bb89-3d46-44a2-bedf-e248deb15132",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:00:43.895Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_0",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc \"cat AGENTS.md && printf '\\\\n---STATE---\\\\n' && cat STATE.md\"",
+            "aggregated_output": "# 派工作台项目协作规则\n\n## 项目定位\n\n本目录是「派工作台（Pi Agent Workbench）」的唯一项目事实源。目标是在 `pi-gui` 的现有代码和 Pi Agent 能力之上，做一套供用户长期使用的 macOS 桌面工作台，而不是从零重写 Agent Harness。\n\n## 开始工作前\n\n按顺序读取：\n\n1. `项目入口.md`\n2. `STATE.md`\n3. `PROJECT_BRIEF.md`\n4. `DOCUMENT_INDEX.md`\n5. 与当前任务直接相关的 `docs/` 文件\n\n只有进入真正跨轮实现后才创建 `RUN_STATE.json`。设计阶段不得为形式创建空状态机。\n\n## 事实优先级\n\n1. 当前项目代码、测试、运行结果与 Git 状态；\n2. 本目录的 `STATE.md`、PRD、架构和验收文档；\n3. 用户本轮明确确认；\n4. 上游 Pi、pi-gui、Codex app-server 的当前官方文档；\n5. 历史聊天和模型推断仅作线索。\n\n发生冲突时不得静默取舍，必须记录证据并停在决策点。\n\n## 已冻结边界\n\n- 以 `pi-gui` 为上游底座，只做 fork 后的增量改造；禁止重新造 Pi runtime、provider/auth、session 或通用 Agent loop。\n- macOS 是唯一正式验收平台；保留跨平台结构，但本轮不承诺 Windows/Linux 可用。\n- Pi 是第一条原生执行通道；Codex app-server 等其他 Harness 只通过适配器接入，不侵入核心 UI。\n- 项目目录和 Pi JSONL session 是事实源；数据库只存索引和 UI 元数据。\n- 凭据留在 macOS Keychain 或官方 CLI/Provider 的认证存储；禁止写入项目文件、日志、Git、数据库和前端状态。\n- 一个项目目录同一时刻只允许一个写入者；并行写入必须使用不同 Git worktree。\n- 不自动创建阶段后继任务。检测到漂移、重复 compaction 或恢复成本上升时，只生成交接建议；用户确认后再制作 handoff。\n- 不做公开分发、多用户协作、云同步、手机远控、插件市场和企业权限系统。\n\n## 实施纪律\n\n- 动态实施状态只以 `RUN_STATE.json` 与 `STATE.md` 为准；当前暂停、恢复或完成都不在本规则文件里另维护第二份状态。以 `app/` 中固定的 `pi-gui` commit 为 baseline，在 fork 中保留 MIT License 与上游归属。不调用付费模型、不改账号或凭据。\n- 开发开始后，以 `pi-gui` 固定上游 commit 为 baseline，在 fork 中保留 MIT License 与上游归属。\n- 改动采用 `Plan → Code → Verify`；不扩展到无关重构。\n- UI 上显示的权限不能只是视觉提示。所有 tool、shell、文件、Git、浏览器和外部发送动作都必须经过统一 policy enforcement point；硬隔离能力不足时明确标为软控制。\n- 所有“完成”都必须有可观察证据。静态文档、mock、测试双桩或模型自评不能替代真实 macOS 使用验收。\n- 不静默吞错；失败必须进入明确状态，并保存可恢复的下一步。\n\n## Review 与停止线\n\n- 外层实施合同拥有唯一 review 预算；默认一次 final fresh-context review，最多一次阻断修正与一次定向复核。\n- deterministic 检查优先：typecheck、lint、测试、构建、schema、权限策略测试、E2E 和真实使用。\n- 出现以下任一情况立即停止扩展：上游协议无法稳定核实、凭据需要明文复制、权限拦截只能停留在 UI、同一目录出现第二写入者、实现偏离 frozen scope、连续两次相同失败无新证据。\n\n## 文档维护\n\n- 需求变化先更新对应设计文档和 `STATE.md`，再改代码。\n- 只维护一套定义：PRD 定义「为什么/做什么」，架构定义「系统边界」，技术设计定义「如何实现」，验收文档定义「怎样算完成」。禁止在多个文件复制同一套细则。\n- BRD/MRD 当前不适用；只有产品转向商业化或公开市场时才补。\n\n---STATE---\n# 派工作台｜当前状态\n\n## 状态\n\n- P12 当前状态：`active`（Codex-like 三栏外壳、活动/通知入口、全局缩放和默认浅色视觉收敛均已完成实现与本地源代码 Electron 验证；本轮已将浅色改为白色主画布，并把左侧栏改为半透明、带模糊和细微高光的液态玻璃层；用户已查看完整截图并接受这轮视觉效果；深色主题、其他主题和原生透明度开关保持原语义；尚未安装或发布）。\n- P12 当前候选：以 `app/` clean baseline `c9a19439648f5de02a53891ce55b6dde0e305b04` 为基础，13 个 tracked 文件修改、4 个 focused 文件新增，共 17 个未提交变更；左侧任务/项目、中间对话、右侧既有检查器保持同一主壳，活动入口复用现有 session/approval/workflow/coordination/diagnostic 状态，缩放范围为 80%–140%。\n- P12 已验证：activity model 2/2、activity Electron 2/2、UiScale Electron 2/2（既有通过证据）、Desktop typecheck、desktop production build、`git diff --check` 均通过；本轮液态玻璃视觉门 1/1 通过，生成完整 `2960×1960` 的 100% 浅色主界面和活动面板截图，确认默认浅色、侧栏 blur/渐变材质、布局边界和无横向溢出。首次截图启动被已知沙箱层 Electron `SIGABRT` 阻断，按一次有界提权重试后，临时夹具再做一次定向修正重试并通过；均不是产品断言失败。Impeccable detector 只报告既有 `main.css:1442`、`timeline.css:912` 两处厚侧边强调线，未纳入本轮。Browser/Preview 内页不随主 renderer 缩放。\n- GitHub 方向（用户已确认，`2026-08-21`）：只建立一个仓库，直接以 `app/` 作为唯一源码仓；先 private，按未来 open source 标准整理。外层恢复档案与个人运行信息继续只留本机。\n- GitHub 单仓归档已完成：候选 476 个文件已以 Git tree `859df54786f8c41dd069c0a92e044c8b9c3d5c70` 提交为 `0d326c49106913cf0e26f4c27c3d77c102d4babb`，并推送到 private [`Ea12421/Pi-Agent-Workbench`](https://github.com/Ea12421/Pi-Agent-Workbench)。中文 README/网站/公开架构/状态/验证/安全/NOTICE 均已进仓；三条 Actions 保持 manual-only，首推后运行数为 `0`，Homebrew sync 仍 fail-closed。\n- 项目状态：`active`（P12 UI 增量为 5/5 个小循环完成；P11/P9 历史 10/10 仍完成；产品总体仍为 `PARTIAL / 6 of 12`）\n- 观测时间：`2026-08-29T16:46:47Z`\n- 最后写入者：Codex 任务 `01a01d66-e4cd-7260-a001-076170f94237`；收口时同一目录无第二 writer\n- 代码：`app/` 本地 `main`、`codex/p11-on-demand-collaboration` 与 private `origin/main` 均指向 merge checkpoint `c9a19439648f5de02a53891ce55b6dde0e305b04`、tree `a036dbcc247eaf65edc8b854a1b89639ea87eb39`；它把 Browser/MCP `4c7617e…` 与 Composer/process-cleanup `bc7e793…` 汇合，唯一冲突 `apps/desktop/electron/policy-runtime.ts` 已保留两侧语义并通过专项。Prepare `9db425ee34b6…` 已以非强制 fast-forward 将 15 个 commit 从 `0d326c…` 推到 private `main`；远端精确回读为 `c9a194…`，仓库仍为 PRIVATE/main，Actions 运行列表为空。旧 Prepare `fc5c4d5f3ffd…` 未执行且不得复用。\n- 当前源码恢复点仍是 local/private remote 共用的 clean Git commit `c9a19439648f5de02a53891ce55b6dde0e305b04`；P12 候选在该 baseline 上尚未提交，不能称为 clean。`references/checkpoints/20260821T095727Z-p10a-installed/MANIFEST.md` 与旧 baseline 只保留为历史恢复证据。\n- 当前纯文档交接：`HANDOFF_2026-08-21_P10A_CHECKPOINT.md`；未创建 successor、未转移 writer、未继承任何高风险确认\n- 安装包：`/Applications/pi-gui.app` 已是最新整合 main exact 版：HEAD `c9a19439648f5de02a53891ce55b6dde0e305b04`、tree `a036dbcc247eaf65edc8b854a1b89639ea87eb39`、source `f61342a8a0da2cb617d236b45b802e4dc239a632fce6152e72879d25b81b5190`、parity `exact`、`app.asar bab90124771edee6bd15357211378ab93587ab67698df8f26fe81b99b5efcb29` / 137479979 bytes、manifest `974f056cac1bbb9673b3845adc9c7e186d4ed05f3e735ebcd061d1af05381fb4`、CDHash `f0a4488b2aa5a434ca33c06a75ffaa10e5c57a68`、版本 `0.1.0-beta.33`、arm64；exact identity 与 strict codesign PASS。上一安装版 `4c7617e… / app.asar 0d24f2a…` 已完整保留在 `/Users/m4air/.Trash/pi-gui-pre-integrated-main-20260824T045120Z.app`。\n- 安装后真实 UI：Computer Use 从 exact `file:///Applications/pi-gui.app/Contents/Resources/app.asar/out/renderer/index.html` 回读；既有工作区、历史会话与中文主壳均保留，侧栏「新对话 / 对话 / 技能 / 扩展 / MCP / 设置」以及「终端 / 变更 / 文件 / 预览与网页 / 协作任务」可见。第一次启动回读在 App 已成功启动时等待超时；进程状态改变后的唯一重试通过。main + 3 helpers 均来自 exact `/Applications/pi-gui.app/Contents/...`。\n- 凭据：P9-H 仅由既有 helper 将 auth/config 复制到隔离 agentDir；未读取、输出或修改 secret/token/cookie/OAuth\n- review：replacement run 的 design/final review `2/2`、blocking correction `3/3` 已全部消费；最后一次定向复核已 `TARGETED PASS`，不再开 review 或修正循环。\n- Loop 10 `4c7617e… / app.asar 0d24f2a…` 现为上一安装版与可恢复 rollback；其历史验证仍有效，但不再是 current installed identity。\n- 整合主线 candidate 与 Applications 当前包均绑定 clean HEAD `c9a19439648f…`、source `f61342a8a0da…`、parity `exact`、`app.asar bab90124771e…`、manifest `974f056cac1b…`、CDHash `f0a4488b2aa5…`；package identity、runtime deps、strict codesign、packaged smoke 4/4 与 installed visible readback 均 PASS。notarization 未执行，不把本机安装包描述为公开分发包。\n- 唯一下一步：无自动动作。若用户明确要求替换安装，再基于这份已接受的候选重新做独立打包、身份核对和替换，不复用旧 replacement receipt。\n- 两个 blocker 已关闭：所有 Browser intent 缺少完整 Main context 或 commit preparation id 都在 approval 前 immutable deny；login/OAuth/payment/permission 的非 user commit 同样不可审批绕过。MCP valid modern/corrective 保持 modern，其他已校验 error、stdio timeout/clean close 回退 legacy，畸形 transport 在分类前 fail closed。证据为 contracts 37/37、policy 26/26、逐字段/四模式/匹配 approval 负向与 `TARGETED PASS`。\n- 本轮已完成范围：整合 Composer/排队热修与测试进程清理 guard，并交付 Browser 与 project-local stdio MCP Runtime 的 10 个验证循环。额度查询、terminal 长 scrollback、Pi Computer Use、W-01 扩展、自动跨重启继续执行及无关 UI polish 均未纳入；重启后只恢复可见状态，必须由用户显式继续\n- P11-A 当前目标：在 Pi 原生 session 上实现 Codex 风格的按需 `create/list/read/send/wait/stop/open`，不接 Codex app-server，不做后台持续监督、自动唤醒或任意跨项目会话互读\n- P11-A 分工：Pi/Grok 在容量错误后停止且不重试；Codex 随后作为隔离 worktree 的唯一 writer 完成实现，local fresh-context reviewer 只读评审；外层状态仍由当前 Codex controller 单独维护\n- P11-A 当前结果：Host durable graph/receipt、增量 read、send/follow-up、bounded wait、target stop、exact new-window open、typed IPC/preload 与中文右侧「协作任务」面板均已落码；Desktop typecheck、direct build、diff check、四个 package suite、policy unit 和 focused Electron 6/6 均通过\n- P11-A final blocker 已解除：每次 wait 绑定独立 request token，切换 A→B 会取消并失效 A 的 wait，旧 response/finally 不能清理 B 的新 wait；新增 exact Electron 路径为 wait A→switch B→wait/cancel B→controls recover，1/1 PASS，原 reviewer 定向复核 `TARGETED PASS`\n- P11-A 中文体验批次：113 个 production/test 文件合并为一个完整展示层批次，覆盖启动、侧栏、会话、设置、通知、模型/服务商、自定义端点、技能/扩展、文件/diff、斜杠命令、协作、网页、MCP、策略与 macOS 菜单；只保留必要技术标识，没有修改 IPC/Main/runtime、权限、预算、数据和执行语义。`git diff --check`、lint、Desktop typecheck、direct Electron build、focused health 1/1、core smoke 1/1 与真实 UI 回读 PASS\n- P11-A 历史 candidate：clean HEAD `2e1d6c285e818f38fa31623f2bf65ec030f81c2c`、source `bb1926942b32898781e51ec1879b371ce11d31694bf64bb389e618d8699fcc50`、parity `exact`、`app.asar cc8a2291974cde79acf4cd7512dde7d6661637e0f9313bc6f528ea9d02166f56` / 137112459 bytes、CDHash `4d26c35c55d4bd7e6f810d01e9ffa5becc4253ce`；该包已被当前 Loop 10 installed `0d24f2a0b26f…` 取代，只保留为历史证据\n- P11-A 历史 Applications 安装回读：旧 Prepare `3b84fdc9cdfd…` 的规范化 payload/回执保留在 `references/action-prepares/20260822T121207Z-p11-queue-hotfix-applications-replacement.json`；当前安装身份以 Loop 10 Prepare `713c18685d8e…` 的 executed 回执为准\n\n## 当前完成定义\n\n- `docs/09_ACCEPTANCE_AND_TEST_PLAN.md` 全部 Required 场景有可观察证据或明确残余缺口；\n- 真实 Electron/macOS 行为通过机器验收；\n- 唯一 W-01 工作流真实跑通，安全边界无旁路；\n- 打包、恢复、数据保留和用户 macOS 真机门通过；\n- 完成级别必须区分 `built / verified / reality_validated / user_accepted`。\n\n## 当前真实进度\n\n- 第一连贯单元已完成：dirty baseline 可恢复；唯一 SDD、schema、状态与 50 项 FR/NFR 追踪已同步，并通过 RUN_STATE/JSON/link/ID/旧契约一致性检查；本单元未改 `app/` 生产代码；\n- P0 已完成到 `built + verified`：build manifest、afterPack artifact 绑定、typed health IPC、Settings 能力表和 packaged runtime 对账已通过 unit/contracts/typecheck/真实 Electron/packaged checks；P9-I 已补上 `/Applications` 当前包 hash/codesign/window 证据，exact untracked source parity 仍是明确缺口；\n- P1 G06 已完成到 `built + verified`：create/fork/reopen/continue 共用一条 bounded allowlisted `ContextEnvelope` prepare seam；Pi-native rules 只复用 provenance，当前 `RUN_STATE` 事实按白名单补充；64 KiB rendered budget、semantic digest、source/secret/adapter fail-closed 已通过 contracts 14/14、driver 39/39、desktop typecheck 与 local Electron 1/1；真实用户/macOS 门仍待最终验收；\n- P2 已完成到 `built + verified`：Desktop 以唯一 normalized journal 投影 running/waiting approval/paused/blocked/complete/failed；Stop 保留 partial 且 Continue 开新 turn；四档 policy 绑定 final tool identity/input/context/turn，`allow_once` 不留可复用 grant，同根单 writer 在真实 Electron tool path 生效。证据：contracts 18/18、policy 16/16、driver 41/41、Desktop typecheck、Electron P2 4/4、health core 1/1；真实项目/用户 macOS 门仍待最终验收，不声称 OS 级 hardlink/TOCTOU confinement；\n- P3 已完成到 `built + verified`：Copy 成功/失败回馈、user Edit、assistant Retry/Fork、持久 lineage 与 breadcrumb/back、100 个正常 tool call 默认 4 组（4×25）且展开恢复 100 行，error/unknown 不隐藏；证据为 contracts 21/21、driver 42/42、Desktop typecheck、direct Electron build 和 P3 focused Playwright 5/5；\n- P3 旧失败已纠正定性：失败源是 synthetic fixture 写入了不符合 Pi 0.84.2 `AssistantMessage` 契约的数据，不是 Codex 旧任务或已证明的真实 Pi 旧历史；只修 fixture 并撤回伪生产容错后 C06/C08 通过；\n- P4 已完成到 `built + verified`（local Electron）：用户可见 selector/config/composer 跑通 Planner → Executor → host deterministic verify → distinct-provider read-only Reviewer → owner triage；reviewer 真实 write tool call 被 host 拒绝，verify failure 不启 reviewer，blocking correction/targeted recheck 与外层 receipt 可见。证据为 orchestration 9/9、outer-budget 4/4、Desktop typecheck/direct build 和 W-01 local Electron 3/3；\n- P4 不越级定性：local no-auth fixture provider 不代表已验真实异构外部 reviewer；outer review claim 跨崩溃/重启幂等持久性归 P7；两者与用户 macOS 门仍是明确缺口；\n- P5-A 已把 Preview/Browser/Web 的 8 类动作、`agent_tool/host_ui` 来源和脱敏 evidence 接入 P2 policy/journal；contracts 22/22、policy 17/17 与 Desktop typecheck 通过；\n- P5-B Web Research 已完成到 `built + verified（local no-auth Electron fixture）`：真实 Pi runtime 注册 bounded Search/Fetch，GET/HEAD、逐跳 redirect policy、DNS pin、无 Cookie/Auth/Set-Cookie replay、POST 零网络和 download-required 均有证据；IPv4-mapped/NAT64/6to4 IPv6 旁路已 fail-closed，package 10/10、live Electron 1/1 通过。未使用真实 public provider，不是 `reality_validated`；\n- P5-C replacement Loop 4 已关闭旧首次 `ready` 指纹：Browser 首次 ready、显式 Preview→Browser handoff、Preview ephemeral、同 workspace 关闭/重开保持同一 opaque router/session identity，已由 focused unit 5/5、policy 26/26、Desktop typecheck/direct build 与真实 Electron `web-surfaces.spec.ts` 1/1 验证。Browser 使用按 exact canonical workspace 派生且不暴露原路径的 persistent partition；Main 统一持有该 workspace 的 Session/router，Renderer/日志/debug snapshot 不接触 cookie、token 或 partition 值；\n- P5-C replacement Loop 5 已闭 Main egress broker/DNS pin 子路径：Browser HTTP(S) 固定到 per-workspace Session 的单一认证 loopback proxy，配置无 `DIRECT`；每个 HTTP 请求与 HTTPS CONNECT 重新校验目标并将 socket 绑定已审 IP。focused 7/7、Web Research 10/10、Desktop typecheck/lint/direct build 与真实 Electron direct-trap 1/1 通过；broker 停止后 Browser 原生重载失败、目标请求数不增加，证明当前 supported slice 无直连回退；\n- P5-C replacement Loop 8 已完成到 `built + verified（local Electron fixture）`：upload/download/submit 分别使用独立一次性提交；拒绝时零 DOM/网络/文件副作用，允许时精确绑定项目内文件摘要、单次 GET 或单次 POST wire body；审批文案不暴露绝对路径、query、文件内容、表单正文或 digest。真实 Electron 高风险路径与既有低风险 Agent Browser 回归均 1/1 通过；\n- P5-C 整体仍是 `built + partial verified`：Loops 4–8 已关闭 ready/handoff、workspace Session/router、HTTP(S) egress、用户 JavaScript/Cookie 登录、typed Agent 低风险交互与 upload/download/submit；跨 workspace/清除浏览数据、WebSocket/service-worker/QUIC 与完整 E03/E06/E08/E09 仍未通过；\n- P6-A MCP 已完成到 `built + partial verified`：只读 exact project-local manifest，将 MCP 与 Pi Extensions 明确分离；Main 派生 owner/target，真实 native confirm 后才发放进程内 task/project grant；identity/context/grant 变化、越界/symlink/hardlink/secret-shaped 输入均 fail closed；全程零 install/spawn/invoke/Pi runtime refresh，server 只能显示 `Granted · Not running`；\n- P6-A 证据：contracts 27/27、policy 20/20、MCP unit 6/6、Desktop typecheck/direct build 与 Capability Health Electron 1/1 通过。`mcp-management.spec.ts` 整条仍为 0/1；失败前已观察 inspect、task/project grant、exact revoke 与重启后 grant 清空，最终失败为 relaunch 后持久 MCP secondary surface 的测试导航假设。它不证明产品回归、不阻断 P7，但 I04 只能记 `partial verified`；\n- I05 仅到 deterministic/API-negative verified：Computer Use 仍为 Deferred/Unavailable，无 IPC/host/invoke 通道，MCP 不能借壳升权。P6-A 不是 `reality_validated` 或 `user_accepted`；\n- P7-A G01 已完成到 `built + verified（local no-auth Electron）`：allowlisted checkpoint 在真实 Pi manual compact 的 provider summarization 请求前写入当前 session branch JSONL；checkpoint/compaction source event 只经既有 normalized journal/timeline；失败或 aborted 不计成功；relaunch/reopen 以 durable source ID 恢复同一 pointer、成功次数与活动卡且不重复；Continue 可回读 RUN_STATE objective/scope/anti-goal/next_action 与 recovery pointer，未复制 private marker，也未自动创建 successor；\n- P7-A 证据：recovery-index 8/8、workbench-contracts 28/28、pi-sdk-driver 47/47、Desktop typecheck、direct Electron build、`recovery-compaction.spec.ts` 1/1（7.5s）。标准 wrapper 被无关 Swift helper 的本机 SDK/compiler mismatch 阻断，使用已有 arm64 helper + direct build 隔离；首次 direct test 因 sandbox localhost listen 权限未启动，受控本地 fixture 运行后通过。该证据不是 `reality_validated` 或 `user_accepted`；\n- P7-B G04 已完成到 `built + verified（local no-auth Electron）`：重启只扫描 Pi 当前 session branch 的 durable orphan tool call；匹配 terminal receipt 缺失时投影 `blocked/needs_reconciliation`，不自动请求 provider 或重放工具。用户以真实 readback evidence 显式确认有/无变化时只追加一条 Pi custom receipt 并进入 paused；终止保持 unknown 并进入 failed；原 tool row 永不伪造成 success/error；\n- P7-B host/UI 边界已接：reconciliation 卡片、unknown 活动与 receipt evidence 可见；composer、Edit/Retry/Fork、`/reload`、带 summary 的 tree navigation 和 W-01 start 在对账前均由 host fail closed。对账后显式新 turn 使用新动作；再次 relaunch 只回放 stable historical receipt，不把当前 lifecycle 回退；\n- P7-B 证据：recovery-index 16/16、workbench-contracts 31/31、pi-sdk-driver 49/49、Desktop typecheck、direct Electron build、`unknown-action-reconciliation.spec.ts` 1/1（6.1s）。真实 Pi extension 在临时 workspace 写一次 marker 后故意不返回，Electron main 经 SIGKILL 重启两次；用户动作前 provider=1、marker=1，最终 receipt=1、fake toolResult=0。旧 lifecycle unit 的 synthetic tool event 未写合法 Pi AssistantMessage，已只修 fixture 后专项 2/2 与全包 49/49 通过；\n- P7-C contract/as-built 审计确认：权威 long-task-runner `RUN_STATE v1.1` 的 `review` exact shape 仅有 full/blocking 计数，没有 durable claim identity、phase state 或 targeted-recheck 槽；现有 claim receipt 只在进程内 `Map`，workflow run/binding 也未持久化。两个不同 claim 可产生同一计数终态，无法在重启后同时满足“同 claim exact replay”和“冲突 claim 拒绝”；未用 sidecar/文本/第二预算伪造，当前为 `contract blocked / not built`；\n- P7-D G02/G03 已完成到 `built + verified（local no-auth Electron）`：基于真实 recovery/RUN_STATE/Git facts 的 suggestion 与 preview 在确认前零副作用；exact confirm 后 source quiesced 并保留唯一 writer reservation，只创建一个同 workspace、无自动 model turn 的 read-only Pi successor；source Pi branch 是唯一 transition journal，successor 只保存 marker/readback evidence，HANDOFF 仅为有界 artifact；\n- P7-D ACK 路径已闭：host readback 同时核对 source/successor branch、artifact、RUN_STATE、Git/dirty 与事实 digest；随后按 `ack_requested → RUN_STATE.owner_task_id CAS + exact writer reservation transfer → acked_transferred` 收敛。pre-ACK 双边写入由 host/UI 阻断，relaunch 不重复 successor/receipt/provider；ACK 后 source 保持只读，successor 只有用户显式发送才开始 turn；\n- P7-D 证据：Desktop typecheck、pi-sdk-driver build、handoff supervisor 3/3、writer authority + handoff facts 10/10、direct Electron build、`recovery-compaction.spec.ts` handoff 1/1 与原 G01 回归 1/1。标准 wrapper 再次只因既知 Swift SDK/compiler mismatch 在 Electron 启动前失败，受控 loopback direct Playwright 通过；完成级别不是 `reality_validated/user_accepted`；\n- P7-D 明确保留的非本增量缺口：连续第二次 handoff 的 reservation adoption、运行中新增 workspace 的全量 handoff recovery，以及确认后显式 cancel/恢复 source 动作尚未实现；单次 G02/G03 Required 路径已闭，未把这些后续能力包装成已验证；\n- P7-E G05 已完成到 `built + verified（local no-auth Electron fixture）`：只失效 mixed catalog 中可回源的 session title/time/status/preview/file pointer 与 `sessionFiles`，保留 workspace/worktree、archive、branch lineage、UI state、draft 和未知 metadata；relaunch 未传 explicit workspace seed，仍从 preserved project registry + Pi JSONL 恢复同一父子 session/title/status/preview/file pointer、selected child、archive、draft、breadcrumb/back 与 transcript；\n- P7-E 证据：pi-sdk-driver build 与 context supervisor 3/3、Desktop typecheck、direct Electron build、`ui-index-rebuild.spec.ts` 1/1、`recovery-compaction.spec.ts` handoff/recovery 邻接 1/1 与原 G01 回归 1/1；退出 Electron 后父子与 handoff source/successor JSONL 均 byte-identical，provider request 未因 rebuild 增加。标准 runner 仍只在 Electron 前被既知 Swift SDK/compiler mismatch 阻断；一次加强断言发现旧 preview cache 与 Pi canonical first-message preview 不同，最小修正改为验证 canonical preview 非空重建后唯一重试通过；\n- P7-E 不等于删除整个 `catalogs.json`/`ui-state.json`，不等于 H02 完整 metadata/config restore，也不是 `reality_validated/user_accepted`。P7-C blocker 保持，P7 整体 accepted-increment 仍为 6/11；\n- P8-A measured baseline 已完成：真实 Pi JSONL 的 100/1,000/10,000 tool-call timeline 首次稳定渲染分别为 842.3/935.6/4387.5 ms，peak mounted rows 为 102/1003/10003，最终都收敛为 41 行并保持 canonical call ID 精确顺序与距真实底部 0.5 px；因此唯一已测瓶颈是 virtualization 接管前的全量首屏物化，不是最终 steady-state DOM 规模；\n- P8-A 同时验证 100-call normalized projection 默认 4×25 组、collapsed raw=0，展开恢复 100 个 exact ordered call ID。该证据来自 `timeline-scale.spec.ts` 1/1（15.4s），仅支持 NFR-01 timeline-scale `partial verified`，不覆盖 launch、大 diff/terminal、CPU/RAM、无响应、8 小时稳定性或用户真机门；\n- P8-A 一次 direct-estimator-first 产品实验在 100 行就无法恢复既有 true-bottom contract，已完整回退；P8-B 没有重试该路径，而是先以 pure proof 证明 forced-tail + 真实 DOM geometry 交接后才实施；\n- P8-B 已完成到 `built + verified（deterministic + local Electron）`：可靠长 timeline 首屏用 session-bound forced-tail 挂载末尾有界窗口，以实际 final-row DOM geometry 对齐 true bottom，再与普通 virtual window 交接；measurement cache 绑定 session，用户 wheel/pointer 取消旧 bootstrap。未新建列表、event bus、IPC 或依赖；\n- P8-B 证据：pure virtualization unit 6/6、Desktop typecheck/direct build、`timeline-scale.spec.ts` 1/1（10.9s）和既有 `timeline-pinning.spec.ts` 定向 2/2。100/1,000/10,000 calls 的 peak/final mounted rows 均为 41/41，first stable 为 849.0/765.4/1032.9 ms，true-bottom 为 0.5 px；10k off-bottom 在 session switch 后 `scrollTop` 652869 精确保留、remaining 5000→6036 且 final row 保持屏外。相邻回归首轮只被长标题的可见截断断言阻断，改为核对既有 `title` 全值后唯一重试 2/2 通过；\n- P8-B 范围仅是默认 Search 关闭、行高可靠的长 timeline；Search 打开与 oversized/attachment 行仍会全量 DOM，offset 计算仍为 O(N)，不声称全场景 no-O(N)；\n- P8-C 已完成 3 对逻辑启动 baseline：每对使用同 build、无 auth 的固定 Pi session，cold 为 fresh isolated userData 首个新进程，warm 为 clean close 后同 userData/agentDir/workspace/session 新进程 relaunch；不声称 OS page-cache cold、Applications 启动或用户感知前台耗时；\n- P8-C `launch-baseline.spec.ts` 1/1（9.8s），6 个新 PID、identity/layout/history 均一致且无 startup diagnostic/error。cold first-window-ready 为 1653.3/1132.0/1159.1 ms（median 1159.1），warm 为 1122.1/1147.7/1143.7 ms（median 1143.7）；3/3 pair 的最大粗粒度贡献均是 `launchDesktop` process/handshake，但该段仍混合 Electron/Playwright attach 与 Main 启动，不足以直接修产品；\n- P8-D 已完成 test-only Main attribution：同一 spec 的三对重测 cold 为 1588.9/1136.8/1133.9 ms（median 1136.8），warm 为 1129.1/1125.5/1154.5 ms（median 1129.1）；粗粒度 3/3 winner 仍是混合 harness 的 `launchHandshake`，Main 同时钟 3/3 winner 是 `rendererToDomReady`，但 cold/warm median 仅 108.0/106.1 ms；`storeInitialize` 为 76.1/76.5 ms，handoff recovery 为 13.6/14.7 ms；\n- P8-D 验证为 Desktop typecheck PASS、direct `electron-vite build` PASS、`launch-baseline.spec.ts` 1/1（9.7s）。launch→mainModuleReady 457.2/462.2 ms 与 runner state/history 276.9/275.9 ms 只作跨时钟/harness diagnostic，不归责为产品阶段；标准 wrapper 仍在 Electron 前被既知 Swift SDK/compiler mismatch 阻断。结论是停止启动钻取、不做产品 launch optimization；该证据不是 OS cold、packaged/Applications、foreground、`reality_validated` 或 `user_accepted`；\n- P8-E measured baseline 已完成：1k/10k/50k 单文件 Changes diff 的 typed IPC 仅 14.5/15.1/25.1 ms，但全量 DOM 为 1003/10003/50003 行，first content 73.8/188.9/685.4 ms、max heartbeat gap 30.3/159.3/738.2 ms；因此唯一选中 renderer 全量行物化，不把 Git/IPC、terminal 或视觉重构并入修正；\n- P8-F 已完成到 `built + verified（deterministic + local Electron）`：Changes panel 在超过 500 行时使用显式 scroll owner、可变行高测量与有界连续窗口；timeline tool-body 的 `InlineDiff` 保持原路径。没有新增 dependency、IPC 或第二列表，也没有截断、nowrap 或隐藏全量 DOM；\n- P8-F 最终证据：`virtual-list-layout.spec.ts` 7/7、Desktop typecheck/direct build、`diff-scale.spec.ts` 3/3（10.0s）与相邻 `changed-files/mentions-diff/review-ux/terminal-diff-layout` 10/10。1k/10k/50k 最新 peak/current mounted rows 均为 59/59，单批新增峰值 84，低于独立冻结的 240；50k first/stable/heartbeat 为 73.0/1012.7/26.0 ms，真实 wrapped row 高 1708.375 px，完整 parsed digest、中段连续、true bottom/top restore、Reviewed 与 Git 零修改均通过；\n- P8-F 只闭 local source-build synthetic fixture 的 Changes-panel 单文件大 diff；Search/oversized timeline、长 terminal、真实大仓、packaged/Applications、CPU/RAM、8 小时稳定性与用户真机门仍未由本证据覆盖，不是 `reality_validated/user_accepted`；\n- P8-G 只形成局部证据：真实 local Electron 的 1k PTY action 输出与独立 canonical 逐字符相等，恰有 1,000 条有序记录；Main typed replay 精确、未截断，底部 last/done marker 与距底不超过 1px 均通过，失败点前 session 仍为 `running`；\n- P8-G Required 专项整体为 0/1：顶部编号片段连续，但 `topHasFirstLine=false`。测试滚动容器从旧 `.xterm-viewport` 修正为当前 xterm 的 `.xterm-scrollable-element` 后，同一真实 Electron 指纹仍复现，故 `P8G_TERMINAL_1K_TOP_HAS_FIRST_LINE_FALSE` 已耗尽 retry。1k hide/reopen/exit/最终错误态、10k/50k、50k truncation/selection 与性能归因均未到达，不能写成 terminal baseline 完成或产品缺陷已定位；\n- P8-H 只改既有 `lifecycle-approval.spec.ts`，Desktop typecheck、direct build 与 focused local no-auth Electron 1/1（5.3s）通过。真实审批 dialog 的 accessible name/description、默认拒绝焦点、Shift+Tab 边界 trap、allow-once focus-visible ring、Enter 批准、Escape 拒绝与响应后 composer 回焦均已可观察；\n- P8-H 保留 P2 行为不变：批准前文件不存在，allow-once 后文件内容正确且 approval inbox 清空；第二次 Escape 拒绝后文件不再变化并记录 `approval_cancelled`，新动作 fingerprint 与 mutated target 负向仍通过。该证据只把 NFR-08 的 policy approval 子集提升为 `partial verified`；\n- P8-I 只新增 `reduced-motion.spec.ts`，Desktop typecheck、direct build 与 focused local Electron 1/1（3.2s）通过，未改 production/IPC/helper/dependency。`no-preference → reduce → no-preference` 媒体切换真实生效；normal 下产品 transition 非零，reduce 下 send/sidebar 的 transition/animation 均不高于 0.0011ms、scroll behavior 为 `auto`，draft、send 可用性、sidebar 可见性与 focus-visible ring 均不丢失，切回后 transition 恢复；\n- P8-I 只证明 source-build Electron 在模拟媒体条件下的 reduced-motion 不变量；NFR-08 仍为 `partial verified`，VoiceOver、全局对比度/键盘/焦点、字体缩放、真实 macOS 系统偏好、packaged Applications 和用户门均未由本证据覆盖；\n- P8-J 只在现有 selected-task lifecycle chip 上增加 `role=status`、`aria-live=polite`、`aria-atomic=true` 和同源 dynamic accessible name，未新增 store/event bus/IPC，未改视觉或 lifecycle/approval 行为。Desktop typecheck、direct build 与既有真实 policy approval focused Electron 1/1（4.6s）通过；\n- P8-J 真实观察唯一同一 DOM 状态节点从 `waiting_approval / 等待审批 / 任务状态：等待审批` 同步转为 `complete / 已完成 / 任务状态：已完成`；批准前零副作用、allow-once、inbox、fingerprint/mutated target、Escape deny 与 composer 回焦全部保持。该证据只是 ARIA DOM semantics，不声称真实 VoiceOver announcement；\n- P8-K 首次 focused Electron 在真实 enabled send action 上测得 Nord Light `#ffffff/#5e81ac=4.029`，低于项目既有的更严格内部 `4.5:1` sRGB 门；同一静态算法确认 Dracula Light `4.085`、Gruvbox Light `4.231` 也是唯一另外两格失败，其他 11 格均已达到门槛；\n- P8-K 只把这三个 Light variant 的 primary bg+border 调整为 Nord `#5879a1`、Dracula `#b247ca`、Gruvbox `#438083`。Desktop typecheck、direct build 与完整 7 个非 Default preset × light/dark focused Electron 1/1（测试 8.5s，总计 9.0s）通过，14/14 达到内部 `>=4.5:1`；沙箱内 Electron `SIGABRT/EPERM` 未进入产品，不计产品 retry；\n- P8-K 的 `4.5` 是比 icon-only control 最低要求更严格的项目内部质量门，只覆盖 enabled/resting send glyph 与按钮内部背景；Default、hover/disabled/focus、其他控件、全局 palette、VoiceOver、字体缩放和用户视觉验收均未由本证据覆盖。P8 因 P8-G terminal 0/1 与其余稳定性/全局 accessibility 缺口保持 `partial verified`，不继续拆 P8-L 小项；\n- P9-A 已从当前 dirty tree 生成独立 `release/mac-arm64/pi-gui.app`，未覆盖 `/Applications`、未生成 DMG/ZIP、未使用真实账号。现有 production packaged smoke 2/2（9.1s）通过：真实 bundle executable 以 `process.defaultApp=false` 启动，经 UI 创建 thread，并通过 typed IPC/Settings 回读已绑定 build identity；\n- P9-A build identity verifier 以 `PARTIAL` 正常通过，runtime dependency verifier 通过。manifest 绑定 app `0.1.0-beta.33`、Pi `0.84.2`、Electron `37.10.3`、HEAD `eb9a738…`、tracked 346 / changed 105 / untracked names 121、dirty fingerprint `7c4030576901…`、`app.asar` `b7942e976ac0…`（136,660,728 bytes）、packagedAt `2026-08-21T00:50:51.813Z`；parity 因 untracked 内容未读保持 `partial`，不是缺陷或 exact source claim；\n- P9-B 在测试前后两次确认 fingerprint `7c4030576901…` / `app.asar b7942e976ac0…` 未漂移，直接复用同一 frozen `.app` 运行 packaged terminal + notification onboarding/settings production matrix 5/5（15.7s）通过；连同 P9-A smoke 为同一 manifest 的 packaged evidence 7/7；\n- P9-B 证明 packaged node-pty/xterm 能执行 bounded marker，packaged notification helper 的 onboarding、default→granted、stale default 与 denied→activation refresh 均能按受控 authoritative status 收敛。通知只算 package-native 邻接健康；单行 terminal 仍未覆盖 Required E02 的 PID/exit/no-ghost，也不解除 P8-G 长 scrollback 0/1；\n- P9-C 只扩展 `packaged-terminal.spec.ts`，没有改 production 或新增 test IPC。变更后重建 release：packaged smoke 2/2（8.4s）、identity verifier `PARTIAL`、packaged runtime deps `PASS`；新 manifest 为 tracked 346 / changed 106 / untracked names 121、source `84cb4dc22194…`、`app.asar b7942e976ac0…` / 136,660,728 bytes、packagedAt `2026-08-21T01:03:36.277Z`；\n- P9-C Required E02 packaged Electron 1/1（3.8s，total 4.3s）通过：typed snapshot 与真实 PTY shell 回读的 cwd 均等于 canonical workspace；shell PID 退出前可回读且 alive；`exit 7` 后同一 terminal 的 typed exit code 为 7、active tab 显示 exited，旧 PID 已 `ESRCH`，terminal ID/session count 未变且无自动 respawn；\n- P9-C 只闭环 E02 的单一交互 shell lifecycle；不证明任意 `nohup`/后台 descendants 的全 process-tree 隔离，不解除 P8-G 长输出 scrollback 失败，也不升级 Applications、真实项目、`reality_validated` 或 `user_accepted`；\n- P9-D 只新增 `packaged-diff.spec.ts`，没有改 production、IPC 或 dependency。加入 test 名称后重建 release：packaged smoke 2/2（8.4s）、identity verifier `PARTIAL`、packaged runtime deps `PASS`；当前 manifest 为 tracked 346 / changed 106 / untracked names 122、source `99ae3be3ff86…`、`app.asar b7942e976ac0…` / 136,660,728 bytes、packagedAt `2026-08-21T01:19:23.468Z`；\n- P9-D Required E01 packaged Electron 1/1（2.4s，total 2.9s）通过：在 isolated no-auth Git workspace 与受限 app-style `PATH` 下，UI 精确区分 staged/unstaged 两个路径与各自 baseline/marker 内容；staged 行不可重复 Stage，unstaged 行可用真实 Stage 操作；操作后独立 host Git readback 为 cached 两文件、worktree diff 为空，cached diff 与 UI 内容一致，且无 startup diagnostic/error；\n- P9-D 只验证临时 fixture 的 packaged Diff/Git 一致性；不证明真实用户仓库、large diff、worktree、Applications、`reality_validated` 或 `user_accepted`；该 checkpoint 的 accepted 计数为 6/11；\n- P9-E 在移除 Apple credential 环境下生成本地 release ZIP，ad-hoc signing 完成且 notarization 明确 skipped；当前 build 的 ZIP smoke 1/1 PASS，identity `PARTIAL`、runtime deps `PASS`，ZIP 在 reopen 运行前后保持 `7576a6bc2e71…` / 131,969,392 bytes；\n- P9-E reopen matrix 整体 0/2：首轮两例都停在过时英文 `Local` locator；只做一次最小 helper 修正为当前「本目录」并重建包后，唯一真实重试越过旧指纹，但分别停在「产品按 28 字主动省略的 topbar 可见文字被错当完整 title」与「只注入内存 AppStore event、从未写 Pi JSONL 的 synthetic assistant delta 被错当可持久消息」；\n- 诊断证明 P9-E 的两个终点都是 test oracle/fixture 不成立，不是已证明的 A03 产品回归；但因整条 Required spec 仍为 0/2，packaged ZIP 级 assistant transcript 恢复未得到有效证据，故诚实冻结为 `PARTIAL VERIFIED / FAILED_VERIFICATION（test-oracle group retry exhausted）`，不再修改或重跑同组；\n- P9-F 只新增一条 test-only packaged no-auth 首启用例，没有改 production/helper/IPC/dependency。Desktop typecheck、Playwright discovery、`package:dir`、identity `PARTIAL` 与 packaged runtime deps 均通过；完整 `packaged-smoke.spec.ts` 3/3（10.1s），其中新用例 1/1（1.8s）；\n- P9-F 新用例在真实 packaged executable 下证明 workspace/new-thread 可浏览、provider inventory 存在但 authenticated provider 与 available model 都为 0、renderer provider snapshot 仅有状态字段、界面准确引导服务商/模型设置、Start disabled，且无 startup diagnostic/error。它只把 Required A02 的 no-auth 分支提升为 `verified（local packaged no-auth Electron）`；A02 整体仍为 `partial verified`，因为 fixture 中没有真实 credential，A04 断网与离线历史也未验证；\n- P9-F 当时的 `.app` manifest 为 HEAD `eb9a738…`、tracked 346 / changed 106 / untracked names 122、source `c7a9d6fff5e1…`、`app.asar b7942e976ac0…` / 136,660,728 bytes / packagedAt `2026-08-21T01:50:17.008Z`；该 checkpoint 的 accepted 计数为 6/11；\n- P9-G 原 foreground AppleScript lane 与唯一有界修正仍冻结为 `FAILED_VERIFICATION（native automation indeterminate）`；它只说明盲自动化未能提交路径，不再重跑同指纹；\n- 用户授权的隔离 Computer Use 接管随后直接操控当前 packaged `pi-gui.app` 的真实 macOS NSOpenPanel，选择 exact 临时 Git workspace。生产 readback 验证 canonical path、workspace row 与 new-thread composer，临时 acceptance spec 1/1（6.0m）；临时 spec 已删除，未改 production；\n- 因此 Required B01 的产品不确定性已在 local packaged fixture 层解除；不把 Computer Use 接管写成 AppleScript 自动化 PASS，也不升级为真实用户项目、`reality_validated` 或 `user_accepted`；\n- 对 `/Applications/pi-gui.app` 的只读诊断显示 3 个已连接服务商、默认 Grok 4.6。空 Composer 时 Send 禁用；写入一条不发送的诊断草稿后 Send 正常启用，清空后恢复禁用；\n- P9-H 在 current packaged release 的 isolated temp workspace/session 使用既有 xAI OAuth + visible default Grok 4.6 发送唯一一条无敏感内容的真实消息；assistant row 与 typed transcript 恰有一个 `PI_WORKBENCH_REAL_SEND_OK`，composer error/lastError 为空、session 回 idle，clean close/relaunch 后同 session 与 marker 保持。exact Playwright `--retries=0` 1/1（1.2m）；临时 spec 已删除；\n- P9-H postflight：identity 仍为 `PARTIAL / eb9a738… / c7a9d6fff5e1… / b7942e976ac0…`，runtime deps PASS、codesign verify PASS、版本 `0.1.0-beta.33`。该窄 claim 为 real-provider packaged reality gate PASS；不证明其他 provider/model、真实用户项目或全部 Required；\n- P9-I 初次替换后，真实用户数据启动在窗口创建前复现 `TOOL_RECONCILIATION_CALLID_INVALID`；原因是历史外部 tool call ID 被错误套用内部字符集。初版补丁使用 `opaque-call:<digest>` 并保留 raw result matching，恢复了真实用户数据启动；但 final R1 随后发现 safe raw ID 可与该 reserved namespace 碰撞，且 U+0085/C1 控制字符未完整 fail closed，因此初版 call-ID correctness 不能写成最终通过；\n- P9-I 的 installed 启动/身份证据仍有效：recovery-index 22/22、Pi reconciliation driver 2/2、Desktop typecheck、direct build/package、installed hash/codesign/version 与 Computer Use exact renderer path 均通过，历史 workspace、Composer、任务状态与 Grok 4.6 可见且无启动红框；这只证明 startup/identity，不代替 R1 对初版算法的阻断结论；\n- P9-J 唯一 blocking fix 已合并三项修正：保存的 custom-provider key 只在 Main store 内保留，read DTO 只返回 `hasApiKey`，写入用 `preserve/replace/clear`；外部 call ID 改用无 safe-raw 碰撞的 `~opaque-call:<domain-separated digest>` 并拒绝全部 Unicode `Cc`；验收账本按 release/installed 不同身份重写。专项证据：recovery-index 25/25、pi-sdk-driver 56/56、Desktop typecheck/direct build、custom-endpoints Electron 3/3、packaged smoke 4/4、identity/runtime deps/strict codesign PASS；唯一 targeted recheck 逐项复核 credential、call-ID 与六份事实源后为 `TARGETED PASS`；\n- P9-J 历史安装态：用户确认当时的 action fingerprint 后，`eae2b0941d76…` 曾以可恢复方式安装到 `/Applications`；Computer Use 回读窗口与构建身份，用户随后在真实项目目录完成只读任务并接受该安装态的窄核心 send/read。该 `user_accepted` 证据只属于 P9-J，不自动迁移到后续包。\n- P10-A 历史安装态：source `4ec277638e96…` / `app.asar 9a9e4fa98054…` 曾替换到 `/Applications`，当时 installed hash/codesign 与 Computer Use 中文技能页、主壳连续性、返回对话均通过；该证据保留为历史，不是当前安装身份。\n- 项目整体判定为 `PARTIAL`：历史 accepted increments 为 6/11；用户新增 P11-A Required 后总口径扩为 6/12。P11-A、Composer / 排队 / 审批热修以及 Browser/MCP Loops 4–10 已 installed + machine/UI verified，但尚缺本安装版新的日常使用主观验收，所以产品总计暂不提升。跨 workspace/清除浏览数据等完整 Browser Required、P7-C、P8-G、P9-E 等显式缺口也未被改写成 PASS。\n\n## 唯一恢复动作\n\n未来 Pi / Codex 先读 `AGENTS.md → RUN_STATE.json → STATE.md → 当前 action receipts`，再核对 live Git 与安装身份。当前 outer run 已 `complete / 10 of 10`，不存在应自动恢复的执行动作；不得重新运行 Loop 10，或重放 Prepare `713c18685d8e…`、push `9db425ee34b6…`、replacement `0eb506eb075b…`。新的开发、发布或安装任务应从 local/remote/installed 共同的 clean `c9a194… / app.asar bab9012…` 与既有显式缺口重新冻结范围。\n\n## 停止条件\n\n需读/复制 secret；需安装未知依赖/MCP/Extension；需操作真实账号或付费 reviewer；同目录出现第二 writer；实现偏离 frozen scope；同一错误一次有界修正后重试仍失败；review 预算耗尽仍阻断。不自动 commit/push/publish/deploy。\n",
+            "exit_code": 0,
+            "status": "completed"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-29607b87-e793-4efb-b7b6-dd25fe4d990f",
+      "runId": "external-2230bb89-3d46-44a2-bedf-e248deb15132",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:01:24.892Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_1",
+            "type": "agent_message",
+            "text": "{\"task_id\":\"REAL-02\",\"summary\":\"项目当前为 active，P12 UI 增量已完成实现与本地验证，但整体仍为 PARTIAL（6/12）；当前无自动下一步。\",\"facts\":[\"P12 当前状态为 active，液态玻璃侧栏与浅色主界面视觉收敛已完成并通过本地验证。\",\"P12 候选基于 clean baseline c9a19439648f5de02a53891ce55b6dde0e305b04，当前有 17 个未提交变更。\",\"Desktop typecheck、production build、git diff --check 及本轮液态玻璃视觉门均通过。\",\"GitHub 私有单仓 Ea12421/Pi-Agent-Workbench 已完成推送，远端 main 精确回读为 c9a19439648f5de02a53891ce55b6dde0e305b04。\",\"当前安装包 /Applications/pi-gui.app 与该整合主线 clean HEAD 绑定，identity、strict codesign、packaged smoke 和 installed visible readback 均通过。\",\"项目整体判定为 PARTIAL；历史 accepted increments 为 6/11，扩展 P11-A 后总口径为 6/12。\",\"STATE 明确记录唯一下一步为无自动动作；如用户明确要求替换安装，应重新独立打包、核对身份并替换。\",\"项目停止条件包括不得自动 commit、push、publish 或 deploy，以及不得读取或复制 secret。\"],\"unknowns\":[\"当前安装版尚缺新的日常使用主观验收，因此不能提升为 user_accepted。\",\"notarization 未执行，当前安装包不能描述为公开分发包。\",\"完整 Required 场景仍存在明确缺口，包括跨 workspace/清除浏览数据、P7-C、P8-G、P9-E 等。\",\"本次仅允许读取 AGENTS.md 与 STATE.md，未核验其他项目文件、Git 工作区实时状态或运行结果。\"],\"source_refs\":[\"AGENTS.md\",\"STATE.md\"],\"next_action\":\"NO_ACTION\",\"completion_state\":\"active\"}"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-44cfccf8-15e7-448c-bfd3-3f3c8292f399",
+      "runId": "external-2230bb89-3d46-44a2-bedf-e248deb15132",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:01:24.928Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 70808,
+            "cached_input_tokens": 46592,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 816,
+            "reasoning_output_tokens": 277
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-452ea127-203d-4b93-832a-a3b1e8209db3",
+      "runId": "external-2230bb89-3d46-44a2-bedf-e248deb15132",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:01:27.574Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "status": "completed",
+        "exitCode": 0
+      }
+    }
+  ]
+}

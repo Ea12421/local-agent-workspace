@@ -1,0 +1,208 @@
+{
+  "record_version": "m8-05.real-task.v1",
+  "task_id": "REAL-03",
+  "root": "/Users/m4air/总控/projects/personal-knowledge-mcp-mvp",
+  "read_allowlist": [
+    "AGENTS.md",
+    "STATE.md"
+  ],
+  "started_at": "2026-09-26T20:01:27.574Z",
+  "finished_at": "2026-09-26T20:02:44.624Z",
+  "elapsed_ms": 77050,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+  "event_count": 7,
+  "provider_completed": true,
+  "output_sha256": "253562c8e8a55cc5aa4d06e27c59c9952c2a44bb054966505e3d5468a312cf3b",
+  "raw_output": "{\"task_id\":\"REAL-03\",\"summary\":\"MVP 当前按需离线运行；恢复必须由用户明确触发，且需先完成只读 fixture smoke。\",\"facts\":[\"项目是基于官方 Node MCP SDK 的只读知识检索 MVP。\",\"当前服务与临时 HTTPS tunnel 按记录均已停止，旧 tunnel 离线。\",\"当前数据范围仅为 fixtures/notes/ 中三份虚拟 Markdown。\",\"恢复入口要求先重跑当前只读 fixture smoke，再启动一次临时连接并进行虚拟资料健康检查。\",\"真实资料接入前必须单独授权并冻结目录白名单、工具权限、安全网关、脱敏与提示注入隔离、现实验证和停止条件。\",\"任一真实资料接入硬门未冻结时，必须维持 fixture-only，不扩大读取范围。\",\"当前唯一下一步是保持离线，直到用户明确说“开启本地知识连接”。\"],\"unknowns\":[\"本轮未独立复核 npm test、服务、浏览器或账号连接状态。\",\"GPT-Live 直接调用 MCP 未验证。\",\"恢复入口所引用的 HANDOFF_2026-07-17_TO_NEXT.md 未在本轮读取。\"],\"source_refs\":[\"AGENTS.md\",\"STATE.md\"],\"next_action\":\"保持离线；仅在用户明确说“开启本地知识连接”后，先重跑只读 fixture smoke，再启动一次临时连接并执行虚拟资料健康检查。\",\"completion_state\":\"complete\"}",
+  "parsed_output": {
+    "task_id": "REAL-03",
+    "summary": "MVP 当前按需离线运行；恢复必须由用户明确触发，且需先完成只读 fixture smoke。",
+    "facts": [
+      "项目是基于官方 Node MCP SDK 的只读知识检索 MVP。",
+      "当前服务与临时 HTTPS tunnel 按记录均已停止，旧 tunnel 离线。",
+      "当前数据范围仅为 fixtures/notes/ 中三份虚拟 Markdown。",
+      "恢复入口要求先重跑当前只读 fixture smoke，再启动一次临时连接并进行虚拟资料健康检查。",
+      "真实资料接入前必须单独授权并冻结目录白名单、工具权限、安全网关、脱敏与提示注入隔离、现实验证和停止条件。",
+      "任一真实资料接入硬门未冻结时，必须维持 fixture-only，不扩大读取范围。",
+      "当前唯一下一步是保持离线，直到用户明确说“开启本地知识连接”。"
+    ],
+    "unknowns": [
+      "本轮未独立复核 npm test、服务、浏览器或账号连接状态。",
+      "GPT-Live 直接调用 MCP 未验证。",
+      "恢复入口所引用的 HANDOFF_2026-07-17_TO_NEXT.md 未在本轮读取。"
+    ],
+    "source_refs": [
+      "AGENTS.md",
+      "STATE.md"
+    ],
+    "next_action": "保持离线；仅在用户明确说“开启本地知识连接”后，先重跑只读 fixture smoke，再启动一次临时连接并执行虚拟资料健康检查。",
+    "completion_state": "complete"
+  },
+  "structural_check": {
+    "json_object": true,
+    "missing_required_keys": [],
+    "source_refs_declared": [
+      "AGENTS.md",
+      "STATE.md"
+    ],
+    "undeclared_source_refs": [],
+    "traceability_pass": true
+  },
+  "provider_events": [
+    {
+      "id": "provider-event-52ef6657-a171-4937-ad44-557e51a0eee9",
+      "runId": "external-f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:01:30.040Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "thread.started",
+          "thread_id": "01a0df4e-f96b-7cf1-800c-a02d1adf7e83"
+        }
+      }
+    },
+    {
+      "id": "provider-event-8fe6cb45-0f1a-4135-bf0e-2c297d070880",
+      "runId": "external-f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:01:30.042Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.started"
+        }
+      }
+    },
+    {
+      "id": "provider-event-dae93e5b-79c7-40a6-963f-739132b28791",
+      "runId": "external-f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:02:00.468Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.started",
+          "item": {
+            "id": "item_0",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md STATE.md'",
+            "aggregated_output": "",
+            "exit_code": null,
+            "status": "in_progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-bcc1496d-5803-40d1-b89e-256dd829a0ae",
+      "runId": "external-f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:02:00.468Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_0",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md STATE.md'",
+            "aggregated_output": "# Personal Knowledge MCP MVP 协作约定\n\n## 目标\n\n验证 ChatGPT 可通过只读 MCP 工具检索一组虚拟 Markdown，并返回可核对来源。\n\n## 当前硬边界\n\n- 只允许读取本项目 `fixtures/notes/`。\n- 不读取 `/Users/m4air/知识库`、其他项目、用户目录或账号数据。\n- 不提供任意路径读取工具；只能先搜索，再使用服务端生成的 `note_id` 读取。\n- 不写入资料，不上传资料，不保存请求正文，不读取任何 secret。\n- 默认只监听 `127.0.0.1`；当前没有生产鉴权，不得作为长期公网服务。\n- 要接入真实目录，必须由用户另行明确授权并修改当前 fail-closed 边界。\n\n## 验证命令\n\n```bash\nnpm test\n```\n\n验收至少覆盖：初始化、工具发现、检索、按 ID 读取、来源返回、非法路径拒绝、全部工具只读。\n# Personal Knowledge MCP MVP 当前状态\n\n更新时间：2026-07-18  \n项目 ID：`personal-knowledge-mcp`  \n当前阶段：零数据 Web smoke 已收口，按需离线  \n归档等级：L1（可恢复级）\n\n## 当前结论\n\n项目已经形成一个基于官方 Node MCP SDK 的只读知识检索 MVP：只搜索项目内三份 synthetic Markdown，先返回服务端生成的 `note_id`，再按 ID 读取正文；工具不接受文件路径。\n\n根据项目已有记录，2026-07-17 已完成：\n\n- 本地 `npm test` 的 9 项机械检查，记录结果为 `PASS`、`real_data_accessed: false`；\n- 普通 ChatGPT Web 中一次真实 `search_knowledge` 和一次 `read_knowledge` 调用；\n- 测试后的本地服务、临时 HTTPS tunnel 停止，以及 Developer Mode 关闭。\n\n以上账号侧与运行侧结果来自 `MVP说明.md`、`HANDOFF_2026-07-17_TO_NEXT.md` 和已完成 spec 的既有记录。本轮只补文档，没有重新运行服务、浏览器或账号验证，因此不把它们表述为本轮独立复核结果。\n\n## 当前运行状态\n\n- MCP 服务：按项目记录处于停止状态。\n- 临时 HTTPS tunnel：按项目记录处于停止状态。\n- ChatGPT 开发测试应用：按项目记录仍保留，但旧 tunnel 已离线，当前没有可访问后端。\n- 当前允许的数据：仅 `fixtures/notes/` 中三份虚拟 Markdown。\n- 当前工作模式：按需启动，不常驻、不自启、不自动读取资料。\n\n## 已确认边界\n\n- 不读取真实 Obsidian、其他项目目录或账号数据。\n- 不提供任意路径读取；`read_knowledge` 只接受搜索产生的 16 位 `note_id`。\n- 不写入、修改或删除知识。\n- 不保存请求正文，不读取 secret。\n- 默认只监听 `127.0.0.1`；当前没有生产鉴权，不得作为长期公网服务。\n- GPT-Live 直接调用 MCP 未验证。\n\n## 唯一下一步\n\n保持离线；只有用户明确说“开启本地知识连接”时，才按 `HANDOFF_2026-07-17_TO_NEXT.md` 先重跑当前只读 fixture smoke，再启动一次临时连接并做一条虚拟资料健康检查。\n\n## 真实资料接入硬门\n\n即使临时连接恢复成功，也不得顺带接入真实资料。进入真实 Obsidian 或任何真实项目目录前，必须取得用户针对本次对象与范围的单独授权，并预先冻结：\n\n1. 最小目录白名单；\n2. 逐工具授权与仍然明确不做的操作；\n3. 正式鉴权或安全网关；\n4. 内容脱敏、来源展示和提示注入隔离规则；\n5. 现实验证与停止条件。\n\n任一项未冻结时，维持 `fixture-only`，不得扩大读取范围。\n\n## 恢复入口\n\n1. `PROJECT_DOCS_INDEX.md`：文档与证据导航；\n2. `HANDOFF_2026-07-17_TO_NEXT.md`：按需启动、停止与故障纪律；\n3. `MVP说明.md`：阶段成果与既有 Web smoke 记录；\n4. `specs/official-sdk-chatgpt-smoke/`：冻结需求、设计与任务完成记录；\n5. `ZERO_DATA_MVP_CLOSEOUT.md`：内部复盘与 WIP 案例边界。\n",
+            "exit_code": 0,
+            "status": "completed"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-0dd12350-fd03-4dfa-8206-b58d3a0999e7",
+      "runId": "external-f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:02:41.566Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_1",
+            "type": "agent_message",
+            "text": "{\"task_id\":\"REAL-03\",\"summary\":\"MVP 当前按需离线运行；恢复必须由用户明确触发，且需先完成只读 fixture smoke。\",\"facts\":[\"项目是基于官方 Node MCP SDK 的只读知识检索 MVP。\",\"当前服务与临时 HTTPS tunnel 按记录均已停止，旧 tunnel 离线。\",\"当前数据范围仅为 fixtures/notes/ 中三份虚拟 Markdown。\",\"恢复入口要求先重跑当前只读 fixture smoke，再启动一次临时连接并进行虚拟资料健康检查。\",\"真实资料接入前必须单独授权并冻结目录白名单、工具权限、安全网关、脱敏与提示注入隔离、现实验证和停止条件。\",\"任一真实资料接入硬门未冻结时，必须维持 fixture-only，不扩大读取范围。\",\"当前唯一下一步是保持离线，直到用户明确说“开启本地知识连接”。\"],\"unknowns\":[\"本轮未独立复核 npm test、服务、浏览器或账号连接状态。\",\"GPT-Live 直接调用 MCP 未验证。\",\"恢复入口所引用的 HANDOFF_2026-07-17_TO_NEXT.md 未在本轮读取。\"],\"source_refs\":[\"AGENTS.md\",\"STATE.md\"],\"next_action\":\"保持离线；仅在用户明确说“开启本地知识连接”后，先重跑只读 fixture smoke，再启动一次临时连接并执行虚拟资料健康检查。\",\"completion_state\":\"complete\"}"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-fd23a6c9-a761-45a7-8456-c7ae7dd7f8a7",
+      "runId": "external-f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:02:41.604Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 59215,
+            "cached_input_tokens": 46592,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 860,
+            "reasoning_output_tokens": 467
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-05478e1f-0f0b-4051-b036-5258d934f180",
+      "runId": "external-f238b5b0-a81a-46b2-97c2-25c1508b4c32",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-26T20:02:44.624Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "status": "completed",
+        "exitCode": 0
+      }
+    }
+  ]
+}

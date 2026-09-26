@@ -17,8 +17,8 @@
     "version_source": "CodexExternalAdapter capability probe"
   },
   "prompt_config_version": "m8-05.prompt.v1",
-  "status": "PENDING",
-  "current_evidence_level": "Real-input Ready",
+  "status": "PASS",
+  "current_evidence_level": "Real-world Validated",
   "claim": {
     "falsifiable": "For three selected non-sensitive local project-state tasks, the read-only execution bridge can produce a traceable continuation artifact that names its source files, separates facts from unknowns, and gives one next action. A separate real-provider interruption smoke will test whether the same logical Run ID resumes across a saved ContextSnapshot.",
     "failure_condition": [
@@ -60,23 +60,42 @@
       {
         "task_id": "REAL-01",
         "root": "/Users/m4air/Work Agent开发。",
-        "read_allowlist": ["AGENTS.md", "RUN_STATE.json", "SPEC/PROGRESS.md", "HANDOFF.md"],
+        "read_allowlist": [
+          "AGENTS.md",
+          "RUN_STATE.json",
+          "SPEC/PROGRESS.md",
+          "HANDOFF.md"
+        ],
         "purpose": "生成当前项目可恢复状态简报。"
       },
       {
         "task_id": "REAL-02",
         "root": "/Users/m4air/总控/projects/Pi-Agent-Workbench",
-        "read_allowlist": ["AGENTS.md", "STATE.md"],
+        "read_allowlist": [
+          "AGENTS.md",
+          "STATE.md"
+        ],
         "purpose": "生成 Pi-Agent-Workbench 的当前状态与唯一下一步简报。"
       },
       {
         "task_id": "REAL-03",
         "root": "/Users/m4air/总控/projects/personal-knowledge-mcp-mvp",
-        "read_allowlist": ["AGENTS.md", "STATE.md"],
+        "read_allowlist": [
+          "AGENTS.md",
+          "STATE.md"
+        ],
         "purpose": "生成只读知识 MCP MVP 的恢复/停止边界简报。"
       }
     ],
-    "required_output_keys": ["task_id", "summary", "facts", "unknowns", "source_refs", "next_action", "completion_state"],
+    "required_output_keys": [
+      "task_id",
+      "summary",
+      "facts",
+      "unknowns",
+      "source_refs",
+      "next_action",
+      "completion_state"
+    ],
     "prompt_rules": [
       "Return one JSON object only.",
       "Use only the declared read allowlist.",
@@ -107,29 +126,43 @@
     }
   },
   "run_record": {
-    "test_started_at": "NOT STARTED",
-    "executed_at": null,
-    "raw_evidence_pointers": [],
-    "observed_facts": [],
+    "test_started_at": "2026-09-26T19:58:54.566Z",
+    "executed_at": "2026-09-26T20:03:28.013Z",
+    "raw_evidence_pointers": [
+      "/Users/m4air/Work Agent开发。/validation/m8-05-reality-results.json",
+      "validation/m8-05-raw/REAL-01.json",
+      "validation/m8-05-raw/REAL-02.json",
+      "validation/m8-05-raw/REAL-03.json"
+    ],
+    "observed_facts": [
+      "3/3 real local task receipts passed the frozen structural traceability rubric.",
+      "Recovery smoke final status was succeeded; segment_count=2, snapshot_count=1, resume_count=1."
+    ],
     "inferences": [],
-    "unknowns": [],
+    "unknowns": [
+      "Manual edit count, paired baseline time, cost, and user willingness were not measured by this gate.",
+      "Provider model quality and DeepSeek parity remain untested."
+    ],
     "deviations": []
   },
   "verdict": {
-    "status": "PENDING",
-    "threshold_comparison": null,
-    "supported_claim_after_run": null,
-    "unsupported_or_unknown": null,
-    "next_decision": null,
-    "one_highest_value_next_test": "NOT SET"
+    "status": "PASS",
+    "threshold_comparison": "3/3 traceable tasks; recovery_pass=true",
+    "supported_claim_after_run": "Narrow real-input traceability and one real-provider same-Run recovery smoke.",
+    "unsupported_or_unknown": [
+      "Manual edit count, paired baseline time, cost, and user willingness were not measured by this gate.",
+      "Provider model quality and DeepSeek parity remain untested."
+    ],
+    "next_decision": "Retain continuity as the next engineering path and design a separate paired baseline before claiming productivity improvement.",
+    "one_highest_value_next_test": "Run a paired baseline comparison on one repeated real task with manual edits and elapsed time recorded."
   },
   "hard_gate": {
-    "real_input_or_behavior": false,
+    "real_input_or_behavior": true,
     "version_rubric_thresholds_frozen_before_run": true,
-    "raw_evidence_readable": false,
+    "raw_evidence_readable": true,
     "facts_inferences_unknowns_separated": true,
     "claim_within_sample_scope": true,
     "permissions_privacy_cost_external_impact": true,
-    "verdict_changes_decision": false
+    "verdict_changes_decision": true
   }
 }
