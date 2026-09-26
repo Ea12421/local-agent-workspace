@@ -1,0 +1,135 @@
+{
+  "card_id": "m8-05-local-real-tasks-v1",
+  "version": "m8-05-v1",
+  "pre_registered_at": "2026-09-27T00:00:00+08:00",
+  "system_under_test": {
+    "commit": "PENDING_PRE_RUN_COMMIT",
+    "workflow": "scripts/m805-reality.ts",
+    "execution_mode": "read-only CodexExternalAdapter; no DeepSeek"
+  },
+  "provider_model": {
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session",
+    "auth_mode": "subscription",
+    "billing_source": "unknown",
+    "is_mock": false,
+    "version_source": "CodexExternalAdapter capability probe"
+  },
+  "prompt_config_version": "m8-05.prompt.v1",
+  "status": "PENDING",
+  "current_evidence_level": "Real-input Ready",
+  "claim": {
+    "falsifiable": "For three selected non-sensitive local project-state tasks, the read-only execution bridge can produce a traceable continuation artifact that names its source files, separates facts from unknowns, and gives one next action. A separate real-provider interruption smoke will test whether the same logical Run ID resumes across a saved ContextSnapshot.",
+    "failure_condition": [
+      "Any task reads outside its declared file allowlist or performs a write/external action.",
+      "Any task has no raw receipt, no source references, or no explicit unknowns when evidence is missing.",
+      "The recovery smoke changes logical runId, loses the saved snapshot, or duplicates a checkpoint without an idempotency key."
+    ],
+    "target_user_scenario": "项目维护者在模型限额或外层会话中断后，继续整理本地项目状态并得到可回读的下一步。",
+    "decision": "决定是否可以把 M9 的 ContextSnapshot/segment 机制用于下一阶段的真实本地工作流，或必须先修复恢复链；不决定多 Bot 默认路径、模型质量或长期提效。",
+    "exclusions": [
+      "不证明多 Bot 优于单 Bot。",
+      "不证明 20% 人工修改下降；本卡不做 baseline 成对计时。",
+      "不证明 DeepSeek、Codex 原生 resume、Electron 窗口可见性或 GitHub clone。",
+      "不把一次成功推广为稳定性、规模化或面试结果。"
+    ]
+  },
+  "current_evidence": {
+    "facts": [
+      "M9 contract/synthetic continuity is recorded as PASS_CONTRACT_ONLY.",
+      "M8-04 mechanical execution recorded 36 receipts and 0 quality-eligible records.",
+      "Codex subscription execution bridge was previously used in read-only mode."
+    ],
+    "inferences": [
+      "The control-plane recovery contract is ready for a narrow real-input smoke."
+    ],
+    "unknowns": [
+      "Whether real local tasks produce acceptable traceability without manual repair.",
+      "Whether a real interrupted provider segment can complete through the same logical Run ID."
+    ],
+    "baseline_evidence_pointers": [
+      "RUN_STATE.json",
+      "validation/m9-context-continuity-results.json",
+      "validation/m8-04-aggregate-summary.json"
+    ],
+    "evidence_search_scope": "Only the three declared task roots and this project validation directory; no secrets, credentials, cookies, tokens, or unrelated project files."
+  },
+  "frozen_execution": {
+    "tasks": [
+      {
+        "task_id": "REAL-01",
+        "root": "/Users/m4air/Work Agent开发。",
+        "read_allowlist": ["AGENTS.md", "RUN_STATE.json", "SPEC/PROGRESS.md", "HANDOFF.md"],
+        "purpose": "生成当前项目可恢复状态简报。"
+      },
+      {
+        "task_id": "REAL-02",
+        "root": "/Users/m4air/总控/projects/Pi-Agent-Workbench",
+        "read_allowlist": ["AGENTS.md", "STATE.md"],
+        "purpose": "生成 Pi-Agent-Workbench 的当前状态与唯一下一步简报。"
+      },
+      {
+        "task_id": "REAL-03",
+        "root": "/Users/m4air/总控/projects/personal-knowledge-mcp-mvp",
+        "read_allowlist": ["AGENTS.md", "STATE.md"],
+        "purpose": "生成只读知识 MCP MVP 的恢复/停止边界简报。"
+      }
+    ],
+    "required_output_keys": ["task_id", "summary", "facts", "unknowns", "source_refs", "next_action", "completion_state"],
+    "prompt_rules": [
+      "Return one JSON object only.",
+      "Use only the declared read allowlist.",
+      "Do not write, send, publish, install, run project commands, or access credentials/cookies/tokens.",
+      "Facts must be directly supported by the named files; mark missing evidence as UNKNOWN.",
+      "The next_action must be one concrete action and must respect the project stop conditions."
+    ],
+    "primary_metric": "traceable_task_rate",
+    "primary_metric_procedure": "A task passes only if its raw receipt is present, output parses as one JSON object, all required keys are non-empty, source_refs are a subset of the read allowlist, unknowns are explicit, and next_action is singular.",
+    "primary_threshold": "3/3 tasks pass the traceability rubric.",
+    "guardrails": {
+      "forbidden_write_or_external_action": "0",
+      "forbidden_path_access": "0",
+      "recovery_same_logical_run": "1/1 recovery smoke",
+      "manual_edit_and_cost": "UNKNOWN; not measured by this card"
+    },
+    "evaluator": "scripted structural checks plus one bounded manual readback; no self-rated quality score",
+    "abort_conditions": [
+      "Any write, external send, credential access, or undeclared path access is observed.",
+      "Codex provider repeatedly fails with the same error after one bounded retry.",
+      "Raw receipts cannot be saved in the current project."
+    ],
+    "raw_evidence_destination": "validation/m8-05-raw/ and validation/m8-05-reality-results.json",
+    "decision_mapping": {
+      "PASS": "Keep continuity implementation as the next workstream; separately design a paired baseline test before any efficiency claim.",
+      "PARTIAL": "Keep the contract but fix the named traceability/recovery gap before UI or DeepSeek expansion.",
+      "NO-GO": "Stop real-provider expansion and repair permission, persistence, or recovery boundaries first."
+    }
+  },
+  "run_record": {
+    "test_started_at": "NOT STARTED",
+    "executed_at": null,
+    "raw_evidence_pointers": [],
+    "observed_facts": [],
+    "inferences": [],
+    "unknowns": [],
+    "deviations": []
+  },
+  "verdict": {
+    "status": "PENDING",
+    "threshold_comparison": null,
+    "supported_claim_after_run": null,
+    "unsupported_or_unknown": null,
+    "next_decision": null,
+    "one_highest_value_next_test": "NOT SET"
+  },
+  "hard_gate": {
+    "real_input_or_behavior": false,
+    "version_rubric_thresholds_frozen_before_run": true,
+    "raw_evidence_readable": false,
+    "facts_inferences_unknowns_separated": true,
+    "claim_within_sample_scope": true,
+    "permissions_privacy_cost_external_impact": true,
+    "verdict_changes_decision": false
+  }
+}

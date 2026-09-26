@@ -21,7 +21,8 @@
     "install:fallback": "npm install --workspaces --include-workspace-root",
     "diagnose:network": "node scripts/network-diagnose.mjs",
     "m804:pilot": "node --experimental-strip-types scripts/m804-pilot.ts",
-    "m804:validate": "node --experimental-strip-types scripts/validate-m804.ts"
+    "m804:validate": "node --experimental-strip-types scripts/validate-m804.ts",
+    "m805:reality": "node --experimental-strip-types scripts/m805-reality.ts"
   },
   "engines": {
     "node": ">=22"
