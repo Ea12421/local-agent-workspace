@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：依赖恢复后进入 `running`，当前是 Web 已验证、Desktop 部分验证
-- 阶段：`m8-04-pilot-contract-fixed`
+- `RUN_STATE.json`：当前为 `running`，Git 与 Context Continuity 基础已落盘，Desktop 仍部分验证
+- 阶段：`m9-context-jsonl-persistence`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -26,10 +26,12 @@
   - `scripts/m804-pilot.ts`、`scripts/validate-m804.ts`：固定任务试跑和自动校验入口
   - `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json`：PB-01 试跑账本与校验摘要
   - `validation/m8-04-manual-review-PB-01.json`：PB-01 人工复核、可比性和质量证据阻断项
+  - `packages/core/src/context.ts`、`packages/core/src/context.test.ts`：ContextSnapshot 纯函数与恢复校验
+  - `apps/server/src/persistence.ts`、`apps/server/src/persistence.test.ts`：JSONL ContextSnapshot 持久化与隔离测试
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
-  - `npm run test:all`：8 tests passed
+  - `pnpm test:all`：14 tests passed
   - `npm run typecheck`：server TypeScript syntax check passed
   - `npm run setup`：passed
   - `npm run demo`：fixture demo passed，输出 4 handoffs / 5 artifacts / pending approval
@@ -58,8 +60,9 @@
 
 1. Codex Run 取消专项测试已经通过并写入 receipt；Electron 进程已启动但窗口 AX 读取超时，保留为 PARTIAL。
 2. 隔离 clean-room 源码副本已从零安装、setup、10 tests 通过；literal GitHub clone 仍待仓库 remote。
-3. M8-04 的 10 题固定任务、评分规则、PB-01 三条路径真实结果和自动校验摘要已落盘；严格 JSON 修正和受控复测也已落盘。先人工复核 PB-01，再将剩余 9 题拆成每批最多 3 条 provider 路径执行。每批后运行 `pnpm run m804:validate`、`pnpm run validate:state` 并检查 receipt。DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
-4. 当前用户没有要求自动 commit/push；继续保留所有现场文件，便于限额中断后恢复。
+3. Context Continuity M9-01/M9-02 已完成：同一逻辑 Run 的不可变 snapshot 纯函数与 JSONL 存储已通过专项测试。下一步实现 M9-03 的 Run segment/fallback resume，并让 provider limit/中断留下可恢复事件。
+4. M8-04 先保留 PB-01 质量证据阻断状态；M9-03 完成后再把剩余 9 题拆成每批最多 3 条 provider 路径执行。DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
+5. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
 
 ## 重要文件
 
@@ -72,6 +75,7 @@
 - `packages/adapters/src/`：Provider/权限适配层
 - `apps/server/src/index.ts`：本地 HTTP control plane
 - `apps/server/src/runtime.ts`：core 运行时 fixture
+- `apps/server/src/persistence.ts`：事件 JSONL 与 ContextSnapshot JSONL 存储
 - `apps/web/src/`：Web UI
 - `apps/desktop/src/main.ts`：Electron 薄壳
 - `fixtures/demo-project.json`：无 Key 演示输入

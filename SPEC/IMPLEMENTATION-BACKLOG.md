@@ -108,8 +108,8 @@
 
 | ID | 任务 | 文件/区域 | 依赖 | 状态 | 完成标准 |
 |---|---|---|---|---|---|
-| M9-01 | ContextSnapshot 纯函数契约 | `packages/core/src/context.ts`, `types.ts` | M1 | IN_PROGRESS | 阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 有专项测试 |
-| M9-02 | JSONL Snapshot 持久化 | `apps/server/src/persistence.ts` | M9-01 | TODO | snapshot 写入、读取、校验和重启 hydration |
+| M9-01 | ContextSnapshot 纯函数契约 | `packages/core/src/context.ts`, `types.ts` | M1 | DONE | 阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 有专项测试 |
+| M9-02 | JSONL Snapshot 持久化 | `apps/server/src/persistence.ts` | M9-01 | DONE | snapshot 写入、读取、重复拒绝、latest 隔离和重启 hydration |
 | M9-03 | Run segment 与 fallback resume | `packages/adapters`, `apps/server/src/runtime.ts` | M9-01 | TODO | Provider limit/中断后同一 Run 创建新 segment，receipt 可追溯 |
 | M9-04 | Product Builder 长窗口接入 | `packages/workflow`, `apps/server` | M9-02, M9-03 | TODO | Handoff、Approval、Artifact 后自动 checkpoint，恢复不重复工作 |
 | M9-05 | Context Continuity 验证 | `validation/`, `SPEC/07` | M9-04 | TODO | synthetic limit、崩溃恢复、重复提交、跨项目隔离通过 |

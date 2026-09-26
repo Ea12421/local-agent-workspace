@@ -29,6 +29,12 @@
       "source_ref": "environment-check",
       "rejected": "当前可直接 pnpm install 并完成打包",
       "required": "先落盘依赖和代码；网络恢复后再做依赖安装、Vite 构建和 Electron 打包验证"
+    },
+    {
+      "at": "2026-09-27T00:00:00+08:00",
+      "source_ref": "user-2026-09-27",
+      "rejected": "依赖聊天连续性或立即接 DeepSeek 作为主线",
+      "required": "先持久化 ContextSnapshot、执行 segment 和 fallback recovery；DeepSeek 后置"
     }
   ],
   "scope": {
@@ -42,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m9-context-continuity-git",
+  "phase": "m9-context-jsonl-persistence",
   "progress": {
-    "completed_units": 8,
-    "total_units": 8
+    "completed_units": 9,
+    "total_units": 10
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -59,7 +65,7 @@
     "blocking_corrections_left": 1
   },
   "blocked_reason": "Electron arm64 DMG 曾成功生成并启动过，但 Computer Use 无法在超时内绑定窗口；2026-09-27 重打包时 .app 编译成功，hdiutil 因当前环境 DiskManagement framework 不可用而失败。DeepSeek、literal GitHub clone、Codex resume 和真实 AI/现实任务验证仍未完成。",
-  "next_action": "建立本地 Git 基线并冻结 Context Continuity v1 契约：定义受保护上下文、压缩快照、事件范围、Handoff 和恢复校验；然后实现 packages/core 的纯函数与专项测试。",
-  "last_evidence": "2026-09-27：用户授权继续推进、后置 DeepSeek、使用本地非敏感真实任务、建立 Git 存档，并要求为单窗口长时间使用增加接近 Codex 的压缩/交接/恢复机制。当前仍有 8 个基础实现单元完成，M8-04 质量证据为 0，现进入 M9 Context Continuity 与 Git 持久化增量。",
-  "updated_at": "2026-09-26T17:20:01.875Z"
+  "next_action": "实现 Run segment 与 fallback resume：同一逻辑 Run 在 provider 超限或中断后追加 segment 事件，使用已验证 ContextPacket 重新启动执行，并补专项恢复测试。",
+  "last_evidence": "2026-09-27：本地 Git 已建立并提交 baseline 与 Context Continuity core；packages/core 专项测试 12/12、typecheck 通过。当前正在补 JsonlContextSnapshotStore 持久化与重启/重复/隔离测试；M8-04 质量证据仍为 0，DeepSeek 后置。",
+  "updated_at": "2026-09-27T00:00:00+08:00"
 }

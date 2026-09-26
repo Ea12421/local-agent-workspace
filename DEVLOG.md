@@ -71,3 +71,11 @@
 1. 读取 `RUN_STATE.json`。
 2. 读取本文件和 `evidence/receipts/build-and-ui-validation-2026-09-26.json`。
 3. 当前下一步是复核 PB-01 并分批执行 M8-04 剩余 9 题；不要重复安装，也不要重做已经通过的 Web/DMG 验证。
+
+## 2026-09-27 Context Continuity 与 Git checkpoint
+
+- 用户明确授权继续推进、后置 DeepSeek，并要求单个逻辑 Run 能跨模型限额、上下文压缩和外层会话中断恢复；因此新增 M9 Context Continuity，不把聊天连续性当作事实源。
+- 本地 Git 已建立 `main` 基线并提交 `2da7256`、`cd73718`；没有配置 remote，也没有 push。
+- `packages/core/src/context.ts` 实现不可变 `ContextSnapshot`、结构化摘要、事件范围、tail、content hash 和恢复 Packet；原始 RunEvent 不删除。
+- `apps/server/src/persistence.ts` 新增 `JsonlContextSnapshotStore`：append-only、重复 snapshot id 拒绝、重启读取、按 project/run 隔离 latest。
+- 验证结果：`pnpm test:all` 14/14、`pnpm run typecheck` 通过。M9-03 的 provider segment/fallback resume 仍未实现；DeepSeek 和 M8-04 质量证据不受本次测试结果替代。

@@ -1,5 +1,6 @@
 import { appendFile, mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import type { ContextSnapshot } from '../../../packages/core/src/types.ts';
 
 export type PersistedEvent = Record<string, unknown>;
 
@@ -26,6 +27,59 @@ export class JsonlEventLog {
       if (error?.code === 'ENOENT') return [];
       throw error;
     }
+  }
+}
+
+export interface ContextSnapshotStore {
+  append(snapshot: ContextSnapshot): Promise<void>;
+  readAll(): Promise<ContextSnapshot[]>;
+  latest(projectId: string, runId: string): Promise<ContextSnapshot | undefined>;
+}
+
+/**
+ * Append-only ContextSnapshot storage for clean checkouts and crash recovery.
+ *
+ * Snapshots are immutable records. The store rejects duplicate snapshot ids
+ * before appending, while keeping the original RunEvent log untouched.
+ */
+export class JsonlContextSnapshotStore implements ContextSnapshotStore {
+  private readonly filePath: string;
+  private writeQueue: Promise<void> = Promise.resolve();
+
+  constructor(filePath: string) { this.filePath = filePath; }
+
+  async append(snapshot: ContextSnapshot): Promise<void> {
+    const operation = this.writeQueue.then(async () => {
+      const existing = await this.readAll();
+      if (existing.some((item) => item.id === snapshot.id)) {
+        throw new Error(`Context snapshot already exists: ${snapshot.id}`);
+      }
+      await mkdir(path.dirname(this.filePath), { recursive: true });
+      await appendFile(this.filePath, `${JSON.stringify(snapshot)}\n`, 'utf8');
+    });
+    this.writeQueue = operation.catch(() => undefined);
+    return operation;
+  }
+
+  async readAll(): Promise<ContextSnapshot[]> {
+    try {
+      const text = await readFile(this.filePath, 'utf8');
+      return text.split('\n').filter(Boolean).map((line) => JSON.parse(line) as ContextSnapshot);
+    } catch (error: any) {
+      if (error?.code === 'ENOENT') return [];
+      throw error;
+    }
+  }
+
+  async latest(projectId: string, runId: string): Promise<ContextSnapshot | undefined> {
+    const matching = (await this.readAll())
+      .filter((snapshot) => snapshot.projectId === projectId && snapshot.runId === runId)
+      .sort((a, b) => {
+        const createdAt = a.createdAt.localeCompare(b.createdAt);
+        if (createdAt !== 0) return createdAt;
+        return a.covers.toSequence - b.covers.toSequence;
+      });
+    return matching.at(-1);
   }
 }
 

@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`codex-first-bridge-verified-m8-04-pilot-contract-fixed-desktop-partial`
+`context-continuity-jsonl-verified-m9-02-desktop-partial`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -40,6 +40,8 @@
 - M8-04 PB-01 已用真实 Codex subscription execution bridge 跑通 `single_call`、`single_bot`、`multi_bot`；multi Bot 成功记录形成 4 个结构化阶段，单次记录为 19–29 条 provider 事件
 - M8-04 自动校验已完成：9 条真实 provider 记录（其中 8 条完成、1 条 provider_incomplete）均有 JSON/schema 校验结果；当前有效完成记录为 `single_call` 7/8、`single_bot` 两次 8/8、旧 `multi_bot` 拼接/前缀输出被严格拒绝、可解析的 `multi_bot` 记录为 7/8；没有记录被提升为质量证据
 - M8-04 试跑、重试和校验均写入 `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json` 和 `evidence/receipts/m804-*.json`
+- Context Continuity v1 纯函数已完成：软/硬阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 均有专项测试。
+- `JsonlContextSnapshotStore` 已完成：快照追加、重启读取、重复 ID 拒绝、按 project/run 查询 latest，并保持原始 RunEvent 不变。
 
 ## 当前卡点
 
@@ -54,7 +56,7 @@
 
 ## 当前唯一下一步
 
-完成 PB-01 的人工复核记录，然后按每批不超过 3 条 provider 路径执行剩余 9 个固定任务；每批结束运行 `pnpm run m804:validate` 和 `pnpm run validate:state`，继续使用 Codex subscription execution bridge，DeepSeek 作为可选 API 对比，不把 Fixture 结果计入质量结论。
+实现 Run segment 与 fallback resume：同一逻辑 Run 在 provider 超限或中断后追加 segment 事件，使用已验证 ContextPacket 重新启动执行，并补专项恢复测试。完成后再恢复 M8-04 小批次真实任务验证。
 
 ## 网络恢复后的下一步
 
