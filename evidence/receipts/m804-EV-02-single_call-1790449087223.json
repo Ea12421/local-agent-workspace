@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-EV-02-single_call-1790449087223",
+  "task_id": "EV-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "evaluation_design",
+  "path": "single_call",
+  "input_hash": "e03e0669298f102f59b757c1c4b171793f9dccda4960d7786bfaf4553aef9284",
+  "run_ids": [
+    "ae1893ce-78e8-466e-b48d-4b86d902ed26"
+  ],
+  "started_at": "2026-09-26T18:57:44.691Z",
+  "finished_at": "2026-09-26T18:58:07.222Z",
+  "elapsed_ms": 22531,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2490,
+    "sha256": "ccc913f0071e8926dde5eab891d9a3f62b1471d41422d16e945151e228fec509",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "all_states_covered": null,
+    "cancel_sends_provider_signal": null,
+    "recovery_replays_events": null,
+    "duplicate_submission_is_idempotent": null,
+    "failure_diagnostic_present": null,
+    "approval_boundary_preserved": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 0,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"scenarios\":[{\"id\":\"queued_to_running\",\"state\":\"queued\",\"action\":\"提交 Run 并启动 Provider\",\"verify\":\"仅追加一次 queued/running 事件，重复提交不重复执行\"},{\"id\":\"interrupt_running\",\"state\":\"running\",\"action\":\"中断 Run\",\"verify\":\"追加 interrupt_requested，并发送 Provider 中断信号；记录 receipt\"},{\"id\":\"cancel_running\",\"state\":\"running\",\"action\":\"取消 Run\",\"verify\":\"发送 Provider cancel 信号，追加 cancellation_requested/cancelled；未获审批不得越过审批边界\"},{\"id\":\"waiting_user_approval\",\"state\":\"waiting_user\",\"action\":\"提交或重复提交用户批准\",\"verify\":\"仅在有效批准事件后恢复；重复批准幂等\"},{\"id\":\"succeed\",\"state\":\"succeeded\",\"action\":\"完成 Run 并生成 artifact\",\"verify\":\"追加 succeeded/artifact_created，artifact 可由事件重放恢复\"},{\"id\":\"fail_and_retry\",\"state\":\"failed\",\"action\":\"记录失败并重试\",\"verify\":\"保留原失败事件，追加 retry_requested/new_attempt；新 attempt 可关联原 attempt\"},{\"id\":\"recover\",\"state\":\"cancelled\",\"action\":\"从事件日志恢复 Run\",\"verify\":\"按 append-only 事件顺序重放，得到与中断前一致的状态和 artifact\"}],\"expected_events\":[\"run_created\",\"state_changed{from,to}\",\"provider_signal_sent{signal,receipt}\",\"approval_requested\",\"approval_granted\",\"interrupt_requested\",\"cancellation_requested\",\"cancelled\",\"failed{code,message,attempt_id}\",\"retry_requested{attempt_id,new_attempt_id}\",\"artifact_created{artifact_id,content_hash}\",\"run_recovered{replayed_through_event_id}\"],\"idempotency_keys\":{\"submission\":\"run_id:operation:client_request_id\",\"provider_signal\":\"run_id:attempt_id:signal_type:signal_request_id\",\"approval\":\"run_id:approval_request_id:decision_id\",\"retry\":\"run_id:failed_attempt_id:retry_request_id\",\"event_append\":\"run_id:event_id\"},\"recovery_result\":{\"method\":\"读取事件日志并按序重放，不修改历史事件\",\"must_match\":[\"当前状态\",\"attempt_id及重试链\",\"审批边界\",\"Provider receipt\",\"artifact_id/content_hash\"],\"replayable_artifact\":true},\"failure_diagnostics\":{\"required_fields\":[\"run_id\",\"attempt_id\",\"state\",\"event_id\",\"error_code\",\"error_message\",\"provider_signal\",\"provider_receipt\",\"retryable\",\"timestamp\"],\"rules\":[\"失败事件 append-only 且不可覆盖\",\"重复请求返回首次结果并标记 deduplicated=true\",\"Provider 无响应时记录 timeout/unknown，不伪造成功\",\"审批缺失或拒绝时保持 waiting_user/cancelled，不自动继续\"]}}",
+  "attempts": [
+    {
+      "stage": "single_call",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "ae1893ce-78e8-466e-b48d-4b86d902ed26",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2490
+    }
+  ]
+}

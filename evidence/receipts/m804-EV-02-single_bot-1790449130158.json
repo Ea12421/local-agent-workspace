@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-EV-02-single_bot-1790449130158",
+  "task_id": "EV-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "evaluation_design",
+  "path": "single_bot",
+  "input_hash": "e03e0669298f102f59b757c1c4b171793f9dccda4960d7786bfaf4553aef9284",
+  "run_ids": [
+    "79ee64dd-f7c3-4bd1-ab43-cb4dae5acf09"
+  ],
+  "started_at": "2026-09-26T18:58:15.456Z",
+  "finished_at": "2026-09-26T18:58:50.157Z",
+  "elapsed_ms": 34701,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2350,
+    "sha256": "7ad6c4ae02d02771bc453c3d32ff54e4f7215324a68f0cee0e62c9c0009675e0",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "all_states_covered": null,
+    "cancel_sends_provider_signal": null,
+    "recovery_replays_events": null,
+    "duplicate_submission_is_idempotent": null,
+    "failure_diagnostic_present": null,
+    "approval_boundary_preserved": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"scenarios\":[{\"id\":\"queued_to_running\",\"state\":\"queued\",\"action\":\"提交 Run\",\"expected\":\"进入 running，重复提交不创建重复 Run\"},{\"id\":\"running_interrupt\",\"state\":\"running\",\"action\":\"进程中断后恢复\",\"expected\":\"读取 append-only 事件并重放至最新一致状态\"},{\"id\":\"waiting_user_approval\",\"state\":\"waiting_user\",\"action\":\"等待审批\",\"expected\":\"未获审批不得继续执行或外发\"},{\"id\":\"cancel_running\",\"state\":\"running\",\"action\":\"取消 Run\",\"expected\":\"追加取消事件并向 Provider 发送 cancel_signal\"},{\"id\":\"retry_failed\",\"state\":\"failed\",\"action\":\"重试 Run\",\"expected\":\"基于原 Run 事件创建幂等 retry_attempt\"},{\"id\":\"resume_cancelled\",\"state\":\"cancelled\",\"action\":\"恢复已取消 Run\",\"expected\":\"仅在显式恢复请求及审批边界满足时重放事件并继续\"}],\"expected_events\":[\"run_created\",\"run_queued\",\"run_started\",\"run_waiting_user\",\"approval_requested\",\"approval_granted\",\"provider_call_started\",\"provider_signal_sent:{signal:'cancel'}\",\"run_cancel_requested\",\"run_cancelled\",\"run_failed:{diagnostic_id}\",\"retry_requested\",\"retry_started\",\"run_resumed\",\"artifact_checkpointed\",\"run_succeeded\"],\"idempotency_keys\":{\"submission\":\"client_request_id\",\"cancel\":\"run_id:cancel\",\"retry\":\"run_id:attempt_number\",\"approval\":\"run_id:approval_step:event_version\",\"event_append\":\"event_id\"},\"recovery_result\":{\"replay_source\":\"append-only RunEvent log\",\"procedure\":[\"按event_version升序读取\",\"校验event_id唯一性与链完整性\",\"重放状态机与artifact_checkpoint\",\"恢复到最后一致状态\",\"重复事件跳过且不产生新副作用\"],\"result\":\"状态、尝试次数、审批边界、Provider信号记录和可 replay artifact 与中断前一致\"},\"failure_diagnostics\":{\"required_fields\":[\"diagnostic_id\",\"run_id\",\"attempt_id\",\"state\",\"error_code\",\"message\",\"provider_request_id\",\"event_version\",\"retryable\",\"timestamp\"],\"behavior\":\"失败必须追加run_failed事件并关联诊断；Provider取消失败、重放冲突或幂等键冲突均记录具体错误且不得静默吞错\"},\"approval_boundary_preserved\":true,\"artifact_replayable\":{\"required\":[\"artifact_id\",\"content_hash\",\"schema_version\",\"source_event_version\",\"storage_ref\"],\"verification\":\"恢复时按hash校验并从最近checkpoint重放；缺失或校验失败则阻断恢复并产出诊断\"}}\n",
+  "attempts": [
+    {
+      "stage": "single_bot",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "79ee64dd-f7c3-4bd1-ab43-cb4dae5acf09",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2350
+    }
+  ]
+}

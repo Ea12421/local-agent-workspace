@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-EV-02-multi_bot-1790449366205",
+  "task_id": "EV-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "evaluation_design",
+  "path": "multi_bot",
+  "input_hash": "e03e0669298f102f59b757c1c4b171793f9dccda4960d7786bfaf4553aef9284",
+  "run_ids": [
+    "2db5f11a-6647-44bd-b142-cee3ea7bce58",
+    "21867aa4-3f76-4ca8-a011-9fd28cead847",
+    "b16a350a-50ab-4432-a6b4-861675aba61d",
+    "e5790085-b787-4e9b-a672-4b0de55b3d87"
+  ],
+  "started_at": "2026-09-26T18:58:59.687Z",
+  "finished_at": "2026-09-26T19:02:46.204Z",
+  "elapsed_ms": 226517,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2878,
+    "sha256": "cde79512604b2c1913185a103af4c529466208e1b117a5a1524efe65867c7674",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "all_states_covered": null,
+    "cancel_sends_provider_signal": null,
+    "recovery_replays_events": null,
+    "duplicate_submission_is_idempotent": null,
+    "failure_diagnostic_present": null,
+    "approval_boundary_preserved": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 20,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "EV-02",
+      "output_ref": "stage-1",
+      "event_count": 5
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 5
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 5
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 5
+    }
+  ],
+  "output_excerpt": "{\"scenarios\":[{\"id\":\"submit_queued\",\"state\":\"queued\",\"actions\":[\"提交Run\",\"重复提交相同request_id\"],\"expected\":[\"创建一个逻辑Run\",\"追加run_submitted与state_changed:queued\",\"重复提交返回同一Run且不追加重复业务事件\"]},{\"id\":\"run_interrupt_recover\",\"state\":\"running\",\"actions\":[\"运行中断\",\"重启并重放事件\"],\"expected\":[\"追加recovery_started与events_replayed\",\"恢复最后一致状态\",\"已完成步骤不重复执行\",\"未完成步骤可继续\"]},{\"id\":\"approval_boundary\",\"state\":\"waiting_user\",\"actions\":[\"请求审批\",\"审批前重复提交受保护操作\",\"审批后提交\"],\"expected\":[\"追加approval_requested\",\"审批前不执行工具或Provider操作\",\"审批请求幂等\",\"仅审批后执行\"]},{\"id\":\"cancel\",\"state\":\"cancelled\",\"actions\":[\"提交取消请求\",\"重复提交相同取消请求\"],\"expected\":[\"追加cancel_requested\",\"向Provider发送一次cancel_signal\",\"追加cancel_acknowledged或cancel_failed\",\"最终状态cancelled且幂等\"]},{\"id\":\"retry\",\"state\":\"failed\",\"actions\":[\"注入可诊断失败\",\"使用新attempt显式重试\"],\"expected\":[\"追加step_failed与failure_diagnostic\",\"追加retry_requested\",\"新attempt运行\",\"成功时追加state_changed:succeeded\"]},{\"id\":\"success_artifact\",\"state\":\"succeeded\",\"actions\":[\"读取已完成Run并重放产物\"],\"expected\":[\"追加artifact_recorded\",\"产物可按事件与content_hash重放\"]}],\"expected_events\":[\"run_submitted\",\"state_changed:queued\",\"state_changed:running\",\"approval_requested\",\"approval_granted\",\"step_started\",\"step_succeeded\",\"step_failed\",\"failure_diagnostic\",\"retry_requested\",\"cancel_requested\",\"provider_signal_sent:cancel\",\"cancel_acknowledged\",\"cancel_failed\",\"recovery_started\",\"events_replayed\",\"artifact_recorded\",\"state_changed:succeeded\",\"state_changed:failed\",\"state_changed:cancelled\"],\"idempotency_keys\":{\"submit\":\"run_id:submit:request_id\",\"cancel\":\"run_id:cancel:request_id\",\"approval\":\"run_id:approval:request_id\",\"retry\":\"run_id:retry:attempt:request_id\",\"provider_signal\":\"run_id:provider_signal:operation_id\"},\"recovery_result\":{\"method\":\"按sequence_id顺序重放append-only RunEvent\",\"reconstructed\":[\"state\",\"attempt\",\"approval_boundary\",\"provider_signal_status\",\"artifact_id\",\"artifact_version\",\"content_hash\"],\"success_criteria\":[\"queued、running、waiting_user、succeeded、failed、cancelled均可重建\",\"重复重放结果一致\",\"事件无缺失或乱序\",\"可从最后检查点继续\",\"产物content_hash一致且可replay\"]},\"failure_diagnostics\":{\"required_fields\":[\"error_code\",\"message\",\"failed_event_id\",\"attempt\",\"provider_receipt\",\"retryable\",\"timestamp\"],\"rules\":[\"诊断事件append-only且不可覆盖\",\"provider_receipt关联原始调用\",\"不可重试失败保持failed\",\"可重试失败必须显式retry_requested\",\"审批边界违规必须记录并阻止执行\"],\"conflicts\":[]}}",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "2db5f11a-6647-44bd-b142-cee3ea7bce58",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3164
+    },
+    {
+      "stage": "Product",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "21867aa4-3f76-4ca8-a011-9fd28cead847",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2547
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "b16a350a-50ab-4432-a6b4-861675aba61d",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2634
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "e5790085-b787-4e9b-a672-4b0de55b3d87",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2878
+    }
+  ]
+}
