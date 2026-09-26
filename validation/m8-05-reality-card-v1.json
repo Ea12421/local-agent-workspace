@@ -1,9 +1,9 @@
 {
   "card_id": "m8-05-local-real-tasks-v1",
   "version": "m8-05-v1",
-  "pre_registered_at": "2026-09-27T00:00:00+08:00",
+  "pre_registered_at": "2026-09-27T03:38:26+08:00",
   "system_under_test": {
-    "commit": "PENDING_PRE_RUN_COMMIT",
+    "commit": "513fae88a43f46d8b6034d174f4438cc4793d0de",
     "workflow": "scripts/m805-reality.ts",
     "execution_mode": "read-only CodexExternalAdapter; no DeepSeek"
   },
