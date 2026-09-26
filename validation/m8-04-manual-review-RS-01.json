@@ -1,0 +1,51 @@
+{
+  "review_version": "m8-04.manual-review.v1",
+  "reviewed_at": "2026-09-27",
+  "task_id": "RS-01",
+  "source_results": "validation/m8-04-results.jsonl",
+  "source_summary": "validation/m8-04-validation-summary.json",
+  "reviewer": {
+    "kind": "local_read_only_pilot_audit",
+    "scope": "RS-01 provider records and automated contract output",
+    "file_mutation": false
+  },
+  "records": [
+    {
+      "receipt_id": "m804-RS-01-single_call-1790447302297",
+      "path": "single_call",
+      "schema_pass": true,
+      "hard_pass": "8/8",
+      "elapsed_ms": 15128
+    },
+    {
+      "receipt_id": "m804-RS-01-single_bot-1790447343306",
+      "path": "single_bot",
+      "schema_pass": true,
+      "hard_pass": "8/8",
+      "elapsed_ms": 33878
+    },
+    {
+      "receipt_id": "m804-RS-01-multi_bot-1790447533776",
+      "path": "multi_bot",
+      "schema_pass": true,
+      "hard_pass": "8/8",
+      "elapsed_ms": 180750
+    }
+  ],
+  "comparability": {
+    "same_task_and_input_hash": true,
+    "same_provider_identity": true,
+    "multi_bot_to_single_bot_latency_ratio": 5.33,
+    "two_x_latency_threshold_met": false
+  },
+  "blocking_findings": [
+    "artifact.id and artifact.valid are null for all three records",
+    "artifact replay hash/result is not independently recorded",
+    "manual edit steps and characters are null",
+    "reviewer rubric is null",
+    "usage/cost is null",
+    "all three records remain quality_eligible=false"
+  ],
+  "decision": "quality_evidence_blocked",
+  "conclusion": "RS-01 is schema-readable and passes all eight automated hard constraints on all three paths. It still does not establish a quality or default-routing advantage; multi_bot is 5.33x slower than single_bot and replay/edit/cost evidence is missing."
+}

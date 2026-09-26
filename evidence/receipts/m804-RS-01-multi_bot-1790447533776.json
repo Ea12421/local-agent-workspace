@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-RS-01-multi_bot-1790447533776",
+  "task_id": "RS-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "research_facts",
+  "path": "multi_bot",
+  "input_hash": "872715df47cde11b4bc075de908e08dda041d1f6ff219e8b73511039cecd0b17",
+  "run_ids": [
+    "cceaad17-9cac-4d7f-a508-01b952f8862c",
+    "0bc55961-06cc-43de-b5c5-30f9eba90338",
+    "ddf09ac1-bf04-4435-9491-da76549d9a39",
+    "512a0c1e-7aa6-4047-8610-2552c2be78f5"
+  ],
+  "started_at": "2026-09-26T18:29:13.025Z",
+  "finished_at": "2026-09-26T18:32:13.775Z",
+  "elapsed_ms": 180750,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 755,
+    "sha256": "b673992149f17f829b021a24d280cdb356498036724c93d06dffb45dcc640c5f",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "every_external_fact_has_source_or_unknown": null,
+    "claim_and_inference_separated": null,
+    "missing_pricing_marked_unknown": null,
+    "unsupported_competitor_result_not_presented_as_fact": null,
+    "confidence_present": null,
+    "input_refs_readable": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 20,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "RS-01",
+      "output_ref": "stage-1",
+      "event_count": 5
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 5
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 5
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 5
+    }
+  ],
+  "output_excerpt": "{\"facts\":[{\"claim\":\"用户过去30天平均每周发布3条视频。\",\"source\":\"资料 A\"},{\"claim\":\"某竞品声称可提升效率，但未公开测试方法。\",\"source\":\"资料 B\"}],\"sources\":{\"资料 A\":\"用户过去30天平均每周发布3条视频。\",\"资料 B\":\"某竞品声称可提升效率，但未公开测试方法。\",\"资料 C\":\"没有定价信息。\"},\"inferences\":[\"用户近期保持稳定的视频发布节奏。\"],\"unknowns\":[\"该竞品是否实际提升效率及提升幅度。\",\"该竞品的定价信息。\"],\"confidence\":{\"facts\":\"高；资料A、B直接支持，资料B仅证明竞品声称，不能证明实际效果。\",\"inferences\":\"中；由资料A推断。\",\"unknowns\":\"高；资料B、C明确表明证据或信息缺失。\"}}",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "cceaad17-9cac-4d7f-a508-01b952f8862c",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 716
+    },
+    {
+      "stage": "Product",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "0bc55961-06cc-43de-b5c5-30f9eba90338",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 766
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "ddf09ac1-bf04-4435-9491-da76549d9a39",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 762
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "512a0c1e-7aa6-4047-8610-2552c2be78f5",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 755
+    }
+  ]
+}

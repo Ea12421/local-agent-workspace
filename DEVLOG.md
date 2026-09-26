@@ -87,3 +87,5 @@
 - M9 全部完成后，唯一下一步回到 M8-04：PB-01 人工复核与剩余 9 个固定任务的小批量真实 Codex subscription execution bridge 运行。DeepSeek 仍后置。
 - PB-02 小批次已完成：single_call 43.260s、single_bot 51.279s、multi_bot 167.466s；三条路径 schema 均通过但均为 6/8 hard constraints。multi_bot 约为 single_bot 的 3.27 倍，不能据此设为默认路径。
 - `validation/m8-04-manual-review-PB-02.json` 已记录 artifact/replay hash、人工编辑、reviewer rubric 和 usage/cost 缺失，因此 PB-02 仍是 `quality_evidence_blocked`；没有把执行完成写成质量通过。
+- RS-01 小批次已完成：single_call 15.128s、single_bot 33.878s、multi_bot 180.750s；三条路径均 schema_pass=true、8/8 hard constraints，但 multi_bot 约慢 5.33 倍。
+- `validation/m8-04-manual-review-RS-01.json` 已记录 RS-01 的 replay/edit/rubric/cost 证据缺口；质量证据仍为 0，下一批从 RS-02 继续。
