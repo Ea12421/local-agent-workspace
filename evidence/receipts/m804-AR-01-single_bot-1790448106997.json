@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-AR-01-single_bot-1790448106997",
+  "task_id": "AR-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "architecture_tradeoff",
+  "path": "single_bot",
+  "input_hash": "a91b6e820d3ea1088fef333e44380b6d84ccb02b2c1b15f78ac78e4879d9de2c",
+  "run_ids": [
+    "1ea1b958-291f-47e6-8f3d-bca0cc5a38b5"
+  ],
+  "started_at": "2026-09-26T18:41:09.466Z",
+  "finished_at": "2026-09-26T18:41:46.997Z",
+  "elapsed_ms": 37531,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2706,
+    "sha256": "72778cae218521f397dedaf2c62d9ee5e616bf90c03093493334ca1bdbd2101e",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "at_least_two_options": null,
+    "tradeoffs_explicit": null,
+    "dependencies_present": null,
+    "cost_and_risk_present": null,
+    "recommendation_matches_offline_requirement": null,
+    "rollback_present": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"options\":[{\"name\":\"SQLite + JSONL fallback\",\"fit\":\"高\",\"details\":\"本地 SQLite 作为主存储，JSONL 作为追加式事件备份与恢复来源；支持离线运行、事件回放和未来替换存储。\"},{\"name\":\"云端 Postgres\",\"fit\":\"低至中\",\"details\":\"集中式关系数据库；适合多设备协作与远程查询，但依赖网络和云端服务，不符合单用户本地优先目标。\"}],\"tradeoffs\":{\"SQLite + JSONL fallback\":{\"advantages\":[\"离线可运行\",\"本地数据可控\",\"JSONL 便于追加、导出和回放\",\"迁移到其他存储较容易\"],\"disadvantages\":[\"需自行处理备份、并发和一致性\",\"跨设备同步能力有限\"]},\"云端 Postgres\":{\"advantages\":[\"查询、并发和集中备份能力较强\",\"便于未来多用户或多设备扩展\"],\"disadvantages\":[\"依赖网络、服务配置和凭据\",\"增加部署与运营成本\",\"离线使用和本地优先体验较弱\"]}},\"dependencies\":{\"SQLite + JSONL fallback\":[\"SQLite 驱动\",\"版本化 schema 与迁移机制\",\"append-only RunEvent 格式\",\"JSONL 校验、备份和回放工具\"],\"云端 Postgres\":[\"Postgres 实例\",\"网络连接\",\"认证与密钥管理\",\"迁移、备份和同步机制\"]},\"cost\":{\"SQLite + JSONL fallback\":\"基础设施成本未知且通常较低；主要成本是本地备份、迁移和一致性实现。\",\"云端 Postgres\":\"云服务费用未知；另有部署、网络、认证、备份和运维成本。\"},\"risks\":{\"SQLite + JSONL fallback\":[\"JSONL 损坏或备份缺失可能影响恢复\",\"并发写入和 schema 演进处理不当会导致不一致\",\"本地设备损坏可能造成数据丢失\"],\"云端 Postgres\":[\"网络不可用时核心功能受限\",\"云端故障或配置错误影响可用性\",\"凭据和数据外发带来安全与隐私风险\"]},\"recommendation\":{\"choice\":\"SQLite + JSONL fallback\",\"plan\":[\"以 SQLite 保存当前物化状态和索引\",\"所有业务变更先写入带版本号、时间戳和唯一 ID 的 append-only RunEvent JSONL\",\"定期从事件重建 SQLite，并校验事件序列\",\"通过存储适配器隔离业务层，预留 Postgres 实现\"],\"reason\":\"最符合离线可运行、事件可回放、单用户本地优先和未来可替换存储的要求。\"},\"rollback\":{\"strategy\":[\"保留原始 JSONL 事件文件，不覆盖写入\",\"切换存储前导出 schema 版本、事件文件和校验摘要\",\"若 SQLite 迁移失败，删除或隔离新数据库并从 JSONL 重建旧版本\",\"若未来接入 Postgres，先双写或离线导入并校验事件数量与顺序，失败时继续使用 SQLite\"],\"replayability\":\"以 JSONL 事件作为事实源；给定相同初始状态、schema 版本和事件序列，应可重建等价状态。\"}}",
+  "attempts": [
+    {
+      "stage": "single_bot",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "1ea1b958-291f-47e6-8f3d-bca0cc5a38b5",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2706
+    }
+  ]
+}

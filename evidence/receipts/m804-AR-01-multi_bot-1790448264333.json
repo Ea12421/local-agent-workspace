@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-AR-01-multi_bot-1790448264333",
+  "task_id": "AR-01",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "architecture_tradeoff",
+  "path": "multi_bot",
+  "input_hash": "a91b6e820d3ea1088fef333e44380b6d84ccb02b2c1b15f78ac78e4879d9de2c",
+  "run_ids": [
+    "54792c67-6285-4ce0-83a0-78e913101aeb",
+    "7ecf346b-cab2-4534-a011-9a64b57ac7fe",
+    "eef23283-1e74-4ccc-b8aa-7d6c1e37c49a",
+    "732dc22d-660b-455c-b129-a622e1747857"
+  ],
+  "started_at": "2026-09-26T18:41:55.368Z",
+  "finished_at": "2026-09-26T18:44:24.333Z",
+  "elapsed_ms": 148964,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2979,
+    "sha256": "36892ce720ccf2581cae3bb380a6e408a0de138309c27ec3979a155bf414fdb1",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "at_least_two_options": null,
+    "tradeoffs_explicit": null,
+    "dependencies_present": null,
+    "cost_and_risk_present": null,
+    "recommendation_matches_offline_requirement": null,
+    "rollback_present": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 20,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "AR-01",
+      "output_ref": "stage-1",
+      "event_count": 5
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 5
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 5
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 5
+    }
+  ],
+  "output_excerpt": "{\"options\":[{\"name\":\"SQLite + JSONL fallback\",\"fit\":\"高\",\"pros\":[\"离线运行\",\"事件可回放\",\"单用户本地优先\",\"可通过Storage接口替换\"],\"cons\":[\"需处理一致性、备份、恢复和迁移\"]},{\"name\":\"云端 Postgres\",\"fit\":\"低\",\"pros\":[\"集中存储\",\"便于未来多设备或多人扩展\"],\"cons\":[\"依赖网络、认证和云端运维\",\"离线需额外同步设计\"]}],\"tradeoffs\":{\"offline\":\"SQLite可离线；Postgres依赖网络。\",\"replay\":\"SQLite使用版本化append-only JSONL回放；Postgres需额外事件日志、导出和同步。\",\"local_first\":\"SQLite符合本地优先；Postgres引入远端依赖。\",\"replaceability\":\"两者均可通过稳定Storage接口与版本化导入导出替换。\"},\"dependencies\":{\"shared\":[\"版本化事件schema\",\"append-only RunEvent日志\",\"Storage接口\",\"事件校验与回放器\",\"导入导出格式\"],\"sqlite_jsonl\":[\"SQLite运行时\",\"本地文件权限\",\"JSONL校验、轮转和恢复策略\"],\"cloud_postgres\":[\"Postgres实例\",\"网络\",\"认证与密钥管理\",\"迁移、备份和离线同步方案\"]},\"cost\":{\"sqlite_jsonl\":{\"monetary\":\"unknown\",\"engineering\":\"中等\"},\"cloud_postgres\":{\"monetary\":\"unknown\",\"engineering\":\"较高\"},\"comparison\":\"当前需求下SQLite + JSONL基础设施成本更低；实际金额unknown。\"},\"risks\":{\"sqlite_jsonl\":[\"磁盘损坏或文件丢失\",\"崩溃恢复或并发处理不当\",\"SQLite与JSONL不一致\"],\"cloud_postgres\":[\"网络或服务不可用\",\"认证与配置故障\",\"数据外发和远端依赖\",\"离线同步冲突\"],\"evidence\":\"容量、并发、运行环境和价格数据未提供，规模风险unknown。\"},\"recommendation\":{\"choice\":\"SQLite + JSONL fallback\",\"reason\":\"直接满足离线运行、事件回放和单用户本地优先，并保留迁移到Postgres的路径。\",\"implementation_order\":[\"SQLite作为主存储\",\"业务事件追加写入可校验JSONL\",\"实现导入、导出、按序回放和恢复检查\",\"后续增加Postgres适配器\"]},\"rollback\":{\"from_sqlite_to_jsonl\":\"停止写入，校验并导出事件JSONL，用回放器重建状态；失败时保留原SQLite只读副本。\",\"from_postgres_to_local\":\"导出完整版本化事件流到JSONL，校验后导入SQLite并回放；迁移期间云端只读。\",\"safety\":\"保留原始事件、schema版本和迁移清单，不覆盖旧事件。\"},\"artifact_replayable\":{\"status\":\"pass\",\"evidence\":[\"版本化append-only事件\",\"JSONL导入导出\",\"按序回放器\",\"校验与恢复检查\"]},\"stages\":{\"research\":\"需求要求离线、可回放、单用户本地优先和可替换存储；无外部事实证据。\",\"product\":\"优先本地可用与事件可追溯，云端作为后续能力。\",\"architecture\":\"Storage接口、SQLite主存储、append-only JSONL fallback；Postgres作为可替换适配器。\",\"evaluation\":\"全部硬约束满足。\"},\"conflicts\":[\"云端Postgres的网络依赖与集中化和离线、本地优先要求冲突，因此不作为默认方案。\"]}",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "54792c67-6285-4ce0-83a0-78e913101aeb",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3563
+    },
+    {
+      "stage": "Product",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "7ecf346b-cab2-4534-a011-9a64b57ac7fe",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3089
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "eef23283-1e74-4ccc-b8aa-7d6c1e37c49a",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3073
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "732dc22d-660b-455c-b129-a622e1747857",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2979
+    }
+  ]
+}
