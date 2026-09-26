@@ -1,0 +1,89 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-AR-02-single_bot-1790448474378",
+  "task_id": "AR-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "architecture_tradeoff",
+  "path": "single_bot",
+  "input_hash": "65c6190e006acf90777ded75025e34ad8c647b7da7521b13a3462b864ae9544a",
+  "run_ids": [
+    "a9c5cb90-2cb2-4f00-ab59-3bb5dac8d7c4"
+  ],
+  "started_at": "2026-09-26T18:47:03.244Z",
+  "finished_at": "2026-09-26T18:47:54.378Z",
+  "elapsed_ms": 51133,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 3145,
+    "sha256": "56ee78b370672d63f83b663034d5819491761eb3c5eae3361404255253a4f7b5",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "three_providers_distinguished": null,
+    "billing_source_explicit": null,
+    "fixture_marked_mock": null,
+    "failure_modes_actionable": null,
+    "reasoning_and_tool_fields_preserved": null,
+    "no_subscription_as_api_claim": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 5,
+  "handoff_depth": 0,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [],
+  "output_excerpt": "{\"provider_matrix\":[{\"provider\":\"Codex subscription\",\"role\":\"execution_agent\",\"identity\":\"Codex subscription session\",\"billing_source\":\"Codex subscription account; exact plan/charge details unknown\",\"api_claim\":false,\"real_execution\":true,\"mock\":false},{\"provider\":\"DeepSeek API\",\"role\":\"model_provider\",\"identity\":\"DeepSeek API configured by the workspace owner\",\"billing_source\":\"API account associated with the configured key; account and pricing evidence unavailable\",\"api_claim\":true,\"real_execution\":true,\"mock\":false},{\"provider\":\"Fixture\",\"role\":\"demo_adapter\",\"identity\":\"Local deterministic fixture\",\"billing_source\":\"None; local mock\",\"api_claim\":false,\"real_execution\":false,\"mock\":true}],\"routing_rules\":[\"Honor explicit provider selection.\",\"Without a usable key, route eligible demo requests to Fixture and label every result mock.\",\"Route real execution to Codex subscription or DeepSeek API only when its authentication and capability checks pass.\",\"Never represent Codex subscription as a DeepSeek or generic API billing source.\",\"Do not silently fall back from a requested real provider to Fixture; return an actionable unavailable error unless fallback is explicitly enabled.\",\"Record the selected provider and routing decision in the run artifact.\"],\"identity\":{\"common_fields\":[\"provider_id\",\"provider_role\",\"execution_mode\",\"request_id\",\"run_id\"],\"provider_identity_required\":true,\"fixture_label\":\"mock_fixture\"},\"billing\":{\"source_required\":true,\"unknown_allowed\":true,\"rules\":[\"Persist billing_source as subscription, api_account, or none.\",\"Use unknown when account evidence is unavailable.\",\"Never infer billing source from model name or response content.\",\"Fixture must always report billing_source=none and mock=true.\"]},\"failure_modes\":[{\"condition\":\"Requested real provider unavailable\",\"action\":\"Return provider_unavailable with provider_id, reason, and eligible alternatives; do not silently mock.\"},{\"condition\":\"DeepSeek authentication or quota failure\",\"action\":\"Return api_auth_or_quota_error; request key/account remediation or explicit provider change.\"},{\"condition\":\"Codex subscription session unavailable\",\"action\":\"Return subscription_session_unavailable; require re-authentication or explicit alternate provider.\"},{\"condition\":\"Fixture selected\",\"action\":\"Execute deterministic mock path and visibly mark output as mock_fixture.\"},{\"condition\":\"Malformed provider response\",\"action\":\"Store raw diagnostic receipt when safe, return provider_protocol_error, and make no billing claim.\"}],\"recommendation\":{\"default_route\":\"Use Codex subscription for authenticated real execution, DeepSeek API when explicitly configured, and Fixture for no-key demonstrations.\",\"selection_order\":[\"explicit_user_choice\",\"configured_real_provider\",\"Fixture_demo\"],\"required_trace_fields\":[\"reasoning\",\"tool_calls\",\"tool_results\",\"provider_id\",\"billing_source\",\"execution_mode\",\"receipts\"],\"artifact_replayable\":true,\"replay_requirements\":[\"Persist normalized input, routing decision, provider configuration fingerprint, ordered RunEvents, reasoning/tool fields, outputs, errors, and fixture seed or replay reference.\"]}}",
+  "attempts": [
+    {
+      "stage": "single_bot",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "a9c5cb90-2cb2-4f00-ab59-3bb5dac8d7c4",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3145
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "record_version": "m8-04.result.v1",
+  "receipt_id": "m804-AR-02-multi_bot-1790448621693",
+  "task_id": "AR-02",
+  "suite_version": "m8-04.v1",
+  "attempt": 1,
+  "category": "architecture_tradeoff",
+  "path": "multi_bot",
+  "input_hash": "65c6190e006acf90777ded75025e34ad8c647b7da7521b13a3462b864ae9544a",
+  "run_ids": [
+    "3d120b82-1d30-4135-8165-c22f00390658",
+    "e9419831-290e-4ea2-9434-819110fc4226",
+    "d87f7f23-02b9-43ef-bd33-6991d6f9c75e",
+    "36189306-aba7-4756-abc8-5b46d9471884"
+  ],
+  "started_at": "2026-09-26T18:48:02.965Z",
+  "finished_at": "2026-09-26T18:50:21.692Z",
+  "elapsed_ms": 138727,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "artifact": {
+    "id": null,
+    "bytes": 2792,
+    "sha256": "dc9b676c93f55aca9016c85f5e10e1dd87d54e37157b73e5af52edeb1332fc82",
+    "valid": null
+  },
+  "schema_pass": null,
+  "hard_constraints": {
+    "schema_complete": null,
+    "three_providers_distinguished": null,
+    "billing_source_explicit": null,
+    "fixture_marked_mock": null,
+    "failure_modes_actionable": null,
+    "reasoning_and_tool_fields_preserved": null,
+    "no_subscription_as_api_claim": null,
+    "artifact_replayable": null
+  },
+  "hard_pass_count": null,
+  "quality_eligible": false,
+  "evidence_tier": "execution_pilot",
+  "quality_exclusion_reason": "schema_and_manual_review_pending",
+  "manual_edits": {
+    "steps": null,
+    "chars": null,
+    "rule_version": "m8-04.manual-edit.v1"
+  },
+  "failure": null,
+  "traceability_score": null,
+  "recovery": {
+    "attempted": false,
+    "result": null
+  },
+  "approval_count": 1,
+  "event_count": 20,
+  "handoff_depth": 4,
+  "reviewer": {
+    "rubric_1_5": null,
+    "notes": "pending_manual_review"
+  },
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "cost_minor": null
+  },
+  "execution_status": "provider_completed_pending_review",
+  "structured_handoffs": [
+    {
+      "stage": "Research",
+      "depth": 1,
+      "input_ref": "AR-02",
+      "output_ref": "stage-1",
+      "event_count": 5
+    },
+    {
+      "stage": "Product",
+      "depth": 2,
+      "input_ref": "stage-1",
+      "output_ref": "stage-2",
+      "event_count": 5
+    },
+    {
+      "stage": "Architecture",
+      "depth": 3,
+      "input_ref": "stage-2",
+      "output_ref": "stage-3",
+      "event_count": 5
+    },
+    {
+      "stage": "Evaluation",
+      "depth": 4,
+      "input_ref": "stage-3",
+      "output_ref": "stage-4",
+      "event_count": 5
+    }
+  ],
+  "output_excerpt": "老黄，\n{\"provider_matrix\":[{\"provider\":\"Codex subscription\",\"identity\":\"Codex execution agent via user subscription\",\"billing\":\"subscription/account billing; exact plan unknown\",\"execution_mode\":\"real\",\"mock\":false,\"fields\":[\"reasoning\",\"tool\"]},{\"provider\":\"DeepSeek API\",\"identity\":\"DeepSeek model provider via configured API key\",\"billing\":\"API account billing; exact plan unknown\",\"execution_mode\":\"real\",\"mock\":false,\"fields\":[\"reasoning\",\"tool\"]},{\"provider\":\"Fixture\",\"identity\":\"local deterministic fixture adapter\",\"billing\":\"none\",\"execution_mode\":\"simulated\",\"mock\":true,\"fields\":[\"reasoning\",\"tool\"]}],\"routing_rules\":[\"按能力与可用性选择 Codex subscription 或 DeepSeek API；具体可用性未知时不得臆测。\",\"无 Key、演示、测试或回放使用 Fixture，并显式标记 mock/simulated。\",\"不得将 Codex subscription 描述为 API key、API entitlement 或 API billing 来源。\",\"每次运行记录 provider、identity、billing、execution_mode、mock、reasoning、tool、输入、输出、错误和时间戳。\"],\"identity\":{\"required_fields\":[\"provider\",\"provider_type\",\"execution_mode\",\"mock\"],\"provider_types\":{\"Codex subscription\":\"execution_agent\",\"DeepSeek API\":\"model_provider\",\"Fixture\":\"fixture_adapter\"}},\"billing\":{\"Codex subscription\":\"subscription/account billing; exact details unknown\",\"DeepSeek API\":\"API account billing; exact details unknown\",\"Fixture\":\"no external billing\"},\"failure_modes\":[{\"condition\":\"Codex subscription unavailable\",\"action\":\"记录原因；尝试 DeepSeek API；否则切换 Fixture 并披露 mock。\"},{\"condition\":\"DeepSeek API key 缺失、无效或配额不可用\",\"action\":\"记录脱敏错误；尝试 Codex subscription；否则切换 Fixture。\"},{\"condition\":\"Fixture 用于真实执行请求\",\"action\":\"阻止误标为真实执行，标记 simulated/mock 并披露。\"},{\"condition\":\"reasoning 或 tool 字段缺失\",\"action\":\"Schema 校验失败，保留原始 receipt，不标记完成。\"},{\"condition\":\"回放 artifact 缺少输入、输出、配置或时间戳\",\"action\":\"标记 non-replayable，保留失败 receipt。\"}],\"recommendation\":{\"default_order\":[\"Codex subscription\",\"DeepSeek API\",\"Fixture\"],\"policy\":\"真实执行优先使用可用的 Codex subscription 或 DeepSeek API；Fixture 仅用于无 Key 演示、测试和回放。\",\"artifact_replayable\":true,\"replay_requirements\":[\"input\",\"output\",\"provider configuration\",\"timestamp\",\"error/receipt\"]},\"stages\":{\"research\":\"确认三条独立通道；具体账户计划、配额和可用性未知。\",\"product\":\"支持无 Key 演示、真实执行和明确 mock 披露。\",\"architecture\":\"统一 provider envelope 与 append-only receipt，保留 reasoning/tool 字段。\",\"evaluation\":\"满足全部硬约束。\"},\"conflicts\":[]}",
+  "attempts": [
+    {
+      "stage": "Research",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "3d120b82-1d30-4135-8165-c22f00390658",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 3438
+    },
+    {
+      "stage": "Product",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "e9419831-290e-4ea2-9434-819110fc4226",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2726
+    },
+    {
+      "stage": "Architecture",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "d87f7f23-02b9-43ef-bd33-6991d6f9c75e",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2770
+    },
+    {
+      "stage": "Evaluation",
+      "eventCount": 5,
+      "completed": true,
+      "runId": "36189306-aba7-4756-abc8-5b46d9471884",
+      "identity": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "output_bytes": 2792
+    }
+  ]
+}

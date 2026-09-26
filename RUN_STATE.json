@@ -48,9 +48,9 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-04-ar01-validated",
+  "phase": "m8-04-ar02-validated",
   "progress": {
-    "completed_units": 16,
+    "completed_units": 17,
     "total_units": 22
   },
   "retry": {
@@ -65,7 +65,7 @@
     "blocking_corrections_left": 1
   },
   "blocked_reason": "Electron arm64 DMG 曾成功生成并启动过，但 Computer Use 无法在超时内绑定窗口；2026-09-27 重打包时 .app 编译成功，hdiutil 因当前环境 DiskManagement framework 不可用而失败。DeepSeek、literal GitHub clone、Codex resume 和真实 AI/现实任务验证仍未完成。",
-  "next_action": "继续 M8-04：先补 PB-01 质量证据缺口，再按每批最多 3 条 provider 路径执行 AR-02 至 EX-02；每批后运行 m804:validate、validate:state 并保存 receipt。",
-  "last_evidence": "2026-09-27：M9-01 至 M9-05 已完成；修正 M8-04 计分器后，PB-02 为 4/8，RS-01 为 7/8，RS-02 为 5/8、0/8、6/8，AR-01 为 8/8、7/8、8/8；质量证据仍因 replay/edit/rubric/cost 缺口阻断。AR-01 multi_bot 比 single_bot 慢约 3.97 倍；人工复核已落盘。DeepSeek 后置。",
+  "next_action": "继续 M8-04：先补 PB-01 质量证据缺口，再按每批最多 3 条 provider 路径执行 EV-01 至 EX-02；每批后运行 m804:validate、validate:state 并保存 receipt。",
+  "last_evidence": "2026-09-27：M9-01 至 M9-05 已完成；修正 M8-04 计分器后，PB-02 为 4/8，RS-01 为 7/8，RS-02 为 5/8、0/8、6/8，AR-01 为 8/8、7/8、8/8，AR-02 为 7/8、7/8、0/8。AR-02 multi_bot schema failure 且比 single_bot 慢约 2.71 倍；质量证据仍因 replay/edit/rubric/cost 缺口阻断，人工复核已落盘。DeepSeek 后置。",
   "updated_at": "2026-09-27T00:00:00+08:00"
 }

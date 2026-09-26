@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 已完成 PB-02/RS-01/RS-02/AR-01 小批次，Desktop 仍部分验证
-- 阶段：`m8-04-ar01-validated`
+- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 已完成 PB-02/RS-01/RS-02/AR-01/AR-02 小批次，Desktop 仍部分验证
+- 阶段：`m8-04-ar02-validated`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -34,6 +34,7 @@
   - `validation/m8-04-manual-review-RS-01.json`：RS-01 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-manual-review-RS-02.json`：RS-02 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-manual-review-AR-01.json`：AR-01 三条路径自动结果和质量证据阻断项
+  - `validation/m8-04-manual-review-AR-02.json`：AR-02 三条路径自动结果和质量证据阻断项
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -71,7 +72,8 @@
 5. M8-04 RS-01 三条路径已完成并校验为 schema_pass=true、7/8 hard constraints；multi_bot 比 single_bot 慢约 5.33 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-RS-01.json`。
 6. M8-04 RS-02 三条路径已完成并校验为 5/8、0/8、6/8；single_bot schema failure，multi_bot 比 single_bot 慢约 2.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-RS-02.json`。
 7. M8-04 AR-01 三条路径已完成并校验为 8/8、7/8、8/8；multi_bot 比 single_bot 慢约 3.97 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-AR-01.json`。
-8. 下一步继续 M8-04：先补 PB-01 质量证据缺口，再执行 AR-02 至 EX-02，每批最多 3 条路径，批后校验并 checkpoint。
+8. M8-04 AR-02 三条路径已完成并校验为 7/8、7/8、0/8；multi_bot schema failure 且比 single_bot 慢约 2.71 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-AR-02.json`。
+9. 下一步继续 M8-04：先补 PB-01 质量证据缺口，再执行 EV-01 至 EX-02，每批最多 3 条路径，批后校验并 checkpoint。
 5. M8-04 先保留 PB-01 质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比，3 个现实任务必须使用真实证据，不用 fixture 或模型自评替代。
 6. Git 已在本地建立 `main` 基线并提交两次；当前没有 remote，不 push。
 

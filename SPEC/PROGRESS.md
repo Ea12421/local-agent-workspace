@@ -49,6 +49,7 @@
 - M8-04 RS-01 已完成三条 Codex subscription 路径并自动校验：修正计分器后三条均 schema 通过、7/8 hard constraints；`multi_bot` 为 180750ms，约为 `single_bot` 的 5.33 倍。Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 仍缺失，人工复核记录已更新，质量证据仍阻断。
 - M8-04 RS-02 已完成三条 Codex subscription 路径并自动校验：single_call 5/8、single_bot schema failure 0/8、multi_bot 6/8；`multi_bot` 约为 `single_bot` 的 2.98 倍。人工复核已落盘，质量证据仍阻断。
 - M8-04 AR-01 已完成三条 Codex subscription 路径并自动校验：single_call 8/8、single_bot 7/8、multi_bot 8/8；`multi_bot` 约为 `single_bot` 的 3.97 倍。人工复核已落盘，质量证据仍阻断。
+- M8-04 AR-02 已完成三条 Codex subscription 路径并自动校验：single_call 7/8、single_bot 7/8、multi_bot schema failure 0/8；`multi_bot` 约为 `single_bot` 的 2.71 倍。人工复核已落盘，质量证据仍阻断。
 
 ## 当前卡点
 

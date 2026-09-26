@@ -1,6 +1,6 @@
 {
   "suite_version": "m8-04.v1",
-  "generated_at": "2026-09-26T18:44:34.518Z",
+  "generated_at": "2026-09-26T18:50:29.725Z",
   "quality_eligible_records": 0,
   "note": "Automated validation only. No record is promoted to quality evidence without manual review and real-user gates.",
   "records": [
@@ -509,6 +509,84 @@
         "no_subscription_as_api_claim": true
       },
       "hard_pass_count": 8,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "AR-02",
+      "path": "single_call",
+      "attempt": 1,
+      "receipt_id": "m804-AR-02-single_call-1790448414854",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "three_providers_distinguished": true,
+        "billing_source_explicit": true,
+        "fixture_marked_mock": true,
+        "failure_modes_actionable": true,
+        "reasoning_and_tool_fields_preserved": true,
+        "no_subscription_as_api_claim": true,
+        "artifact_replayable": false,
+        "at_least_two_options": false,
+        "tradeoffs_explicit": false,
+        "dependencies_present": false,
+        "cost_and_risk_present": false,
+        "recommendation_matches_offline_requirement": true,
+        "rollback_present": false
+      },
+      "hard_pass_count": 7,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "AR-02",
+      "path": "single_bot",
+      "attempt": 1,
+      "receipt_id": "m804-AR-02-single_bot-1790448474378",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": true,
+      "schema_pass": true,
+      "hard_constraints": {
+        "schema_complete": true,
+        "three_providers_distinguished": true,
+        "billing_source_explicit": true,
+        "fixture_marked_mock": true,
+        "failure_modes_actionable": true,
+        "reasoning_and_tool_fields_preserved": true,
+        "no_subscription_as_api_claim": true,
+        "artifact_replayable": false,
+        "at_least_two_options": false,
+        "tradeoffs_explicit": false,
+        "dependencies_present": false,
+        "cost_and_risk_present": false,
+        "recommendation_matches_offline_requirement": true,
+        "rollback_present": false
+      },
+      "hard_pass_count": 7,
+      "expected_count": 8,
+      "quality_eligible": false
+    },
+    {
+      "task_id": "AR-02",
+      "path": "multi_bot",
+      "attempt": 1,
+      "receipt_id": "m804-AR-02-multi_bot-1790448621693",
+      "execution_status": "provider_completed_pending_review",
+      "output_json_found": false,
+      "schema_pass": false,
+      "hard_constraints": {
+        "schema_complete": false,
+        "three_providers_distinguished": false,
+        "billing_source_explicit": false,
+        "fixture_marked_mock": false,
+        "failure_modes_actionable": false,
+        "reasoning_and_tool_fields_preserved": false,
+        "no_subscription_as_api_claim": false,
+        "artifact_replayable": false
+      },
+      "hard_pass_count": 0,
       "expected_count": 8,
       "quality_eligible": false
     }
