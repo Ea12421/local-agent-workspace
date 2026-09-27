@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { createRunEventId, transitionRun } from '../../../packages/core/src/index.ts';
 import type { RunStore } from '../../../packages/core/src/run-store.ts';
-import type { ApprovalRequest, Artifact, ContextSnapshot, CreateRunInput, HandoffEnvelope, JsonObject, MemoryItem, ProviderIdentity, Run, RunAction, RunEvent, RunId, RunSegment, RunTransitionOptions, RunTransitionResult, Source } from '../../../packages/core/src/types.ts';
+import type { ApprovalRequest, Artifact, BotProfile, ContextSnapshot, CreateRunInput, HandoffEnvelope, JsonObject, MemoryItem, Project, ProviderIdentity, Run, RunAction, RunEvent, RunId, RunSegment, RunTransitionOptions, RunTransitionResult, Skill, Source } from '../../../packages/core/src/types.ts';
 
 export type PersistedEvent = Record<string, unknown>;
 
@@ -1056,6 +1056,130 @@ export class SqliteEntityStore {
       receipt_json: JSON.stringify(item.receipt),
       created_at: item.createdAt,
     });
+  }
+
+  saveProject(item: Project): void {
+    this.transaction(() => {
+      this.db.prepare(`
+        INSERT OR REPLACE INTO projects (id, name, description, workspace_path, created_at, updated_at, archived_at)
+        VALUES (@id, @name, @description, @workspace_path, @created_at, @updated_at, @archived_at)
+      `).run({
+        id: item.id,
+        name: item.name,
+        description: item.description ?? null,
+        workspace_path: item.workspacePath,
+        created_at: item.createdAt,
+        updated_at: item.updatedAt,
+        archived_at: item.archivedAt ?? null,
+      });
+    });
+  }
+
+  saveSkill(item: Skill): void {
+    this.transaction(() => {
+      this.db.prepare(`
+        INSERT OR REPLACE INTO skills (id, name, description, version, instructions, input_schema_json, output_schema_json, enabled)
+        VALUES (@id, @name, @description, @version, @instructions, @input_schema_json, @output_schema_json, @enabled)
+      `).run({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        version: item.version,
+        instructions: item.instructions,
+        input_schema_json: item.inputSchema ? JSON.stringify(item.inputSchema) : null,
+        output_schema_json: item.outputSchema ? JSON.stringify(item.outputSchema) : null,
+        enabled: item.enabled ? 1 : 0,
+      });
+    });
+  }
+
+  saveBotProfile(item: BotProfile): void {
+    this.transaction(() => {
+      this.db.prepare(`
+        INSERT OR REPLACE INTO bot_profiles (
+          id, project_id, name, description, responsibility, input_schema_json,
+          output_schema_json, skill_ids_json, tool_policy_json, provider_policy_json,
+          memory_policy_json, approval_policy_json, enabled, created_at, updated_at, disabled_at
+        ) VALUES (@id, @project_id, @name, @description, @responsibility, @input_schema_json,
+          @output_schema_json, @skill_ids_json, @tool_policy_json, @provider_policy_json,
+          @memory_policy_json, @approval_policy_json, @enabled, @created_at, @updated_at, @disabled_at)
+      `).run({
+        id: item.id,
+        project_id: item.projectId,
+        name: item.name,
+        description: item.description,
+        responsibility: item.responsibility,
+        input_schema_json: JSON.stringify(item.inputSchema),
+        output_schema_json: JSON.stringify(item.outputSchema),
+        skill_ids_json: JSON.stringify(item.skillIds),
+        tool_policy_json: JSON.stringify(item.toolPolicy),
+        provider_policy_json: JSON.stringify(item.providerPolicy),
+        memory_policy_json: JSON.stringify(item.memoryPolicy),
+        approval_policy_json: JSON.stringify(item.approvalPolicy),
+        enabled: item.enabled ? 1 : 0,
+        created_at: item.createdAt,
+        updated_at: item.updatedAt,
+        disabled_at: item.disabledAt ?? null,
+      });
+    });
+  }
+
+  listProjects(): Project[] {
+    return this.db.prepare('SELECT * FROM projects ORDER BY updated_at, id').all().map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      ...(row.description ? { description: row.description } : {}),
+      workspacePath: row.workspace_path,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      ...(row.archived_at ? { archivedAt: row.archived_at } : {}),
+    }));
+  }
+
+  listSkills(): Skill[] {
+    return this.db.prepare('SELECT * FROM skills ORDER BY name, version, id').all().map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      description: row.description,
+      version: row.version,
+      instructions: row.instructions,
+      ...(row.input_schema_json ? { inputSchema: JSON.parse(row.input_schema_json) } : {}),
+      ...(row.output_schema_json ? { outputSchema: JSON.parse(row.output_schema_json) } : {}),
+      enabled: Boolean(row.enabled),
+    }));
+  }
+
+  listBotProfiles(projectId?: string): BotProfile[] {
+    const rows = projectId
+      ? this.db.prepare('SELECT * FROM bot_profiles WHERE project_id = @project_id ORDER BY updated_at, id').all({ project_id: projectId })
+      : this.db.prepare('SELECT * FROM bot_profiles ORDER BY updated_at, id').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      projectId: row.project_id,
+      name: row.name,
+      description: row.description,
+      responsibility: row.responsibility,
+      inputSchema: JSON.parse(row.input_schema_json),
+      outputSchema: JSON.parse(row.output_schema_json),
+      skillIds: JSON.parse(row.skill_ids_json),
+      toolPolicy: JSON.parse(row.tool_policy_json),
+      providerPolicy: JSON.parse(row.provider_policy_json),
+      memoryPolicy: JSON.parse(row.memory_policy_json),
+      approvalPolicy: JSON.parse(row.approval_policy_json),
+      enabled: Boolean(row.enabled),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      ...(row.disabled_at ? { disabledAt: row.disabled_at } : {}),
+    }));
+  }
+
+  resolveApproval(runId: string, status: ApprovalRequest['status'], resolvedBy = 'user', decisionReason?: string): number {
+    const result = this.db.prepare(`
+      UPDATE approval_requests
+      SET status = @status, resolved_at = @resolved_at, resolved_by = @resolved_by, decision_reason = @decision_reason
+      WHERE run_id = @run_id AND status = 'pending'
+    `).run({ status, resolved_at: new Date().toISOString(), resolved_by: resolvedBy, decision_reason: decisionReason ?? null, run_id: runId }) as { changes?: unknown };
+    return Number(result?.changes ?? 0);
   }
 
   saveProductBuilderEntities(bundle: ProductBuilderEntityBundle): void {

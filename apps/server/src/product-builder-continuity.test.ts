@@ -35,6 +35,25 @@ test('Product Builder uses one SQLite continuity source and replays after reopen
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-product-builder-sqlite-'));
   const input = { projectId: 'project-sqlite-builder' as any, runId: 'run-sqlite-builder' as any, idea: '验证 SQLite Product Builder 交接' };
   const firstStores = await defaultProductBuilderContinuityStores(dir);
+  firstStores.entityStore?.saveProject({ id: input.projectId, name: 'SQLite Builder', workspacePath: dir, createdAt: '2026-09-27T00:00:00.000Z', updatedAt: '2026-09-27T00:00:00.000Z' });
+  firstStores.entityStore?.saveSkill({ id: 'skill-structured' as any, name: '结构化交接', description: '测试 skill', version: '1.0.0', instructions: '输出结构化 JSON', enabled: true });
+  firstStores.entityStore?.saveBotProfile({
+    id: 'bot-sqlite-builder' as any,
+    projectId: input.projectId,
+    name: 'Product Builder',
+    description: '测试 Bot',
+    responsibility: '把产品想法转成执行计划',
+    inputSchema: { type: 'object' },
+    outputSchema: { type: 'object' },
+    skillIds: ['skill-structured' as any],
+    toolPolicy: { permissionTier: 'read_only', allowedTools: [], approvalRequiredActions: [] },
+    providerPolicy: { fallbackEnabled: false },
+    memoryPolicy: { readScopes: [], writeScopes: [], requireUserApprovalForWrites: true },
+    approvalPolicy: { approvalRequiredActions: [], autoApproveReadOnly: true },
+    enabled: true,
+    createdAt: '2026-09-27T00:00:00.000Z',
+    updatedAt: '2026-09-27T00:00:00.000Z',
+  });
   const first = await checkpointProductBuilderResult(input, runProductBuilder(input), firstStores);
   assert.equal(first.createdCheckpoints, 10);
   assert.equal(first.createdSnapshots, 10);
@@ -45,6 +64,9 @@ test('Product Builder uses one SQLite continuity source and replays after reopen
   assert.equal(firstStores.entityStore?.listSources(input.projectId).length, 1);
   assert.equal(firstStores.entityStore?.listArtifacts(input.projectId).length, 5);
   assert.equal(firstStores.entityStore?.listReceipts(input.runId).length, 1);
+  assert.equal(firstStores.entityStore?.listProjects()[0]?.name, 'SQLite Builder');
+  assert.equal(firstStores.entityStore?.listSkills()[0]?.name, '结构化交接');
+  assert.equal(firstStores.entityStore?.listBotProfiles(input.projectId)[0]?.name, 'Product Builder');
   firstStores.close?.();
 
   const reopenedStores = await defaultProductBuilderContinuityStores(dir);
@@ -55,6 +77,7 @@ test('Product Builder uses one SQLite continuity source and replays after reopen
   assert.equal((await reopenedStores.snapshotStore.readAll()).filter((snapshot) => snapshot.runId === input.runId).length, 10);
   assert.equal(reopenedStores.entityStore?.listArtifacts(input.projectId).length, 5);
   assert.equal(reopenedStores.entityStore?.listReceipts(input.runId).length, 1);
+  assert.equal(reopenedStores.entityStore?.listBotProfiles(input.projectId).length, 1);
   reopenedStores.close?.();
   await rm(dir, { recursive: true, force: true });
 });

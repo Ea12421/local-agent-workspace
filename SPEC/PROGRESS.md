@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`m10-03-sqlite-runstore-pass-m8-04-quality-blocked-desktop-partial`
+`m10-05-http-persistence-pass-m8-04-quality-blocked-desktop-partial`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -93,3 +93,10 @@ pnpm package:mac
 ```
 
 随后按 `IMPLEMENTATION-BACKLOG.md` 的 M8 顺序继续，不重新设计产品。
+
+### 2026-09-27 M10-05 · Project/Skill/BotProfile 与 HTTP 摘要
+
+- **实现**：Project、Skill、BotProfile typed persistence roundtrip 已通过；新增 `GET /api/persistence/entities` entity summary，并验证 approve route 写入持久化状态。
+- **验证**：`node scripts/typecheck.mjs`、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 均通过。
+- **边界**：retry/cancel 与完整 HTTP entity create/read/update 路由仍待补；随后进入 M10-04 JSONL 导入导出，再做 M10-06 恢复与规模验证。
+- **证据**：`validation/m10-05-product-builder-persistence-results.json`。

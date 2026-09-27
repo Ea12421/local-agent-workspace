@@ -200,3 +200,9 @@
 - **验证**：实体写入、关闭重开回读和 replay 去重通过；Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、typecheck 和 diff check 通过。
 - **边界**：Project、BotProfile、Skill typed repositories、完整 HTTP 实体读写、JSONL 导入导出和规模验证仍待完成。
 - **下一步**：补三类基础实体 repository，再接持久化实体摘要和审批/重试/取消 HTTP 路由。
+
+### 2026-09-27 M10-05 · 基础实体与 HTTP 摘要
+
+- **实现**：Project、Skill、BotProfile typed persistence roundtrip 已接通；新增 `GET /api/persistence/entities` 汇总持久化实体；approve route 已验证持久化写入。
+- **验证**：`node scripts/typecheck.mjs`、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 通过。
+- **边界**：retry/cancel 与完整 HTTP entity create/read/update 路由仍待完成；下一阶段是 M10-04 JSONL 导入导出，之后再做 M10-06 崩溃恢复和规模验证。

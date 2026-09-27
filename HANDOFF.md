@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层、M10-02 schema/migration 已通过，M10-03 RunStore 边界已通过但整体仍为 PARTIAL；M10-05 Product Builder SQLite checkpoint 和 Handoff/Approval/Artifact/Source/ProviderReceipt typed round-trip 已通过，Desktop 仍部分验证
-- 阶段：`m10-03-sqlite-runstore-pass`
+- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层、M10-02 schema/migration 已通过，M10-03 RunStore 边界已通过但整体仍为 PARTIAL；M10-05 Product Builder SQLite checkpoint、全 typed entity round-trip、entity summary 和 approve persistence 已通过，Desktop 仍部分验证
+- 阶段：`m10-05-http-persistence-pass`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -166,3 +166,9 @@
 - `SqliteEntityStore` 已接入 Product Builder continuity；Handoff、Approval、Source、Artifact、ProviderReceipt 可写入并在重开后回读，replay 不重复随机 Artifact。
 - Product Builder/HTTP 专项 3/3、全套 25/25、typecheck 和 diff check 通过；证据为 `validation/m10-05-product-builder-persistence-results.json`。
 - 下一步补 Project/BotProfile/Skill typed repositories，以及持久化实体摘要和审批/重试/取消 HTTP 读写。
+
+### 2026-09-27 M10-05 HTTP persistence checkpoint
+
+- `Project`、`Skill`、`BotProfile` typed persistence roundtrip 已 PASS；`GET /api/persistence/entities` entity summary 已 PASS；approve route persistence 已 PASS。
+- typecheck、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 均通过。
+- 当前唯一下一步：完成持久化 retry/cancel 与完整 HTTP entity routes；随后进入 M10-04 JSONL import/export。

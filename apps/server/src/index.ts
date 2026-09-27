@@ -70,6 +70,24 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
     if (req.method === 'GET' && url.pathname === '/api/ui-snapshot') return send(res, 200, toUiSnapshot(fixture));
     if (req.method === 'GET' && url.pathname === '/api/core/snapshot') return send(res, 200, await coreSnapshot());
     if (req.method === 'GET' && url.pathname === '/api/core/runs') return send(res, 200, { runs: await runtimeStore.listRuns() });
+    if (req.method === 'GET' && url.pathname === '/api/persistence/entities') {
+      const stores = await defaultProductBuilderContinuityStores(dataDir);
+      try {
+        const projectId = url.searchParams.get('projectId') ?? undefined;
+        return send(res, 200, {
+          projects: stores.entityStore?.listProjects() ?? [],
+          bots: stores.entityStore?.listBotProfiles(projectId) ?? [],
+          skills: stores.entityStore?.listSkills() ?? [],
+          handoffs: stores.entityStore?.listHandoffs() ?? [],
+          approvals: stores.entityStore?.listApprovals(projectId) ?? [],
+          sources: stores.entityStore?.listSources(projectId) ?? [],
+          artifacts: stores.entityStore?.listArtifacts(projectId) ?? [],
+          memories: stores.entityStore?.listMemories(projectId) ?? [],
+        });
+      } finally {
+        stores.close?.();
+      }
+    }
     if (req.method === 'POST' && url.pathname === '/api/product-builder/preview') {
       const input = await body(req);
       const builderResult = runProductBuilder({ projectId: fixture.project.id as any, runId: fixture.run.id, idea: String(input.idea ?? fixture.run.goal), user: input.user ? String(input.user) : undefined });
@@ -127,7 +145,13 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
       const action = parts[4];
       const event = { id: randomUUID(), type: action === 'approve' ? 'approval.resolved' : 'run.retry_requested', at: new Date().toISOString(), runId, summary: action === 'approve' ? '用户确认继续' : '用户请求重试' };
       await writeEvent(event);
-      return send(res, 200, { ok: true, runId, action, event });
+      let approvalRowsUpdated = 0;
+      if (action === 'approve') {
+        const stores = await defaultProductBuilderContinuityStores(dataDir);
+        try { approvalRowsUpdated = stores.entityStore?.resolveApproval(runId, 'approved', 'user', 'HTTP approval route') ?? 0; }
+        finally { stores.close?.(); }
+      }
+      return send(res, 200, { ok: true, runId, action, approvalRowsUpdated, event });
     }
     send(res, 404, { error: 'not_found', path: url.pathname });
   } catch (error) {

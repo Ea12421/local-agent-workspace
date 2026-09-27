@@ -37,4 +37,11 @@ test('HTTP handler can be verified without opening a port', async () => {
   assert.equal(replay.status, 200);
   assert.equal(replay.body.continuity.createdCheckpoints, 0);
   assert.equal(replay.body.continuity.skippedCheckpoints, 10);
+  const entities = await call('GET', '/api/persistence/entities?projectId=project-product-builder');
+  assert.equal(entities.status, 200);
+  assert.ok(entities.body.handoffs.length >= 4);
+  assert.ok(entities.body.artifacts.length >= 5);
+  const approval = await call('POST', '/api/runs/run-fixture-001/approve');
+  assert.equal(approval.status, 200);
+  assert.ok(approval.body.approvalRowsUpdated >= 0);
 });
