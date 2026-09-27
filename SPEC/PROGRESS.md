@@ -64,7 +64,7 @@
 - M10-01 验证：全套等价 Node tests 20/20、typecheck 和 diff check 通过；当前 better-sqlite3 二进制与 Node 22 ABI 不匹配，已由 node:sqlite 接管，不再静默失败。
 - M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`。
 - M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`。
-- M10-03 第一段已完成：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；重启回读、幂等重放和冲突专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；runtime 默认接入、失败注入/并发测试和 Product Builder 完整接入仍未完成。
+- M10-03 当前为 PARTIAL：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；runtime 已切换到 SQLite 默认路径，重启回读、同进程回滚、并发幂等、冲突和项目隔离专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；跨进程/备份/显式失败注入、全实体 CRUD 和 Product Builder 完整接入仍未完成。
 
 ## 当前卡点
 
@@ -79,7 +79,7 @@
 
 ## 当前唯一下一步
 
-完成 M10-03 剩余：把 `SqliteRunStore` 接入可恢复 runtime 默认路径，补失败注入、并发幂等与跨项目隔离测试；Product Builder/HTTP 全量接入留到 M10-05。
+补 M10-03 的跨进程竞争、显式失败注入和备份边界测试；随后进入 M10-05，把 Product Builder checkpoint 与 HTTP 持久化接入同一 SQLite 事实源。
 
 ## 网络恢复后的下一步
 

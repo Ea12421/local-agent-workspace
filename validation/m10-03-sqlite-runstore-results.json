@@ -1,14 +1,15 @@
 {
   "record_version": "m10-03.sqlite-runstore-results.v1",
-  "executed_at": "2026-09-27T17:28:20+08:00",
-  "status": "PARTIAL_TRANSACTIONAL_RUNSTORE",
+  "executed_at": "2026-09-27T19:29:49+08:00",
+  "status": "PARTIAL_RUNTIME_WIRED",
   "implementation": [
     "SQLite schema v2 for projects, skills, bot_profiles, runs, handoffs, approval_requests, sources, artifacts, memory_items and provider_receipts",
     "single-connection SqliteRunStore",
     "Run creation and RunEvent creation in one transaction",
     "Run transition, RunEvent append and idempotency record in one transaction",
     "Run segment append and restart readback",
-    "same-key replay returns the original transition; same-key different action fails"
+    "same-key replay returns the original transition; same-key different action fails",
+    "runtime default store uses SqliteRunStore with an isolated temp database under Node test"
   ],
   "commands": [
     "node scripts/typecheck.mjs",
@@ -18,20 +19,30 @@
   ],
   "results": {
     "typecheck": "PASS",
-    "persistence_suite": { "passed": 8, "failed": 0 },
-    "full_suite": { "passed": 22, "failed": 0 },
+    "persistence_suite": {
+      "passed": 8,
+      "failed": 0
+    },
+    "full_suite": {
+      "passed": 22,
+      "failed": 0
+    },
     "schema_version": 2,
     "restart_readback": "PASS",
     "idempotent_replay": "PASS",
     "idempotency_conflict": "PASS",
-    "segment_readback": "PASS"
+    "segment_readback": "PASS",
+    "runtime_default_store": "PASS",
+    "same_process_rollback": "PASS",
+    "concurrent_idempotency": "PASS",
+    "project_isolation": "PASS"
   },
   "limitations": [
-    "The existing runtime still uses InMemoryRunStore; the new repository is not the default control-plane store yet.",
     "Product Builder continuity still records idempotency keys in event data and does not yet atomically write checkpoint, snapshot and idempotency rows through this store.",
     "Project/Bot/Handoff/Approval/Source/Artifact/Memory/ProviderReceipt tables exist, but typed CRUD repositories and receipts are not implemented.",
-    "Failure-injection rollback, cross-process contention, crash recovery and backup/restore tests remain pending.",
-    "Schema v2 is persistence-contract evidence only; it does not prove model quality or real-world productivity."
+    "Cross-process contention, crash recovery, backup/restore and explicit injected migration failure tests remain pending.",
+    "The runtime store is now SQLite-first, but a SQLite-unavailable production process fails closed; portable JSONL remains an explicit event/snapshot fallback and is not a RunStore fallback.",
+    "Schema and runtime persistence evidence does not prove model quality or real-world productivity."
   ],
-  "next_action": "Finish M10-03 by wiring SqliteRunStore into the recoverable runtime path and adding rollback/concurrency/project-isolation tests; keep full Product Builder and HTTP integration in M10-05."
+  "next_action": "Add explicit cross-process/backup and injected-rollback tests for M10-03, then move Product Builder checkpoint and HTTP persistence integration to M10-05."
 }

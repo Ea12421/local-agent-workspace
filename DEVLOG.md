@@ -168,3 +168,11 @@
 - **边界**：现有 runtime 仍使用 `InMemoryRunStore`；Product Builder checkpoint 仍未通过该仓储原子写入；失败注入、并发、跨项目隔离、全实体 typed CRUD、导入导出和备份恢复仍待补。
 - **证据**：`validation/m10-03-sqlite-runstore-results.json`。
 - **下一步**：把 `SqliteRunStore` 接入可恢复 runtime 默认路径；Product Builder/HTTP 完整接入留到 M10-05。
+
+
+### 2026-09-27 M10-03 · runtime 默认接入
+
+- **实现**：`apps/server/src/runtime.ts` 的默认 `runtimeStore` 切换为 `SqliteRunStore`；正式路径使用 `data/workspace.db`，Node test 使用按进程隔离的临时数据库。`ensureSeeded()` 先回读固定 fixture Run，避免服务重启重复创建。
+- **验证**：persistence/runtime 专项 `11/11`、全套等价 Node tests `22/22`、typecheck、diff check 通过；覆盖同 key 并发重放、错误序号回滚、重启回读和跨项目 listRuns。
+- **边界**：Product Builder checkpoint 仍未通过同一事务仓储写入；跨进程竞争、显式失败注入、备份恢复、全实体 typed CRUD 和 HTTP 完整接入仍待完成。
+- **下一步**：补 M10-03 剩余边界后进入 M10-05。

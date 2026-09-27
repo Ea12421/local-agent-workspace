@@ -163,9 +163,23 @@ test('SQLite RunStore atomically persists state, events, segments and idempotent
     request: { objective: '持久化运行', input: { idea: 'SQLite' } },
   });
   const started = await first.store.transition(created.id, 'start', { now: '2026-09-27T09:00:01.000Z', idempotencyKey: 'start-1' });
-  const replay = await first.store.transition(created.id, 'start', { idempotencyKey: 'start-1' });
+  const [replay, concurrentReplay] = await Promise.all([
+    first.store.transition(created.id, 'start', { idempotencyKey: 'start-1' }),
+    first.store.transition(created.id, 'start', { idempotencyKey: 'start-1' }),
+  ]);
   assert.equal(replay.event.id, started.event.id);
+  assert.equal(concurrentReplay.event.id, started.event.id);
   await assert.rejects(() => first.store.transition(created.id, 'cancel', { idempotencyKey: 'start-1' }), /Idempotency key already used/);
+  await assert.rejects(() => first.store.appendEvent({
+    id: 'bad-sequence' as any,
+    runId: created.id,
+    sequence: 99,
+    type: 'provider.event',
+    occurredAt: '2026-09-27T09:00:02.000Z',
+    actor: { type: 'system' },
+    data: {},
+  }), /Event sequence must be/);
+  assert.equal((await first.store.listEvents(created.id)).length, 2);
   first.store.appendSegment({
     id: 'segment-persisted-1',
     runId: created.id,
@@ -181,6 +195,8 @@ test('SQLite RunStore atomically persists state, events, segments and idempotent
   assert.equal((await reopened.store.getRun(created.id))?.status, 'running');
   assert.equal((await reopened.store.listEvents(created.id)).length, 2);
   assert.equal(reopened.store.listSegments(created.id)[0]?.id, 'segment-persisted-1');
+  assert.equal((await reopened.store.listRuns('project-persisted-1')).length, 1);
+  assert.equal((await reopened.store.listRuns('other-project' as any)).length, 0);
   await assert.rejects(() => reopened.store.createRun({
     id: created.id,
     projectId: 'project-persisted-1' as any,

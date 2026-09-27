@@ -8,7 +8,7 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层、M10-02 schema/migration 已通过，M10-03 RunStore 第一段为 PARTIAL，Desktop 仍部分验证
+- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层、M10-02 schema/migration 已通过，M10-03 RunStore 已接入 runtime 但仍为 PARTIAL，Desktop 仍部分验证
 - 阶段：`m10-03-sqlite-runstore-pass`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
@@ -51,7 +51,7 @@
   - `SPEC/08-persistence-architecture-decision.md`：长期 SQLite-first 决策、portable 边界和 M10 实施顺序
   - `validation/m10-01-sqlite-adapter-results.json`：SQLite adapter、驱动探针、20/20 测试与限制
   - `validation/m10-02-schema-migration-results.json`：schema v1、migration runner、21/21 测试、幂等 inspection 与限制
-  - `validation/m10-03-sqlite-runstore-results.json`：schema v2、单连接 RunStore、22/22 测试、重启/幂等边界与限制
+  - `validation/m10-03-sqlite-runstore-results.json`：schema v2、单连接 RunStore、runtime 默认接入、22/22 测试与限制
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -99,12 +99,12 @@
 15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。SQLite-first 是长期运行时路线，JSONL 仅作 portable/demo/export/灾备。
 16. M10-01 SQLite 适配层已通过：全套等价 Node tests 20/20、typecheck、diff check；better-sqlite3 ABI 不匹配时由 node:sqlite 接管并返回显式 persistence mode。
 17. M10-02 schema/migration 已通过：schema v1、schema_meta、run_events、context_snapshots、run_segments、idempotency_keys 已验证，21/21 测试通过；失败注入、全实体事务、导入导出和恢复规模验证仍未完成。
-18. M10-03 第一段为 PARTIAL：schema v2、单连接 SqliteRunStore、Run/Event/idempotency/segment 事务和重启回读已验证，22/22 测试通过；runtime 接入、失败注入/并发/跨项目隔离和 Product Builder 完整接入仍未完成。
-19. 当前唯一下一步是把 SqliteRunStore 接入可恢复 runtime 默认路径并补专项失败验证；Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
+18. M10-03 仍为 PARTIAL：schema v2、单连接 SqliteRunStore、Run/Event/idempotency/segment 事务、runtime 默认接入、重启回读、同进程回滚/并发幂等和项目隔离已验证，22/22 测试通过；跨进程/备份/显式失败注入、全实体 CRUD 和 Product Builder 完整接入仍未完成。
+19. 当前唯一下一步是补 M10-03 的跨进程竞争、显式失败注入和备份边界；随后进入 M10-05。Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
 
 ### 当前唯一下一步
 
-完成 M10-03 剩余：把 `SqliteRunStore` 接入可恢复 runtime 默认路径，补失败注入、并发幂等与跨项目隔离测试；Product Builder/HTTP 全量接入留到 M10-05。
+补 M10-03 的跨进程竞争、显式失败注入和备份边界测试；随后进入 M10-05，把 Product Builder checkpoint 与 HTTP 持久化接入同一 SQLite 事实源。
 
 ## 重要文件
 
@@ -135,7 +135,14 @@
 
 ### 2026-09-27 M10-03 RunStore checkpoint
 
-- `RUN_STATE.json` 已推进到 `m10-03-sqlite-runstore-pass`；M10-03 只完成第一段，仍为 PARTIAL。
+- `RUN_STATE.json` 已推进到 `m10-03-sqlite-runstore-pass`；M10-03 的 runtime 默认接入已完成，但整体仍为 PARTIAL。
 - `apps/server/src/persistence.ts` 的 schema v2 增加领域表；`SqliteRunStore` 以单连接事务写入 Run、RunEvent、幂等记录和 Run segment。
 - `validation/m10-03-sqlite-runstore-results.json` 记录 22/22 全套测试、重启回读、同 key 重放和冲突边界。
-- 下一步是 runtime 默认接入和失败/并发/跨项目隔离专项；Product Builder/HTTP 完整接入留在 M10-05。
+- 下一步是跨进程/失败注入/备份专项；Product Builder/HTTP 完整接入留在 M10-05。
+
+### 2026-09-27 M10-03 runtime wiring checkpoint
+
+- `apps/server/src/runtime.ts` 的默认 `runtimeStore` 现在使用 SQLite；正式运行路径为 `data/workspace.db`，Node test 使用进程隔离临时 DB。
+- `ensureSeeded()` 会先回读固定 fixture Run，避免 Server 重启时重复插入。
+- persistence/runtime 专项 11/11、全套等价 Node tests 22/22 通过；证据已更新到 `validation/m10-03-sqlite-runstore-results.json`。
+- M10-03 仍需跨进程竞争、显式失败注入和备份边界；Product Builder checkpoint 与 HTTP 完整接入留给 M10-05。

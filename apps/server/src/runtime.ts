@@ -1,13 +1,35 @@
 import { InMemoryRunStore, buildContextPacket, buildContextSnapshot, createOpaqueId, createRunEvent, type BotId, type ContextLedger, type ContextPacket, type ContextPolicy, type ContextSnapshotId, type JsonValue, type ProjectId, type ProviderAdapter, type Run, type RunEvent, type RunId, type RunHandle } from '../../../packages/core/src/index.ts';
+import type { RunStore } from '../../../packages/core/src/run-store.ts';
 import type { JsonObject } from '../../../packages/core/src/types.ts';
 import { CodexExternalAdapter } from '../../../packages/adapters/src/index.ts';
-import { openContextSnapshotStore, type ContextSnapshotStore } from './persistence.ts';
+import { openContextSnapshotStore, openSqliteRunStore, type ContextSnapshotStore } from './persistence.ts';
+import os from 'node:os';
 import path from 'node:path';
 
 const projectId = 'project-product-builder' as ProjectId;
 const productBuilderId = 'bot-product-builder' as BotId;
 
-export const runtimeStore = new InMemoryRunStore();
+function runningUnderNodeTest(): boolean {
+  return process.argv.includes('--test') || Boolean(process.env.NODE_TEST_CONTEXT);
+}
+
+function defaultRuntimeDatabasePath(): string {
+  if (process.env.AGENT_WORKSPACE_DB) return process.env.AGENT_WORKSPACE_DB;
+  if (runningUnderNodeTest()) return path.join(os.tmpdir(), `local-agent-workspace-test-${process.pid}.db`);
+  return path.join(process.cwd(), 'data', 'workspace.db');
+}
+
+function createRuntimeStore(): RunStore {
+  try {
+    return openSqliteRunStore(defaultRuntimeDatabasePath()).store;
+  } catch (error) {
+    if (runningUnderNodeTest()) return new InMemoryRunStore();
+    throw new Error(`SQLite runtime store unavailable: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+/** SQLite is the default runtime source of truth; tests may use an isolated temp DB. */
+export const runtimeStore = createRuntimeStore();
 let seededRun: Run | undefined;
 type ActiveCodexRun = {
   adapter: ProviderAdapter;
@@ -71,6 +93,11 @@ async function createRecoverySnapshot(run: Run, events: RunEvent[], store: Conte
 
 export async function ensureSeeded() {
   if (seededRun) return seededRun;
+  const existing = await runtimeStore.getRun('run-core-fixture-001' as Run['id']);
+  if (existing) {
+    seededRun = existing;
+    return seededRun;
+  }
   seededRun = await runtimeStore.createRun({
     id: 'run-core-fixture-001' as Run['id'],
     projectId,
