@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`m10-06-recovery-scale-pass-m8-04-quality-blocked-desktop-partial`
+`m10-06-recovery-scale-pass-m8-04-quality-blocked-desktop-partial-m8-09-output-contract-pass`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -68,6 +68,9 @@
 - M10-03 当前为 PARTIAL：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；runtime 已切换到 SQLite 默认路径，重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；全实体 typed CRUD、长时规模和 Product Builder 完整接入仍未完成。
 - M10-05 已完成：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，全部 typed entity round-trip、Project/Skill/BotProfile POST/GET/PATCH、Run create/cancel/retry、entity summary 和 approve persistence 已通过；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`。
 - M10-06 已完成：有限 SQLite open/migration busy retry、三进程并发 writer、SIGKILL 后 reopen、10k/100k 事件规模、既有 rollback/online backup/跨进程证据均通过；全套 29/29、typecheck、diff check 通过。证据为 `validation/m10-06-recovery-scale-results.json`。
+- M8-07 真实项目验证已完成窄范围收口：对 `codex-pet-studio` 的非敏感 package 做只读预检和安装 smoke，用户确认 Codex 界面已出现沙悟净；这不证明通用 Product Builder 质量或多 Bot 优势。证据为 `validation/m8-07-reality-card.json` 与 `validation/m8-07-install-smoke.json`。
+- M8-08 真实项目验证为 `PARTIAL`：Codex subscription 读取 `personal-knowledge-mcp-mvp` 的三个状态文件并提出安全的 fixture-only 离线 evidence report 增量，但原始输出带前置说明文字，严格单 JSON 门失败；候选项目既有 `npm test` 在一次本机 loopback 权限重试后通过 9/9，`real_data_accessed=false`。证据为 `validation/m8-08-reality-card.json`、`validation/m8-08-real-project-knowledge-mcp.json`。
+- M8-09 结构化输出加固已完成：新增 exact/fenced/embedded 单对象解析与多对象拒绝策略，adapter 专项 6/6、typecheck、diff check 通过；对 M8-08 原始 transcript 的离线回放识别为 `embedded` 且 11 个必需键齐全。证据为 `validation/m8-09-structured-output-contract.json`。
 
 ## 当前卡点
 
@@ -82,7 +85,7 @@
 
 ## 当前唯一下一步
 
-继续 M8-04 质量证据补录/现实验证；DeepSeek 仍需 Key，Electron 可见性仍 PARTIAL。
+将 M8-09 的 normalization 模式和拒绝原因接入统一 Provider receipt/Artifact contract，保留原始输出可回读；完成后再决定是否进入第三个现实任务。M8-04 质量证据、DeepSeek Key、Electron 可见性和 Codex 原生 resume 仍是独立阻塞项。
 
 ## 网络恢复后的下一步
 

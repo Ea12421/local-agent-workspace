@@ -252,3 +252,12 @@
 ### 当前唯一下一步
 
 切到 M8-04 质量证据审计/现实验证。DeepSeek 仍需 Key；Electron 可见性 PARTIAL；GitHub clone/Codex native resume 仍受限制。
+
+### 2026-09-27 M8-08 · personal-knowledge-mcp-mvp 真实输入验证
+
+- **真实输入**：只读 `/Users/m4air/总控/projects/personal-knowledge-mcp-mvp` 的 `AGENTS.md`、`STATE.md`、`PROJECT_DOCS_INDEX.md`；没有读取真实知识库、凭据、Cookie、Token 或项目外资料。
+- **Codex 执行**：subscription CLI run `87830305-fb5a-4a69-bb00-35eb7c3d5613` 完成，提出“增加可重复的离线 fixture evidence report”作为下一步安全增量；原始回执与 Artifact 已保存。
+- **结构化结论**：内容 JSON 含全部要求字段且证据引用在白名单内，但前置了一句说明文字；严格单 JSON 门判为 `PARTIAL`，不能当作结构化成功。
+- **候选项目 smoke**：既有 `npm test` 在普通沙箱因绑定 `127.0.0.1:18787` 返回 `EPERM`；一次本机 loopback 权限重试后 `PASS`，9 项检查通过，`real_data_accessed=false`。候选项目没有被修改。
+- **现实卡**：`validation/m8-08-reality-card.json`。这证明“能读取真实项目边界并提出安全计划”，不证明结构化输出可靠、真实资料可接入或 Product Builder 已产生提效。
+- **下一步**：在当前 workspace 加固 provider-output normalization/ambiguity contract，并用已捕获的 prose+JSON transcript 做专项验证；不重复真实调用。

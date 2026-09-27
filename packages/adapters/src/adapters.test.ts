@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { chmod, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { CodexExternalAdapter, FixtureAdapter, permissionLabels, canUseTool } from './index.ts';
+import { CodexExternalAdapter, FixtureAdapter, parseStructuredJsonObject, permissionLabels, canUseTool } from './index.ts';
 
 test('fixture and Codex adapters expose distinct provenance', async () => {
   const fixture = await new FixtureAdapter().probeCapabilities();
@@ -56,4 +56,29 @@ test('permission labels and always-approval actions are explicit', () => {
   assert.equal(permissionLabels.workspace_write, '工作区写入');
   const policy = { permissionTier: 'workspace_write' as const, allowedTools: ['shell'], approvalRequiredActions: [] };
   assert.deepEqual(canUseTool(policy, 'shell', 'publish'), { allowed: true, approvalRequired: true, reason: 'always_requires_one_off_approval' });
+});
+
+test('structured output parser preserves exact, fenced, and embedded modes', () => {
+  const exact = parseStructuredJsonObject('{"ok":true}');
+  assert.equal(exact.status, 'parsed');
+  if (exact.status === 'parsed') assert.equal(exact.mode, 'exact');
+
+  const fenced = parseStructuredJsonObject('```json\n{"ok":true}\n```');
+  assert.equal(fenced.status, 'parsed');
+  if (fenced.status === 'parsed') assert.equal(fenced.mode, 'fenced');
+
+  const transcript = '老黄，我先说明边界。\n{"current_state":{"summary":"fixture-only"},"ok":true}';
+  const embedded = parseStructuredJsonObject(transcript);
+  assert.equal(embedded.status, 'parsed');
+  if (embedded.status === 'parsed') {
+    assert.equal(embedded.mode, 'embedded');
+    assert.deepEqual(embedded.value, { current_state: { summary: 'fixture-only' }, ok: true });
+  }
+});
+
+test('structured output parser rejects ambiguous or non-object transcripts', () => {
+  const multiple = parseStructuredJsonObject('{"one":1}\n{"two":2}');
+  assert.deepEqual(multiple, { status: 'rejected', reason: 'multiple_objects', candidateCount: 2 });
+  const array = parseStructuredJsonObject('[1,2,3]');
+  assert.deepEqual(array, { status: 'rejected', reason: 'invalid_json', candidateCount: 0 });
 });

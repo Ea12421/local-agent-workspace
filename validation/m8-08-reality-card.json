@@ -1,0 +1,105 @@
+{
+  "card_id": "m8-08-knowledge-mcp-product-builder-v1",
+  "version": "1.0",
+  "pre_registered_at": "Prompt and required-key gate frozen in scripts/m8-08-real-project-knowledge-mcp.ts before execution; fixture smoke command was selected before retry.",
+  "system_under_test": "Local Agent Workspace M8-08 real-project Product Builder run plus the existing personal-knowledge-mcp-mvp fixture smoke.",
+  "provider_model": "codex-cli / openai-codex / codex-managed-session / subscription",
+  "status": "PARTIAL",
+  "current_evidence_level": "Real-input partial; local fixture smoke PASS",
+  "claim_and_decision": {
+    "falsifiable_claim": "Given the real personal-knowledge-mcp-mvp project rules and state files, the Codex subscription execution path can propose a safe next product increment while preserving the fixture-only, read-only, localhost-only boundary; the existing project smoke can verify that boundary locally.",
+    "failure_condition": "The provider does not complete, output cannot be traced to the allowlist, the strict single-object contract fails, or the fixture smoke cannot complete its nine checks without real data or external service.",
+    "target_user_and_scenario": "The owner deciding whether this small MCP project is a useful second real input for Product Builder validation.",
+    "decision_driven": "Keep the proposed increment as an unimplemented plan. Harden output extraction/validation in the current workspace before calling this path formally structured; do not modify or expose the candidate project.",
+    "scope_exclusions": [
+      "Real knowledge directory access",
+      "Public deployment or tunnel",
+      "GPT-Live direct MCP validation",
+      "User acceptance of the candidate project",
+      "General Product Builder quality or multi-Bot superiority"
+    ]
+  },
+  "current_evidence": {
+    "facts": [
+      "Codex subscription run 87830305-fb5a-4a69-bb00-35eb7c3d5613 completed with isMock=false and read only AGENTS.md, STATE.md and PROJECT_DOCS_INDEX.md from the candidate project.",
+      "The provider emitted a useful JSON object containing all requested planning keys, but prefixed it with a prose sentence; the strict parser therefore recorded PARTIAL and traceability_pass=false.",
+      "The proposed increment preserves fixture-only, read-only, localhost-only behavior and explicitly excludes real data, public service, tunnel, GPT-Live and user acceptance.",
+      "The candidate's existing npm test passed 9/9 fixture smoke checks with real_data_accessed=false after one elevated local-loopback retry; ordinary sandbox execution was blocked by EPERM on 127.0.0.1:18787.",
+      "No candidate file was modified and no public service or real knowledge data was accessed."
+    ],
+    "inferences": [
+      "The project is a suitable second real-input validation target because its state and privacy boundary are explicit and its smoke test is repeatable.",
+      "The immediate Product Builder engineering gap is output normalization/strict validation, not another candidate-project feature."
+    ],
+    "unknowns": [
+      "Whether the proposed offline evidence report improves repeated user work has not been measured.",
+      "No real-user acceptance, cost comparison, DeepSeek run or Codex native resume was performed.",
+      "The provider's JSON content was not accepted as a formal artifact under the current exact-wire contract."
+    ],
+    "baseline_evidence_pointers": [
+      "validation/m8-08-real-project-knowledge-mcp.json",
+      "validation/m8-08-real-project-knowledge-mcp-artifact.json",
+      "/Users/m4air/总控/projects/personal-knowledge-mcp-mvp/AGENTS.md",
+      "/Users/m4air/总控/projects/personal-knowledge-mcp-mvp/STATE.md",
+      "/Users/m4air/总控/projects/personal-knowledge-mcp-mvp/PROJECT_DOCS_INDEX.md"
+    ]
+  },
+  "execution_freeze": {
+    "authentic_input": "Real candidate AGENTS.md, STATE.md and PROJECT_DOCS_INDEX.md; existing candidate npm test using its synthetic fixtures.",
+    "right_to_use_and_privacy": "User explicitly authorized all local projects for testing; no credentials, cookies, tokens, real knowledge directories or external sends were used.",
+    "primary_metrics": [
+      "Provider completion and strict required-key/allowlist gate",
+      "Candidate fixture smoke checks passed",
+      "Real-data and external-side-effect flags"
+    ],
+    "pass_threshold": "Provider exact single-object contract and allowlist traceability pass; candidate smoke 9/9; real_data_accessed=false; no candidate writes.",
+    "guardrails": [
+      "read-only candidate access",
+      "fixture-only data",
+      "localhost-only test",
+      "no secret access",
+      "no external publishing"
+    ],
+    "abort_conditions": [
+      "Any candidate write",
+      "Any real knowledge-directory access",
+      "Any undeclared evidence reference",
+      "Any public service or external send"
+    ],
+    "raw_evidence_destination": "validation/m8-08-real-project-knowledge-mcp.json, validation/m8-08-real-project-knowledge-mcp-artifact.json"
+  },
+  "run_record": {
+    "executed_at": "2026-09-27T15:43:36.016Z",
+    "environment": "macOS local workspace; Codex subscription CLI; candidate read-only; one local-loopback permission retry for existing smoke.",
+    "provider_run_id": "87830305-fb5a-4a69-bb00-35eb7c3d5613",
+    "candidate_smoke": {
+      "command": "npm test",
+      "ordinary_sandbox": "blocked: EPERM binding 127.0.0.1:18787",
+      "elevated_local_retry": "PASS",
+      "checks": 9,
+      "real_data_accessed": false
+    },
+    "observed_facts": [
+      "Provider completed.",
+      "Strict wire JSON gate failed because of a leading prose line.",
+      "Fixture smoke passed after the single bounded environment retry."
+    ]
+  },
+  "verdict": {
+    "value": "PARTIAL",
+    "threshold_comparison": "Candidate smoke passed 9/9 and privacy boundary held; provider exact-wire structured-output gate failed.",
+    "supported_claim": "Product Builder can read this real project's bounded state and propose a safe next increment; the candidate's existing fixture-only smoke is runnable with local loopback permission.",
+    "unsupported_or_unknown": "This does not prove formal structured-output reliability, user productivity gain, real-data readiness, DeepSeek equivalence, Codex native resume or multi-Bot superiority.",
+    "next_decision": "Implement a small current-workspace output-normalization and strict validation contract, with a fixture transcript test; only then schedule one new real provider run if the budget and state allow.",
+    "highest_value_next_test": "Run the adapter/parser contract against the captured M8-08 transcript and a prose-plus-JSON fixture, preserving raw output and rejecting ambiguous or multiple JSON objects."
+  },
+  "hard_gate_check": {
+    "real_input_or_behavior": true,
+    "pre_registered_version_metric_threshold": true,
+    "raw_evidence_readable": true,
+    "facts_inferences_unknowns_separated": true,
+    "claim_scope_bounded": true,
+    "permissions_privacy_security_cost_boundary": true,
+    "verdict_changes_next_decision": true
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "record_version": "m8-08.real-project-result.v1",
+  "executed_at": "2026-09-27T15:43:36.016Z",
+  "project_root": "/Users/m4air/总控/projects/personal-knowledge-mcp-mvp",
+  "read_allowlist": [
+    "AGENTS.md",
+    "STATE.md",
+    "PROJECT_DOCS_INDEX.md"
+  ],
+  "objective": "fixture-only MCP 本地验证包下一步计划",
+  "started_at": "2026-09-27T15:43:01.232Z",
+  "elapsed_ms": 34783,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "87830305-fb5a-4a69-bb00-35eb7c3d5613",
+  "event_count": 8,
+  "provider_completed": true,
+  "output_sha256": "f198e1099eb427dd6935900acd47267efdc022185aaa58594e9dc043de3d3766",
+  "artifact_path": "validation/m8-08-real-project-knowledge-mcp-artifact.json",
+  "parsed_output": null,
+  "structural_check": {
+    "json_object": false,
+    "missing_required_keys": [
+      "project_id",
+      "current_state",
+      "user_problem",
+      "proposed_increment",
+      "scope_in",
+      "scope_out",
+      "acceptance_checks",
+      "privacy_boundary",
+      "risks",
+      "next_action",
+      "evidence_refs"
+    ],
+    "evidence_refs_declared": [],
+    "undeclared_evidence_refs": [],
+    "traceability_pass": false
+  },
+  "approval_boundary": "No real knowledge data, public service, install, or external send is performed. Any boundary expansion requires a new explicit authorization and pre-registered card.",
+  "provider_events": [
+    {
+      "id": "provider-event-bc3bc25c-5980-4940-97a9-8993f5536413",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:04.293Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "thread.started",
+          "thread_id": "01a0e388-bbc1-7510-aacc-294e23ec596e"
+        }
+      }
+    },
+    {
+      "id": "provider-event-130a1c67-e2a0-41fa-a359-893c5117eb8b",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:04.303Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.started"
+        }
+      }
+    },
+    {
+      "id": "provider-event-e576fd9d-b127-432a-a4ea-a250ef732002",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:11.569Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_0",
+            "type": "agent_message",
+            "text": "老黄，我会严格只读取允许的三个项目文件，提取当前状态与可核对证据，然后返回单个 JSON 对象；不运行命令、不修改文件，也不访问其他路径。"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-c1ac071f-50cb-4719-832a-7ae1720c2593",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:13.195Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.started",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc \"cat AGENTS.md && printf '\\\\n---STATE---\\\\n' && cat STATE.md && printf '\\\\n---INDEX---\\\\n' && cat PROJECT_DOCS_INDEX.md\"",
+            "aggregated_output": "",
+            "exit_code": null,
+            "status": "in_progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-eaf4c7d1-900d-4399-b98d-14d33664fb79",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:13.195Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc \"cat AGENTS.md && printf '\\\\n---STATE---\\\\n' && cat STATE.md && printf '\\\\n---INDEX---\\\\n' && cat PROJECT_DOCS_INDEX.md\"",
+            "aggregated_output": "# Personal Knowledge MCP MVP 协作约定\n\n## 目标\n\n验证 ChatGPT 可通过只读 MCP 工具检索一组虚拟 Markdown，并返回可核对来源。\n\n## 当前硬边界\n\n- 只允许读取本项目 `fixtures/notes/`。\n- 不读取 `/Users/m4air/知识库`、其他项目、用户目录或账号数据。\n- 不提供任意路径读取工具；只能先搜索，再使用服务端生成的 `note_id` 读取。\n- 不写入资料，不上传资料，不保存请求正文，不读取任何 secret。\n- 默认只监听 `127.0.0.1`；当前没有生产鉴权，不得作为长期公网服务。\n- 要接入真实目录，必须由用户另行明确授权并修改当前 fail-closed 边界。\n\n## 验证命令\n\n```bash\nnpm test\n```\n\n验收至少覆盖：初始化、工具发现、检索、按 ID 读取、来源返回、非法路径拒绝、全部工具只读。\n\n---STATE---\n# Personal Knowledge MCP MVP 当前状态\n\n更新时间：2026-07-18  \n项目 ID：`personal-knowledge-mcp`  \n当前阶段：零数据 Web smoke 已收口，按需离线  \n归档等级：L1（可恢复级）\n\n## 当前结论\n\n项目已经形成一个基于官方 Node MCP SDK 的只读知识检索 MVP：只搜索项目内三份 synthetic Markdown，先返回服务端生成的 `note_id`，再按 ID 读取正文；工具不接受文件路径。\n\n根据项目已有记录，2026-07-17 已完成：\n\n- 本地 `npm test` 的 9 项机械检查，记录结果为 `PASS`、`real_data_accessed: false`；\n- 普通 ChatGPT Web 中一次真实 `search_knowledge` 和一次 `read_knowledge` 调用；\n- 测试后的本地服务、临时 HTTPS tunnel 停止，以及 Developer Mode 关闭。\n\n以上账号侧与运行侧结果来自 `MVP说明.md`、`HANDOFF_2026-07-17_TO_NEXT.md` 和已完成 spec 的既有记录。本轮只补文档，没有重新运行服务、浏览器或账号验证，因此不把它们表述为本轮独立复核结果。\n\n## 当前运行状态\n\n- MCP 服务：按项目记录处于停止状态。\n- 临时 HTTPS tunnel：按项目记录处于停止状态。\n- ChatGPT 开发测试应用：按项目记录仍保留，但旧 tunnel 已离线，当前没有可访问后端。\n- 当前允许的数据：仅 `fixtures/notes/` 中三份虚拟 Markdown。\n- 当前工作模式：按需启动，不常驻、不自启、不自动读取资料。\n\n## 已确认边界\n\n- 不读取真实 Obsidian、其他项目目录或账号数据。\n- 不提供任意路径读取；`read_knowledge` 只接受搜索产生的 16 位 `note_id`。\n- 不写入、修改或删除知识。\n- 不保存请求正文，不读取 secret。\n- 默认只监听 `127.0.0.1`；当前没有生产鉴权，不得作为长期公网服务。\n- GPT-Live 直接调用 MCP 未验证。\n\n## 唯一下一步\n\n保持离线；只有用户明确说“开启本地知识连接”时，才按 `HANDOFF_2026-07-17_TO_NEXT.md` 先重跑当前只读 fixture smoke，再启动一次临时连接并做一条虚拟资料健康检查。\n\n## 真实资料接入硬门\n\n即使临时连接恢复成功，也不得顺带接入真实资料。进入真实 Obsidian 或任何真实项目目录前，必须取得用户针对本次对象与范围的单独授权，并预先冻结：\n\n1. 最小目录白名单；\n2. 逐工具授权与仍然明确不做的操作；\n3. 正式鉴权或安全网关；\n4. 内容脱敏、来源展示和提示注入隔离规则；\n5. 现实验证与停止条件。\n\n任一项未冻结时，维持 `fixture-only`，不得扩大读取范围。\n\n## 恢复入口\n\n1. `PROJECT_DOCS_INDEX.md`：文档与证据导航；\n2. `HANDOFF_2026-07-17_TO_NEXT.md`：按需启动、停止与故障纪律；\n3. `MVP说明.md`：阶段成果与既有 Web smoke 记录；\n4. `specs/official-sdk-chatgpt-smoke/`：冻结需求、设计与任务完成记录；\n5. `ZERO_DATA_MVP_CLOSEOUT.md`：内部复盘与 WIP 案例边界。\n\n---INDEX---\n# Personal Knowledge MCP MVP 文档导航\n\n更新时间：2026-07-18  \n项目 ID：`personal-knowledge-mcp`  \n用途：为新任务提供最短恢复路径，并区分产品说明、规格、实现、验证与阶段复盘。\n\n## 建议阅读顺序\n\n1. [`STATE.md`](STATE.md)：先看当前阶段、运行状态、唯一下一步和真实资料硬门。\n2. [`MVP说明.md`](MVP说明.md)：了解项目目标、当前实现、已有验证记录与明确边界。\n3. [`HANDOFF_2026-07-17_TO_NEXT.md`](HANDOFF_2026-07-17_TO_NEXT.md)：需要临时启动、停止或恢复现场时使用。\n4. [`specs/official-sdk-chatgpt-smoke/requirements.md`](specs/official-sdk-chatgpt-smoke/requirements.md)：查看冻结需求、验收标准、Out of Scope 与停止条件。\n5. [`specs/official-sdk-chatgpt-smoke/design.md`](specs/official-sdk-chatgpt-smoke/design.md)：查看架构、关键实现决策与验证路径。\n6. [`specs/official-sdk-chatgpt-smoke/tasks.md`](specs/official-sdk-chatgpt-smoke/tasks.md)：查看该阶段的任务完成记录。\n7. [`ZERO_DATA_MVP_CLOSEOUT.md`](ZERO_DATA_MVP_CLOSEOUT.md)：查看内部复盘、可讲述成果和不可拔高的主张。\n\n## 文档能力覆盖\n\n| 文档能力 | 当前入口 | 覆盖说明 |\n|---|---|---|\n| 目标、用户问题、范围与非目标 | `MVP说明.md`、`requirements.md` | 已覆盖零数据验证目标；真实资料与长期运行明确排除 |\n| 可观察验收与现实验证门 | `requirements.md`、`STATE.md` | 已覆盖零数据验收；真实资料接入需另行授权并冻结硬门 |\n| 当前状态与恢复点 | `STATE.md` | 已覆盖，并把既有记录与本轮复核边界分开 |\n| 架构与数据流 | `design.md`、`server.mjs`、`src/` | 已覆盖官方 SDK、Streamable HTTP、fixture-only 数据流与 fail-closed 读取 |\n| 关键决策 | `design.md`、`AGENTS.md` | 已覆盖只读双工具、服务端 ID、无任意路径读取、临时 tunnel 与真实资料前鉴权硬门 |\n| 验收与证据 | `MVP说明.md`、`tasks.md`、`scripts/smoke.mjs` | 项目已有本地与 Web smoke 记录；本轮文档补全未重跑 |\n| 运行、停止与交接 | `HANDOFF_2026-07-17_TO_NEXT.md`、`package.json` | 已覆盖按需启动、停止、持续条件与故障纪律 |\n| 阶段复盘与案例 | `ZERO_DATA_MVP_CLOSEOUT.md` | 已覆盖内部复盘与 WIP 案例；不声称真实资料或生产可用 |\n\n## 实现入口\n\n| 路径 | 用途 |\n|---|---|\n| `package.json` | 项目元数据、Node 版本、精确依赖和 `start` / `test` 命令 |\n| `server.mjs` | Loopback HTTP 服务、`/health`、`/mcp` 与官方 SDK transport |\n| `src/knowledge-store.mjs` | fixture allowlist、Markdown 索引、服务端 `note_id`、来源哈希和按 ID 读取 |\n| `src/tools.mjs` | `search_knowledge`、`read_knowledge` 的输入 schema、只读 annotations 与错误返回 |\n| `scripts/smoke.mjs` | 初始化、工具发现、搜索、读取、越权拒绝与只读属性的 9 项机械检查 |\n| `fixtures/notes/` | 唯一获准的数据源；三份 synthetic Markdown |\n\n## 事实与证据纪律\n\n- 项目执行事实源仍是本目录的代码、spec、`STATE.md` 与验证脚本。\n- `MVP说明.md` 和 handoff 中的 ChatGPT Web 结果是 2026-07-17 项目已有记录，不是 2026-07-18 文档补全时重新操作账号所得。\n- 未读取真实 Obsidian、其他项目、账号数据或 secret。\n- 未验证长期 tunnel、生产鉴权、知识写入、GPT-Live 或真实用户效果。\n- 后续如果验证状态变化，应先更新 `STATE.md` 与对应 spec / 验证记录，再更新阶段收口文档；不要只改本索引。\n",
+            "exit_code": 0,
+            "status": "completed"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-02809cf6-3d95-4136-9b10-0872e457fd27",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:30.725Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_2",
+            "type": "agent_message",
+            "text": "{\"project_id\":\"personal-knowledge-mcp-mvp\",\"current_state\":{\"summary\":\"Fixture-only, read-only MCP MVP; service is stopped and runs on demand.\",\"evidence\":\"Existing records report 9 local mechanical checks passed and one prior ChatGPT Web smoke, but this task did not independently rerun them.\",\"unknown_or_pending\":[\"real data access: unknown/pending and prohibited by current boundary\",\"public deployment: unknown/pending and out of scope\",\"GPT-Live direct MCP: unknown/pending\",\"user acceptance: unknown/pending\"]},\"user_problem\":\"Local verification exists but is not described as a single repeatable evidence-producing workflow, making future checks harder to compare and audit.\",\"proposed_increment\":\"Add a deterministic offline verification entry point that runs the existing fixture-only checks and emits a concise machine-readable report covering initialization, tool discovery, search, note_id read, source return, invalid-path rejection, read-only behavior, loopback binding, and absence of real-data access or external side effects.\",\"scope_in\":[\"Reuse the existing local fixture smoke coverage.\",\"Produce stable pass/fail results with timestamps and explicit boundary fields.\",\"Keep verification runnable without a server deployment, real knowledge data, credentials, or network access.\"],\"scope_out\":[\"No real Obsidian or other knowledge-directory connection.\",\"No write, upload, mutation, credential, or secret handling.\",\"No public deployment, long-running service, production authentication, or tunnel.\",\"No GPT-Live direct MCP validation.\",\"No claim of completed user acceptance.\"],\"acceptance_checks\":[\"The verification entry point runs locally and repeatedly with deterministic fixture inputs.\",\"The report confirms fixture-only data access and read-only tool behavior.\",\"The report confirms search-before-read via server-generated note_id and rejects arbitrary paths.\",\"The report confirms localhost-only operation and records that no public service was used.\",\"A failed check returns a non-success result with an actionable failure reason.\",\"The report distinguishes current machine evidence from pending real-world or user acceptance evidence.\"],\"privacy_boundary\":[\"Preserve fixture-only access to the project's synthetic notes.\",\"Preserve read-only behavior with no writes, uploads, request-body persistence, or secret access.\",\"Preserve localhost-only binding and do not expose a public service.\",\"Do not access real data or connect real knowledge directories.\",\"Do not add GPT-Live, tunnel, deployment, or external-service dependencies.\"],\"risks\":[\"A new report could overstate prior Web smoke evidence unless historical and current runs are labeled separately.\",\"Environment differences may affect repeatability, so the command must avoid network and account state.\",\"Adding checks without updating the existing evidence source could create conflicting status records.\"],\"next_action\":\"Review this increment against the existing verification contract; if accepted, implement the offline evidence report and run it locally, then update the project's current-state evidence.\",\"evidence_refs\":[\"AGENTS.md\",\"STATE.md\",\"PROJECT_DOCS_INDEX.md\"]}"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-6dc8d53b-910e-4ae7-9c0e-a33324f4a897",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:30.755Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 60220,
+            "cached_input_tokens": 35328,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1042,
+            "reasoning_output_tokens": 319
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-e962ade8-fa96-4fcf-be05-63afc7ca6be8",
+      "runId": "external-87830305-fb5a-4a69-bb00-35eb7c3d5613",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T15:43:36.013Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "status": "completed",
+        "exitCode": 0
+      }
+    }
+  ]
+}

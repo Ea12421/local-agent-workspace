@@ -1,0 +1,15 @@
+{
+  "record_version": "m8-09.structured-output-contract.v1",
+  "generated_at": "2026-09-27T15:49:10.413Z",
+  "source_artifact": "validation/m8-08-real-project-knowledge-mcp-artifact.json",
+  "source_run_id": "87830305-fb5a-4a69-bb00-35eb7c3d5613",
+  "status": "PASS_EMBEDDED_SINGLE_OBJECT",
+  "parser_mode": "embedded",
+  "required_object_keys_present": true,
+  "raw_output_preserved": true,
+  "ambiguity_policy": "reject multiple top-level JSON objects; accept exactly one embedded object and label normalization mode",
+  "limitations": [
+    "This does not turn the original wire output into exact JSON; it records embedded normalization separately.",
+    "No new provider call was made."
+  ]
+}
