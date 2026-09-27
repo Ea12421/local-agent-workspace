@@ -41,7 +41,10 @@
     ],
     "evidence_refs_declared": [],
     "undeclared_evidence_refs": [],
-    "traceability_pass": false
+    "traceability_pass": false,
+    "normalization": "embedded",
+    "normalization_rejection": null,
+    "wire_json_exact": false
   },
   "approval_boundary": "No real knowledge data, public service, install, or external send is performed. Any boundary expansion requires a new explicit authorization and pre-registered card.",
   "provider_events": [
@@ -214,5 +217,12 @@
         "exitCode": 0
       }
     }
-  ]
+  ],
+  "provider_output_receipt": {
+    "schemaVersion": "provider.output-receipt.v1",
+    "rawOutputSha256": "f198e1099eb427dd6935900acd47267efdc022185aaa58594e9dc043de3d3766",
+    "status": "parsed",
+    "mode": "embedded",
+    "extractedOutputSha256": "5c46d44172369824c2e0f757229985d107098650f9a0013145adc81d076f0735"
+  }
 }

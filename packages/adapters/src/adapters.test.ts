@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { chmod, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { CodexExternalAdapter, FixtureAdapter, parseStructuredJsonObject, permissionLabels, canUseTool } from './index.ts';
+import { buildProviderOutputReceipt, CodexExternalAdapter, FixtureAdapter, parseStructuredJsonObject, permissionLabels, canUseTool } from './index.ts';
 
 test('fixture and Codex adapters expose distinct provenance', async () => {
   const fixture = await new FixtureAdapter().probeCapabilities();
@@ -73,6 +73,14 @@ test('structured output parser preserves exact, fenced, and embedded modes', () 
   if (embedded.status === 'parsed') {
     assert.equal(embedded.mode, 'embedded');
     assert.deepEqual(embedded.value, { current_state: { summary: 'fixture-only' }, ok: true });
+    const receipt = buildProviderOutputReceipt(transcript, embedded);
+    assert.deepEqual(receipt, {
+      schemaVersion: 'provider.output-receipt.v1',
+      status: 'parsed',
+      mode: 'embedded',
+      rawOutputSha256: '881d7932053a441b23f78098cedb33b98b434a3e25be0be16a8157b559e34a4b',
+      extractedOutputSha256: '84276a39e2560c854b5c5f4f9d226fc6edcad98c2a4a8cb02386e1c04a4ec924',
+    });
   }
 });
 

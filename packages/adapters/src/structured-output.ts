@@ -1,6 +1,7 @@
-import type { JsonObject } from '../../core/src/index.ts';
+import { createHash } from 'node:crypto';
+import type { JsonObject, ProviderOutputReceipt, ProviderOutputNormalizationMode } from '../../core/src/index.ts';
 
-export type StructuredOutputMode = 'exact' | 'fenced' | 'embedded';
+export type StructuredOutputMode = ProviderOutputNormalizationMode;
 
 export type StructuredOutputParseResult =
   | {
@@ -16,6 +17,10 @@ export type StructuredOutputParseResult =
     };
 
 type Candidate = { start: number; end: number; value: JsonObject };
+
+function sha256(value: string): string {
+  return createHash('sha256').update(value).digest('hex');
+}
 
 function asObject(text: string): JsonObject | null {
   try {
@@ -81,4 +86,20 @@ export function parseStructuredJsonObject(text: string): StructuredOutputParseRe
     return { status: 'parsed', value: candidates[0].value, mode: 'embedded', extractedText: trimmed.slice(candidates[0].start, candidates[0].end) };
   }
   return { status: 'rejected', reason: 'invalid_json', candidateCount: 0 };
+}
+
+export function buildProviderOutputReceipt(text: string, parsed: StructuredOutputParseResult): ProviderOutputReceipt {
+  const base = {
+    schemaVersion: 'provider.output-receipt.v1' as const,
+    rawOutputSha256: sha256(text),
+  };
+  if (parsed.status === 'parsed') {
+    return {
+      ...base,
+      status: 'parsed',
+      mode: parsed.mode,
+      extractedOutputSha256: sha256(parsed.extractedText),
+    };
+  }
+  return { ...base, status: 'rejected', rejectionReason: parsed.reason };
 }

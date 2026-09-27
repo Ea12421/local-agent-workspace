@@ -24,6 +24,20 @@ export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue = JsonPrimitive | JsonValue[] | { [key: string]: JsonValue };
 export type JsonObject = { [key: string]: JsonValue };
 
+export type ProviderOutputNormalizationMode = "exact" | "fenced" | "embedded";
+export type ProviderOutputRejectionReason = "empty" | "invalid_json" | "multiple_objects";
+export type ProviderOutputReceiptStatus = "parsed" | "rejected";
+
+/** Versioned metadata stored inside a ProviderReceipt without losing raw output. */
+export interface ProviderOutputReceipt {
+  schemaVersion: "provider.output-receipt.v1";
+  status: ProviderOutputReceiptStatus;
+  mode?: ProviderOutputNormalizationMode;
+  rejectionReason?: ProviderOutputRejectionReason;
+  rawOutputSha256: string;
+  extractedOutputSha256?: string;
+}
+
 export type PermissionTier = "read_only" | "workspace_write" | "full_access";
 export type AuthMode = "api_key" | "subscription" | "cli" | "local" | "unknown";
 export type BillingSource = "api" | "subscription" | "local" | "unknown";

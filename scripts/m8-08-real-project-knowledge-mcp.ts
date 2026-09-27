@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { CodexExternalAdapter, parseStructuredJsonObject } from '../packages/adapters/src/index.ts';
-import type { JsonObject, RunEvent, RunRequest } from '../packages/core/src/index.ts';
+import { buildProviderOutputReceipt, CodexExternalAdapter, parseStructuredJsonObject } from '../packages/adapters/src/index.ts';
+import type { RunEvent, RunRequest } from '../packages/core/src/index.ts';
 
 const workspaceRoot = process.cwd();
 const projectRoot = '/Users/m4air/总控/projects/personal-knowledge-mcp-mvp';
@@ -56,6 +56,7 @@ async function main() {
   const output = eventText(events);
   const parsedResult = parseStructuredJsonObject(output);
   const parsed = parsedResult.status === 'parsed' ? parsedResult.value : null;
+  const providerOutputReceipt = buildProviderOutputReceipt(output, parsedResult);
   const missingKeys = requiredKeys.filter((key) => {
     const value = parsed?.[key];
     return value === undefined || value === null || (typeof value === 'string' && value.trim() === '') || (Array.isArray(value) && value.length === 0);
@@ -63,7 +64,7 @@ async function main() {
   const evidenceRefs = Array.isArray(parsed?.evidence_refs) ? parsed.evidence_refs.map(String) : [];
   const undeclaredRefs = evidenceRefs.filter((ref) => !allowlist.includes(ref));
   const providerCompleted = events.some((event) => event.data.status === 'completed');
-  const artifact = { artifact_version: 'm8-08.real-project-artifact.v1', artifact_id: `m8-08-knowledge-mcp-${sha256(output).slice(0, 24)}`, source_run_id: handle.id, project_id: 'personal-knowledge-mcp-mvp', output_sha256: sha256(output), output };
+  const artifact = { artifact_version: 'm8-08.real-project-artifact.v1', artifact_id: `m8-08-knowledge-mcp-${sha256(output).slice(0, 24)}`, source_run_id: handle.id, project_id: 'personal-knowledge-mcp-mvp', output_sha256: sha256(output), provider_output_receipt: providerOutputReceipt, output };
   await mkdir(path.dirname(artifactPath), { recursive: true });
   await writeFile(artifactPath, `${JSON.stringify(artifact, null, 2)}\n`, 'utf8');
   const result = {
@@ -80,6 +81,7 @@ async function main() {
     provider_completed: providerCompleted,
     output_sha256: sha256(output),
     artifact_path: path.relative(workspaceRoot, artifactPath),
+    provider_output_receipt: providerOutputReceipt,
     parsed_output: parsed,
     structural_check: {
       json_object: parsed !== null,

@@ -261,3 +261,10 @@
 - **候选项目 smoke**：既有 `npm test` 在普通沙箱因绑定 `127.0.0.1:18787` 返回 `EPERM`；一次本机 loopback 权限重试后 `PASS`，9 项检查通过，`real_data_accessed=false`。候选项目没有被修改。
 - **现实卡**：`validation/m8-08-reality-card.json`。这证明“能读取真实项目边界并提出安全计划”，不证明结构化输出可靠、真实资料可接入或 Product Builder 已产生提效。
 - **下一步**：在当前 workspace 加固 provider-output normalization/ambiguity contract，并用已捕获的 prose+JSON transcript 做专项验证；不重复真实调用。
+
+### 2026-09-28 M8-10 · Provider receipt 接入
+
+- **实现**：Core 新增 `provider.output-receipt.v1`，Adapter 统一生成原文 SHA-256、解析状态、`exact/fenced/embedded` 模式、提取结果 hash 或拒绝原因；不覆盖原始 provider 文本。
+- **回填**：M8-08 的真实 Artifact 与结果回执已离线增加该 metadata，原始输出 hash 保持一致，模式记录为 `embedded`；没有新增模型调用。
+- **验证**：Core+Adapter `9/9`、typecheck、RUN_STATE 校验、JSON 解析和 diff check 全部通过。
+- **下一步**：为第三个非敏感现实任务冻结 reality card，优先验证技术路线判断或项目推进计划；保持只读和固定白名单。

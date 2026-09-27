@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-09-structured-output-hardening",
+  "phase": "m8-10-provider-receipt-integration",
   "progress": {
-    "completed_units": 40,
-    "total_units": 40
+    "completed_units": 41,
+    "total_units": 41
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -65,7 +65,7 @@
     "blocking_corrections_left": 0
   },
   "blocked_reason": "M8-04 质量结论仍阻断：36 条 receipt 中 27 条可严格 JSON 回放、9 条输出无效；人工编辑、reviewer rubric、usage/cost 和真人门未补齐。Electron Computer Use 对 Codex app 仍受平台安全策略限制；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。M8-08 新证据：候选项目 fixture smoke 9/9 通过，但 Codex 输出前置说明文字导致严格结构化门失败。",
-  "next_action": "将 exact/fenced/embedded normalization 元数据接入统一 Provider receipt/Artifact contract，并继续保持原始输出可回读；完成后再决定是否做第三个现实任务，不重跑 M8-08、不修改候选项目。",
-  "last_evidence": "2026-09-27：M8-08 Codex subscription run 87830305-fb5a-4a69-bb00-35eb7c3d5613 完成并提出安全的 fixture-only 离线验证增量，但严格 JSON 门因前置 prose 判 PARTIAL；personal-knowledge-mcp-mvp 既有 npm test 在一次本机 loopback 权限重试后 PASS 9/9，real_data_accessed=false。M8-09 对原始 transcript 离线回放为 embedded 单对象，adapter 专项 6/6、typecheck、diff check 通过。",
-  "updated_at": "2026-09-27T23:49:57+08:00"
+  "next_action": "为第三个非敏感现实任务冻结一张 reality card，优先验证技术路线判断或项目推进计划；只读、固定白名单、不修改候选项目，完成后再决定是否接 DeepSeek。",
+  "last_evidence": "2026-09-28：M8-10 将 provider.output-receipt.v1 接入 Core 类型、Adapter 工具和 M8-08 Artifact/结果回执；原始输出 hash 保持一致，模式为 embedded。Core+Adapter 9/9、typecheck、状态校验、JSON 和 diff check 全部通过。",
+  "updated_at": "2026-09-28T00:13:52+08:00"
 }

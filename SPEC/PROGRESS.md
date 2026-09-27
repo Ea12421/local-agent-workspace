@@ -71,6 +71,7 @@
 - M8-07 真实项目验证已完成窄范围收口：对 `codex-pet-studio` 的非敏感 package 做只读预检和安装 smoke，用户确认 Codex 界面已出现沙悟净；这不证明通用 Product Builder 质量或多 Bot 优势。证据为 `validation/m8-07-reality-card.json` 与 `validation/m8-07-install-smoke.json`。
 - M8-08 真实项目验证为 `PARTIAL`：Codex subscription 读取 `personal-knowledge-mcp-mvp` 的三个状态文件并提出安全的 fixture-only 离线 evidence report 增量，但原始输出带前置说明文字，严格单 JSON 门失败；候选项目既有 `npm test` 在一次本机 loopback 权限重试后通过 9/9，`real_data_accessed=false`。证据为 `validation/m8-08-reality-card.json`、`validation/m8-08-real-project-knowledge-mcp.json`。
 - M8-09 结构化输出加固已完成：新增 exact/fenced/embedded 单对象解析与多对象拒绝策略，adapter 专项 6/6、typecheck、diff check 通过；对 M8-08 原始 transcript 的离线回放识别为 `embedded` 且 11 个必需键齐全。证据为 `validation/m8-09-structured-output-contract.json`。
+- M8-10 Provider receipt 接入已完成：Core 增加 `provider.output-receipt.v1` 契约，Adapter 记录原文 hash、解析模式、提取 hash 或拒绝原因；M8-08 原始 Artifact/结果已离线回填且原文 hash 不变。Core+Adapter 9/9、typecheck、状态校验、JSON 和 diff check 通过。
 
 ## 当前卡点
 
@@ -85,7 +86,7 @@
 
 ## 当前唯一下一步
 
-将 M8-09 的 normalization 模式和拒绝原因接入统一 Provider receipt/Artifact contract，保留原始输出可回读；完成后再决定是否进入第三个现实任务。M8-04 质量证据、DeepSeek Key、Electron 可见性和 Codex 原生 resume 仍是独立阻塞项。
+为第三个非敏感现实任务冻结一张 reality card，优先验证技术路线判断或项目推进计划；只读、固定白名单、不修改候选项目。完成后再决定是否接 DeepSeek。M8-04 质量证据、DeepSeek Key、Electron 可见性和 Codex 原生 resume 仍是独立阻塞项。
 
 ## 网络恢复后的下一步
 
