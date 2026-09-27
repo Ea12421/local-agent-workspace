@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层已通过，Desktop 仍部分验证
-- 阶段：`m10-sqlite-first-adapter-pass`
+- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层和 M10-02 schema/migration 已通过，Desktop 仍部分验证
+- 阶段：`m10-02-schema-migration-pass`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -50,6 +50,7 @@
   - `validation/m8-06-jsonl-failure-results.json`：JSONL 尾行损坏、同进程并发 append 和重建 latest 的专项结果
   - `SPEC/08-persistence-architecture-decision.md`：长期 SQLite-first 决策、portable 边界和 M10 实施顺序
   - `validation/m10-01-sqlite-adapter-results.json`：SQLite adapter、驱动探针、20/20 测试与限制
+  - `validation/m10-02-schema-migration-results.json`：schema v1、migration runner、21/21 测试、幂等 inspection 与限制
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -96,11 +97,12 @@
 14. M8-05 已完成：3/3 真实本地状态任务通过预注册追踪门；一次真实 Codex provider 中断后，同一 `runId` 追加 Snapshot 和 resume segment 并成功收口。Recovery 内容本身因提示禁止读取命令而返回 blocked，已单独记录，不能写成业务任务完成。
 15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。SQLite-first 是长期运行时路线，JSONL 仅作 portable/demo/export/灾备。
 16. M10-01 SQLite 适配层已通过：全套等价 Node tests 20/20、typecheck、diff check；better-sqlite3 ABI 不匹配时由 node:sqlite 接管并返回显式 persistence mode。
-17. 当前唯一下一步是 M10-02 版本化 SQLite schema 与 migration runner；Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
+17. M10-02 schema/migration 已通过：schema v1、schema_meta、run_events、context_snapshots、run_segments、idempotency_keys 已验证，21/21 测试通过；失败注入、全实体事务、导入导出和恢复规模验证仍未完成。
+18. 当前唯一下一步是 M10-03 全实体 SQLite 事务与幂等；Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
 
 ### 当前唯一下一步
 
-实现 M10-02 版本化 SQLite schema 与 migration runner，先覆盖 `schema_meta`、`context_snapshots`、`run_segments` 和 `idempotency_keys`，再补 JSONL 导入导出与恢复测试。
+实现 M10-03 全实体 SQLite 事务与幂等，先把 `run_segments`、`idempotency_keys` 接入 runtime/Product Builder，再补 Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 表。
 
 ## 重要文件
 
@@ -121,3 +123,10 @@
 ## 恢复规则
 
 先读本文件和 `RUN_STATE.json`，再只检查上面“下一步”涉及的文件。若状态是 `blocked_environment`，先解决状态中列出的环境条件，再把状态恢复为 `running` 并写入唯一下一步。不要根据旧聊天重新设计产品，不要修改旧工作台，不要将 fixture/机械测试写成真实使用通过。
+
+### 2026-09-27 M10-02 schema/migration checkpoint
+
+- `RUN_STATE.json` 已推进到 `m10-02-schema-migration-pass`，唯一下一步为 M10-03。
+- `apps/server/src/persistence.ts` 使用版本化 `SQLITE_MIGRATIONS`，通过 `schema_meta` 记录版本，并在迁移失败时回滚。
+- `validation/m10-02-schema-migration-results.json` 记录 schema v1、五类表、二次 inspection 幂等和 21/21 测试结果。
+- 当前不要把 schema v1 当作全实体持久化完成；下一步只接 M10-03 的事务与幂等。

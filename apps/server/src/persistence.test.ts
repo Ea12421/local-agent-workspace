@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import type { ContextLedger, RunEvent } from '../../../packages/core/src/types.ts';
 import { buildContextSnapshot } from '../../../packages/core/src/context.ts';
-import { JsonlContextSnapshotStore, JsonlEventLog, openContextSnapshotStore, openEventLog } from './persistence.ts';
+import { JsonlContextSnapshotStore, JsonlEventLog, inspectSqliteSchema, openContextSnapshotStore, openEventLog } from './persistence.ts';
 
 test('persistence exposes SQLite boundary with a clean-checkout fallback', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-'));
@@ -127,5 +127,22 @@ test('SQLite is the operational snapshot backend when a usable driver exists', a
   assert.equal(reloaded.backend, 'sqlite');
   assert.equal((await reloaded.store.latest('project-sqlite', 'run-sqlite'))?.id, snapshot.id);
   reloaded.close?.();
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('SQLite schema migrations are versioned and idempotent', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-schema-migrations-'));
+  const filePath = path.join(dir, 'workspace.db');
+  const first = inspectSqliteSchema(filePath);
+  if (first.backend === 'jsonl') {
+    assert.equal(first.mode, 'portable');
+    assert.ok(first.reason);
+    await rm(dir, { recursive: true, force: true });
+    return;
+  }
+  assert.equal(first.version, 1);
+  assert.deepEqual(first.tables, ['context_snapshots', 'idempotency_keys', 'run_events', 'run_segments', 'schema_meta']);
+  const second = inspectSqliteSchema(filePath);
+  assert.deepEqual(second, first);
   await rm(dir, { recursive: true, force: true });
 });

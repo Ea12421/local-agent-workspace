@@ -173,27 +173,110 @@ export class JsonlContextSnapshotStore implements ContextSnapshotStore {
   }
 }
 
-const CONTEXT_SNAPSHOT_SCHEMA = `
-CREATE TABLE IF NOT EXISTS context_snapshots (
-  id TEXT PRIMARY KEY,
-  project_id TEXT NOT NULL,
-  run_id TEXT NOT NULL,
-  schema_version TEXT NOT NULL,
-  parent_snapshot_id TEXT,
-  covers_from_sequence INTEGER NOT NULL,
-  covers_to_sequence INTEGER NOT NULL,
-  trigger TEXT NOT NULL,
-  summary_json TEXT NOT NULL,
-  tail_event_ids_json TEXT NOT NULL,
-  token_estimate INTEGER NOT NULL,
-  summary_token_estimate INTEGER NOT NULL,
-  content_sha256 TEXT NOT NULL,
-  created_at TEXT NOT NULL,
-  created_by TEXT NOT NULL
-);
-CREATE INDEX IF NOT EXISTS idx_context_snapshots_project_run_created
-  ON context_snapshots(project_id, run_id, created_at, covers_to_sequence);
-`;
+export const SQLITE_SCHEMA_VERSION = 1;
+
+type SqliteMigration = { version: number; name: string; sql: string };
+
+export const SQLITE_MIGRATIONS: SqliteMigration[] = [
+  {
+    version: 1,
+    name: 'initial-operational-schema',
+    sql: `
+      CREATE TABLE IF NOT EXISTS run_events (
+        id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL,
+        sequence INTEGER NOT NULL,
+        type TEXT NOT NULL,
+        occurred_at TEXT NOT NULL,
+        actor_json TEXT NOT NULL,
+        data_json TEXT NOT NULL,
+        correlation_id TEXT,
+        UNIQUE(run_id, sequence)
+      );
+      CREATE INDEX IF NOT EXISTS idx_run_events_run_sequence
+        ON run_events(run_id, sequence);
+
+      CREATE TABLE IF NOT EXISTS context_snapshots (
+        id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        run_id TEXT NOT NULL,
+        schema_version TEXT NOT NULL,
+        parent_snapshot_id TEXT,
+        covers_from_sequence INTEGER NOT NULL,
+        covers_to_sequence INTEGER NOT NULL,
+        trigger TEXT NOT NULL,
+        summary_json TEXT NOT NULL,
+        tail_event_ids_json TEXT NOT NULL,
+        token_estimate INTEGER NOT NULL,
+        summary_token_estimate INTEGER NOT NULL,
+        content_sha256 TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        created_by TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_context_snapshots_project_run_created
+        ON context_snapshots(project_id, run_id, created_at, covers_to_sequence);
+
+      CREATE TABLE IF NOT EXISTS run_segments (
+        id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL,
+        segment INTEGER NOT NULL,
+        status TEXT NOT NULL,
+        context_snapshot_id TEXT,
+        provider_json TEXT,
+        started_at TEXT NOT NULL,
+        completed_at TEXT,
+        UNIQUE(run_id, segment)
+      );
+      CREATE INDEX IF NOT EXISTS idx_run_segments_run_segment
+        ON run_segments(run_id, segment);
+
+      CREATE TABLE IF NOT EXISTS idempotency_keys (
+        key TEXT PRIMARY KEY,
+        scope TEXT NOT NULL,
+        resource_id TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        result_json TEXT
+      );
+      CREATE INDEX IF NOT EXISTS idx_idempotency_scope_resource
+        ON idempotency_keys(scope, resource_id);
+    `,
+  },
+];
+
+export function runSqliteMigrations(db: SqliteDatabase): number {
+  db.exec('CREATE TABLE IF NOT EXISTS schema_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL);');
+  const currentRow = db.prepare("SELECT value FROM schema_meta WHERE key = 'schema_version'").get() as { value?: unknown } | undefined;
+  let currentVersion = Number(currentRow?.value ?? 0);
+  const recordVersion = db.prepare('INSERT OR REPLACE INTO schema_meta (key, value, updated_at) VALUES (@key, @value, @updated_at)');
+  for (const migration of SQLITE_MIGRATIONS.filter((item) => item.version > currentVersion).sort((a, b) => a.version - b.version)) {
+    db.exec('BEGIN');
+    try {
+      db.exec(migration.sql);
+      recordVersion.run({ key: 'schema_version', value: String(migration.version), updated_at: new Date().toISOString() });
+      db.exec('COMMIT');
+      currentVersion = migration.version;
+    } catch (error) {
+      try { db.exec('ROLLBACK'); } catch { /* preserve the migration error */ }
+      throw new Error(`SQLite migration ${migration.version} (${migration.name}) failed: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+  if (currentVersion !== SQLITE_SCHEMA_VERSION) throw new Error(`Unsupported SQLite schema version: ${currentVersion}`);
+  return currentVersion;
+}
+
+export type SqliteSchemaInspection =
+  | { backend: 'sqlite'; mode: 'full'; driver: SqliteDriverName; version: number; tables: string[] }
+  | { backend: 'jsonl'; mode: 'portable'; reason?: string };
+
+export function inspectSqliteSchema(filePath: string): SqliteSchemaInspection {
+  const opened = openSqliteDatabase(filePath);
+  if (!opened.db || !opened.driver) return { backend: 'jsonl', mode: 'portable', reason: opened.reason };
+  const version = runSqliteMigrations(opened.db);
+  const tables = opened.db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name").all()
+    .map((row) => String((row as { name?: unknown }).name));
+  opened.db.close();
+  return { backend: 'sqlite', mode: 'full', driver: opened.driver, version, tables };
+}
 
 function snapshotFromRow(row: Record<string, unknown>): ContextSnapshot {
   return {
@@ -227,7 +310,7 @@ export class SqliteContextSnapshotStore implements ContextSnapshotStore {
     const opened = database ? { db: database } : openSqliteDatabase(filePath);
     if (!opened.db) throw new Error('SQLite driver unavailable; use openContextSnapshotStore() for explicit portable fallback');
     this.db = opened.db;
-    this.db.exec(CONTEXT_SNAPSHOT_SCHEMA);
+    runSqliteMigrations(this.db);
     this.findById = this.db.prepare('SELECT id FROM context_snapshots WHERE id = @id');
     this.insert = this.db.prepare(`
       INSERT INTO context_snapshots (
@@ -298,19 +381,7 @@ export function openContextSnapshotStore(filePath: string): ContextSnapshotStore
   };
 }
 
-export const SQLITE_SCHEMA = `
-CREATE TABLE IF NOT EXISTS run_events (
-  id TEXT PRIMARY KEY,
-  run_id TEXT NOT NULL,
-  sequence INTEGER NOT NULL,
-  type TEXT NOT NULL,
-  occurred_at TEXT NOT NULL,
-  actor_json TEXT NOT NULL,
-  data_json TEXT NOT NULL,
-  correlation_id TEXT,
-  UNIQUE(run_id, sequence)
-);
-`;
+export const SQLITE_SCHEMA = SQLITE_MIGRATIONS[0].sql;
 
 export type EventLog = JsonlEventLog | { backend: 'sqlite'; append(event: PersistedEvent): Promise<void>; readAll(): Promise<PersistedEvent[]> };
 
@@ -328,7 +399,7 @@ export async function openEventLog(filePath: string): Promise<EventLogHandle> {
   const opened = openSqliteDatabase(filePath);
   if (opened.db) {
     const db = opened.db;
-    db.exec(SQLITE_SCHEMA);
+    runSqliteMigrations(db);
     const insert = db.prepare('INSERT INTO run_events (id, run_id, sequence, type, occurred_at, actor_json, data_json, correlation_id) VALUES (@id, @run_id, @sequence, @type, @occurred_at, @actor_json, @data_json, @correlation_id)');
     const list = db.prepare('SELECT * FROM run_events ORDER BY run_id, sequence');
     return {

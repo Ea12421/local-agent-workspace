@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m10-sqlite-first-adapter-pass",
+  "phase": "m10-02-schema-migration-pass",
   "progress": {
-    "completed_units": 28,
-    "total_units": 28
+    "completed_units": 29,
+    "total_units": 29
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -64,8 +64,8 @@
     "used": 0,
     "blocking_corrections_left": 1
   },
-  "blocked_reason": "M10 SQLite schema/迁移、全实体事务、JSONL 导入导出、跨进程/崩溃/备份恢复验证仍未完成；M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
-  "next_action": "实现 M10-02 版本化 SQLite schema 与 migration runner，先覆盖 schema_meta、context_snapshots、run_segments 和 idempotency_keys，再补导入导出与恢复测试。",
-  "last_evidence": "2026-09-27：长期路线已改为 SQLite-first。新增 SqliteContextSnapshotStore、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、node:sqlite 兼容驱动和 HTTP persistence mode 回执；全套等价 Node tests 20/20 通过，typecheck 通过。better-sqlite3 当前二进制按 Node 24 编译而当前 Node 22 要求 ABI 127，已明确降级/兼容，不再静默失败。",
-  "updated_at": "2026-09-27T15:12:09+08:00"
+  "blocked_reason": "M10-03 全实体事务、M10-04 JSONL 导入导出、M10-06 跨进程/崩溃/备份恢复验证仍未完成；M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
+  "next_action": "实现 M10-03 全实体 SQLite 事务与幂等，先把 run_segments、idempotency_keys 接入 runtime/Product Builder，再补 Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 表。",
+  "last_evidence": "2026-09-27：M10-02 版本化 SQLite schema 与 migration runner 已完成；schema_meta 记录版本 1，run_events/context_snapshots/run_segments/idempotency_keys 五类表可重启复用，二次 inspection 与首次结果一致。typecheck、全套等价 Node tests 21/21、diff check 通过。回滚分支已实现但尚未做失败注入测试。better-sqlite3 ABI 不匹配时仍由 node:sqlite 接管。",
+  "updated_at": "2026-09-27T17:28:20+08:00"
 }

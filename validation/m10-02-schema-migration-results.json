@@ -1,0 +1,50 @@
+{
+  "record_version": "m10-02.schema-migration-results.v1",
+  "executed_at": "2026-09-27T17:28:20+08:00",
+  "status": "PASS_SCHEMA_MIGRATION_BOUNDARY",
+  "decision": "SQLite schema version 1 is created and advanced through schema_meta; rerunning the migration is idempotent.",
+  "implementation": [
+    "SQLITE_SCHEMA_VERSION=1",
+    "SQLITE_MIGRATIONS initial-operational-schema",
+    "schema_meta version record",
+    "transaction-wrapped migration runner with rollback on migration error",
+    "run_events, context_snapshots, run_segments and idempotency_keys tables",
+    "inspectSqliteSchema diagnostic",
+    "ContextSnapshotStore and EventLog now use the shared migration runner"
+  ],
+  "commands": [
+    "node scripts/typecheck.mjs",
+    "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts",
+    "git diff --check"
+  ],
+  "results": {
+    "typecheck": "PASS",
+    "full_suite": { "passed": 21, "failed": 0 },
+    "diff_check": "PASS",
+    "schema_version": 1,
+    "tables": [
+      "context_snapshots",
+      "idempotency_keys",
+      "run_events",
+      "run_segments",
+      "schema_meta"
+    ],
+    "second_inspection_matches_first": true,
+    "migration_transaction_wrapper": "PASS_BY_CODE_INSPECTION; failure-injection test remains pending"
+  },
+  "driver_observed": {
+    "node": "v22.23.1",
+    "better_sqlite3": "present but binary ABI mismatched (compiled for Node 24 / module 132; current Node requires 127)",
+    "node_sqlite": "available and used",
+    "observed_mode": "full",
+    "observed_backend": "sqlite",
+    "observed_driver": "node:sqlite"
+  },
+  "limitations": [
+    "This migration version covers operational event, snapshot, segment and idempotency tables only; full Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt tables are still pending.",
+    "The rollback branch is implemented but no injected failing migration test has been added yet.",
+    "JSONL import/export, crash recovery, cross-process contention, backup/restore and 10k/100k event benchmarks are still pending.",
+    "This is persistence-contract evidence, not model-quality or real-world productivity evidence."
+  ],
+  "next_action": "Implement M10-03 full-entity SQLite transactions and idempotency, starting with run segments and idempotency keys wired into runtime/Product Builder."
+}

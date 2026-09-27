@@ -150,3 +150,12 @@
 - **M10-01 实现**：新增 `SqliteContextSnapshotStore`、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、Node 22 `node:sqlite` 兼容驱动；Product Builder 和 runtime 不再硬编码 JSONL 默认路径；HTTP 回执显示 `persistence.mode`、backend、driver 和降级原因。
 - **验证**：全套等价 Node tests 20/20、typecheck 和 diff check 通过。当前 `better-sqlite3` 二进制按 Node 24 编译，与 Node 22 ABI 不匹配；系统已自动选择 `node:sqlite`，未修改 VPN 或安装凭据。
 - **下一步**：M10-02 版本化 SQLite schema 与 migration runner，先覆盖 `schema_meta`、`context_snapshots`、`run_segments` 和 `idempotency_keys`。
+
+
+### 2026-09-27 M10-02 · 版本化 SQLite schema 与迁移
+
+- **实现**：在 `apps/server/src/persistence.ts` 增加 `SQLITE_SCHEMA_VERSION=1`、`SQLITE_MIGRATIONS`、`schema_meta` 版本记录和事务包裹的 migration runner。迁移 v1 创建 `run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 及索引；`SqliteContextSnapshotStore` 和 `openEventLog` 共用该 runner。
+- **验证**：`node scripts/typecheck.mjs` 通过；全套等价 Node tests `21/21` 通过；`git diff --check` 通过。临时 DB 的 schema inspection 得到版本 1 和五类表，二次 inspection 与首次结果一致。
+- **边界**：回滚分支已实现，但还没有失败注入测试；全实体事务、JSONL 导入导出、崩溃/跨进程/备份恢复和规模验证仍未完成。better-sqlite3 ABI 不匹配时继续由 `node:sqlite` 接管。
+- **证据**：`validation/m10-02-schema-migration-results.json`。
+- **下一步**：M10-03 全实体 SQLite 事务与幂等，先接入 `run_segments`、`idempotency_keys`，再扩展其余领域实体。

@@ -119,8 +119,8 @@
 | ID | 任务 | 文件/区域 | 依赖 | 状态 | 完成标准 |
 |---|---|---|---|---|---|
 | M10-01 | storage-neutral factory 与 SQLite ContextSnapshot backend | `apps/server/src/persistence.ts`, `runtime.ts`, `product-builder-continuity.ts` | M9 | DONE | SQLite 默认；JSONL 仅 portable；HTTP 返回 backend/mode/reason；20/20 测试通过 |
-| M10-02 | 版本化 schema 与 migration runner | `apps/server/src/persistence.ts`, `scripts/migrations/*` | M10-01 | NEXT | `schema_meta`、`context_snapshots`、`run_segments`、`idempotency_keys` 有版本迁移、回滚和重启验证 |
-| M10-03 | 全实体 SQLite 事务与幂等 | `packages/core`, `apps/server/src/persistence.ts` | M10-02 | TODO | Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 事务一致，唯一约束和幂等通过 |
+| M10-02 | 版本化 schema 与 migration runner | `apps/server/src/persistence.ts`, `apps/server/src/persistence.test.ts`, `validation/m10-02-schema-migration-results.json` | M10-01 | DONE | schema v1、`schema_meta`、四类运行时表、幂等重跑和重启 inspection 已验证；失败注入仍待补 |
+| M10-03 | 全实体 SQLite 事务与幂等 | `packages/core`, `apps/server/src/persistence.ts` | M10-02 | NEXT | Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 事务一致，唯一约束和幂等通过 |
 | M10-04 | JSONL 导入、导出和校验 | `scripts/import-export/*`, `validation/` | M10-02 | TODO | 校验 sequence/hash/idempotency，事务导入后回读一致，可从导出重建 |
 | M10-05 | runtime/Product Builder 完整持久化接入 | `apps/server/src/runtime.ts`, `product-builder-continuity.ts` | M10-03 | PARTIAL | Run segment、checkpoint、approval、artifact 全部进入 SQLite，业务/API 契约不变 |
 | M10-06 | 崩溃、多进程、备份恢复和规模验证 | `apps/server/src/*.test.ts`, `validation/` | M10-03, M10-04 | TODO | kill/restart、跨进程竞争、DB lock、备份恢复、10k/100k 事件边界有证据 |
@@ -129,14 +129,14 @@ M10 的详细架构决策见 `SPEC/08-persistence-architecture-decision.md`。
 
 ## 当前唯一优先级
 
-当前执行顺序先走已可用的 Codex CLI，再补网络依赖；M8-04 机械执行已收口，下一阶段补质量证据或进入 M8-05 现实验证，执行顺序固定为：
+当前执行顺序先完成 SQLite-first 运行时持久化，再补质量证据和 DeepSeek 对比；M8-04 机械执行与 M8-05 窄范围现实验证已收口，执行顺序固定为：
 
 ```text
 M3-04/M8-03（Codex CLI bridge）
 → M6-06 → M7-01/M7-02 → M7-03 → M8-01
 → M9-01/M9-02/M9-03/M9-04/M9-05（Context Continuity）
-→ M10-01/M10-02/M10-03/M10-04/M10-05/M10-06（SQLite-first）
+→ M10-01（SQLite adapter）→ M10-02（schema/migrations）→ M10-03/M10-04/M10-05/M10-06（事务、导入导出、runtime 接入、恢复规模）
 → M8-04（质量证据收口）→ M8-05（现实任务）→ M8-06（面试掌握包）→ M8-02（DeepSeek 可选对比）
 ```
 
-在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。
+在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。SQLite M10-02 已不依赖新增网络包；下一步只进入 M10-03。

@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`m10-sqlite-first-adapter-pass-m8-04-quality-blocked-desktop-partial`
+`m10-02-schema-migration-pass-m8-04-quality-blocked-desktop-partial`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -60,9 +60,10 @@
 - M8-06 两条 arm 已执行，比较结果为 `PARTIAL`：controller proxy 手工基线 7 步且未冒充用户计时；结构化 Codex subscription Run 为 56234ms，结构化追踪通过。由于缺少用户本人 baseline、人工修改和复用意愿，不能计算真实提效率。结果在 `validation/m8-06-comparison.json`；该比较保留为历史证据，不再作为长期存储路线决定。
 - M8-06 JSONL 边界专项已通过：尾行损坏按 `SyntaxError` fail-closed；同进程 20 次并发 append 完整；重载后可按 project/run 重建 latest；typecheck、5/5 persistence tests、19/19 全套等价 Node tests 和 diff check 均通过。证据在 `validation/m8-06-jsonl-failure-results.json`。`pnpm test:all` 仅因 Corepack 用户缓存权限未运行；该结果不覆盖跨进程锁或长时吞吐。
 - 长期架构重新评估后已决定 SQLite-first：SQLite 是运行时唯一事实源，JSONL 只用于 portable/demo/export/灾备。详细决策见 `SPEC/08-persistence-architecture-decision.md`。
-- M10-01 适配层已开始：`SqliteContextSnapshotStore`、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、`node:sqlite` 兼容驱动和 HTTP `persistence.mode` 回执已落地；runtime 与 Product Builder 不再硬编码 JSONL 默认路径。
+- M10-01 适配层已完成：`SqliteContextSnapshotStore`、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、`node:sqlite` 兼容驱动和 HTTP `persistence.mode` 回执已落地；runtime 与 Product Builder 不再硬编码 JSONL 默认路径。
 - M10-01 验证：全套等价 Node tests 20/20、typecheck 和 diff check 通过；当前 better-sqlite3 二进制与 Node 22 ABI 不匹配，已由 node:sqlite 接管，不再静默失败。
-- M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`；M10-02 schema_meta、migration runner、全实体事务、导入导出和跨进程/备份恢复验证仍未完成。
+- M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`。
+- M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`；失败注入和全实体事务仍未完成。
 
 ## 当前卡点
 
@@ -77,7 +78,7 @@
 
 ## 当前唯一下一步
 
-实现 M10-02 版本化 SQLite schema 与 migration runner，先覆盖 `schema_meta`、`context_snapshots`、`run_segments` 和 `idempotency_keys`，再补 JSONL 导入导出与恢复测试。
+实现 M10-03 全实体 SQLite 事务与幂等，先把 `run_segments`、`idempotency_keys` 接入 runtime/Product Builder，再补 Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 表。
 
 ## 网络恢复后的下一步
 
