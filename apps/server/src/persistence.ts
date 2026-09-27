@@ -53,29 +53,36 @@ function configureSqliteDatabase(db: SqliteDatabase): void {
   db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;');
 }
 
+function openDriverWithRetry(filePath: string, driver: SqliteDriver, name: SqliteDriverName): { db?: SqliteDatabase; driver?: SqliteDriverName; reason?: string } {
+  const maxAttempts = 8;
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const db = new driver(filePath);
+      configureSqliteDatabase(db);
+      return { db, driver: name };
+    } catch (error) {
+      lastError = error;
+      if (!sqliteBusy(error) || attempt === maxAttempts) break;
+      sleepSync(attempt * 50);
+    }
+  }
+  return { reason: `${name}: ${lastError instanceof Error ? lastError.message : String(lastError)}` };
+}
+
 function openSqliteDatabase(filePath: string): { db?: SqliteDatabase; driver?: SqliteDriverName; reason?: string } {
   const loaded = loadSqliteDriver();
   if (!loaded.driver || !loaded.name) return { reason: loaded.reason };
+  const primary = openDriverWithRetry(filePath, loaded.driver, loaded.name);
+  if (primary.db || loaded.name !== 'better-sqlite3') return primary;
   try {
-    const db = new loaded.driver(filePath);
-    configureSqliteDatabase(db);
-    return { db, driver: loaded.name };
-  } catch (error) {
-    const primaryReason = `${loaded.name}: ${error instanceof Error ? error.message : String(error)}`;
-    if (loaded.name === 'better-sqlite3') {
-      try {
-        const require = createRequire(import.meta.url);
-        const module = require('node:sqlite') as { DatabaseSync?: SqliteDriver };
-        if (module.DatabaseSync) {
-          const db = new module.DatabaseSync(filePath);
-          configureSqliteDatabase(db);
-          return { db, driver: 'node:sqlite' };
-        }
-      } catch (fallbackError) {
-        return { reason: `${primaryReason}; node:sqlite: ${fallbackError instanceof Error ? fallbackError.message : String(fallbackError)}` };
-      }
-    }
-    return { reason: primaryReason };
+    const require = createRequire(import.meta.url);
+    const module = require('node:sqlite') as { DatabaseSync?: SqliteDriver };
+    if (!module.DatabaseSync) return { reason: `${primary.reason}; node:sqlite: DatabaseSync is unavailable` };
+    const fallback = openDriverWithRetry(filePath, module.DatabaseSync, 'node:sqlite');
+    return fallback.db ? fallback : { reason: `${primary.reason}; ${fallback.reason}` };
+  } catch (fallbackError) {
+    return { reason: `${primary.reason}; node:sqlite: ${fallbackError instanceof Error ? fallbackError.message : String(fallbackError)}` };
   }
 }
 
@@ -390,7 +397,15 @@ export const SQLITE_MIGRATIONS: SqliteMigration[] = [
   },
 ];
 
-export function runSqliteMigrations(db: SqliteDatabase): number {
+function sqliteBusy(error: unknown): boolean {
+  return /database is locked|database table is locked|SQLITE_BUSY|SQLITE_LOCKED/i.test(error instanceof Error ? error.message : String(error));
+}
+
+function sleepSync(milliseconds: number): void {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds);
+}
+
+function runSqliteMigrationsOnce(db: SqliteDatabase): number {
   db.exec('CREATE TABLE IF NOT EXISTS schema_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL);');
   const currentRow = db.prepare("SELECT value FROM schema_meta WHERE key = 'schema_version'").get() as { value?: unknown } | undefined;
   let currentVersion = Number(currentRow?.value ?? 0);
@@ -409,6 +424,24 @@ export function runSqliteMigrations(db: SqliteDatabase): number {
   }
   if (currentVersion !== SQLITE_SCHEMA_VERSION) throw new Error(`Unsupported SQLite schema version: ${currentVersion}`);
   return currentVersion;
+}
+
+/**
+ * Multiple local processes can open a clean database at the same time. SQLite
+ * serializes the first DDL transaction, so retry only the bounded migration
+ * boundary when the driver reports a transient lock.
+ */
+export function runSqliteMigrations(db: SqliteDatabase): number {
+  const maxAttempts = 8;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      return runSqliteMigrationsOnce(db);
+    } catch (error) {
+      if (!sqliteBusy(error) || attempt === maxAttempts) throw error;
+      sleepSync(attempt * 50);
+    }
+  }
+  throw new Error('SQLite migration retry loop ended unexpectedly');
 }
 
 export type SqliteSchemaInspection =

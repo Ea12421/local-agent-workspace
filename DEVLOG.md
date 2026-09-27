@@ -222,4 +222,16 @@
 - **验证**：`scripts/import-export/cli.test.mjs` 专项 2/2；真实 `data/workspace.db` export→validate→import 54 rows，重开计数 projects=1、runs=0、events=19、idempotency=0。
 - **证据**：`validation/m10-04-jsonl-import-export-results.json`。主任务另行记录 27/27、typecheck、full suite、git diff check。
 - **状态**：M10-04 DONE；M8-04、Electron、DeepSeek、literal GitHub clone、Codex 原生 resume 限制保持不变。
-- **下一步**：M10-06 kill/restart、backup recovery、scale validation。
+- **下一步**：切到 M8-04 质量证据审计/现实验证。
+
+### 2026-09-27 M10-06 · 恢复、并发与规模验证完成
+
+- 有限 SQLite open/migration busy retry 修正已通过；三进程并发 writer 专项 PASS。
+- kill/restart：SIGKILL 子进程后 reopen，已读回 committed Run/Event；10k scale test PASS。
+- 100k 真实脚本 PASS：`eventCount=100000`、`first=1`、`last=100000`、`durationMs=336`、`driver=node:sqlite`。
+- 纳入既有 rollback、online backup/restore 与跨进程证据；全套 `29/29`、typecheck、`git diff --check` PASS。
+- 证据：`validation/m10-06-recovery-scale-results.json`。M10-06 标记 DONE。
+
+### 当前唯一下一步
+
+切到 M8-04 质量证据审计/现实验证。DeepSeek 仍需 Key；Electron 可见性 PARTIAL；GitHub clone/Codex native resume 仍受限制。

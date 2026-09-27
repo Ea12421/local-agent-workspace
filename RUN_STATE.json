@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m10-04-complete",
+  "phase": "m10-06-recovery-scale-pass",
   "progress": {
-    "completed_units": 37,
-    "total_units": 37
+    "completed_units": 38,
+    "total_units": 38
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -64,8 +64,8 @@
     "used": 0,
     "blocking_corrections_left": 1
   },
-  "blocked_reason": "M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
-  "next_action": "实施 M10-06 kill/restart、备份恢复与规模验证；随后再处理 M8-04 质量证据和既有 DeepSeek/Electron/GitHub/Codex 限制。",
-  "last_evidence": "2026-09-27：M10-04 JSONL export/validate/import 专项 2/2 通过；格式 local-agent-workspace.export.v1、schemaVersion 2、manifest payloadSha256；校验 JSON/表白名单/主键重复/run_events sequence 连续/context snapshot hash/JSON columns；import transaction 拒绝非空 target。真实 data/workspace.db export→validate→import 54 rows，重开计数 projects=1,runs=0,events=19,idempotency=0。主任务另行记录 27/27、typecheck、full suite 与 diff check。",
-  "updated_at": "2026-09-27T20:40:00+08:00"
+  "blocked_reason": "M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。",
+  "next_action": "切到 M8-04 质量证据审计与现实验证；DeepSeek 仍需 Key，Electron 可见性 PARTIAL，GitHub clone/Codex native resume 仍受限制。",
+  "last_evidence": "2026-09-27：M10-06 有限 SQLite open/migration busy retry、三进程并发 writer、SIGKILL 子进程后 reopen 读回 committed Run/Event、10k scale 与 100k 真实 node:sqlite 脚本均 PASS（eventCount=100000, first=1, last=100000, durationMs=336）；纳入既有 rollback/online backup/跨进程证据。全套 29/29、typecheck、git diff check PASS。证据：validation/m10-06-recovery-scale-results.json",
+  "updated_at": "2026-09-27T20:43:25+08:00"
 }

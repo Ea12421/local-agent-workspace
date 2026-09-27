@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`m10-05-http-persistence-pass-complete-m8-04-quality-blocked-desktop-partial`
+`m10-06-recovery-scale-pass-m8-04-quality-blocked-desktop-partial`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -66,6 +66,7 @@
 - M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`。
 - M10-03 当前为 PARTIAL：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；runtime 已切换到 SQLite 默认路径，重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；全实体 typed CRUD、长时规模和 Product Builder 完整接入仍未完成。
 - M10-05 已完成：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，全部 typed entity round-trip、Project/Skill/BotProfile POST/GET/PATCH、Run create/cancel/retry、entity summary 和 approve persistence 已通过；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`。
+- M10-06 已完成：有限 SQLite open/migration busy retry、三进程并发 writer、SIGKILL 后 reopen、10k/100k 事件规模、既有 rollback/online backup/跨进程证据均通过；全套 29/29、typecheck、diff check 通过。证据为 `validation/m10-06-recovery-scale-results.json`。
 
 ## 当前卡点
 
@@ -80,7 +81,7 @@
 
 ## 当前唯一下一步
 
-实施 M10-06：kill/restart、backup recovery、跨进程边界与规模验证。
+切到 M8-04 质量证据审计/现实验证；DeepSeek 仍需 Key，Electron 可见性仍 PARTIAL。
 
 ## 网络恢复后的下一步
 
@@ -98,7 +99,7 @@ pnpm package:mac
 
 - **实现**：Project、Skill、BotProfile typed persistence roundtrip 已通过；新增 `GET /api/persistence/entities` entity summary，并验证 approve route 写入持久化状态。
 - **验证**：typecheck、HTTP smoke、全套等价 Node tests `25/25`、`git diff --check` 均通过。
-- **边界**：M10-04 已完成；M10-06 恢复与规模验证仍待完成；M8-04 质量证据阻断保持不变。
+- **边界**：M10-04 与 M10-06 已完成；M8-04 质量证据阻断保持不变。
 - **证据**：`validation/m10-05-product-builder-persistence-results.json`。
 
 ## 2026-09-27 M10-04 · JSONL import/export 完成
@@ -112,4 +113,16 @@ pnpm package:mac
 
 ### 当前唯一下一步
 
-M10-06：kill/restart、backup recovery、scale validation。
+切到 M8-04 质量证据审计/现实验证。
+
+### 2026-09-27 M10-06 · 恢复、并发与规模验证完成
+
+- 有限 SQLite open/migration busy retry 修正已通过；三进程并发 writer 专项 PASS。
+- kill/restart：SIGKILL 子进程后 reopen，已读回 committed Run/Event；10k scale test PASS。
+- 100k 真实脚本 PASS：`eventCount=100000`、`first=1`、`last=100000`、`durationMs=336`、`driver=node:sqlite`。
+- 纳入既有 rollback、online backup/restore 与跨进程证据；全套 `29/29`、typecheck、`git diff --check` PASS。
+- 证据：`validation/m10-06-recovery-scale-results.json`。M10-06 标记 DONE。
+
+### 当前唯一下一步
+
+切到 M8-04 质量证据审计/现实验证。DeepSeek 仍需 Key；Electron 可见性 PARTIAL；GitHub clone/Codex native resume 仍受限制。

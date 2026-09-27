@@ -262,3 +262,34 @@ test('SQLite RunStore tolerates concurrent writers from separate processes', asy
   store.close();
   await rm(dir, { recursive: true, force: true });
 });
+
+test('SQLite RunStore recovers committed state after a killed worker is reopened', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-run-store-kill-restart-'));
+  const filePath = path.join(dir, 'workspace.db');
+  const worker = `
+    import { openSqliteRunStore } from './apps/server/src/persistence.ts';
+    const handle = openSqliteRunStore(process.argv[1]);
+    const run = await handle.store.createRun({ id: 'run-kill-restart', projectId: 'project-kill-restart', botId: 'bot-kill-restart', request: { objective: 'kill restart', input: {} } });
+    await handle.store.transition(run.id, 'start', { idempotencyKey: 'kill-start' });
+    console.log('READY');
+    setInterval(() => {}, 1000);
+  `;
+  const child = spawn(process.execPath, ['--experimental-strip-types', '--input-type=module', '-e', worker, filePath], { cwd: path.resolve(process.cwd()), stdio: ['ignore', 'pipe', 'pipe'] });
+  const ready = new Promise<void>((resolve, reject) => {
+    let stdout = '';
+    const timer = setTimeout(() => reject(new Error(`worker did not become ready: ${stdout}`)), 5_000);
+    child.stdout.on('data', (chunk) => {
+      stdout += String(chunk);
+      if (stdout.includes('READY')) { clearTimeout(timer); resolve(); }
+    });
+    child.on('error', reject);
+  });
+  await ready;
+  child.kill('SIGKILL');
+  await new Promise<void>((resolve) => child.on('close', () => resolve()));
+  const reopened = openSqliteRunStore(filePath);
+  assert.equal((await reopened.store.getRun('run-kill-restart' as any))?.status, 'running');
+  assert.equal((await reopened.store.listEvents('run-kill-restart' as any)).length, 2);
+  reopened.close();
+  await rm(dir, { recursive: true, force: true });
+});

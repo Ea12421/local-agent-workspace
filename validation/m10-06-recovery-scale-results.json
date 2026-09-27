@@ -1,0 +1,40 @@
+{
+  "record_version": "m10-06.recovery-scale-results.v1",
+  "executed_at": "2026-09-27T20:43:25+08:00",
+  "status": "PASS_RECOVERY_CONCURRENCY_SCALE",
+  "implementation": [
+    "bounded SQLite open/migration busy retry correction",
+    "three-process concurrent writer专项验证",
+    "SIGKILL child process followed by reopen and committed Run/Event readback",
+    "10k event scale test",
+    "100k real node:sqlite scale script",
+    "existing rollback, online backup and cross-process evidence included"
+  ],
+  "results": {
+    "sqlite_open_migration_busy_retry": "PASS",
+    "three_process_concurrent_writers": "PASS",
+    "sigkill_restart_reopen_committed_run_event": "PASS",
+    "scale_10k": "PASS",
+    "scale_100k": {
+      "status": "PASS",
+      "eventCount": 100000,
+      "first": 1,
+      "last": 100000,
+      "durationMs": 336,
+      "driver": "node:sqlite"
+    },
+    "rollback": "PASS_EXISTING_EVIDENCE",
+    "online_backup_restore": "PASS_EXISTING_EVIDENCE",
+    "cross_process": "PASS_EXISTING_EVIDENCE",
+    "full_suite": { "passed": 29, "failed": 0 },
+    "typecheck": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "limitations": [
+    "DeepSeek 真实调用仍需 Key。",
+    "Electron 窗口可见性仍为 PARTIAL。",
+    "literal GitHub clone 与 Codex native resume 仍受环境/实现限制。",
+    "本证据验证持久化恢复、并发和规模，不代表模型质量或现实提效。"
+  ],
+  "next_action": "切到 M8-04 质量证据审计与现实验证。"
+}
