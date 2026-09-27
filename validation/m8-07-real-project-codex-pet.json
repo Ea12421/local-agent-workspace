@@ -1,0 +1,68 @@
+{
+  "record_version": "m8-07.real-project-result.v1",
+  "executed_at": "2026-09-27T13:51:52.755Z",
+  "project_root": "/Users/m4air/总控/projects/codex-pet-studio",
+  "read_allowlist": [
+    "AGENTS.md",
+    "STATE.md"
+  ],
+  "objective": "安装前产品化下一步计划",
+  "started_at": "2026-09-27T13:51:52.442Z",
+  "elapsed_ms": 312,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "889864e1-051d-420a-acdb-819643d179a9",
+  "event_count": 1,
+  "provider_completed": false,
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "artifact_path": "validation/m8-07-real-project-codex-pet-artifact.json",
+  "parsed_output": null,
+  "structural_check": {
+    "json_object": false,
+    "missing_required_keys": [
+      "project_id",
+      "current_state",
+      "user_problem",
+      "proposed_increment",
+      "scope_in",
+      "scope_out",
+      "acceptance_checks",
+      "artifacts_to_create",
+      "risks",
+      "approval_required",
+      "next_action",
+      "evidence_refs"
+    ],
+    "evidence_refs_declared": [],
+    "undeclared_evidence_refs": [],
+    "traceability_pass": false
+  },
+  "approval_boundary": "No installation or ~/.codex/pets write is performed. User approval remains required before any installation step.",
+  "provider_events": [
+    {
+      "id": "provider-event-03778994-06f7-480f-9d3c-bd2241c4144d",
+      "runId": "external-889864e1-051d-420a-acdb-819643d179a9",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T13:51:52.754Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "status": "failed",
+        "exitCode": 1,
+        "signal": null,
+        "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n2026-09-27T13:51:52.729706Z  WARN codex_state::runtime: failed to open state db at /Users/m4air/.codex/state_5.sqlite: failed to open state DB at /Users/m4air/.codex/state_5.sqlite: error returned from database: (code: 8) attempt to write a readonly database\n2026-09-27T13:51:52.730907Z  WARN codex_rollout::state_db: failed to initialize state runtime: failed to initialize state runtime at /Users/m4air/.codex: failed to open state DB at /Users/m4air/.codex/state_5.sqlite: error returned from database: (code: 8) attempt to write a readonly database: error returned from database: (code: 8) attempt to write a readonly database: (code: 8) attempt to write a readonly database\nReading additional input from stdin...\nError: failed to initialize in-process app-server client: Operation not permitted (os error 1)\n",
+        "retryable": false
+      }
+    }
+  ]
+}
