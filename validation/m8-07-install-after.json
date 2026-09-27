@@ -1,0 +1,36 @@
+{
+  "record_version": "m8-07.install-after.v1",
+  "captured_at": "2026-09-27T14:04:58.951Z",
+  "target": {
+    "path": "/Users/m4air/.codex/pets/sha-wujing",
+    "exists": true,
+    "entries": [
+      {
+        "name": "pet.json",
+        "type": "file",
+        "bytes": 175,
+        "sha256": "4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94"
+      },
+      {
+        "name": "spritesheet.webp",
+        "type": "file",
+        "bytes": 9920,
+        "sha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48"
+      }
+    ]
+  },
+  "expected": [
+    {
+      "name": "pet.json",
+      "type": "file",
+      "bytes": 175,
+      "sha256": "4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94"
+    },
+    {
+      "name": "spritesheet.webp",
+      "type": "file",
+      "bytes": 9920,
+      "sha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48"
+    }
+  ]
+}

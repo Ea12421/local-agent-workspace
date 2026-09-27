@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1",
-  "status": "blocked_user",
+  "status": "blocked_environment",
   "objective": "在当前空目录交付可从 GitHub 复现的本地 Agent Workspace v1：一个 control plane 管理 Project、Bot、Run、Handoff、Approval 与 Artifact，并提供无 Key Fixture 演示、DeepSeek 模型通道、Codex 执行桥探针、Web UI 和 Electron 薄壳。",
   "done_definition": [
     "SPEC/00-06 与架构/面试材料落盘并与实现一致",
@@ -48,7 +48,7 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-07-real-project-product-builder",
+  "phase": "m8-07-install-smoke",
   "progress": {
     "completed_units": 38,
     "total_units": 38
@@ -64,8 +64,8 @@
     "used": 1,
     "blocking_corrections_left": 0
   },
-  "blocked_reason": "M8-04 质量结论仍阻断：36 条 receipt 中 27 条可严格 JSON 回放、9 条输出无效；人工编辑、reviewer rubric、usage/cost 和真人门未补齐。M8-07 真实项目计划与只读 dry-run 已 PASS，但 codex-pet-studio 的项目规则要求在写入 ~/.codex/pets 前再次取得用户安装确认；安装、Codex 实际加载和用户接受度尚未验证。Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。",
-  "next_action": "等待用户确认是否执行 codex-pet-studio 沙悟净候选包的安装 smoke；确认后先保存目标目录 manifest，再执行可回滚安装和加载验证。",
-  "last_evidence": "2026-09-27：M8-07 在用户明确授权后通过 Codex subscription 只读运行，runId=25b04cce-fec3-4b95-b2d6-f755ce1eda73，耗时 57548ms，结构化计划和 STATE.md 引用门 PASS；随后使用 bundled Pillow 12.3.0 对真实 staging 包做 8/8 read-only dry-run，验证 1536x1872、57 有效格、15 透明格、alpha 0/255 和 16 色。没有写入 ~/.codex/pets。证据：validation/m8-07-reality-card.json。",
+  "blocked_reason": "M8-04 质量结论仍阻断：36 条 receipt 中 27 条可严格 JSON 回放、9 条输出无效；人工编辑、reviewer rubric、usage/cost 和真人门未补齐。M8-07 安装文件 smoke 已 PASS，但 Computer Use 被平台安全策略拒绝控制 com.openai.codex，因此 Codex 实际加载和用户接受度仍未验证。Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。",
+  "next_action": "保留 sha-wujing 安装和前后 manifest；等待用户在 Codex 界面手动确认加载，或平台提供允许 Codex 应用回读的 Computer Use 通道；不得把文件安装 PASS 写成加载 PASS。",
+  "last_evidence": "2026-09-27：安装 smoke 新增 ~/.codex/pets/sha-wujing，仅写入 pet.json 和 spritesheet.webp；安装后 hash 与源包一致，原有 angelina-mellow-wish 未改动。Computer Use 尝试读取 Codex app 时返回 safety restriction。证据：validation/m8-07-install-smoke.json。",
   "updated_at": "2026-09-27T22:02:00+08:00"
 }

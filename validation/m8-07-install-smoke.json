@@ -1,0 +1,22 @@
+{
+  "record_version": "m8-07.install-smoke.v1",
+  "status": "PASS_INSTALLED_FILES",
+  "executed_at": "2026-09-27T14:04:58.951Z",
+  "source_root": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing",
+  "target_root": "/Users/m4air/.codex/pets/sha-wujing",
+  "files": [
+    "pet.json",
+    "spritesheet.webp"
+  ],
+  "before_manifest": "validation/m8-07-install-before.json",
+  "after_manifest": "validation/m8-07-install-after.json",
+  "installed_files_match": true,
+  "target_writes": [
+    "pet.json",
+    "spritesheet.webp"
+  ],
+  "rollback": "Delete only the newly created sha-wujing directory after user approval if load or visual smoke fails; preserve the before manifest and existing sibling pets.",
+  "codex_load_status": "BLOCKED_COMPUTER_USE",
+  "computer_use_attempt": "cua.getApp('Codex') was rejected by the platform safety policy for com.openai.codex; no UI load claim is made.",
+  "user_acceptance": "PENDING"
+}

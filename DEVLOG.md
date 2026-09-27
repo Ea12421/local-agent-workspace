@@ -49,6 +49,7 @@
 - 使用 bundled Pillow 12.3.0 对真实 `outputs/package/sha-wujing/` 做不写入 dry-run：WebP、`1536×1872`、57 个有效格、15 个透明格、alpha 仅 `0/255`、16 色和目标写入为 false 全部通过。
 - 落盘：`validation/m8-07-real-project-codex-pet.json`、`validation/m8-07-real-project-codex-pet-artifact.json`、`validation/m8-07-codex-pet-dry-run.json`、`validation/m8-07-codex-pet-install-candidate.json`、`validation/m8-07-reality-card.json`。
 - 结论是窄范围 `PASS / Real-input Ready`：Product Builder 能把真实项目状态推进为可审查的安装候选计划和只读预检。Codex 实际加载、用户接受和安装仍未知；项目规则要求安装前再次确认，因此当前状态为 `blocked_user`。
+- 用户随后明确授权安装；安装 smoke 新增 `~/.codex/pets/sha-wujing`，前后 manifest 与逐文件 hash 校验通过，既有 `angelina-mellow-wish` 未改动。Computer Use 尝试读取 Codex app 被平台安全策略拒绝，因此安装文件 PASS 与 Codex 加载 PASS 分开记录，当前转为 `blocked_environment`。
 
 ### M8-04 质量证据审计
 

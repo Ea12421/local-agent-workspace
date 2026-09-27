@@ -1,0 +1,10 @@
+{
+  "record_version": "m8-07.install-before.v1",
+  "captured_at": "2026-09-27T14:04:58.944Z",
+  "target": {
+    "path": "/Users/m4air/.codex/pets/sha-wujing",
+    "exists": false,
+    "entries": []
+  },
+  "source_root": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing"
+}
