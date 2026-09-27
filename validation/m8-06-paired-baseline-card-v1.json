@@ -1,0 +1,134 @@
+{
+  "card_id": "m8-06-context-storage-route-paired-baseline-v1",
+  "version": "m8-06-v1",
+  "status": "PENDING",
+  "pre_registered_at": "2026-09-27T04:20:00+08:00",
+  "system_under_test": {
+    "implementation_commit": "b75701f",
+    "workflow": "manual_baseline_vs_structured_run",
+    "provider": "codex-cli subscription bridge",
+    "deepseek": "deferred"
+  },
+  "real_task": {
+    "task_id": "TECH-01",
+    "objective": "判断 ContextSnapshot 持久化应继续采用 JSONL 事实源加可选 SQLite 索引，还是在 v1 前迁移为 SQLite-first，并给出可回滚的下一步。",
+    "why_real": "这是当前项目已经实现并且会影响上下文压缩、崩溃恢复、clean-room 安装和未来迁移的真实技术路线决策。",
+    "read_allowlist": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "HANDOFF.md",
+      "SPEC/MASTER-SPEC.md",
+      "packages/core/src/context.ts",
+      "apps/server/src/persistence.ts",
+      "validation/m9-context-continuity-results.json"
+    ],
+    "forbidden": [
+      "读取任何凭据、Cookie、Token、.env 或项目外敏感文件",
+      "修改源代码、状态文件或数据库",
+      "调用外部搜索、发送消息、发布或安装依赖",
+      "把没有来源的外部事实写成结论"
+    ]
+  },
+  "claim": {
+    "falsifiable": "在同一真实技术决策和同一输入白名单上，结构化 Run 能生成可追溯的 options/trade-offs/dependencies/risks/rollback/unknowns，并相对固定手工基线减少至少 25% 的人工整理步骤。",
+    "decision": "决定是否保留当前 JSONL-first 事实源边界，还是为 SQLite-first 迁移建立新的实现任务；不决定模型总体质量或多 Bot 默认路径。",
+    "exclusions": [
+      "不证明 ContextSnapshot 在所有真实限额下无损恢复。",
+      "不证明 Codex 原生 resume 或 DeepSeek parity。",
+      "不证明用户已经愿意长期使用；必须单独记录用户复核。",
+      "不把 controller 的代理操作写成用户本人效率证据。"
+    ]
+  },
+  "arms": {
+    "manual_baseline": {
+      "operator": "Codex controller proxy; owner acceptance remains UNKNOWN",
+      "fixed_steps": [
+        "读取并记录 RUN_STATE/HANDOFF 的当前目标和限制",
+        "读取 MASTER-SPEC 的状态、恢复和持久化约束",
+        "检查 packages/core/src/context.ts 的 Snapshot/hash/Packet 逻辑",
+        "检查 apps/server/src/persistence.ts 的 JSONL/SQLite 边界",
+        "读取 M9 契约验证结果并列出已证实与未证实项",
+        "手工写 options/trade-offs/dependencies/risks/rollback 矩阵",
+        "手工补 source_refs、unknowns、推荐和唯一 next_action"
+      ],
+      "artifact": "validation/m8-06-manual-baseline.md",
+      "status": "NOT_STARTED",
+      "elapsed_ms": null,
+      "manual_edit_steps": null,
+      "rework_count": null
+    },
+    "structured_run": {
+      "mode": "one read-only Codex execution run; no multi-bot comparison in this card",
+      "required_output_keys": [
+        "objective",
+        "recommendation",
+        "options",
+        "tradeoffs",
+        "dependencies",
+        "risks",
+        "rollback",
+        "source_refs",
+        "unknowns",
+        "next_action"
+      ],
+      "artifact": "validation/m8-06-structured-run.json",
+      "status": "NOT_STARTED",
+      "elapsed_ms": null,
+      "manual_edit_steps": null,
+      "rework_count": null
+    }
+  },
+  "metrics": {
+    "primary": "manual_edit_steps_reduction",
+    "calculation": "(manual_baseline.manual_edit_steps - structured_run.manual_edit_steps) / manual_baseline.manual_edit_steps",
+    "pass_threshold": "at least 25% reduction, with both counts measured from the same fixed rubric",
+    "threshold_rationale": "Inherited as the conservative minimum from the project validation contract; if the baseline cannot be measured, verdict is PARTIAL/UNKNOWN.",
+    "guardrails": [
+      "critical claims have a source_ref or explicit UNKNOWN",
+      "rollback and dependencies are present",
+      "source_refs are a subset of the read allowlist",
+      "zero writes, external sends, secret reads, or undeclared paths",
+      "no more than one major rework cycle"
+    ],
+    "secondary_observations": [
+      "elapsed_ms",
+      "rework_count",
+      "traceability_coverage",
+      "owner_willingness_to_reuse"
+    ]
+  },
+  "execution": {
+    "pre_run_state": "PENDING",
+    "run_order": [
+      "execute and timestamp the fixed manual baseline",
+      "freeze the baseline artifact hash and step count",
+      "execute one structured read-only Run with the same input allowlist",
+      "record raw provider receipt and structured artifact hash",
+      "apply the same rubric without silently repairing the output",
+      "record owner willingness as UNKNOWN until the user reviews the result"
+    ],
+    "raw_evidence_destination": "validation/m8-06-raw/",
+    "abort_conditions": [
+      "manual and structured arms do not use the same input scope",
+      "any undeclared path, secret, write, or external action occurs",
+      "the baseline cannot be timed or its edits cannot be counted",
+      "the provider fails twice with the same error"
+    ]
+  },
+  "decision_mapping": {
+    "PASS_FOR_TASK": "Keep JSONL-first as the current route and open a separate migration task only if a measured SQLite need remains.",
+    "PARTIAL": "Keep the current route provisionally, record the failed rubric item, and do not claim productivity improvement.",
+    "NO_GO": "Stop expanding the provider path and repair the traceability, permission, or persistence boundary first."
+  },
+  "result": {
+    "status": "PENDING",
+    "facts": [],
+    "inferences": [],
+    "unknowns": [
+      "Owner willingness to reuse is not yet measured.",
+      "The paired baseline and structured run have not executed."
+    ],
+    "verdict": null,
+    "next_action": "Execute the fixed manual baseline, then the structured read-only Run."
+  }
+}

@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-05-narrow-real-input-pass-quality-still-blocked",
+  "phase": "m8-06-paired-baseline-card-frozen",
   "progress": {
-    "completed_units": 22,
-    "total_units": 23
+    "completed_units": 23,
+    "total_units": 24
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -65,7 +65,7 @@
     "blocking_corrections_left": 1
   },
   "blocked_reason": "M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone、Codex 原生 resume 和多 Bot/人工提效仍未验证。M8-05 只通过窄范围真实输入追踪和一次真实 provider 同 Run 恢复 smoke，未证明业务质量或稳定提效。",
-  "next_action": "冻结 1 个真实 Product Builder 或技术路线任务的 paired baseline card，记录手工流程、人工整理步骤、耗时和待验证指标；不接 DeepSeek，不把 M8-05 窄门 PASS 扩大为产品完成。",
-  "last_evidence": "2026-09-27：M8-05 使用真实 Codex subscription execution bridge 完成 3 个非敏感本地状态任务；3/3 通过预注册的 JSON/source_refs/unknowns/next_action 追踪门。恢复 smoke 在真实 provider 事件后人为中断，随后同一 runId 追加 1 个 ContextSnapshot、1 个 resume segment 并最终 succeeded，recovery_pass=true。原始回执在 validation/m8-05-raw/，汇总在 validation/m8-05-reality-results.json；这只支持窄范围追踪与执行链恢复，不支持模型质量、人工提效、多 Bot 优势或 DeepSeek 等价。",
-  "updated_at": "2026-09-27T04:03:28+08:00"
+  "next_action": "执行 validation/m8-06-paired-baseline-card-v1.json 中冻结的手工 baseline，再用同一输入白名单执行一次结构化只读 Run；记录耗时、人工整理步骤、返工和来源覆盖，不接 DeepSeek。",
+  "last_evidence": "2026-09-27：M8-06 paired baseline 卡已冻结，任务为当前项目的 ContextSnapshot JSONL-first vs SQLite-first 技术路线判断。固定输入白名单、7 步手工基线、结构化输出键、25% 人工整理步骤阈值、回滚/来源/未知项护栏和 owner willingness 未知边界均已落盘；尚未执行两条 arm。",
+  "updated_at": "2026-09-27T04:20:00+08:00"
 }

@@ -119,3 +119,11 @@
 
 1. 读取 `RUN_STATE.json`、`HANDOFF.md` 和 `validation/m8-05-review.md`。
 2. 若继续验证，先为一个真实 Product Builder/技术路线任务冻结 paired baseline card；不要重跑 M8-05 三个任务或 recovery smoke。
+
+### 2026-09-27 M8-06 · 冻结 paired baseline
+
+- **真实任务**：判断 ContextSnapshot 持久化继续采用 JSONL 事实源加可选 SQLite 索引，还是在 v1 前迁移为 SQLite-first。
+- **输入范围**：冻结为当前项目 `AGENTS.md`、`RUN_STATE.json`、`HANDOFF.md`、`SPEC/MASTER-SPEC.md`、`packages/core/src/context.ts`、`apps/server/src/persistence.ts` 和 `validation/m9-context-continuity-results.json`；不读取凭据、Cookie、Token、`.env` 或外部资料。
+- **paired arms**：手工 baseline 固定 7 步，结构化 arm 为同一白名单的一次 Codex read-only Run；两边都要求 options、trade-offs、dependencies、risks、rollback、source_refs、unknowns 和唯一 next_action。
+- **阈值**：人工整理步骤相对减少至少 25%；来源覆盖、未知项、回滚和零越权是硬护栏；owner willingness 在用户复核前保持 UNKNOWN。
+- **当前状态**：卡片已冻结但两条 arm 尚未执行。下一步只执行这两条 arm，不重跑 M8-05，不接 DeepSeek。
