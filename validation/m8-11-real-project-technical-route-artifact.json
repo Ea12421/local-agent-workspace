@@ -1,0 +1,15 @@
+{
+  "artifact_version": "m8-11.real-project-artifact.v1",
+  "artifact_id": "m8-11-technical-route-f6190b10d72e734d4f1b93b7",
+  "source_run_id": "ac46d495-51aa-49a8-a2a2-eee794db77a5",
+  "project_id": "local-agent-workspace",
+  "output_sha256": "f6190b10d72e734d4f1b93b7c901a02179a8e84fefc156957a3ca52a82f81ed4",
+  "provider_output_receipt": {
+    "schemaVersion": "provider.output-receipt.v1",
+    "rawOutputSha256": "f6190b10d72e734d4f1b93b7c901a02179a8e84fefc156957a3ca52a82f81ed4",
+    "status": "parsed",
+    "mode": "embedded",
+    "extractedOutputSha256": "7fa4952d2bfc5c5294847e392918f941322f75d279d4b2a17304ecb32148fe8e"
+  },
+  "output": "老黄，我会严格限定在四个允许文件内，并只做只读核对；不会访问源码、凭据或运行项目命令。\n{\"project_id\":\"local-agent-workspace\",\"current_state\":\"SQLite 已成为运行时唯一事实源，已完成 schema、事务恢复、并发规模验证、Product Builder 持久化接入；provider.output-receipt.v1 已接入并通过 Core/Adapter 校验。M10-03 的全实体 typed CRUD、长时规模和 Product Builder 完整接入曾标为未完成，但后续 M10-05/M10-06 已补齐主要持久化与恢复验证。M8-04 质量证据、DeepSeek 真实调用、Electron 窗口可见性、Codex 原生 resume 和 literal GitHub clone 仍阻塞。\",\"decision_question\":\"下一步应先做哪一个有界工程动作，以验证 SQLite-first 与 provider receipt 集成在真实 Product Builder 技术路线任务中的可用性？\",\"options\":[\"冻结并执行第三个非敏感现实任务的 reality card，使用固定白名单、只读和结构化 receipt 验证技术路线判断或项目推进计划\",\"立即接入 DeepSeek 做模型对比\",\"继续扩展多 Bot 或 Codex 原生 resume\"],\"recommendation\":\"先冻结并执行第三个非敏感现实任务的 reality card：聚焦技术路线判断或项目推进计划，固定输入白名单，仅读取候选项目，不修改项目，记录结构化输出、provider receipt、未知项和回滚护栏；完成该现实验证后再决定是否接入 DeepSeek。\",\"tradeoffs\":[\"可直接验证当前持久化与 receipt 链路的真实可用性，但不能解除 M8-04 质量证据阻塞\",\"范围小、风险低、可回滚，但不会立即提供 DeepSeek 对比结果\",\"延后多 Bot 与原生 resume，可避免在现实证据不足时扩大实现范围\"],\"dependencies\":[\"第三个非敏感候选任务及其固定文件白名单\",\"可复现的 Product Builder 本地执行入口\",\"provider receipt 结构化校验与结果记录能力\"],\"risks\":[\"现实任务输出仍可能出现前置说明、拼接或不完整 JSON，导致 receipt 解析失败\",\"只读任务只能验证追踪、结构化输出和技术路线判断流程，不能证明业务质量或提效\",\"候选项目、人工 baseline 和复用意愿仍可能不足\"],\"rollback\":[\"保留 SQLite-first 运行时事实源不变\",\"若 SQLite 环境或任务链路失败，显式切换到 portable JSONL 模式并报告能力限制\",\"丢弃本次现实任务的派生结果，不修改候选项目和既有事件\"],\"next_action\":\"冻结并执行第三个非敏感现实任务的 reality card，使用固定白名单只读验证技术路线判断或项目推进计划，并记录结构化 provider receipt 与 PASS、PARTIAL 或 NO-GO 结果。\",\"evidence_refs\":[\"AGENTS.md\",\"RUN_STATE.json\",\"SPEC/PROGRESS.md\",\"SPEC/08-persistence-architecture-decision.md\"],\"unknowns\":[\"第三个现实任务的具体候选项目和白名单尚未冻结\",\"当前环境是否可获得 DeepSeek Key 未知\",\"M8-04 缺失的人工编辑、reviewer rubric、usage/cost 和真人门何时补齐未知\",\"Codex 原生 resume 与 Electron 窗口可见性仍无新的验证证据\"]}"
+}

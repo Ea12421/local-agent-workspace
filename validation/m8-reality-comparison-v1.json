@@ -1,0 +1,50 @@
+{
+  "comparison_version": "m8-reality-comparison.v1",
+  "generated_at": "2026-09-28",
+  "purpose": "把三个真实输入任务的执行追踪、内容质量和现实提效证据分开，避免把局部 PASS 合并成产品有效。",
+  "runs": [
+    {
+      "id": "M8-07",
+      "project": "codex-pet-studio",
+      "task": "非敏感像素宠物包的安装候选与只读预检",
+      "status": "PASS_NARROW",
+      "execution_evidence": ["Codex subscription run completed", "package preflight 8/8", "user confirmed Codex load visible"],
+      "content_quality_evidence": "未测通用 Product Builder 质量；没有独立人工 rubric。",
+      "real_user_evidence": "仅有用户确认加载可见；没有审美接受、重复使用或节省时间数据。",
+      "main_limit": "只证明一个小型本地包的安装链，不证明整体 Agent Workspace。"
+    },
+    {
+      "id": "M8-08",
+      "project": "personal-knowledge-mcp-mvp",
+      "task": "fixture-only MCP 的下一步可重复验证计划",
+      "status": "PARTIAL_RAW_STRICT_GATE",
+      "execution_evidence": ["Codex subscription run completed", "三个状态文件读取边界保持", "候选项目 npm test 9/9 after one local-loopback permission retry"],
+      "content_quality_evidence": "提出的增量与项目边界一致；原始输出带前置说明，严格单 JSON 门失败，后续仅做 embedded normalization。",
+      "real_user_evidence": "没有真实知识库、真人基线、重复使用或提效数据。",
+      "main_limit": "候选项目只使用 synthetic fixtures，不证明真实知识接入。"
+    },
+    {
+      "id": "M8-11",
+      "project": "local-agent-workspace",
+      "task": "SQLite-first 与 provider receipt 之后的下一技术路线判断",
+      "status": "PASS_NARROW",
+      "execution_evidence": ["12/12 required keys", "4/4 evidence refs in allowlist", "provider.output-receipt.v1 persisted", "no side effects"],
+      "content_quality_evidence": "输出包含选项、取舍、风险、回滚和 next_action；但 next_action 与本次任务目标重复，未做人工 baseline 或独立评审。",
+      "real_user_evidence": "没有用户时间、人工修改、成本或再次使用数据。",
+      "main_limit": "证明了状态到结构化对象的链路，不证明技术决策正确。"
+    }
+  ],
+  "cross_run_findings": {
+    "execution_traceability": "局部通过：M8-07 和 M8-11 窄范围 PASS；M8-08 原始严格门 PARTIAL，但现在可保留原文并记录 embedded 模式。",
+    "content_quality": "尚未验证。三次任务都没有独立人工 rubric、对照基线或模型间比较。",
+    "real_user_productivity": "尚未验证。没有总耗时、人工整理步骤、返工次数或再次使用意愿的冻结测量。",
+    "provider_boundary": "Codex subscription execution bridge 已有真实证据；DeepSeek、Codex native resume 和 Computer Use Codex app 仍未验证/受限。",
+    "multi_bot_decision": "不能因为三次任务可运行就启用多 Bot 默认路径；M8-04 仍显示多 Bot 质量证据阻断且延迟显著增加。"
+  },
+  "decision": {
+    "value": "PARTIAL_PROGRESS_NO_PRODUCT_PROOF",
+    "keep": ["SQLite-first runtime fact source", "provider.output-receipt.v1", "read-only allowlist reality cards", "Fixture adapter as explicit mock"],
+    "do_next": "冻结一个由用户本人完成的非敏感固定任务，记录 ChatGPT→手工整理→Codex 基线与 Agent Workspace 路径的真实时间、修改量和再次使用意愿。",
+    "do_not_claim": ["Product Builder 已经提效", "多 Bot 已证明更好", "Codex 订阅等同公开 API", "真实知识库可安全接入", "整体项目已完成"]
+  }
+}

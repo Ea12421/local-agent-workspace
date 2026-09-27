@@ -1,0 +1,63 @@
+{
+  "card_id": "m8-11-technical-route-decision-v1",
+  "version": "1.0",
+  "pre_registered_at": "Frozen before execution in scripts/m8-11-real-project-technical-route.ts.",
+  "system_under_test": "Local Agent Workspace Product Builder technical-route task against its own versioned project state.",
+  "provider_model": "codex-cli / openai-codex / codex-managed-session / subscription",
+  "status": "PASS",
+  "current_evidence_level": "Real-input traceability pass",
+  "claim_and_decision": {
+    "falsifiable_claim": "Given the current project's rules, state and SQLite architecture decision, the Codex execution path can produce a traceable technical-route recommendation with explicit options, trade-offs, risks, rollback and one next action.",
+    "failure_condition": "Provider does not complete, output is not a single parseable object with all required fields, evidence references leave the allowlist, or the recommendation claims unverified completion.",
+    "target_user_and_scenario": "The project owner deciding the next maintainable implementation unit after persistence and provider-receipt work.",
+    "decision_driven": "Use the result only to select or reject one bounded engineering next step; do not execute the recommendation automatically.",
+    "scope_exclusions": [
+      "Code changes from the provider task",
+      "Database migration or deployment",
+      "DeepSeek or external API calls",
+      "Credentials, cookies, tokens or other projects",
+      "Claim of user productivity or multi-Bot superiority"
+    ]
+  },
+  "execution_freeze": {
+    "authentic_input": "Current AGENTS.md, RUN_STATE.json, SPEC/PROGRESS.md and SPEC/08-persistence-architecture-decision.md.",
+    "read_allowlist": ["AGENTS.md", "RUN_STATE.json", "SPEC/PROGRESS.md", "SPEC/08-persistence-architecture-decision.md"],
+    "required_output_keys": ["project_id", "current_state", "decision_question", "options", "recommendation", "tradeoffs", "dependencies", "risks", "rollback", "next_action", "evidence_refs", "unknowns"],
+    "pass_threshold": "Provider completes; parser returns one object; all required keys are non-empty; evidence_refs stay within the exact allowlist; unknowns are explicit.",
+    "guardrails": ["read-only", "declared-file-allowlist", "no-commands", "no-writes", "no-external-side-effects"],
+    "raw_evidence_destination": "validation/m8-11-real-project-technical-route.json and validation/m8-11-real-project-technical-route-artifact.json"
+  },
+  "current_evidence": {
+    "facts": [
+      "Codex subscription run ac46d495-51aa-49a8-a2a2-eee794db77a5 completed with isMock=false.",
+      "The parsed object contained all 12 required keys and cited only the four frozen allowlist files.",
+      "The output was normalized as one embedded JSON object and persisted with provider.output-receipt.v1.",
+      "The task was read-only; no code, database, credential, external service or candidate project was changed."
+    ],
+    "inferences": [
+      "The current execution and receipt chain can carry a bounded technical-route recommendation from real project state.",
+      "The recommendation preserves the existing order: finish a third reality task before DeepSeek or broader multi-Bot work."
+    ],
+    "unknowns": [
+      "The model's technical recommendation was not compared against a human baseline or independent reviewer.",
+      "The returned next_action refers to freezing and executing the third reality card, which was already the task being run; this limits its value as a fresh planning decision.",
+      "No user productivity, cost, DeepSeek parity, Electron visibility or native Codex resume evidence was produced."
+    ]
+  },
+  "run_record": {
+    "executed_at": "2026-09-27T16:17:18.287Z",
+    "environment": "macOS local workspace; Codex subscription CLI; current project read-only.",
+    "provider_run_id": "ac46d495-51aa-49a8-a2a2-eee794db77a5",
+    "normalization": "embedded",
+    "required_keys": 12,
+    "evidence_refs": 4,
+    "traceability_pass": true
+  },
+  "verdict": {
+    "value": "PASS",
+    "threshold_comparison": "Provider completed; all required keys present; all evidence references declared; raw receipt and artifact readable; no external side effects.",
+    "supported_claim": "The Product Builder execution path can produce a traceable technical-route recommendation from the current project's bounded state.",
+    "unsupported_or_unknown": "This does not prove the recommendation is better than a human baseline, that SQLite-first improves user work, or that the overall Agent Workspace is complete.",
+    "next_decision": "Use the three real-input runs as traceability evidence, then select a user-facing reality task or return to M8-04 quality evidence; do not automatically implement this model recommendation."
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "record_version": "m8-11.real-project-result.v1",
+  "executed_at": "2026-09-27T16:17:18.287Z",
+  "project_root": "/Users/m4air/Work Agent开发。",
+  "read_allowlist": [
+    "AGENTS.md",
+    "RUN_STATE.json",
+    "SPEC/PROGRESS.md",
+    "SPEC/08-persistence-architecture-decision.md"
+  ],
+  "objective": "SQLite-first 之后的下一个技术路线判断",
+  "started_at": "2026-09-27T16:16:19.338Z",
+  "elapsed_ms": 58949,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "ac46d495-51aa-49a8-a2a2-eee794db77a5",
+  "event_count": 8,
+  "provider_completed": true,
+  "output_sha256": "f6190b10d72e734d4f1b93b7c901a02179a8e84fefc156957a3ca52a82f81ed4",
+  "artifact_path": "validation/m8-11-real-project-technical-route-artifact.json",
+  "provider_output_receipt": {
+    "schemaVersion": "provider.output-receipt.v1",
+    "rawOutputSha256": "f6190b10d72e734d4f1b93b7c901a02179a8e84fefc156957a3ca52a82f81ed4",
+    "status": "parsed",
+    "mode": "embedded",
+    "extractedOutputSha256": "7fa4952d2bfc5c5294847e392918f941322f75d279d4b2a17304ecb32148fe8e"
+  },
+  "parsed_output": {
+    "project_id": "local-agent-workspace",
+    "current_state": "SQLite 已成为运行时唯一事实源，已完成 schema、事务恢复、并发规模验证、Product Builder 持久化接入；provider.output-receipt.v1 已接入并通过 Core/Adapter 校验。M10-03 的全实体 typed CRUD、长时规模和 Product Builder 完整接入曾标为未完成，但后续 M10-05/M10-06 已补齐主要持久化与恢复验证。M8-04 质量证据、DeepSeek 真实调用、Electron 窗口可见性、Codex 原生 resume 和 literal GitHub clone 仍阻塞。",
+    "decision_question": "下一步应先做哪一个有界工程动作，以验证 SQLite-first 与 provider receipt 集成在真实 Product Builder 技术路线任务中的可用性？",
+    "options": [
+      "冻结并执行第三个非敏感现实任务的 reality card，使用固定白名单、只读和结构化 receipt 验证技术路线判断或项目推进计划",
+      "立即接入 DeepSeek 做模型对比",
+      "继续扩展多 Bot 或 Codex 原生 resume"
+    ],
+    "recommendation": "先冻结并执行第三个非敏感现实任务的 reality card：聚焦技术路线判断或项目推进计划，固定输入白名单，仅读取候选项目，不修改项目，记录结构化输出、provider receipt、未知项和回滚护栏；完成该现实验证后再决定是否接入 DeepSeek。",
+    "tradeoffs": [
+      "可直接验证当前持久化与 receipt 链路的真实可用性，但不能解除 M8-04 质量证据阻塞",
+      "范围小、风险低、可回滚，但不会立即提供 DeepSeek 对比结果",
+      "延后多 Bot 与原生 resume，可避免在现实证据不足时扩大实现范围"
+    ],
+    "dependencies": [
+      "第三个非敏感候选任务及其固定文件白名单",
+      "可复现的 Product Builder 本地执行入口",
+      "provider receipt 结构化校验与结果记录能力"
+    ],
+    "risks": [
+      "现实任务输出仍可能出现前置说明、拼接或不完整 JSON，导致 receipt 解析失败",
+      "只读任务只能验证追踪、结构化输出和技术路线判断流程，不能证明业务质量或提效",
+      "候选项目、人工 baseline 和复用意愿仍可能不足"
+    ],
+    "rollback": [
+      "保留 SQLite-first 运行时事实源不变",
+      "若 SQLite 环境或任务链路失败，显式切换到 portable JSONL 模式并报告能力限制",
+      "丢弃本次现实任务的派生结果，不修改候选项目和既有事件"
+    ],
+    "next_action": "冻结并执行第三个非敏感现实任务的 reality card，使用固定白名单只读验证技术路线判断或项目推进计划，并记录结构化 provider receipt 与 PASS、PARTIAL 或 NO-GO 结果。",
+    "evidence_refs": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "SPEC/PROGRESS.md",
+      "SPEC/08-persistence-architecture-decision.md"
+    ],
+    "unknowns": [
+      "第三个现实任务的具体候选项目和白名单尚未冻结",
+      "当前环境是否可获得 DeepSeek Key 未知",
+      "M8-04 缺失的人工编辑、reviewer rubric、usage/cost 和真人门何时补齐未知",
+      "Codex 原生 resume 与 Electron 窗口可见性仍无新的验证证据"
+    ]
+  },
+  "structural_check": {
+    "json_object": true,
+    "missing_required_keys": [],
+    "evidence_refs_declared": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "SPEC/PROGRESS.md",
+      "SPEC/08-persistence-architecture-decision.md"
+    ],
+    "undeclared_evidence_refs": [],
+    "normalization": "embedded",
+    "normalization_rejection": null,
+    "traceability_pass": true
+  },
+  "approval_boundary": "No code change, migration, credential access, external send or deployment is performed. Any implementation requires a separate reviewable step.",
+  "provider_events": [
+    {
+      "id": "provider-event-ca2a96e0-4a8d-425e-abc5-c223cadce08d",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:16:22.004Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "thread.started",
+          "thread_id": "01a0e3a7-375c-7893-89a2-e11b0c18ca40"
+        }
+      }
+    },
+    {
+      "id": "provider-event-dc4576f6-087b-4007-ad3d-f298f977a152",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:16:22.015Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.started"
+        }
+      }
+    },
+    {
+      "id": "provider-event-5130afd5-26f7-4dac-ad2c-6ba8c19185b7",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:16:34.764Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_0",
+            "type": "agent_message",
+            "text": "老黄，我会严格限定在四个允许文件内，并只做只读核对；不会访问源码、凭据或运行项目命令。"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-4c6092e5-c5c9-41b1-81a9-a2a1f3c4417b",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:16:44.142Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.started",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md RUN_STATE.json SPEC/PROGRESS.md SPEC/08-persistence-architecture-decision.md'",
+            "aggregated_output": "",
+            "exit_code": null,
+            "status": "in_progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-b655cd09-28d8-4dea-8c17-ca8729743daa",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:16:44.142Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md RUN_STATE.json SPEC/PROGRESS.md SPEC/08-persistence-architecture-decision.md'",
+            "aggregated_output": "# Local Agent Workspace 协作规则\n\n- 业务事实源是 `packages/core` 的版本化类型、状态机和 append-only 事件；Web 与 Electron 不复制业务逻辑。\n- 任何 Provider、工具调用和审批都必须留下 `RunEvent` 与可诊断 receipt。\n- `FixtureAdapter` 只用于无 Key 演示，不得标成真实模型效果；DeepSeek 是 ModelProvider，Codex SDK/CLI 是 ExecutionAgent。\n- 默认中文 UI 权限为“只读 / 工作区写入 / 完全访问”。外发、删除重要数据、访问敏感路径、生产配置、支付/发布和凭据读取始终逐次审批。\n- 不自动监听、不上传、不修改旧工作台；真实效果要用固定任务和真人使用证据验证。\n{\n  \"schema_version\": \"1.1\",\n  \"status\": \"running\",\n  \"objective\": \"在当前空目录交付可从 GitHub 复现的本地 Agent Workspace v1：一个 control plane 管理 Project、Bot、Run、Handoff、Approval 与 Artifact，并提供无 Key Fixture 演示、DeepSeek 模型通道、Codex 执行桥探针、Web UI 和 Electron 薄壳。\",\n  \"done_definition\": [\n    \"SPEC/00-06 与架构/面试材料落盘并与实现一致\",\n    \"核心状态机、事件回放、交接与权限契约有可执行测试\",\n    \"本地 server 可在无 Key 下运行 fixture demo，并提供 HTTP API\",\n    \"Web UI 能展示项目、Bot、Run、审批、来源和 Artifact\",\n    \"DeepSeek 与 Codex 适配器边界清晰，失败时可诊断\",\n    \"clean-room 命令、已知限制和未完成的安装验证被如实记录\"\n  ],\n  \"anti_goals\": [\n    \"不把旧 AI 产品经理工作台的未提交改动接入或覆盖\",\n    \"不把模型自评或 fixture 结果写成真实生产效果\",\n    \"不把 ChatGPT 订阅伪装成 DeepSeek/API 额度\",\n    \"不在首版加入云端多用户、后台监听或无人审批的自我扩张\",\n    \"不把聊天连续性当作唯一状态源\"\n  ],\n  \"recent_corrections\": [\n    {\n      \"at\": \"2026-09-26T19:50:00+08:00\",\n      \"source_ref\": \"environment-check\",\n      \"rejected\": \"当前可直接 pnpm install 并完成打包\",\n      \"required\": \"先落盘依赖和代码；网络恢复后再做依赖安装、Vite 构建和 Electron 打包验证\"\n    },\n    {\n      \"at\": \"2026-09-27T00:00:00+08:00\",\n      \"source_ref\": \"user-2026-09-27\",\n      \"rejected\": \"依赖聊天连续性或立即接 DeepSeek 作为主线\",\n      \"required\": \"先持久化 ContextSnapshot、执行 segment 和 fallback recovery；DeepSeek 后置\"\n    },\n    {\n      \"at\": \"2026-09-27T15:12:09+08:00\",\n      \"source_ref\": \"user-long-term-architecture-decision\",\n      \"rejected\": \"只按当前小规模验证把 JSONL-first 作为长期默认事实源\",\n      \"required\": \"SQLite-first 作为运行时唯一事实源；JSONL 仅作 portable/demo/export/灾备，并显式报告降级\"\n    }\n  ],\n  \"scope\": {\n    \"allowed\": [\n      \"当前目录内新建 monorepo、SPEC、核心运行时、server、Web、Electron 壳、fixture、测试和诊断脚本\",\n      \"读取旧工作台文档作为只读参考\"\n    ],\n    \"forbidden\": [\n      \"修改 /Users/m4air/AI产品经理工作台\",\n      \"读取或逆向凭据、Cookie、Token 文件\",\n      \"删除文件、数据库迁移、外发消息、发布或支付\"\n    ]\n  },\n  \"phase\": \"m8-10-provider-receipt-integration\",\n  \"progress\": {\n    \"completed_units\": 41,\n    \"total_units\": 41\n  },\n  \"retry\": {\n    \"error_fingerprint\": \"electron-window-ax-timeout\",\n    \"attempt\": 1,\n    \"max_attempts\": 1\n  },\n  \"review\": {\n    \"level\": \"R1\",\n    \"budget\": 1,\n    \"used\": 1,\n    \"blocking_corrections_left\": 0\n  },\n  \"blocked_reason\": \"M8-04 质量结论仍阻断：36 条 receipt 中 27 条可严格 JSON 回放、9 条输出无效；人工编辑、reviewer rubric、usage/cost 和真人门未补齐。Electron Computer Use 对 Codex app 仍受平台安全策略限制；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。M8-08 新证据：候选项目 fixture smoke 9/9 通过，但 Codex 输出前置说明文字导致严格结构化门失败。\",\n  \"next_action\": \"为第三个非敏感现实任务冻结一张 reality card，优先验证技术路线判断或项目推进计划；只读、固定白名单、不修改候选项目，完成后再决定是否接 DeepSeek。\",\n  \"last_evidence\": \"2026-09-28：M8-10 将 provider.output-receipt.v1 接入 Core 类型、Adapter 工具和 M8-08 Artifact/结果回执；原始输出 hash 保持一致，模式为 embedded。Core+Adapter 9/9、typecheck、状态校验、JSON 和 diff check 全部通过。\",\n  \"updated_at\": \"2026-09-28T00:13:52+08:00\"\n}\n# 当前推进进度\n\n更新时间：2026-09-27\n\n## 总状态\n\n`m10-06-recovery-scale-pass-m8-04-quality-blocked-desktop-partial-m8-09-output-contract-pass`\n\n这表示：代码实现单元已完成，但项目最终验收没有完成。\n\n## 已完成\n\n- 产品定义和边界\n- 领域类型与 Run 状态机\n- append-only event 和幂等\n- Provider/Fixture/Codex 探针\n- Codex CLI 订阅执行桥最小真实调用；receipt 已落盘，默认 read-only\n- Codex 子进程取消和控制面取消竞态专项测试通过（10 tests passed）\n- CodexExternalAdapter 已接入 control plane；真实 Product Builder Run 从 `running` 到 `succeeded`，5 条 provider 事件已进入项目事件流\n- 中文权限策略\n- Product Builder Fixture workflow\n- 4 个 Handoff、5 个 Artifact、1 个 Approval\n- Server/API 源代码\n- Web UI 源代码\n- Electron 薄壳源代码\n- 限额/上下文中断恢复机制\n- 10 个原生测试（包含 Codex 适配器和控制面取消专项）\n- 无端口 HTTP handler smoke test\n- Electron health-ready 轮询\n- npm workspace 安装回退入口\n- Web 明确显示本地服务或 Fixture 数据来源\n- Fixture demo\n- 受控主机网络下 `pnpm install` 已完成；没有修改 VPN、DNS、代理或防火墙\n- Web Vite production build 已通过\n- arm64 Electron DMG 已生成：`release/Local Agent Workspace-0.1.0-arm64.dmg`\n- Firefox Computer Use 已打开本地 Web，确认项目、Run 时间线、审批卡、Bot 管理和 Codex probe；审批按钮交互后显示“已确认，Architecture Bot 将继续工作”\n- 去除 Web 对 Google Fonts 的运行时依赖，断网时不再等待外部字体\n- 隔离 clean-room 源码副本从零 `pnpm install`、`pnpm run setup`、`pnpm test:all` 通过（10 tests passed）\n- M8-04 10 题固定任务集、统一记录字段和单/多 Bot 判定阈值已冻结\n- M8-04 PB-01 已用真实 Codex subscription execution bridge 跑通 `single_call`、`single_bot`、`multi_bot`；multi Bot 成功记录形成 4 个结构化阶段，单次记录为 19–29 条 provider 事件\n- M8-04 自动校验已完成：9 条真实 provider 记录（其中 8 条完成、1 条 provider_incomplete）均有 JSON/schema 校验结果；当前有效完成记录为 `single_call` 7/8、`single_bot` 两次 8/8、旧 `multi_bot` 拼接/前缀输出被严格拒绝、可解析的 `multi_bot` 记录为 7/8；没有记录被提升为质量证据\n- M8-04 试跑、重试和校验均写入 `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json` 和 `evidence/receipts/m804-*.json`\n- Context Continuity v1 纯函数已完成：软/硬阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 均有专项测试。\n- `JsonlContextSnapshotStore` 已完成为 portable 后端：快照追加、重启读取、重复 ID 拒绝、按 project/run 查询 latest，并保持原始 RunEvent 不变；SQLite 已成为默认运行时后端。\n- Run segment/fallback resume 已完成：provider 未完成或抛错时，同一逻辑 Run 追加 segment、snapshot 和 resume 事件，并把已校验的 ContextPacket 传给下一段；专项恢复测试通过。\n- Product Builder checkpoint 已完成：4 个 Handoff、5 个 Artifact、1 个 Approval 生成稳定幂等键；边界事件和 Snapshot 追加到 JSONL，重放同一 Run 会跳过已记录工作。\n- M9-05 Context Continuity 验证已完成并写入 `validation/m9-context-continuity-results.json`：synthetic provider limit、同一 Run 恢复、snapshot 重启/篡改校验、重复 checkpoint、跨项目隔离和原始事件保留均通过；这是契约证据，不是模型质量或现实使用证据。\n- M8-04 PB-02 已完成三条 Codex subscription 路径并自动校验：修正计分器后均 schema 通过、4/8 frozen hard constraints；`multi_bot` 为 167466ms，约为 `single_bot` 的 3.27 倍，不能据此设为默认。人工复核记录已更新，质量证据仍阻断。\n- M8-04 RS-01 已完成三条 Codex subscription 路径并自动校验：修正计分器后三条均 schema 通过、7/8 hard constraints；`multi_bot` 为 180750ms，约为 `single_bot` 的 5.33 倍。Artifact/replay、人工编辑、reviewer rubric 和 usage/cost 仍缺失，人工复核记录已更新，质量证据仍阻断。\n- M8-04 RS-02 已完成三条 Codex subscription 路径并自动校验：single_call 5/8、single_bot schema failure 0/8、multi_bot 6/8；`multi_bot` 约为 `single_bot` 的 2.98 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 AR-01 已完成三条 Codex subscription 路径并自动校验：single_call 8/8、single_bot 7/8、multi_bot 8/8；`multi_bot` 约为 `single_bot` 的 3.97 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 AR-02 已完成三条 Codex subscription 路径并自动校验：single_call 7/8、single_bot 7/8、multi_bot schema failure 0/8；`multi_bot` 约为 `single_bot` 的 2.71 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EV-01 已完成三条 Codex subscription 路径并自动校验：single_call 6/8、single_bot schema failure 0/8、multi_bot 6/8；`multi_bot` 约为 `single_bot` 的 3.98 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EV-02 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、6/8 hard constraints；`multi_bot` 约为 `single_bot` 的 6.53 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EX-01 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、7/8 hard constraints；`multi_bot` 约为 `single_bot` 的 3.98 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 EX-02 已完成三条 Codex subscription 路径并自动校验：single_call 7/8，single_bot 和 multi_bot schema failure 0/8；`multi_bot` 为 480462ms，约为 `single_bot` 的 6.18 倍。人工复核已落盘，质量证据仍阻断。\n- M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、`overExpected=0`、`quality_eligible=0`；总账本为 `validation/m8-04-aggregate-summary.json`。这不是多 Bot 优势结论，也不是现实使用验证。\n- M8-04 质量证据审计已完成：`scripts/m804-evidence-audit.mjs` 读取并核对 36 条原始 receipt，生成 36 个不可覆盖的派生 artifact，并从 artifact 回读后严格 JSON 回放；36 条 source receipt 对应成功，27 条 artifact 可回放，9 条因前缀/拼接/不完整输出被拒绝。审计账本为 `validation/m8-04-quality-evidence-audit.json`，所有记录仍 `quality_eligible=0`，人工编辑、reviewer rubric、usage/cost 和真人门仍明确阻断。\n- M8-05 窄范围现实验证已完成：REAL-01/02/03 三个真实本地状态任务均通过结构化追踪门；一次真实 Codex provider segment 人为中断后，同一 `runId` 追加 `ContextSnapshot`、`run.resume_requested` 和第二 segment，最终 succeeded。结果为 `validation/m8-05-reality-results.json`，复核为 `validation/m8-05-review.md`。这只验证追踪和执行链恢复，不验证业务质量或提效。\n- M8-06 paired baseline 卡已冻结：真实任务为 ContextSnapshot 的 JSONL-first vs SQLite-first 技术路线判断；固定了同一输入白名单、7 步手工基线、结构化 Run 输出键、25% 整理步骤阈值、来源/未知项/回滚护栏和 owner willingness 未知边界。卡片为 `validation/m8-06-paired-baseline-card-v1.json`。\n- M8-06 两条 arm 已执行，比较结果为 `PARTIAL`：controller proxy 手工基线 7 步且未冒充用户计时；结构化 Codex subscription Run 为 56234ms，结构化追踪通过。由于缺少用户本人 baseline、人工修改和复用意愿，不能计算真实提效率。结果在 `validation/m8-06-comparison.json`；该比较保留为历史证据，不再作为长期存储路线决定。\n- M8-06 JSONL 边界专项已通过：尾行损坏按 `SyntaxError` fail-closed；同进程 20 次并发 append 完整；重载后可按 project/run 重建 latest；typecheck、5/5 persistence tests、19/19 全套等价 Node tests 和 diff check 均通过。证据在 `validation/m8-06-jsonl-failure-results.json`。`pnpm test:all` 仅因 Corepack 用户缓存权限未运行；该结果不覆盖跨进程锁或长时吞吐。\n- 长期架构重新评估后已决定 SQLite-first：SQLite 是运行时唯一事实源，JSONL 只用于 portable/demo/export/灾备。详细决策见 `SPEC/08-persistence-architecture-decision.md`。\n- M10-01 适配层已完成：`SqliteContextSnapshotStore`、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、`node:sqlite` 兼容驱动和 HTTP `persistence.mode` 回执已落地；runtime 与 Product Builder 不再硬编码 JSONL 默认路径。\n- M10-01 验证：全套等价 Node tests 20/20、typecheck 和 diff check 通过；当前 better-sqlite3 二进制与 Node 22 ABI 不匹配，已由 node:sqlite 接管，不再静默失败。\n- M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`。\n- M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`。\n- M10-03 当前为 PARTIAL：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；runtime 已切换到 SQLite 默认路径，重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；全实体 typed CRUD、长时规模和 Product Builder 完整接入仍未完成。\n- M10-05 已完成：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，全部 typed entity round-trip、Project/Skill/BotProfile POST/GET/PATCH、Run create/cancel/retry、entity summary 和 approve persistence 已通过；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`。\n- M10-06 已完成：有限 SQLite open/migration busy retry、三进程并发 writer、SIGKILL 后 reopen、10k/100k 事件规模、既有 rollback/online backup/跨进程证据均通过；全套 29/29、typecheck、diff check 通过。证据为 `validation/m10-06-recovery-scale-results.json`。\n- M8-07 真实项目验证已完成窄范围收口：对 `codex-pet-studio` 的非敏感 package 做只读预检和安装 smoke，用户确认 Codex 界面已出现沙悟净；这不证明通用 Product Builder 质量或多 Bot 优势。证据为 `validation/m8-07-reality-card.json` 与 `validation/m8-07-install-smoke.json`。\n- M8-08 真实项目验证为 `PARTIAL`：Codex subscription 读取 `personal-knowledge-mcp-mvp` 的三个状态文件并提出安全的 fixture-only 离线 evidence report 增量，但原始输出带前置说明文字，严格单 JSON 门失败；候选项目既有 `npm test` 在一次本机 loopback 权限重试后通过 9/9，`real_data_accessed=false`。证据为 `validation/m8-08-reality-card.json`、`validation/m8-08-real-project-knowledge-mcp.json`。\n- M8-09 结构化输出加固已完成：新增 exact/fenced/embedded 单对象解析与多对象拒绝策略，adapter 专项 6/6、typecheck、diff check 通过；对 M8-08 原始 transcript 的离线回放识别为 `embedded` 且 11 个必需键齐全。证据为 `validation/m8-09-structured-output-contract.json`。\n- M8-10 Provider receipt 接入已完成：Core 增加 `provider.output-receipt.v1` 契约，Adapter 记录原文 hash、解析模式、提取 hash 或拒绝原因；M8-08 原始 Artifact/结果已离线回填且原文 hash 不变。Core+Adapter 9/9、typecheck、状态校验、JSON 和 diff check 通过。\n\n## 当前卡点\n\n1. 本次依赖安装通过了受控主机网络；普通 Codex 沙箱仍会出现 registry DNS 失败。没有修改 VPN。后续安装应继续使用明确的受控网络命令，不能把网络恢复写成永久环境保证。\n2. Electron arm64 App 已启动并被系统登记为运行中，但 Computer Use 读取其窗口连续超时，因此“进程启动”已验证，“桌面窗口可见性”仍是 PARTIAL。\n3. DeepSeek 尚未真实调用；它是可选对比通道，需要用户提供 Key 后才能做真实模型验证。\n4. Codex 原生 resume 尚未接通；M8-04 10 题质量证据仍阻断；M8-05 recovery smoke 验证的是控制面 fallback，不是 provider 原生 resume，且没有人工 baseline。\n5. 当前工作区和隔离源码副本安装已通过；literal GitHub clone 仍待仓库 remote。\n6. M8-04 的长批次在第一次 `--path all` 运行中只完成了 `single_call`，随后外层执行会话结束；按单路径重试后成功，说明下一批必须拆成小批并依赖 JSONL/receipt 恢复，不能把一次长会话当作唯一状态。\n7. 2026-09-27 重打包时 `.app` 编译成功，但 `hdiutil create` 因系统 DiskManagement framework 不可用而失败；已有 DMG 保留，不把本次封装失败写成应用代码失败。\n8. multi Bot 校验器已修正为严格单 JSON 对象；旧的拼接/前缀输出被拒绝，3 个晚到的受控复测 receipt 以唯一 `receipt_id` 追踪；可解析记录因缺少完整 replay 证据仍为 7/8，不能升格质量证据。\n\n## 当前唯一下一步\n\n为第三个非敏感现实任务冻结一张 reality card，优先验证技术路线判断或项目推进计划；只读、固定白名单、不修改候选项目。完成后再决定是否接 DeepSeek。M8-04 质量证据、DeepSeek Key、Electron 可见性和 Codex 原生 resume 仍是独立阻塞项。\n\n## 网络恢复后的下一步\n\n```bash\npnpm run recover\npnpm run validate:state\npnpm install\npnpm --filter @agent-workspace/web build\npnpm package:mac\n```\n\n随后按 `IMPLEMENTATION-BACKLOG.md` 的 M8 顺序继续，不重新设计产品。\n\n### 2026-09-27 M10-05 · HTTP persistence routes 收口\n\n- **实现**：Project、Skill、BotProfile typed persistence roundtrip 已通过；新增 `GET /api/persistence/entities` entity summary，并验证 approve route 写入持久化状态。\n- **验证**：typecheck、HTTP smoke、全套等价 Node tests `25/25`、`git diff --check` 均通过。\n- **边界**：M10-04 与 M10-06 已完成；M8-04 质量证据阻断保持不变。\n- **证据**：`validation/m10-05-product-builder-persistence-results.json`。\n\n## 2026-09-27 M10-04 · JSONL import/export 完成\n\n- 实现：`scripts/import-export/cli.mjs` 提供 SQLite workspace 的 export、validate、import/rebuild；格式为 `local-agent-workspace.export.v1`，`schemaVersion=2`，manifest 记录 `payloadSha256`。\n- 校验：覆盖 JSON record、表白名单、主键重复、`run_events` sequence 连续、ContextSnapshot 内容 hash、JSON columns；篡改 payload 和非空 target 均 fail-closed。\n- 导入：使用单事务写入，失败回滚；目标表非空时拒绝，支持从导出重建并重开回读。\n- 证据：专项测试 `2/2`；真实 `data/workspace.db` export→validate→import 共 `54` rows，重开计数 `projects=1,runs=0,events=19,idempotency=0`；详见 `validation/m10-04-jsonl-import-export-results.json`。\n- 主任务另行记录：27/27、typecheck、full suite、`git diff --check` 已通过。\n- M8-04、Electron、DeepSeek、literal GitHub clone、Codex 原生 resume 限制保持原状。\n\n### 当前唯一下一步\n\n切到 M8-04 质量证据审计/现实验证。\n\n### 2026-09-27 M10-06 · 恢复、并发与规模验证完成\n\n- 有限 SQLite open/migration busy retry 修正已通过；三进程并发 writer 专项 PASS。\n- kill/restart：SIGKILL 子进程后 reopen，已读回 committed Run/Event；10k scale test PASS。\n- 100k 真实脚本 PASS：`eventCount=100000`、`first=1`、`last=100000`、`durationMs=336`、`driver=node:sqlite`。\n- 纳入既有 rollback、online backup/restore 与跨进程证据；全套 `29/29`、typecheck、`git diff --check` PASS。\n- 证据：`validation/m10-06-recovery-scale-results.json`。M10-06 标记 DONE。\n\n### 当前唯一下一步\n\n切到 M8-04 质量证据审计/现实验证。DeepSeek 仍需 Key；Electron 可见性 PARTIAL；GitHub clone/Codex native resume 仍受限制。\n# 持久化架构决策：SQLite-first\n\n## 决策\n\n从长期产品形态看，Local Agent Workspace 采用：\n\n```text\nSQLite = 运行时唯一事实源\nJSONL  = portable / demo / export / 灾备格式\n```\n\nJSONL 不再与 SQLite 并列为两个运行时事实源，也不能在没有提示的情况下静默降级。\n\n## 为什么现在就按长期路线选 SQLite\n\n项目后续不是一次性 Demo，而是要持续管理：\n\n- 多个项目和工作区；\n- 多个 Bot、Skill、ToolPolicy 和 Provider；\n- 长时间运行的 Run、segment 和 ContextSnapshot；\n- Handoff、Approval、Source、Artifact、Memory 和 Provider receipt；\n- Web 与 Electron 同时访问本地 Server；\n- 中断恢复、取消、重试、幂等重放和跨项目查询。\n\n这些场景需要事务、唯一约束、索引、分页、跨进程锁和可预测的崩溃恢复。SQLite 更适合作为长期运行时存储。\n\nJSONL 仍然保留，因为它适合：\n\n- clean-room 或没有可用 SQLite 驱动的 portable 模式；\n- Fixture 演示；\n- 人工检查、导出和灾备；\n- 从事实记录重建 SQLite 投影。\n\n## 关键约束\n\n1. Domain、Workflow、Web 和 Electron 不直接依赖 SQLite API，只依赖 storage-neutral interface。\n2. `RunEvent` 仍然是 append-only；SQLite 表中的事件行不可更新覆盖。\n3. `UNIQUE(run_id, sequence)`、事件 ID、幂等键和项目隔离由数据库约束保护。\n4. ContextSnapshot、Run segment、Handoff、Approval、Artifact、Source 和 Memory 都进入版本化 schema。\n5. 大型 Artifact 内容可以放在 content-addressed 文件中，SQLite 保存路径、hash、大小和关联元数据。\n6. SQLite 打不开时，系统必须返回 `mode=portable` 和原因；不能伪装成完整模式。\n7. 不做 SQLite 与 JSONL 的默认双写。导入、导出和重建必须是显式操作。\n\n## 驱动策略\n\n按以下顺序探测：\n\n1. `better-sqlite3`；\n2. Node 22 可用的 `node:sqlite`；\n3. 两者都不可用时进入显式 JSONL portable 模式。\n\n当前本机已经验证：Node 22.23.1 的 `node:sqlite` 可以打开数据库、启用 WAL、执行参数化 SQL 并读回记录。当前 `better-sqlite3` 二进制存在 Node ABI 不匹配，因此运行时会使用 `node:sqlite`，并把能力写进 API 回执。\n\n## 实施顺序\n\n### M10-01：持久化接口冻结\n\n- `EventLog`、`ContextSnapshotStore` 和后续实体 Store 保持存储中立；\n- runtime 和 Product Builder 只通过 factory 注入；\n- 删除硬编码的 JSONL 默认路径。\n\n### M10-02：SQLite schema 与迁移\n\n新增版本化迁移和 `schema_meta`，至少覆盖：\n\n```text\nprojects\nbot_profiles\nskills\nruns\nrun_segments\nrun_events\nhandoffs\napproval_requests\nsources\nartifacts\nmemory_items\nprovider_receipts\ncontext_snapshots\nidempotency_keys\n```\n\n### M10-03：事务和恢复\n\n- WAL、foreign keys、busy timeout；\n- RunEvent 追加与 Run 状态变化使用事务；\n- 重启、kill、重复提交和数据库锁测试；\n- SQLite 备份与恢复测试。\n\n### M10-04：JSONL 导入导出\n\n- 导入前校验 project/run/sequence/idempotency/hash；\n- 事务导入后回读比对；\n- 导出 JSONL 可重建 SQLite；\n- 导入导出不改变 Domain 和 HTTP 契约。\n\n### M10-05：规模和并发验证\n\n- 跨进程 append 竞争；\n- 10k / 100k 事件查询和分页；\n- ContextSnapshot latest 查询；\n- approval 和 artifact 幂等；\n- portable 模式的能力限制提示。\n\n## 回滚策略\n\n如果 SQLite 集成或跨平台打包仍然阻塞：\n\n1. 保留 storage-neutral interface；\n2. 启用显式 portable JSONL 模式；\n3. 保留 SQLite schema 和导入导出代码；\n4. 不把 portable 模式宣传成完整并发能力；\n5. 只在有新的环境证据后重新尝试 SQLite full mode。\n\n这不是回到“JSONL 和 SQLite 两个事实源”，而是同一套产品在能力不足时的降级运行模式。\n",
+            "exit_code": 0,
+            "status": "completed"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-c33b4e0f-29ea-4dc7-ac5b-775228618553",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:17:13.578Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_2",
+            "type": "agent_message",
+            "text": "{\"project_id\":\"local-agent-workspace\",\"current_state\":\"SQLite 已成为运行时唯一事实源，已完成 schema、事务恢复、并发规模验证、Product Builder 持久化接入；provider.output-receipt.v1 已接入并通过 Core/Adapter 校验。M10-03 的全实体 typed CRUD、长时规模和 Product Builder 完整接入曾标为未完成，但后续 M10-05/M10-06 已补齐主要持久化与恢复验证。M8-04 质量证据、DeepSeek 真实调用、Electron 窗口可见性、Codex 原生 resume 和 literal GitHub clone 仍阻塞。\",\"decision_question\":\"下一步应先做哪一个有界工程动作，以验证 SQLite-first 与 provider receipt 集成在真实 Product Builder 技术路线任务中的可用性？\",\"options\":[\"冻结并执行第三个非敏感现实任务的 reality card，使用固定白名单、只读和结构化 receipt 验证技术路线判断或项目推进计划\",\"立即接入 DeepSeek 做模型对比\",\"继续扩展多 Bot 或 Codex 原生 resume\"],\"recommendation\":\"先冻结并执行第三个非敏感现实任务的 reality card：聚焦技术路线判断或项目推进计划，固定输入白名单，仅读取候选项目，不修改项目，记录结构化输出、provider receipt、未知项和回滚护栏；完成该现实验证后再决定是否接入 DeepSeek。\",\"tradeoffs\":[\"可直接验证当前持久化与 receipt 链路的真实可用性，但不能解除 M8-04 质量证据阻塞\",\"范围小、风险低、可回滚，但不会立即提供 DeepSeek 对比结果\",\"延后多 Bot 与原生 resume，可避免在现实证据不足时扩大实现范围\"],\"dependencies\":[\"第三个非敏感候选任务及其固定文件白名单\",\"可复现的 Product Builder 本地执行入口\",\"provider receipt 结构化校验与结果记录能力\"],\"risks\":[\"现实任务输出仍可能出现前置说明、拼接或不完整 JSON，导致 receipt 解析失败\",\"只读任务只能验证追踪、结构化输出和技术路线判断流程，不能证明业务质量或提效\",\"候选项目、人工 baseline 和复用意愿仍可能不足\"],\"rollback\":[\"保留 SQLite-first 运行时事实源不变\",\"若 SQLite 环境或任务链路失败，显式切换到 portable JSONL 模式并报告能力限制\",\"丢弃本次现实任务的派生结果，不修改候选项目和既有事件\"],\"next_action\":\"冻结并执行第三个非敏感现实任务的 reality card，使用固定白名单只读验证技术路线判断或项目推进计划，并记录结构化 provider receipt 与 PASS、PARTIAL 或 NO-GO 结果。\",\"evidence_refs\":[\"AGENTS.md\",\"RUN_STATE.json\",\"SPEC/PROGRESS.md\",\"SPEC/08-persistence-architecture-decision.md\"],\"unknowns\":[\"第三个现实任务的具体候选项目和白名单尚未冻结\",\"当前环境是否可获得 DeepSeek Key 未知\",\"M8-04 缺失的人工编辑、reviewer rubric、usage/cost 和真人门何时补齐未知\",\"Codex 原生 resume 与 Electron 窗口可见性仍无新的验证证据\"]}"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-588d9028-5886-490a-9752-e9e710e2aedc",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:17:13.618Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 84318,
+            "cached_input_tokens": 66816,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1700,
+            "reasoning_output_tokens": 813
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-be994ea6-5f56-48b3-81ce-bfe09e6be719",
+      "runId": "external-ac46d495-51aa-49a8-a2a2-eee794db77a5",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T16:17:18.285Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "status": "completed",
+        "exitCode": 0
+      }
+    }
+  ]
+}

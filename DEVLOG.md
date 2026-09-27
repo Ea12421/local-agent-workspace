@@ -268,3 +268,18 @@
 - **回填**：M8-08 的真实 Artifact 与结果回执已离线增加该 metadata，原始输出 hash 保持一致，模式记录为 `embedded`；没有新增模型调用。
 - **验证**：Core+Adapter `9/9`、typecheck、RUN_STATE 校验、JSON 解析和 diff check 全部通过。
 - **下一步**：为第三个非敏感现实任务冻结 reality card，优先验证技术路线判断或项目推进计划；保持只读和固定白名单。
+
+### 2026-09-28 M8-11 · 第三个现实任务：技术路线判断
+
+- **真实输入**：当前 workspace 的 `AGENTS.md`、`RUN_STATE.json`、`SPEC/PROGRESS.md`、`SPEC/08-persistence-architecture-decision.md`，固定白名单只读。
+- **Codex 执行**：run `ac46d495-51aa-49a8-a2a2-eee794db77a5` 完成；12/12 必需字段齐全，4/4 来源引用在白名单内，`provider.output-receipt.v1` 为 `embedded`，无文件/数据库/外部状态变化。
+- **窄范围结论**：`PASS` 只证明真实项目状态→结构化技术路线对象的追踪链；模型 next_action 与本次任务本身重复，未经过人工 baseline 或独立评审，不证明路线判断正确或能提效。
+- **证据**：`validation/m8-11-reality-card.json`、`validation/m8-11-real-project-technical-route.json`、`validation/m8-11-real-project-technical-route-artifact.json`。
+- **下一步**：对 M8-07、M8-08、M8-11 三次现实任务做对照汇总，明确哪些是执行能力证据、哪些仍缺内容质量和真人提效证据。
+
+### 2026-09-28 M8-12 · 三次现实任务对照收口
+
+- **落盘**：新增 `validation/m8-reality-comparison-v1.json` 与 `validation/m8-reality-comparison-v1.md`。
+- **结论**：M8-07、M8-08、M8-11 证明了受控只读执行、来源白名单、原始回执和 Artifact 可追溯；M8-08 原始严格 JSON 曾为 PARTIAL，现以 embedded normalization 保留，不改写历史结论。
+- **未证明**：内容质量、人工修改量下降、成本/延迟收益、真人再次使用、多 Bot 优势、DeepSeek parity、Codex native resume 和 Electron 可见性。
+- **下一步**：冻结一个由用户本人完成的非敏感固定任务基线，测量 ChatGPT→手工整理→Codex 与 Agent Workspace 两条路径；不以主控代理时间或模型自评代替。

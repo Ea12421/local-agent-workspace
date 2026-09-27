@@ -72,6 +72,8 @@
 - M8-08 真实项目验证为 `PARTIAL`：Codex subscription 读取 `personal-knowledge-mcp-mvp` 的三个状态文件并提出安全的 fixture-only 离线 evidence report 增量，但原始输出带前置说明文字，严格单 JSON 门失败；候选项目既有 `npm test` 在一次本机 loopback 权限重试后通过 9/9，`real_data_accessed=false`。证据为 `validation/m8-08-reality-card.json`、`validation/m8-08-real-project-knowledge-mcp.json`。
 - M8-09 结构化输出加固已完成：新增 exact/fenced/embedded 单对象解析与多对象拒绝策略，adapter 专项 6/6、typecheck、diff check 通过；对 M8-08 原始 transcript 的离线回放识别为 `embedded` 且 11 个必需键齐全。证据为 `validation/m8-09-structured-output-contract.json`。
 - M8-10 Provider receipt 接入已完成：Core 增加 `provider.output-receipt.v1` 契约，Adapter 记录原文 hash、解析模式、提取 hash 或拒绝原因；M8-08 原始 Artifact/结果已离线回填且原文 hash 不变。Core+Adapter 9/9、typecheck、状态校验、JSON 和 diff check 通过。
+- M8-11 第三个现实任务已完成窄范围验证：Product Builder 只读当前项目四个状态/架构文件，生成技术路线对象；12/12 必需字段、4/4 白名单来源、receipt 和无副作用门通过，结果为 `PASS`。模型建议与本次任务的 next_action 有重复，因此不能把它升级成“技术路线已被证明正确”。证据为 `validation/m8-11-reality-card.json`、`validation/m8-11-real-project-technical-route.json`。
+- M8-12 三次现实任务对照已落盘：`validation/m8-reality-comparison-v1.json` 和对应 Markdown 明确分离执行追踪、内容质量与真人提效证据；当前只能保留“链路可运行”的窄范围结论，不能宣称产品提效或多 Bot 优势。
 
 ## 当前卡点
 
@@ -86,7 +88,7 @@
 
 ## 当前唯一下一步
 
-为第三个非敏感现实任务冻结一张 reality card，优先验证技术路线判断或项目推进计划；只读、固定白名单、不修改候选项目。完成后再决定是否接 DeepSeek。M8-04 质量证据、DeepSeek Key、Electron 可见性和 Codex 原生 resume 仍是独立阻塞项。
+冻结一个由用户本人完成的非敏感固定任务基线，记录 ChatGPT→手工整理→Codex 与 Agent Workspace 路径的真实耗时、修改量、返工和再次使用意愿；不使用代理时间或模型自评替代。M8-04 质量证据、DeepSeek Key、Electron 可见性和 Codex 原生 resume 仍是独立阻塞项。
 
 ## 网络恢复后的下一步
 
