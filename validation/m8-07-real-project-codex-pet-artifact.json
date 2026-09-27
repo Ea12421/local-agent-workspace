@@ -1,8 +1,8 @@
 {
   "artifact_version": "m8-07.real-project-artifact.v1",
-  "artifact_id": "m8-07-codex-pet-e3b0c44298fc1c149afbf4c8",
-  "source_run_id": "889864e1-051d-420a-acdb-819643d179a9",
+  "artifact_id": "m8-07-codex-pet-0d18c0c5a0103faffd519490",
+  "source_run_id": "25b04cce-fec3-4b95-b2d6-f755ce1eda73",
   "project_id": "codex-pet-studio",
-  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-  "output": ""
+  "output_sha256": "0d18c0c5a0103faffd519490b141c1dc05c164e0764a8695f3205f2e5d936d1b",
+  "output": "{\"project_id\":\"codex-pet-studio\",\"current_state\":\"STATE.md声明沙悟净九状态57张原生像素帧和staging包已完成；组包结构验证通过，当前阶段为complete。未执行安装，用户验收状态未知。AGENTS.md在项目根目录不可读取（文件不存在或不可用）。\",\"user_problem\":\"现有staging包尚未形成可供用户审核的安装候选交付物，也未获得写入~/.codex/pets的安装授权。\",\"proposed_increment\":\"生成一个不执行安装的安装候选交付包：补充包元数据、目标目录映射、离线预检结果和可审阅的安装步骤，并明确用户批准后才能安装。\",\"scope_in\":[\"核对现有staging包应满足官方8×9图集合同及已声明的像素、透明度和颜色约束\",\"生成安装候选清单，记录源包、目标路径、文件映射和版本信息\",\"生成离线dry-run预检报告，不写入~/.codex/pets\",\"保留用户最终安装决定和人工验收作为后置门槛\"],\"scope_out\":[\"不安装或复制任何文件到~/.codex/pets\",\"不修改源代码、素材、凭据或外部状态\",\"不扩展其他角色或新增动画状态\",\"不把未验证的用户体验或正式安装成功写成已完成\"],\"acceptance_checks\":[\"候选清单准确指向现有staging包，并包含目标安装目录但不执行写入\",\"预检报告复核1536×1872总图、57个有效格、15个透明空格及无损像素一致性\",\"预检报告记录48×52原生帧、nearest-neighbor、最多16色和alpha仅0/255等冻结标准\",\"明确标记实际安装、Codex加载结果和用户审美验收为pending\"],\"artifacts_to_create\":[\"安装候选元数据清单\",\"不写入目标目录的dry-run预检报告\",\"供用户审核的安装步骤与回滚说明\"],\"risks\":[\"当前仅有STATE.md声明，未读取源代码或资产，无法独立证明包内容仍与状态一致\",\"安装目标目录和实际Codex加载行为尚未验证\",\"用户可能尚未接受主角色样品或完整动画风格\"],\"approval_required\":\"需要用户在查看候选清单和dry-run报告后，明确批准将已验证的staging包安装到~/.codex/pets；在批准前不得执行安装。\",\"next_action\":\"先准备并审阅安装候选清单与dry-run报告；随后等待用户明确安装批准。\",\"evidence_refs\":[\"STATE.md\"]}"
 }

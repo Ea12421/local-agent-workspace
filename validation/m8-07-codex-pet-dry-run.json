@@ -1,0 +1,60 @@
+{
+  "record_version": "m8-07.codex-pet-dry-run.v1",
+  "status": "PASS_READ_ONLY_DRY_RUN",
+  "executed_at": "2026-09-27T14:01:06.909883+00:00",
+  "project_root": "/Users/m4air/总控/projects/codex-pet-studio",
+  "source_files": {
+    "state": "/Users/m4air/总控/projects/codex-pet-studio/STATE.md",
+    "pet": {
+      "path": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/pet.json",
+      "sha256": "4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94",
+      "bytes": 175
+    },
+    "spritesheet": {
+      "path": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/spritesheet.webp",
+      "sha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48",
+      "bytes": 9920
+    }
+  },
+  "pet_manifest": {
+    "id": "sha-wujing",
+    "displayName": "沙悟净",
+    "description": "一只沉稳、原生像素风的沙悟净 Codex 宠物。",
+    "spritesheetPath": "spritesheet.webp"
+  },
+  "image_stats": {
+    "width": 1536,
+    "height": 1872,
+    "mode": "RGBA",
+    "effective_cells": 57,
+    "transparent_cells": 15,
+    "alpha_values": [
+      0,
+      255
+    ],
+    "color_count": 16,
+    "cell_alpha_ranges_digest": "4d29a1b8b2e6b008500ec552a9f7718ae2d97719b8c93f7fd5d69b5bccbee098"
+  },
+  "checks": {
+    "pet_id_present": true,
+    "pet_sprite_reference": true,
+    "webp_format": true,
+    "spritesheet_dimensions": true,
+    "effective_cells_57": true,
+    "transparent_cells_15": true,
+    "alpha_binary": true,
+    "no_target_write": true
+  },
+  "target_install_path": "~/.codex/pets/sha-wujing",
+  "write_performed": false,
+  "approval_required_before_install": true,
+  "rollback_plan": [
+    "在用户批准前不写入目标目录。",
+    "安装前保存目标目录原有内容清单和哈希。",
+    "出现加载或视觉问题时移除本次新增文件并恢复原清单。"
+  ],
+  "unknowns": [
+    "Codex 实际加载结果未验证。",
+    "用户对正式安装和最终视觉效果的接受度未知。"
+  ]
+}

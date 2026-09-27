@@ -43,6 +43,13 @@
 
 ## 2026-09-27
 
+### M8-07 codex-pet-studio 真实项目验证
+
+- 用户明确授权使用本机项目进行真实测试后，选择 `codex-pet-studio` 作为首个非敏感候选；Codex subscription 以 read-only 读取项目状态，生成安装前产品化计划，结构化追踪门通过。
+- 使用 bundled Pillow 12.3.0 对真实 `outputs/package/sha-wujing/` 做不写入 dry-run：WebP、`1536×1872`、57 个有效格、15 个透明格、alpha 仅 `0/255`、16 色和目标写入为 false 全部通过。
+- 落盘：`validation/m8-07-real-project-codex-pet.json`、`validation/m8-07-real-project-codex-pet-artifact.json`、`validation/m8-07-codex-pet-dry-run.json`、`validation/m8-07-codex-pet-install-candidate.json`、`validation/m8-07-reality-card.json`。
+- 结论是窄范围 `PASS / Real-input Ready`：Product Builder 能把真实项目状态推进为可审查的安装候选计划和只读预检。Codex 实际加载、用户接受和安装仍未知；项目规则要求安装前再次确认，因此当前状态为 `blocked_user`。
+
 ### M8-04 质量证据审计
 
 - 新增 `scripts/m804-evidence-audit.mjs`：按 `receipt_id` 读取并核对已有 36 条 provider receipt，生成 36 个不可覆盖派生 artifact，再从 artifact 回读后做严格 JSON 解析和回放 hash。

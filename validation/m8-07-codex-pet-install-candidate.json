@@ -1,0 +1,15 @@
+{
+  "record_version": "m8-07.codex-pet-install-candidate.v1",
+  "candidate_id": "sha-wujing",
+  "status": "PASS_READ_ONLY_DRY_RUN",
+  "source_dry_run": "validation/m8-07-codex-pet-dry-run.json",
+  "source_package": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing",
+  "target_install_path": "~/.codex/pets/sha-wujing",
+  "files": [
+    "pet.json",
+    "spritesheet.webp"
+  ],
+  "write_performed": false,
+  "approval_required_before_install": true,
+  "next_action": "用户查看 dry-run 与回滚说明后，明确决定是否安装。"
+}

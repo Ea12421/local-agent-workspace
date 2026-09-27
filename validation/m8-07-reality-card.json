@@ -1,0 +1,125 @@
+{
+  "card_id": "m8-07-codex-pet-install-readiness-v1",
+  "version": "1.0",
+  "pre_registered_at": "BEFORE_STARTED; prompt and thresholds frozen in scripts/m8-07-real-project.ts committed at 2cac7ab",
+  "system_under_test": "Local Agent Workspace M8-07 scripts at commit 2cac7ab",
+  "provider_model": "codex-cli / openai-codex / codex-managed-session / subscription",
+  "prompt_config_data_version": "scripts/m8-07-real-project.ts; codex-pet-studio STATE.md; validation/m8-07-codex-pet-dry-run.json",
+  "test_started_at": "2026-09-27T13:55:02.081Z",
+  "status": "PASS",
+  "current_evidence_level": "Real-input Ready",
+  "claim_and_decision": {
+    "falsifiable_claim": "Given the real state and staging package of codex-pet-studio, Product Builder can produce a traceable installation-gated next-step plan and a read-only package preflight without modifying the project or installation target.",
+    "failure_condition": "The provider output is not a single traceable JSON object, the evidence references leave the allowlist, or the package preflight cannot verify the frozen sprite contract without writing to the installation target.",
+    "target_user_and_scenario": "The owner deciding whether a completed local pixel-pet package is ready for an explicit installation review.",
+    "decision_driven": "Proceed to user review of the candidate and dry-run report; keep installation pending until separately approved.",
+    "scope_exclusions": [
+      "Codex runtime loading after installation",
+      "User aesthetic acceptance",
+      "Public distribution or signing",
+      "General Product Builder quality or multi-Bot superiority"
+    ]
+  },
+  "current_evidence": {
+    "facts": [
+      "The Codex subscription run returned one JSON object with all required keys and only STATE.md as an evidence reference.",
+      "The run used the real codex-pet-studio project state and completed in 57548ms with isMock=false.",
+      "The read-only dry-run verified WebP format, 1536x1872 dimensions, 57 effective cells, 15 transparent cells, binary alpha 0/255, and 16 colors.",
+      "No write was performed to ~/.codex/pets/sha-wujing."
+    ],
+    "inferences": [
+      "The next safe increment is an installation candidate plus preflight report, not an automatic install."
+    ],
+    "unknowns": [
+      "Codex actual loading behavior after installation.",
+      "Owner acceptance of the final visual result.",
+      "The provider did not read codex-pet-studio AGENTS.md, so the plan relies on STATE.md plus the local dry-run boundaries."
+    ],
+    "baseline_evidence_pointers": [
+      "validation/m8-07-real-project-codex-pet.json",
+      "validation/m8-07-real-project-codex-pet-artifact.json",
+      "validation/m8-07-codex-pet-dry-run.json",
+      "validation/m8-07-codex-pet-install-candidate.json"
+    ],
+    "evidence_search_scope": [
+      "/Users/m4air/总控/projects/codex-pet-studio/STATE.md",
+      "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/pet.json",
+      "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/spritesheet.webp"
+    ]
+  },
+  "execution_freeze": {
+    "authentic_input": "Real codex-pet-studio STATE.md plus its real staging pet.json and spritesheet.webp.",
+    "provenance_selection": "Fixed local project selected for non-sensitive artifacts and explicit installation boundary.",
+    "right_to_use_and_privacy": "User explicitly authorized all local projects for testing; no credentials, cookies, tokens or external project data used.",
+    "primary_metric": "Traceability and preflight hard-gate pass rate.",
+    "measurement": "Provider JSON required-key check and allowlist check; local image contract checks in scripts/m8-07-codex-pet-dry-run.py.",
+    "evaluator": "Automated structural and image checks; no human quality score claimed.",
+    "pass_threshold": "Provider required-key and allowlist checks 100%; dry-run checks 8/8; zero target writes.",
+    "guardrails": [
+      "read-only candidate access",
+      "no installation",
+      "no writes to ~/.codex/pets",
+      "no secret access",
+      "no external publishing"
+    ],
+    "abort_conditions": [
+      "Any candidate write or target installation attempt",
+      "Any undeclared evidence reference",
+      "Any missing required output key",
+      "Any package contract check failure"
+    ],
+    "execution_steps": [
+      "Run the Codex subscription Product Builder task against the fixed allowlist.",
+      "Persist raw provider event evidence and structured artifact.",
+      "Run the local read-only package preflight using bundled Pillow.",
+      "Write the candidate metadata and rollback plan without installation."
+    ],
+    "required_authorization": "User authorization for local project testing was received before the real run.",
+    "raw_evidence_destination": "validation/m8-07-real-project-codex-pet.json, validation/m8-07-real-project-codex-pet-artifact.json, validation/m8-07-codex-pet-dry-run.json",
+    "decision_mapping": {
+      "PASS": "Keep installation candidate and request separate installation approval.",
+      "PARTIAL": "Repair the failed traceability or preflight item and rerun this card.",
+      "NO-GO": "Do not prepare or install the candidate; investigate the violated boundary."
+    }
+  },
+  "run_record": {
+    "executed_at": "2026-09-27T13:55:59.630Z",
+    "environment": "macOS local workspace; Codex subscription CLI; candidate read-only; bundled Python Pillow 12.3.0 for preflight",
+    "actual_input_identifiers": [
+      "codex-pet-studio/STATE.md",
+      "codex-pet-studio/outputs/package/sha-wujing/pet.json",
+      "codex-pet-studio/outputs/package/sha-wujing/spritesheet.webp"
+    ],
+    "raw_evidence_pointers": [
+      "validation/m8-07-real-project-codex-pet.json",
+      "validation/m8-07-real-project-codex-pet-artifact.json",
+      "validation/m8-07-codex-pet-dry-run.json",
+      "validation/m8-07-codex-pet-install-candidate.json"
+    ],
+    "observed_facts": [
+      "Traceability gate PASS.",
+      "Read-only dry-run PASS 8/8.",
+      "No target write performed."
+    ],
+    "deviations": [
+      "Provider output reported AGENTS.md unavailable and cited STATE.md only; this is preserved as an unknown rather than silently filled."
+    ]
+  },
+  "verdict": {
+    "value": "PASS",
+    "threshold_comparison": "Required JSON/evidence checks passed; dry-run package contract passed 8/8; no installation write occurred.",
+    "supported_claim": "For this codex-pet-studio package, Product Builder can produce a traceable, installation-gated plan and a read-only preflight.",
+    "unsupported_or_unknown": "This does not prove Codex loads the pet, user acceptance, public distribution readiness, or overall Product Builder quality.",
+    "next_decision": "Keep the candidate and dry-run report for user review; installation remains pending.",
+    "highest_value_next_test": "After explicit installation approval, run a separate installation smoke with before/after manifest, load result, and rollback evidence."
+  },
+  "hard_gate_check": {
+    "real_input_or_behavior": true,
+    "pre_registered_version_metric_threshold": true,
+    "raw_evidence_readable": true,
+    "facts_inferences_unknowns_separated": true,
+    "claim_scope_bounded": true,
+    "permissions_privacy_security_cost_boundary": true,
+    "verdict_changes_next_decision": true
+  }
+}
