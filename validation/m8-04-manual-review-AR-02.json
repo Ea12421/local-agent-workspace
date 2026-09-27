@@ -48,5 +48,8 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "AR-02 has two schema-readable 7/8 paths and one multi_bot schema failure. Multi_bot is 2.71x slower than single_bot and cannot be considered a default path from this task."
+  "conclusion": "AR-02 has two schema-readable 7/8 paths and one multi_bot schema failure. Multi_bot is 2.71x slower than single_bot and cannot be considered a default path from this task.",
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }

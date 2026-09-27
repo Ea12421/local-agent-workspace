@@ -49,5 +49,8 @@
     "multi_bot took 480462ms, the longest observed path in the suite"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "EX-02 has one schema-readable 7/8 path and two schema failures. Multi_bot is 6.18x slower than single_bot and provides no evidence for default routing."
+  "conclusion": "EX-02 has one schema-readable 7/8 path and two schema failures. Multi_bot is 6.18x slower than single_bot and provides no evidence for default routing.",
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }

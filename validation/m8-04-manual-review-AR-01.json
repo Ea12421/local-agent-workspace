@@ -47,5 +47,8 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "AR-01 is schema-readable; single_call and multi_bot pass 8/8 frozen hard constraints while single_bot passes 7/8. Multi_bot is 3.97x slower than single_bot, so this task does not justify making it the default without quality and edit evidence."
+  "conclusion": "AR-01 is schema-readable; single_call and multi_bot pass 8/8 frozen hard constraints while single_bot passes 7/8. Multi_bot is 3.97x slower than single_bot, so this task does not justify making it the default without quality and edit evidence.",
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }

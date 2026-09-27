@@ -50,5 +50,8 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "PB-02 shows the three Codex execution paths completed and produced schema-readable output. After correcting the validator denominator, all paths pass 4/8 frozen hard constraints; multi_bot is 3.27x slower than single_bot, so this task provides no evidence to make multi_bot the default."
+  "conclusion": "PB-02 shows the three Codex execution paths completed and produced schema-readable output. After correcting the validator denominator, all paths pass 4/8 frozen hard constraints; multi_bot is 3.27x slower than single_bot, so this task provides no evidence to make multi_bot the default.",
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }

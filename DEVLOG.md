@@ -49,6 +49,7 @@
 - 审计结果：36 条 source receipt 对应成功，27 条 artifact 可严格解析和回放，9 条因前缀、拼接或 provider 不完整被拒绝；所有记录继续保持 `quality_eligible=false`。
 - 36 条记录都缺人工编辑统计、独立 reviewer rubric 和 usage/cost，因此这些字段写为明确阻断原因，不用派生 artifact 冒充人工质量证据。结果见 `validation/m8-04-quality-evidence-audit.json`。
 - 专项审计测试通过；typecheck 和 `git diff --check` 通过。下一步是补录真实人工评审与真人三任务门，仍不把多 Bot 设为默认。
+- 10 份既有 `m8-04-manual-review-*.json` 保留原始审计前结论，并补充 `historical_pre_quality_audit` 与当前审计账本引用，避免把历史的 artifact/replay 缺口和当前补证状态混为一谈。
 
 ### M8-04 首个真实试跑
 

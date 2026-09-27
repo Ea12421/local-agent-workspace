@@ -47,5 +47,8 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "RS-01 is schema-readable and passes 7/8 frozen hard constraints on all three paths; artifact_replayable is the remaining failed hard constraint. It does not establish a quality or default-routing advantage; multi_bot is 5.33x slower than single_bot and replay/edit/cost evidence is missing."
+  "conclusion": "RS-01 is schema-readable and passes 7/8 frozen hard constraints on all three paths; artifact_replayable is the remaining failed hard constraint. It does not establish a quality or default-routing advantage; multi_bot is 5.33x slower than single_bot and replay/edit/cost evidence is missing.",
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }

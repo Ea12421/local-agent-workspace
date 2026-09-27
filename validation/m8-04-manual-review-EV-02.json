@@ -47,5 +47,8 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "EV-02 is schema-readable and all paths pass 6/8 frozen hard constraints. Multi_bot is 6.53x slower than single_bot and offers no evidence for default routing."
+  "conclusion": "EV-02 is schema-readable and all paths pass 6/8 frozen hard constraints. Multi_bot is 6.53x slower than single_bot and offers no evidence for default routing.",
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }

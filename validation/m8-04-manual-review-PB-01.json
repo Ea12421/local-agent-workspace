@@ -134,5 +134,8 @@
     "observed": true,
     "detail": "Three late multi_bot completions received the same numeric attempt=4 because overlapping outer sessions computed the attempt before appending. receipt_id remains unique and is the audit key; no historical line was rewritten.",
     "prevention": "Future pilot runs must be one process at a time; compare and cite receipt_id rather than attempt."
-  }
+  },
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }

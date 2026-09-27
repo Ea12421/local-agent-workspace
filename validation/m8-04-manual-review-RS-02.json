@@ -48,5 +48,8 @@
     "all three records remain quality_eligible=false"
   ],
   "decision": "quality_evidence_blocked",
-  "conclusion": "RS-02 has mixed contract results after corrected scoring: single_call 5/8, single_bot schema failure 0/8, multi_bot 6/8. Multi_bot is 2.98x slower than single_bot and no quality default can be chosen from this task."
+  "conclusion": "RS-02 has mixed contract results after corrected scoring: single_call 5/8, single_bot schema failure 0/8, multi_bot 6/8. Multi_bot is 2.98x slower than single_bot and no quality default can be chosen from this task.",
+  "review_status": "historical_pre_quality_audit",
+  "post_audit_reference": "validation/m8-04-quality-evidence-audit.json",
+  "post_audit_observation": "The receipt-to-derived-artifact/readback audit is now recorded separately. Historical artifact/replay gaps remain preserved here; current quality eligibility is still blocked by manual edits, reviewer rubric, usage/cost, and real-user evidence."
 }
