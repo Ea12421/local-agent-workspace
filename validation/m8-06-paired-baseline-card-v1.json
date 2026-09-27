@@ -1,7 +1,7 @@
 {
   "card_id": "m8-06-context-storage-route-paired-baseline-v1",
   "version": "m8-06-v1",
-  "status": "PENDING",
+  "status": "PARTIAL",
   "pre_registered_at": "2026-09-27T04:20:00+08:00",
   "system_under_test": {
     "implementation_commit": "b75701f",
@@ -52,10 +52,10 @@
         "手工补 source_refs、unknowns、推荐和唯一 next_action"
       ],
       "artifact": "validation/m8-06-manual-baseline.md",
-      "status": "NOT_STARTED",
+      "status": "EXECUTED_PROXY_NOT_OWNER_BASELINE",
       "elapsed_ms": null,
-      "manual_edit_steps": null,
-      "rework_count": null
+      "manual_edit_steps": 7,
+      "rework_count": 0
     },
     "structured_run": {
       "mode": "one read-only Codex execution run; no multi-bot comparison in this card",
@@ -72,8 +72,8 @@
         "next_action"
       ],
       "artifact": "validation/m8-06-structured-run.json",
-      "status": "NOT_STARTED",
-      "elapsed_ms": null,
+      "status": "EXECUTED",
+      "elapsed_ms": 56234,
       "manual_edit_steps": null,
       "rework_count": null
     }
@@ -98,7 +98,7 @@
     ]
   },
   "execution": {
-    "pre_run_state": "PENDING",
+    "pre_run_state": "EXECUTED_PARTIAL",
     "run_order": [
       "execute and timestamp the fixed manual baseline",
       "freeze the baseline artifact hash and step count",
@@ -121,14 +121,28 @@
     "NO_GO": "Stop expanding the provider path and repair the traceability, permission, or persistence boundary first."
   },
   "result": {
-    "status": "PENDING",
-    "facts": [],
-    "inferences": [],
-    "unknowns": [
-      "Owner willingness to reuse is not yet measured.",
-      "The paired baseline and structured run have not executed."
+    "status": "PARTIAL",
+    "facts": [
+      "The manual proxy produced the fixed 7-step decision artifact and explicit sources, unknowns, rollback and next action.",
+      "The structured run completed in 56234 ms with one JSON object and no undeclared source references.",
+      "Both arms used the same TECH-01 input allowlist."
     ],
-    "verdict": null,
-    "next_action": "Execute the fixed manual baseline, then the structured read-only Run."
+    "inferences": [
+      "The current evidence supports keeping JSONL-first provisionally, but does not support a productivity percentage."
+    ],
+    "unknowns": [
+      "Owner willingness to reuse.",
+      "User-performed baseline time and edits.",
+      "Structured artifact edits/rework after owner review.",
+      "Long-run JSONL/SQLite performance and concurrency behavior."
+    ],
+    "verdict": "PARTIAL",
+    "evidence": [
+      "validation/m8-06-manual-baseline.md",
+      "validation/m8-06-structured-run.json",
+      "validation/m8-06-raw/structured-run.json",
+      "validation/m8-06-comparison.json"
+    ],
+    "next_action": "Have the owner review both artifacts and record whether the structured result would be reused; if measuring productivity is required, repeat with a user-timed manual baseline instead of this proxy."
   }
 }

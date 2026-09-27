@@ -127,3 +127,10 @@
 - **paired arms**：手工 baseline 固定 7 步，结构化 arm 为同一白名单的一次 Codex read-only Run；两边都要求 options、trade-offs、dependencies、risks、rollback、source_refs、unknowns 和唯一 next_action。
 - **阈值**：人工整理步骤相对减少至少 25%；来源覆盖、未知项、回滚和零越权是硬护栏；owner willingness 在用户复核前保持 UNKNOWN。
 - **当前状态**：卡片已冻结但两条 arm 尚未执行。下一步只执行这两条 arm，不重跑 M8-05，不接 DeepSeek。
+
+### 2026-09-27 M8-06 · paired baseline 结果
+
+- **手工 proxy arm**：生成 `validation/m8-06-manual-baseline.md`，按冻结的 7 步写出 JSONL-first vs SQLite-first 的 options、trade-offs、dependencies、risks、rollback、source_refs、unknowns 和 next_action。明确记录没有把 controller 时间冒充用户时间。
+- **结构化 arm**：同一输入白名单、Codex subscription、read-only，耗时 `56234ms`；单 JSON、必填键、来源白名单全部通过，原始 receipt 为 `validation/m8-06-raw/structured-run.json`。
+- **比较结果**：`validation/m8-06-comparison.json` 为 `PARTIAL`。不能计算人工整理步骤下降率，因为 baseline 是 proxy、structured arm 尚未经过 owner 编辑，owner willingness 仍 UNKNOWN。
+- **临时路线判断**：保留 JSONL-first 作为 provisional recommendation，不执行 SQLite-first 迁移；下一步补 JSONL 尾行损坏、并发 append 和从日志重建索引的有界故障注入/性能测试。

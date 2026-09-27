@@ -1,0 +1,78 @@
+{
+  "record_version": "m8-06.comparison.v1",
+  "card_id": "m8-06-context-storage-route-paired-baseline-v1",
+  "executed_at": "2026-09-27T06:08:23.683Z",
+  "status": "PARTIAL",
+  "decision_scope": "TECH-01 ContextSnapshot JSONL-first vs SQLite-first",
+  "manual_baseline": {
+    "operator": "Codex controller proxy",
+    "owner_acceptance": "UNKNOWN",
+    "artifact": "validation/m8-06-manual-baseline.md",
+    "artifact_sha256": "4afaaf017fa8f19c36132b5908e0d652ed8dd335ffa88518bdf5e42e7b2190bb",
+    "fixed_workflow_steps": 7,
+    "manual_edit_steps": 7,
+    "elapsed_ms": null,
+    "rework_count": 0,
+    "timing_status": "UNKNOWN_NOT_USER_TIMED"
+  },
+  "structured_run": {
+    "artifact": "validation/m8-06-structured-run.json",
+    "raw_receipt": "validation/m8-06-raw/structured-run.json",
+    "artifact_sha256": "c4be1a2bb1112c9b3008e8e8914fcb6f6d173f5b8ec263c6f11dc648ff8b67d0",
+    "raw_receipt_sha256": "cecb97b94a276666b6084c008aa72199fd63c95f893717549dc61796ac11b72e",
+    "run_id": "1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+    "elapsed_ms": 56234,
+    "manual_edit_steps": null,
+    "rework_count": null,
+    "traceability_pass": true,
+    "structural_check": {
+      "json_object": true,
+      "missing_required_keys": [],
+      "source_refs": [
+        "AGENTS.md",
+        "RUN_STATE.json",
+        "HANDOFF.md",
+        "SPEC/MASTER-SPEC.md",
+        "packages/core/src/context.ts",
+        "apps/server/src/persistence.ts",
+        "validation/m9-context-continuity-results.json"
+      ],
+      "undeclared_source_refs": [],
+      "traceability_pass": true
+    },
+    "provider": {
+      "authMode": "subscription",
+      "billingSource": "unknown",
+      "isMock": false,
+      "harness": "codex-cli",
+      "provider": "openai-codex",
+      "model": "codex-managed-session"
+    }
+  },
+  "metrics": {
+    "manual_edit_steps_reduction": null,
+    "reason": "Structured output was not yet owner-edited and the baseline was a controller proxy; computing a percentage would overstate productivity.",
+    "threshold": ">=25%",
+    "threshold_met": "UNKNOWN"
+  },
+  "facts": [
+    "The manual proxy produced the fixed 7-step decision artifact and explicit sources, unknowns, rollback and next action.",
+    "The structured run completed in 56234 ms with one JSON object and no undeclared source references.",
+    "Both arms used the same TECH-01 input allowlist."
+  ],
+  "guardrails": {
+    "critical_claims_source_or_unknown": true,
+    "rollback_present": true,
+    "undeclared_source_refs": 0,
+    "external_side_effects": 0,
+    "major_rework_count": "UNKNOWN_FOR_STRUCTURED_ARM"
+  },
+  "unknowns": [
+    "Owner willingness to reuse.",
+    "User-performed baseline time and edits.",
+    "Structured artifact edits/rework after owner review.",
+    "Long-run JSONL/SQLite performance and concurrency behavior."
+  ],
+  "verdict": "PARTIAL",
+  "next_action": "Have the owner review both artifacts and record whether the structured result would be reused; if measuring productivity is required, repeat with a user-timed manual baseline instead of this proxy."
+}

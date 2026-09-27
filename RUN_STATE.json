@@ -48,9 +48,9 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-06-paired-baseline-card-frozen",
+  "phase": "m8-06-paired-baseline-partial",
   "progress": {
-    "completed_units": 23,
+    "completed_units": 24,
     "total_units": 24
   },
   "retry": {
@@ -65,7 +65,7 @@
     "blocking_corrections_left": 1
   },
   "blocked_reason": "M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone、Codex 原生 resume 和多 Bot/人工提效仍未验证。M8-05 只通过窄范围真实输入追踪和一次真实 provider 同 Run 恢复 smoke，未证明业务质量或稳定提效。",
-  "next_action": "执行 validation/m8-06-paired-baseline-card-v1.json 中冻结的手工 baseline，再用同一输入白名单执行一次结构化只读 Run；记录耗时、人工整理步骤、返工和来源覆盖，不接 DeepSeek。",
-  "last_evidence": "2026-09-27：M8-06 paired baseline 卡已冻结，任务为当前项目的 ContextSnapshot JSONL-first vs SQLite-first 技术路线判断。固定输入白名单、7 步手工基线、结构化输出键、25% 人工整理步骤阈值、回滚/来源/未知项护栏和 owner willingness 未知边界均已落盘；尚未执行两条 arm。",
-  "updated_at": "2026-09-27T04:20:00+08:00"
+  "next_action": "在不迁移 SQLite-first 的前提下，为 JSONL-first 增加尾行损坏、并发 append 和从日志重建索引的有界故障注入/性能测试；保留 owner willingness 为 UNKNOWN。",
+  "last_evidence": "2026-09-27：M8-06 两条 arm 已执行。手工 baseline 是 7 步 controller proxy，未冒充用户计时；结构化 Codex subscription Run 用同一白名单在 56234ms 完成，单 JSON、必填字段和 source_refs 全部通过。比较结果为 PARTIAL：无法计算真实人工步骤减少率，owner willingness、用户计时和结构化输出返工仍未知。JSONL-first 仅作为当前 provisional recommendation，不执行 SQLite-first 迁移。",
+  "updated_at": "2026-09-27T04:30:00+08:00"
 }

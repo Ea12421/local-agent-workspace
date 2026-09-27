@@ -1,0 +1,288 @@
+{
+  "record_version": "m8-06.structured-run.v1",
+  "task_id": "TECH-01",
+  "arm": "structured_run",
+  "started_at": "2026-09-27T06:03:28.911Z",
+  "finished_at": "2026-09-27T06:04:25.145Z",
+  "elapsed_ms": 56234,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+  "event_count": 8,
+  "output_sha256": "4b7d95e20a39acbebf00e30c1215584c276866ee91c6bc2896d1bbb5b0e1c3f1",
+  "raw_output": "老黄，我会严格按声明的文件清单只读检查，依据代码、规范和验证结果给出 JSONL-first 与 SQLite-first 的结构化比较；不运行项目命令、不写文件。\n{\"objective\":\"决定 v1 前 ContextSnapshot 持久化采用 JSONL-first（可选 SQLite 索引）还是迁移 SQLite-first。\",\"recommendation\":\"保留 JSONL-first，v1 暂不迁移 SQLite-first；将 SQLite 限定为可选索引或后续优化，并保持领域与 HTTP 契约存储无关。现有 ContextSnapshot JSONL 实现支持追加、去重、重载、latest 查询和崩溃恢复；M9 契约验证已通过。\",\"options\":{\"JSONL-first\":{\"fit\":\"与当前实现和 clean checkout 目标一致。ContextSnapshot 为不可变追加记录，JSONL 可直接审计、复制和恢复。\",\"benefits\":[\"无需原生数据库依赖即可运行\",\"实现已覆盖快照追加、重复 ID 拒绝、重载和 latest 查询\",\"失败时可保留原始记录，便于诊断和回滚\"],\"costs\":[\"按项目和 Run 查询需要扫描文件\",\"并发、索引和大规模数据管理能力有限\",\"尚未证明在高并发或大数据量下的性能\"]},\"SQLite-first\":{\"fit\":\"与 MASTER-SPEC 中的目标 SQLite 表和重启恢复方向一致，但当前 ContextSnapshot 存储接口及验证证据仍以 JSONL 为主。\",\"benefits\":[\"查询、唯一约束和排序更直接\",\"可为 project_id、run_id、created_at 建立索引\",\"更适合未来多表关联和规模增长\"],\"costs\":[\"引入原生依赖、初始化和迁移复杂度\",\"clean checkout 与跨平台打包风险增加\",\"当前没有 ContextSnapshot SQLite 表、迁移方案或对应验证结果\"]}},\"tradeoffs\":{\"durability\":\"两者都可支持追加记录；当前证据只证明 JSONL 路径的快照重载、哈希和事件范围校验。\",\"operability\":\"JSONL 更容易人工检查、复制和恢复；SQLite 更适合结构化查询与约束。\",\"delivery_risk\":\"JSONL-first 不改变已验证路径；SQLite-first 会在 v1 引入未验证的依赖、迁移和恢复风险。\",\"performance\":\"SQLite 预期更适合大规模查询，但当前没有基准数据，不能据此宣称实际优势。\",\"consistency\":\"继续使用存储中立接口可避免业务层绑定后端；若增加 SQLite 索引，JSONL 仍应作为事实记录源。\"},\"dependencies\":[\"ContextSnapshot 继续使用现有 schema、contentSha256、事件范围和 project/run 隔离校验。\",\"JsonlContextSnapshotStore 保持 append-only、重复 snapshot ID 拒绝和 latest 语义。\",\"若启用 SQLite 索引，需要定义索引重建、损坏恢复、版本迁移和 JSONL 与索引的一致性规则。\",\"需要后续执行冻结的 M8-06 paired baseline，比较人工整理步骤、耗时、返工和来源覆盖。\"],\"risks\":[\"JSONL 文件增长后读取和 latest 查询可能变慢；当前没有容量或性能阈值证据。\",\"并发写入依赖进程内 writeQueue，跨进程并发安全性未知。\",\"可选 SQLite 索引若失步，可能产生查询结果不完整；必须允许从 JSONL 重建。\",\"MASTER-SPEC 规划了 SQLite 目标表，但当前 ContextSnapshot SQLite 落地范围和迁移时点未知。\"],\"rollback\":[\"保留 JSONL 作为唯一事实记录源。\",\"若 SQLite 索引出现错误，停止读取索引并从 JSONL 重建或直接回退 JSONL 查询。\",\"不要在 v1 执行不可逆的 SQLite-only 迁移；迁移前需有可验证的导出和恢复路径。\"],\"source_refs\":[\"AGENTS.md\",\"RUN_STATE.json\",\"HANDOFF.md\",\"SPEC/MASTER-SPEC.md\",\"packages/core/src/context.ts\",\"apps/server/src/persistence.ts\",\"validation/m9-context-continuity-results.json\"],\"unknowns\":[\"尚无 JSONL 与 SQLite 的真实数据规模、并发和查询性能基准。\",\"尚无 ContextSnapshot SQLite 表结构、迁移脚本和索引重建实现。\",\"尚无跨进程写入、磁盘损坏恢复和 SQLite 原生模块跨平台验证证据。\",\"M8-06 两条 paired baseline 尚未执行，因此人工整理步骤、返工和 owner willingness 仍未知。\"],\"next_action\":\"按冻结的 M8-06 baseline 卡，用同一输入白名单分别执行 JSONL-first 与 SQLite-first 结构化只读 Run，记录耗时、人工整理步骤、返工和来源覆盖。\"}",
+  "parsed_output": {
+    "objective": "决定 v1 前 ContextSnapshot 持久化采用 JSONL-first（可选 SQLite 索引）还是迁移 SQLite-first。",
+    "recommendation": "保留 JSONL-first，v1 暂不迁移 SQLite-first；将 SQLite 限定为可选索引或后续优化，并保持领域与 HTTP 契约存储无关。现有 ContextSnapshot JSONL 实现支持追加、去重、重载、latest 查询和崩溃恢复；M9 契约验证已通过。",
+    "options": {
+      "JSONL-first": {
+        "fit": "与当前实现和 clean checkout 目标一致。ContextSnapshot 为不可变追加记录，JSONL 可直接审计、复制和恢复。",
+        "benefits": [
+          "无需原生数据库依赖即可运行",
+          "实现已覆盖快照追加、重复 ID 拒绝、重载和 latest 查询",
+          "失败时可保留原始记录，便于诊断和回滚"
+        ],
+        "costs": [
+          "按项目和 Run 查询需要扫描文件",
+          "并发、索引和大规模数据管理能力有限",
+          "尚未证明在高并发或大数据量下的性能"
+        ]
+      },
+      "SQLite-first": {
+        "fit": "与 MASTER-SPEC 中的目标 SQLite 表和重启恢复方向一致，但当前 ContextSnapshot 存储接口及验证证据仍以 JSONL 为主。",
+        "benefits": [
+          "查询、唯一约束和排序更直接",
+          "可为 project_id、run_id、created_at 建立索引",
+          "更适合未来多表关联和规模增长"
+        ],
+        "costs": [
+          "引入原生依赖、初始化和迁移复杂度",
+          "clean checkout 与跨平台打包风险增加",
+          "当前没有 ContextSnapshot SQLite 表、迁移方案或对应验证结果"
+        ]
+      }
+    },
+    "tradeoffs": {
+      "durability": "两者都可支持追加记录；当前证据只证明 JSONL 路径的快照重载、哈希和事件范围校验。",
+      "operability": "JSONL 更容易人工检查、复制和恢复；SQLite 更适合结构化查询与约束。",
+      "delivery_risk": "JSONL-first 不改变已验证路径；SQLite-first 会在 v1 引入未验证的依赖、迁移和恢复风险。",
+      "performance": "SQLite 预期更适合大规模查询，但当前没有基准数据，不能据此宣称实际优势。",
+      "consistency": "继续使用存储中立接口可避免业务层绑定后端；若增加 SQLite 索引，JSONL 仍应作为事实记录源。"
+    },
+    "dependencies": [
+      "ContextSnapshot 继续使用现有 schema、contentSha256、事件范围和 project/run 隔离校验。",
+      "JsonlContextSnapshotStore 保持 append-only、重复 snapshot ID 拒绝和 latest 语义。",
+      "若启用 SQLite 索引，需要定义索引重建、损坏恢复、版本迁移和 JSONL 与索引的一致性规则。",
+      "需要后续执行冻结的 M8-06 paired baseline，比较人工整理步骤、耗时、返工和来源覆盖。"
+    ],
+    "risks": [
+      "JSONL 文件增长后读取和 latest 查询可能变慢；当前没有容量或性能阈值证据。",
+      "并发写入依赖进程内 writeQueue，跨进程并发安全性未知。",
+      "可选 SQLite 索引若失步，可能产生查询结果不完整；必须允许从 JSONL 重建。",
+      "MASTER-SPEC 规划了 SQLite 目标表，但当前 ContextSnapshot SQLite 落地范围和迁移时点未知。"
+    ],
+    "rollback": [
+      "保留 JSONL 作为唯一事实记录源。",
+      "若 SQLite 索引出现错误，停止读取索引并从 JSONL 重建或直接回退 JSONL 查询。",
+      "不要在 v1 执行不可逆的 SQLite-only 迁移；迁移前需有可验证的导出和恢复路径。"
+    ],
+    "source_refs": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "HANDOFF.md",
+      "SPEC/MASTER-SPEC.md",
+      "packages/core/src/context.ts",
+      "apps/server/src/persistence.ts",
+      "validation/m9-context-continuity-results.json"
+    ],
+    "unknowns": [
+      "尚无 JSONL 与 SQLite 的真实数据规模、并发和查询性能基准。",
+      "尚无 ContextSnapshot SQLite 表结构、迁移脚本和索引重建实现。",
+      "尚无跨进程写入、磁盘损坏恢复和 SQLite 原生模块跨平台验证证据。",
+      "M8-06 两条 paired baseline 尚未执行，因此人工整理步骤、返工和 owner willingness 仍未知。"
+    ],
+    "next_action": "按冻结的 M8-06 baseline 卡，用同一输入白名单分别执行 JSONL-first 与 SQLite-first 结构化只读 Run，记录耗时、人工整理步骤、返工和来源覆盖。"
+  },
+  "structural_check": {
+    "json_object": true,
+    "missing_required_keys": [],
+    "source_refs": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "HANDOFF.md",
+      "SPEC/MASTER-SPEC.md",
+      "packages/core/src/context.ts",
+      "apps/server/src/persistence.ts",
+      "validation/m9-context-continuity-results.json"
+    ],
+    "undeclared_source_refs": [],
+    "traceability_pass": true
+  },
+  "prompt": "M8-06 TECH-01 structured baseline. Return exactly one JSON object and no markdown.\n\nDecide whether ContextSnapshot persistence should remain JSONL-first with optional SQLite indexing, or migrate to SQLite-first before v1.\n\nRead only these exact files relative to the workspace root: AGENTS.md, RUN_STATE.json, HANDOFF.md, SPEC/MASTER-SPEC.md, packages/core/src/context.ts, apps/server/src/persistence.ts, validation/m9-context-continuity-results.json\n\nDo not read credentials, cookies, tokens, .env files, or any undeclared path. Do not write, run project commands, send, publish, or install anything.\n\nRequired keys: objective, recommendation, options, tradeoffs, dependencies, risks, rollback, source_refs, unknowns, next_action. options must compare JSONL-first and SQLite-first; tradeoffs, dependencies, risks and rollback must be explicit; source_refs must contain only allowlist paths; unknowns must be explicit; next_action must be one concrete action. Do not claim an external fact without a source; use UNKNOWN when evidence is absent.",
+  "input_allowlist": [
+    "AGENTS.md",
+    "RUN_STATE.json",
+    "HANDOFF.md",
+    "SPEC/MASTER-SPEC.md",
+    "packages/core/src/context.ts",
+    "apps/server/src/persistence.ts",
+    "validation/m9-context-continuity-results.json"
+  ],
+  "provider_events": [
+    {
+      "id": "provider-event-1c612877-ca9a-4c5f-843a-6fc05b8f1d69",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:03:31.805Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "thread.started",
+          "thread_id": "01a0e176-25b7-7030-b54f-13a7c5521deb"
+        }
+      }
+    },
+    {
+      "id": "provider-event-a960138e-5111-460e-be0b-43c2cdd1036d",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:03:31.816Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.started"
+        }
+      }
+    },
+    {
+      "id": "provider-event-61ba3b2d-4b55-4008-a313-d4565fad87e1",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:03:39.813Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_0",
+            "type": "agent_message",
+            "text": "老黄，我会严格按声明的文件清单只读检查，依据代码、规范和验证结果给出 JSONL-first 与 SQLite-first 的结构化比较；不运行项目命令、不写文件。"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-57855f79-166d-4376-96d9-74f48d8fcb72",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:03:41.688Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.started",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md RUN_STATE.json HANDOFF.md SPEC/MASTER-SPEC.md packages/core/src/context.ts apps/server/src/persistence.ts validation/m9-context-continuity-results.json'",
+            "aggregated_output": "",
+            "exit_code": null,
+            "status": "in_progress"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-2d114683-dc8b-49a1-991e-7ec48edf983a",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:03:41.689Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_1",
+            "type": "command_execution",
+            "command": "/bin/zsh -lc 'cat AGENTS.md RUN_STATE.json HANDOFF.md SPEC/MASTER-SPEC.md packages/core/src/context.ts apps/server/src/persistence.ts validation/m9-context-continuity-results.json'",
+            "aggregated_output": "# Local Agent Workspace 协作规则\n\n- 业务事实源是 `packages/core` 的版本化类型、状态机和 append-only 事件；Web 与 Electron 不复制业务逻辑。\n- 任何 Provider、工具调用和审批都必须留下 `RunEvent` 与可诊断 receipt。\n- `FixtureAdapter` 只用于无 Key 演示，不得标成真实模型效果；DeepSeek 是 ModelProvider，Codex SDK/CLI 是 ExecutionAgent。\n- 默认中文 UI 权限为“只读 / 工作区写入 / 完全访问”。外发、删除重要数据、访问敏感路径、生产配置、支付/发布和凭据读取始终逐次审批。\n- 不自动监听、不上传、不修改旧工作台；真实效果要用固定任务和真人使用证据验证。\n{\n  \"schema_version\": \"1.1\",\n  \"status\": \"running\",\n  \"objective\": \"在当前空目录交付可从 GitHub 复现的本地 Agent Workspace v1：一个 control plane 管理 Project、Bot、Run、Handoff、Approval 与 Artifact，并提供无 Key Fixture 演示、DeepSeek 模型通道、Codex 执行桥探针、Web UI 和 Electron 薄壳。\",\n  \"done_definition\": [\n    \"SPEC/00-06 与架构/面试材料落盘并与实现一致\",\n    \"核心状态机、事件回放、交接与权限契约有可执行测试\",\n    \"本地 server 可在无 Key 下运行 fixture demo，并提供 HTTP API\",\n    \"Web UI 能展示项目、Bot、Run、审批、来源和 Artifact\",\n    \"DeepSeek 与 Codex 适配器边界清晰，失败时可诊断\",\n    \"clean-room 命令、已知限制和未完成的安装验证被如实记录\"\n  ],\n  \"anti_goals\": [\n    \"不把旧 AI 产品经理工作台的未提交改动接入或覆盖\",\n    \"不把模型自评或 fixture 结果写成真实生产效果\",\n    \"不把 ChatGPT 订阅伪装成 DeepSeek/API 额度\",\n    \"不在首版加入云端多用户、后台监听或无人审批的自我扩张\",\n    \"不把聊天连续性当作唯一状态源\"\n  ],\n  \"recent_corrections\": [\n    {\n      \"at\": \"2026-09-26T19:50:00+08:00\",\n      \"source_ref\": \"runtime-landscape\",\n      \"rejected\": \"Codex 订阅没有任何公开嵌入路径\",\n      \"required\": \"使用官方 Codex SDK/CLI 作为本地 ExecutionAgentAdapter 探针；它不是通用 ModelProvider，能力和账号状态必须单独记录\"\n    },\n    {\n      \"at\": \"2026-09-26T19:50:00+08:00\",\n      \"source_ref\": \"environment-check\",\n      \"rejected\": \"当前可直接 pnpm install 并完成打包\",\n      \"required\": \"先落盘依赖和代码；网络恢复后再做依赖安装、Vite 构建和 Electron 打包验证\"\n    },\n    {\n      \"at\": \"2026-09-27T00:00:00+08:00\",\n      \"source_ref\": \"user-2026-09-27\",\n      \"rejected\": \"依赖聊天连续性或立即接 DeepSeek 作为主线\",\n      \"required\": \"先持久化 ContextSnapshot、执行 segment 和 fallback recovery；DeepSeek 后置\"\n    }\n  ],\n  \"scope\": {\n    \"allowed\": [\n      \"当前目录内新建 monorepo、SPEC、核心运行时、server、Web、Electron 壳、fixture、测试和诊断脚本\",\n      \"读取旧工作台文档作为只读参考\"\n    ],\n    \"forbidden\": [\n      \"修改 /Users/m4air/AI产品经理工作台\",\n      \"读取或逆向凭据、Cookie、Token 文件\",\n      \"删除文件、数据库迁移、外发消息、发布或支付\"\n    ]\n  },\n  \"phase\": \"m8-06-paired-baseline-card-frozen\",\n  \"progress\": {\n    \"completed_units\": 23,\n    \"total_units\": 24\n  },\n  \"retry\": {\n    \"error_fingerprint\": \"electron-window-ax-timeout\",\n    \"attempt\": 1,\n    \"max_attempts\": 1\n  },\n  \"review\": {\n    \"level\": \"R1\",\n    \"budget\": 1,\n    \"used\": 0,\n    \"blocking_corrections_left\": 1\n  },\n  \"blocked_reason\": \"M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone、Codex 原生 resume 和多 Bot/人工提效仍未验证。M8-05 只通过窄范围真实输入追踪和一次真实 provider 同 Run 恢复 smoke，未证明业务质量或稳定提效。\",\n  \"next_action\": \"执行 validation/m8-06-paired-baseline-card-v1.json 中冻结的手工 baseline，再用同一输入白名单执行一次结构化只读 Run；记录耗时、人工整理步骤、返工和来源覆盖，不接 DeepSeek。\",\n  \"last_evidence\": \"2026-09-27：M8-06 paired baseline 卡已冻结，任务为当前项目的 ContextSnapshot JSONL-first vs SQLite-first 技术路线判断。固定输入白名单、7 步手工基线、结构化输出键、25% 人工整理步骤阈值、回滚/来源/未知项护栏和 owner willingness 未知边界均已落盘；尚未执行两条 arm。\",\n  \"updated_at\": \"2026-09-27T04:20:00+08:00\"\n}\n# Recovery Handoff\n\n更新时间：2026-09-27（Asia/Shanghai）\n\n## 当前目标\n\n在 `/Users/m4air/Work Agent开发。` 交付可从 GitHub 复现的 Local Agent Workspace v1：单一本地 control plane 管理 Project、Bot、Run、Handoff、Approval 和 Artifact；首个内置 Bot 是 Product Builder。\n\n## 当前状态\n\n- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 质量证据仍阻断；M8-05 窄范围验证完成，M8-06 paired baseline 卡已冻结，Desktop 仍部分验证\n- 阶段：`m8-06-paired-baseline-card-frozen`\n- 已完成：\n  - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本\n  - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`\n  - `packages/core`：类型契约、显式 Run 状态机、append-only 事件、幂等事件仓储、测试\n  - `packages/adapters`：DeepSeek 模型通道、Fixture 通道、Codex CLI/SDK 执行桥、权限策略\n  - `packages/workflow`：Product Builder 确定性 workflow，4 个结构化交接、5 个来源关联 Artifact 和待审批边界\n  - `apps/server`：HTTP control plane、fixture API、core snapshot API、Codex 版本探针、JSONL 事件回退和 SQLite schema 边界\n  - `apps/server/src/http-smoke.test.ts`：不打开端口也能验证 health 和 Product Builder API\n  - `apps/web`：React/Vite 中文工作台、项目/Bot/Run/审批/Artifact/Provider 视图，优先走本地 HTTP、失败回退 fixture，并明确显示数据来源\n  - `apps/desktop`：启动本地 server、加载同一 Web UI 的 Electron 薄壳文件\n  - `apps/desktop/src/main.ts`：health-ready 轮询后再打开窗口\n  - `apps/desktop/tsconfig.json`、`scripts/build-desktop-entry.mjs`：确保 electron-builder 使用真实的 CommonJS 入口\n  - `evidence/receipts/build-and-ui-validation-2026-09-26.json`：依赖、构建、Web Computer Use 和 DMG 证据\n  - `scripts/m804-pilot.ts`、`scripts/validate-m804.ts`：固定任务试跑和自动校验入口\n  - `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json`：PB-01 试跑账本与校验摘要\n  - `validation/m8-04-manual-review-PB-01.json`：PB-01 人工复核、可比性和质量证据阻断项\n  - `packages/core/src/context.ts`、`packages/core/src/context.test.ts`：ContextSnapshot 纯函数与恢复校验\n  - `apps/server/src/persistence.ts`、`apps/server/src/persistence.test.ts`：JSONL ContextSnapshot 持久化与隔离测试\n  - `apps/server/src/product-builder-continuity.ts`、`apps/server/src/product-builder-continuity.test.ts`：Product Builder 边界 checkpoint 与重放幂等\n  - `validation/m9-context-continuity-results.json`：M9 契约验证账本\n  - `validation/m8-04-manual-review-PB-02.json`：PB-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-RS-01.json`：RS-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-RS-02.json`：RS-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-AR-01.json`：AR-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-AR-02.json`：AR-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EV-01.json`：EV-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EV-02.json`：EV-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EX-01.json`：EX-01 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-manual-review-EX-02.json`：EX-02 三条路径自动结果和质量证据阻断项\n  - `validation/m8-04-aggregate-summary.json`：M8-04 全套机械执行汇总\n  - `validation/m8-05-reality-card-v1.json`：M8-05 执行前冻结卡与结果状态\n  - `validation/m8-05-reality-results.json`：3 个真实本地任务与 recovery smoke 汇总\n  - `validation/m8-05-raw/REAL-01.json`、`REAL-02.json`、`REAL-03.json`：原始 provider 回执\n  - `validation/m8-05-review.md`：窄范围结论、恢复内容阻断说明与未验证项\n  - `validation/m8-06-paired-baseline-card-v1.json`：ContextSnapshot JSONL-first vs SQLite-first 的 paired baseline 卡\n- `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口\n- `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断\n- 验证通过：\n  - `pnpm test:all`：14 tests passed\n  - `npm run typecheck`：server TypeScript syntax check passed\n  - `npm run setup`：passed\n  - `npm run demo`：fixture demo passed，输出 4 handoffs / 5 artifacts / pending approval\n  - `npm run diagnose`：记录 Node 22.23.1、codex-cli 0.155.1\n  - Codex 订阅路径真实最小调用：`codex exec --json` 返回约定 JSON；receipt 为 `evidence/receipts/codex-cli-probe-2026-09-26.json`\n  - CodexExternalAdapter 已接入 control plane；真实只读 Product Builder Run `run_dabface1-e16b-449c-99a0-214c90def682` 成功，receipt 为 `evidence/receipts/codex-product-builder-run-2026-09-26.json`\n- 真实验证缺口：\n  - 普通 Codex 沙箱访问 registry 时仍可能 DNS 失败；使用受控主机网络后 `pnpm install` 已成功，未修改 VPN/DNS/代理/防火墙\n  - Web Vite production build 已通过；Firefox Computer Use 已打开 `localhost:5173` 并完成审批按钮交互\n  - arm64 Electron DMG 已生成并且打包进程已启动；Computer Use 读取 Electron 窗口连续超时，所以桌面可见性仍是 PARTIAL\n  - DeepSeek 尚未用用户 Key 实跑；Codex Product Builder 端到端 Run、取消和恢复仍待验证\n  - M8-04 10 题三路径机械执行已完成；所有记录仍缺质量补证，不能写成多 Bot 质量或提效通过\n  - PB-01 当前有 9 条真实 provider 记录（8 条完成、1 条 provider_incomplete），全部是 `quality_eligible=false`；可解析的 multi Bot receipts 自动校验为 7/8，另有前缀/拼接输出被严格拒绝，必须先人工复核，不能据此宣称单/多 Bot 质量优劣\n  - 为同步最新桌面入口而重打包时，`.app` 编译成功，但 `hdiutil` 报 `设备未配置`；已有 DMG 保留，需在 DiskManagement 可用的 macOS 环境再复验封装\n  - M8-05 窄范围 reality validation 已完成；M8-06 已冻结真实技术路线 paired baseline，但两条 arm 尚未执行\n\n## 不要重新打开的决定\n\n- 旧 `/Users/m4air/AI产品经理工作台` 只读参考，不接管未提交改动。\n- control plane 自建状态机是事实源；LangGraph/Agents SDK/Pi/Hermes/OpenHands 只能作为可替换执行层。\n- DeepSeek 是 `ModelProviderAdapter`；Codex 是 `ExecutionAgentAdapter`，不得混成同一种 Provider。\n- 权限 UI 固定使用“只读 / 工作区写入 / 完全访问”，代码值分别是 `read_only/workspace_write/full_access`。\n- 首版不做云端多用户、后台监听、自动外发/发布、无人审批的 Bot 自我扩张或 Computer Use 硬验收。\n\n## 下一步\n\n1. Codex Run 取消专项测试已经通过并写入 receipt；Electron 进程已启动但窗口 AX 读取超时，保留为 PARTIAL。\n2. 隔离 clean-room 源码副本已从零安装、setup、10 tests 通过；literal GitHub clone 仍待仓库 remote。\n3. Context Continuity M9-01 至 M9-05 已完成：同一逻辑 Run 的不可变 snapshot、JSONL 存储、segment/fallback resume、ContextPacket 传递、Product Builder 边界幂等和契约验证已通过专项测试，账本为 `validation/m9-context-continuity-results.json`。\n4. M8-04 PB-02 三条 Codex subscription 路径已完成并校验为 schema_pass=true、6/8 hard constraints；multi_bot 比 single_bot 慢约 3.27 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-PB-02.json`。\n5. M8-04 RS-01 三条路径已完成并校验为 schema_pass=true、7/8 hard constraints；multi_bot 比 single_bot 慢约 5.33 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-RS-01.json`。\n6. M8-04 RS-02 三条路径已完成并校验为 5/8、0/8、6/8；single_bot schema failure，multi_bot 比 single_bot 慢约 2.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-RS-02.json`。\n7. M8-04 AR-01 三条路径已完成并校验为 8/8、7/8、8/8；multi_bot 比 single_bot 慢约 3.97 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-AR-01.json`。\n8. M8-04 AR-02 三条路径已完成并校验为 7/8、7/8、0/8；multi_bot schema failure 且比 single_bot 慢约 2.71 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-AR-02.json`。\n9. M8-04 EV-01 三条路径已完成并校验为 6/8、0/8、6/8；single_bot schema failure，multi_bot 比 single_bot 慢约 3.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EV-01.json`。\n10. M8-04 EV-02 三条路径已完成并校验为 6/8、6/8、6/8；multi_bot 比 single_bot 慢约 6.53 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EV-02.json`。\n11. M8-04 EX-01 三条路径已完成并校验为 7/8、7/8、7/8；multi_bot 比 single_bot 慢约 3.98 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-01.json`。\n12. M8-04 EX-02 三条路径已完成并校验为 7/8、0/8、0/8；single_bot/multi_bot schema failure，multi_bot 比 single_bot 慢约 6.18 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-02.json`。\n13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`；质量证据仍阻断。\n14. M8-05 已完成：3/3 真实本地状态任务通过预注册追踪门；一次真实 Codex provider 中断后，同一 `runId` 追加 Snapshot 和 resume segment 并成功收口。Recovery 内容本身因提示禁止读取命令而返回 blocked，已单独记录，不能写成业务任务完成。\n15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。M8-06 已冻结 ContextSnapshot JSONL-first vs SQLite-first 的 paired baseline，两条 arm 尚未执行。\n16. Git 已在本地建立 `main` 基线并提交；当前没有 remote，不 push。\n\n### 当前唯一下一步\n\n执行 M8-06 冻结的手工 baseline，再执行同输入白名单的结构化只读 Run；记录耗时、人工整理步骤、返工和来源覆盖，不接 DeepSeek。\n\n## 重要文件\n\n- `RUN_STATE.json`：机器可读续接状态\n- `SPEC/MASTER-SPEC.md`：详细产品与工程说明书\n- `SPEC/IMPLEMENTATION-BACKLOG.md`：逐项推进清单\n- `SPEC/AI-EXECUTION-PROTOCOL.md`：AI 执行与恢复协议\n- `SPEC/00-product-contract.md` … `SPEC/06-validation-and-interview-evidence.md`：冻结契约\n- `packages/core/src/`：领域事实源\n- `packages/adapters/src/`：Provider/权限适配层\n- `apps/server/src/index.ts`：本地 HTTP control plane\n- `apps/server/src/runtime.ts`：core 运行时 fixture\n- `apps/server/src/persistence.ts`：事件 JSONL 与 ContextSnapshot JSONL 存储\n- `apps/web/src/`：Web UI\n- `apps/desktop/src/main.ts`：Electron 薄壳\n- `fixtures/demo-project.json`：无 Key 演示输入\n\n## 恢复规则\n\n先读本文件和 `RUN_STATE.json`，再只检查上面“下一步”涉及的文件。若状态是 `blocked_environment`，先解决状态中列出的环境条件，再把状态恢复为 `running` 并写入唯一下一步。不要根据旧聊天重新设计产品，不要修改旧工作台，不要将 fixture/机械测试写成真实使用通过。\n# Local Agent Workspace / Project Bot OS\n\n## 0. 文档状态\n\n- 版本：v1.0-detailed\n- 文档性质：可执行产品与工程说明书\n- 当前日期：2026-09-26\n- 当前总体状态：`implementation-complete-verification-blocked`\n- 事实源：本文件、`IMPLEMENTATION-BACKLOG.md`、`TRACEABILITY.md`、根目录 `RUN_STATE.json`\n- 旧聊天结论：只作为候选假设，不能作为“技术已验证”证据\n\n本文回答四个问题：\n\n1. 这个项目具体给谁解决什么问题？\n2. 系统由哪些模块组成，模块之间怎么传数据？\n3. 每个模块要写哪些代码，使用哪些技术，完成的标准是什么？\n4. 如何知道它真的完成，而不是只有页面或模型输出？\n\n---\n\n## 1. 产品定义\n\n### 1.1 一句话\n\nLocal Agent Workspace 是一个本地优先的 Agent 工作空间。用户按项目管理 Bot；每个 Bot 有职责、输入输出格式、工具、权限、Provider、Memory 和停止条件。系统把一次复杂任务拆成可追踪的 Run、结构化 Handoff、Approval 和 Artifact。\n\n### 1.2 首个可交付场景\n\n用户输入：\n\n> 我想做一个面向独立开发者的 AI 视频产品。\n\n系统必须能记录并展示：\n\n1. 用户原始输入和未知项；\n2. Product Builder 的任务计划；\n3. Research、Product、Architecture、Evaluation 的结构化交接；\n4. 每个交接读了什么、产出什么、是否失败；\n5. 外部事实的 Source；\n6. 需要用户决定的 Approval；\n7. 最终 Product Brief、Technical Proposal、Evaluation Plan 和 Execution Plan；\n8. Provider、模型、认证方式、计费来源和是否为 Fixture；\n9. 中断后从哪个状态恢复。\n\n### 1.3 目标用户\n\n首个用户是单人 AI Builder / AI 产品经理 / 独立开发者。首版不解决企业多租户和团队协作权限，避免把核心问题扩大成 SaaS 平台。\n\n### 1.4 真实问题\n\n当前工作通常是：\n\n```text\nChatGPT 长对话\n→ 人工复制和整理\n→ 自己判断方案\n→ 再交给 Codex\n→ 上下文、来源和决策容易丢失\n```\n\n本项目要解决的是可追踪的任务推进和决策交接，不是单纯再做一个聊天框。\n\n### 1.5 首版不做什么\n\n- 云端多用户和团队权限；\n- 全局后台监听；\n- 默认控制桌面和浏览器；\n- 自动发消息、发布、支付；\n- 读取或逆向 Cookie、Token、凭据文件；\n- Bot 自动提升权限或无限创建 Bot；\n- 把 ChatGPT 订阅伪装成公开 API；\n- 把模型自评当作产品效果；\n- Computer Use 作为首版硬验收；\n- 自动安装未知依赖。\n\n---\n\n## 2. 用户旅程和可观察行为\n\n### 2.1 创建项目\n\n输入：项目名称、描述、工作区路径。\n\n结果：生成 `Project`，绑定默认 Product Builder Bot，默认权限为 `workspace_write` 但工具白名单为空。\n\n验收：重启 Server 后项目仍可读取；项目之间的 Run、Artifact 和 Memory 不串线。\n\n### 2.2 创建或复制 Bot\n\n输入：名称、职责、输入 Schema、输出 Schema、工具白名单、权限档位、Provider 策略、审批规则。\n\n结果：Bot 处于 `enabled`，但任何高风险能力必须通过 Approval 开启。\n\n验收：复制 Bot 后 ID、运行记录和 Memory 不共享；停用 Bot 后不能新建 Run。\n\n### 2.3 启动 Product Builder\n\n输入：自然语言想法、可选用户、约束、项目引用。\n\n结果：创建一个 `Run(status=queued)` 和第一个 `run.created` 事件。\n\n### 2.4 运行和交接\n\nRun 进入 `running`。Product Builder 依次创建 Handoff：\n\n```text\nPlanner → Research Bot\nPlanner → Product Bot\nPlanner → Architecture Bot\nPlanner → Evaluation Bot\n```\n\n每个 Handoff 必须带 `inputRefs` 和 `outputSchema`，不能只写一段无结构文本。\n\n### 2.5 等待用户决定\n\n当用户、场景、MVP 或权限存在关键不确定性时，Run 进入 `waiting_user`，创建 `ApprovalRequest`。未审批不得继续下一步，也不得自动选择一个答案冒充用户决定。\n\n### 2.6 生成 Artifact\n\n审批后，系统将已确认的结构化结果生成 Markdown/JSON Artifact，并记录 Source 引用、Run ID、Provider receipt 和生成时间。\n\n### 2.7 中断和恢复\n\n如果进程崩溃、模型限额中断或用户关闭页面：\n\n1. 不删除已有事件；\n2. 读取最后一个事件和 Run 状态；\n3. 使用 `idempotencyKey` 重放未完成动作；\n4. 不重复生成同一个 Artifact；\n5. 继续 `RUN_STATE.json` 的唯一 `next_action`。\n\n---\n\n## 3. 系统架构\n\n### 3.1 总体结构\n\n```text\n┌───────────────────────────────────────────────┐\n│ React/Vite Web UI                             │\n│ Electron thin shell                           │\n└──────────────┬────────────────────────────────┘\n               │ HTTP/JSON（未来可加 WebSocket）\n┌──────────────▼────────────────────────────────┐\n│ Local Control Plane / Node Server             │\n│ Project API · Run API · Approval API          │\n│ Workflow Orchestrator · Receipt Builder       │\n└───────┬─────────────┬───────────────┬─────────┘\n        │             │               │\n┌───────▼──────┐ ┌────▼────────┐ ┌────▼─────────┐\n│ Core Domain  │ │ Adapters    │ │ Persistence  │\n│ State machine│ │ DeepSeek    │ │ SQLite       │\n│ Schemas      │ │ Codex CLI   │ │ JSONL fallback│\n│ Event rules  │ │ Fixture     │ │ Recovery     │\n└──────────────┘ └─────────────┘ └──────────────┘\n```\n\n### 3.2 事实源原则\n\n`packages/core` 的类型、状态机和事件规则是业务事实源。LangGraph、OpenAI Agents SDK、Pi、Hermes、OpenHands 如果未来接入，只能实现一个执行节点或 Provider Adapter，不能直接拥有 Project、Run、Approval 或 Artifact 的最终状态。\n\n### 3.3 技术栈\n\n| 层 | 技术 | 作用 | 当前状态 |\n|---|---|---|---|\n| 语言 | TypeScript | 共享类型和业务逻辑 | 已使用 |\n| 运行时 | Node.js >= 22 | Server、脚本、测试 | 已验证 Node 22.23.1 |\n| 包管理 | pnpm 9.15 | workspace 管理 | 目标版本，当前被 registry 阻塞 |\n| Web | React 19 + Vite 6 | 本地 Web UI | 代码已写，真实构建待依赖 |\n| Server | Node 原生 HTTP | 本地 control plane | 代码已写 |\n| 数据库 | SQLite + better-sqlite3 | 本地持久化 | schema/边界已写，真实 native 模块待安装 |\n| 回退存储 | JSONL | clean checkout 和无依赖演示 | 已测试 |\n| Desktop | Electron 34 + electron-builder | macOS `.dmg` | 壳已写，打包待依赖 |\n| 模型 | DeepSeek API | 第一条真实 Model Provider，对比通道 | Adapter 已写，未实跑 |\n| 执行 Agent | 官方 Codex CLI/SDK | 当前优先的本地执行桥 | CLI 0.155.1 真实最小调用已通过；Product Builder 接入待验证 |\n| 演示 | Fixture Adapter | 无 Key 确定性演示 | 已测试 |\n\n### 3.4 仓库结构\n\n```text\n.\n├── SPEC/\n│   ├── README.md\n│   ├── MASTER-SPEC.md\n│   ├── IMPLEMENTATION-BACKLOG.md\n│   ├── TRACEABILITY.md\n│   └── PROGRESS.md\n├── packages/\n│   ├── core/          # 类型、状态机、RunStore\n│   ├── adapters/      # DeepSeek、Codex、Fixture、权限\n│   └── workflow/      # Product Builder 编排\n├── apps/\n│   ├── server/        # 本地 control plane\n│   ├── web/           # React/Vite UI\n│   └── desktop/       # Electron thin shell\n├── scripts/           # setup、demo、诊断、checkpoint、恢复\n├── fixtures/          # 无 Key 可运行样例\n├── data/              # 本地事件/数据库目录\n├── artifacts/         # 生成产物目录\n├── RUN_STATE.json     # AI 续接状态\n└── HANDOFF.md         # 人类恢复摘要\n```\n\n---\n\n## 4. 领域模型与数据契约\n\n### 4.1 Project\n\n```ts\ninterface Project {\n  id: ProjectId;\n  name: string;\n  description?: string;\n  workspacePath: string;\n  createdAt: string;\n  updatedAt: string;\n  archivedAt?: string;\n}\n```\n\n约束：`id` 全局唯一；归档项目不能新建 Run；workspacePath 必须经过路径边界检查。\n\n### 4.2 BotProfile\n\n```ts\ninterface BotProfile {\n  id: BotId;\n  projectId: ProjectId;\n  name: string;\n  description: string;\n  responsibility: string;\n  inputSchema: JsonObject;\n  outputSchema: JsonObject;\n  skillIds: SkillId[];\n  toolPolicy: ToolPolicy;\n  providerPolicy: ProviderPolicy;\n  memoryPolicy: MemoryPolicy;\n  approvalPolicy: ApprovalPolicy;\n  enabled: boolean;\n  createdAt: string;\n  updatedAt: string;\n}\n```\n\n约束：必须有 responsibility、inputSchema、outputSchema；disabled Bot 不能启动新 Run；权限升级需要 Approval。\n\n### 4.3 ToolPolicy\n\n```ts\ninterface ToolPolicy {\n  permissionTier: 'read_only' | 'workspace_write' | 'full_access';\n  allowedTools: string[];\n  allowedCommands?: string[];\n  allowedPaths?: string[];\n  approvalRequiredActions: string[];\n}\n```\n\n三档人话：\n\n- **只读**：读取、分析、生成草稿；\n- **工作区写入**：只能写当前项目目录和运行白名单命令；\n- **完全访问**：更广本机/网络能力，必须显式开启并保留强警告。\n\n无论档位，外发、删除重要数据、敏感路径、生产配置、支付、发布、凭据读取都必须逐次审批。\n\n### 4.4 Run\n\n```ts\ninterface Run {\n  id: RunId;\n  projectId: ProjectId;\n  botId: BotId;\n  request: RunRequest;\n  status: 'queued' | 'running' | 'waiting_user' |\n          'succeeded' | 'failed' | 'cancelled';\n  version: number;\n  createdAt: string;\n  updatedAt: string;\n  startedAt?: string;\n  completedAt?: string;\n  waitingReason?: string;\n  result?: JsonValue;\n  error?: RunError;\n}\n```\n\n### 4.5 RunEvent\n\n```ts\ninterface RunEvent {\n  id: RunEventId;\n  runId: RunId;\n  sequence: number;\n  type: RunEventType;\n  occurredAt: string;\n  actor: EventActor;\n  data: JsonObject;\n  correlationId?: string;\n}\n```\n\n事件必须 append-only。`sequence` 从 1 开始，重复 sequence、重复 event id 和跨 Run 写入都必须失败。\n\n### 4.6 HandoffEnvelope\n\n```ts\ninterface HandoffEnvelope {\n  id: HandoffId;\n  fromBotId: BotId;\n  toBotId: BotId;\n  objective: string;\n  inputRefs: string[];\n  outputSchema: string;\n  constraints: string[];\n  approvalRequired: boolean;\n  status: 'queued' | 'running' | 'succeeded' | 'failed';\n  depth: number;\n  parentHandoffId?: HandoffId;\n  resultRefs?: string[];\n  error?: RunError;\n}\n```\n\n约束：最大深度默认 8；检测重复 Bot 对和 parent 链；没有 inputRefs 的研究型交接不能进入正式 Artifact。\n\n### 4.7 ApprovalRequest\n\n```ts\ninterface ApprovalRequest {\n  id: ApprovalRequestId;\n  projectId: ProjectId;\n  runId: RunId;\n  action: string;\n  description: string;\n  permissionTier: PermissionTier;\n  status: 'pending' | 'approved' | 'rejected' | 'expired' | 'cancelled';\n  requestedAt: string;\n  resolvedAt?: string;\n  resolvedBy?: string;\n  decisionReason?: string;\n}\n```\n\n### 4.8 Source、Artifact、MemoryItem\n\n- `Source`：外部 URI、标题、摘录、抓取时间和元数据；外部事实没有 Source 必须标为未知。\n- `Artifact`：项目、Run、类型、名称、内容、Source 引用和创建时间；正式 Artifact 不能只有模型自由文本。\n- `MemoryItem`：项目范围、内容、Source 引用和更新时间；首版不做全局自动记忆。\n\n---\n\n## 5. 状态机、事件和恢复\n\n### 5.1 Run 状态迁移\n\n| 当前 | 动作 | 下一状态 | 必须事件 |\n|---|---|---|---|\n| queued | start | running | `run.started` |\n| running | wait_user | waiting_user | `run.waiting_user` |\n| waiting_user | resume | running | `run.resumed` |\n| running | succeed | succeeded | `run.succeeded` |\n| queued/running/waiting_user | cancel | cancelled | `run.cancelled` |\n| running | fail | failed | `run.failed` |\n| failed | retry | queued | `run.retry_requested` |\n\n非法迁移必须抛出 `InvalidRunTransitionError`，不能静默修正。\n\n### 5.2 幂等\n\n每个外部动作带 `idempotencyKey`。同一个 Run、同一个 key、同一个 action 重放时返回第一次结果，不追加新事件；同 key 执行不同 action 必须报冲突。\n\n### 5.3 崩溃恢复\n\n恢复顺序：\n\n```text\n读取最后一个 RunEvent\n→ 检查 Run 当前状态\n→ 找到未完成 Handoff\n→ 检查 idempotencyKey\n→ 继续或创建 Approval\n→ 追加新的事件\n```\n\n不能通过“再问一次模型”恢复，因为那可能产生不同结果和重复 Artifact。\n\n### 5.4 模型限额中断\n\n模型限额只影响当前助手回合或当前 Provider 调用，不应成为项目状态源。项目状态必须已经写到磁盘；如果 Provider 在调用中失败，Run 标记为 `failed(retryable=true)` 或回到 `waiting_user`，不能标记 `succeeded`。\n\n---\n\n## 6. Provider、工具和安全边界\n\n### 6.1 Provider 分层\n\n```ts\ninterface ModelProviderAdapter {\n  probeCapabilities(): Promise<ProviderCapabilities>;\n  startRun(request: RunRequest): Promise<RunHandle>;\n  streamEvents(handle: RunHandle): AsyncIterable<RunEvent>;\n  cancel(handle: RunHandle): Promise<void>;\n  resume(handle: RunHandle): Promise<void>;\n}\n```\n\n#### DeepSeekApiAdapter\n\n- 请求地址默认 `https://api.deepseek.com`；\n- API Key 只从环境变量读取；\n- 记录 model、usage、tool calls 和 provider-specific reasoning fields；\n- Thinking + Tool Calling 不丢弃 `reasoning_content`；\n- API 失败必须返回 HTTP 状态、错误类别和是否可重试。\n\n#### CodexExternalAdapter\n\n- 只通过官方 `codex` CLI/SDK 执行；当前优先使用已安装 CLI 的 `codex exec --json`；\n- 记录 CLI 版本、harness、authMode 和 billingSource；\n- 不读取登录文件、Cookie 或 Token；\n- 不是 DeepSeek 的替代模型 Provider；\n- 不能把 ChatGPT 订阅额度写成 API 额度。\n\n#### FixtureAdapter\n\n- 无 Key 可运行；\n- 输出固定、可复现、明确 `isMock=true`；\n- 不得用于宣称模型质量。\n\n### 6.2 ToolRuntime\n\n首版工具清单：\n\n| 工具 | 默认权限 | 主要检查 |\n|---|---|---|\n| 文件读取 | 只读 | 项目路径边界、符号链接 |\n| 文件写入 | 工作区写入 | 目标路径、覆盖确认 |\n| Git 状态/差异 | 只读 | 当前仓库边界 |\n| 测试/构建 | 工作区写入 | 命令白名单、超时 |\n| Shell | 工作区写入 | 命令和参数白名单 |\n| 公开搜索 | 只读 | 来源记录、失败标未知 |\n| Artifact 生成 | 工作区写入 | Schema、来源、Run 关联 |\n\n---\n\n## 7. Product Builder 节点规格\n\n| 节点 | 输入 | 输出 | 是否需要用户 | 当前状态 |\n|---|---|---|---|---|\n| Clarify | idea、constraints | user/scenario/unknowns | 可能 | Fixture 中简化 |\n| Planner | 已确认目标 | task graph | 否 | 已有基础 |\n| Research | task + sources | research report + Source[] | 否 | Fixture 已实现 |\n| Product | research refs | product brief | 目标不清时需要 | Fixture 已实现 |\n| Architecture | product brief | technical proposal | 通常不需要 | Fixture 已实现 |\n| Evaluation | proposal | evaluation plan | 否 | Fixture 已实现 |\n| Conflict Check | 全部输出 | conflicts[] | 有冲突时需要 | 待增强 |\n| Approval | conflicts/关键决策 | approved/rejected | 是 | Fixture 已实现 pending |\n| Synthesis | confirmed outputs | execution plan | 否 | Fixture 已实现 |\n| Artifact Writer | typed outputs | Markdown/JSON | 否 | Fixture 已实现 |\n\n首版真实模型接入时，必须保留这些节点边界，不能让一个大 Prompt 绕过所有 Schema。\n\n---\n\n## 8. HTTP API 契约\n\n### 已写入的端点\n\n| 方法 | 路径 | 作用 | 当前验证 |\n|---|---|---|---|\n| GET | `/api/health` | 服务状态 | 代码存在，监听受环境限制 |\n| GET | `/api/workspace` | Fixture workspace | 代码存在 |\n| GET | `/api/ui-snapshot` | Web 所需快照 | 代码存在 |\n| GET | `/api/provider/codex-probe` | Codex 版本探针 | CLI 版本已验证 |\n| GET | `/api/core/snapshot` | Core Run + events | 原生测试验证 |\n| GET | `/api/core/runs` | Run 列表 | 原生测试验证 |\n| POST | `/api/runs` | 创建 Run | 代码存在 |\n| POST | `/api/runs/:id/cancel` | 取消 Run | 代码存在 |\n| POST | `/api/runs/:id/approve` | 解决审批 | 代码存在 |\n| POST | `/api/runs/:id/retry` | 请求重试 | 代码存在 |\n| POST | `/api/product-builder/preview` | 生成结构化 Fixture workflow | 原生测试验证 |\n\n### `POST /api/product-builder/preview`\n\n请求：\n\n```json\n{\n  \"idea\": \"做一个 AI 视频工具\",\n  \"user\": \"独立开发者\",\n  \"constraints\": [\"先验证 MVP\"]\n}\n```\n\n响应必须包含：\n\n```json\n{\n  \"status\": \"waiting_user\",\n  \"handoffs\": [],\n  \"sources\": [],\n  \"artifacts\": [],\n  \"approval\": {\"status\": \"pending\"},\n  \"receipt\": {\"isMock\": true}\n}\n```\n\n### 错误格式\n\n```json\n{\n  \"error\": \"invalid_transition\",\n  \"message\": \"human-readable explanation\",\n  \"retryable\": false,\n  \"correlationId\": \"...\"\n}\n```\n\n---\n\n## 9. Web UI 和桌面端\n\n### Web 页面区域\n\n1. 项目侧栏：项目切换、新建项目入口；\n2. 工作台概览：当前 Run、状态、进度、Provider；\n3. Bot 管理：职责、技能、权限、状态；\n4. Run 详情：事件时间线、Handoff、审批、失败原因；\n5. Artifact：名称、类型、来源、状态、预览；\n6. Provider 设置：DeepSeek 配置状态、Codex 探针状态；\n7. 环境诊断：Node、pnpm、Codex、Fixture 和数据目录。\n\n### UI 验收\n\n- 页面不能把 Fixture 显示成真实 DeepSeek；\n- `isMock=true` 必须能被用户看见；\n- Web 顶部必须区分“本地服务正常”和“Fixture 演示模式”，不能让 HTTP fallback 冒充真实服务；\n- 审批卡必须显示为什么需要决定；\n- Run 时间线必须显示 Bot、输入引用、输出引用和失败原因；\n- 重试不能只改变按钮状态，必须产生新的事件。\n\n### Electron\n\nElectron 不复制 Product Builder 和状态机，只负责：\n\n```text\n启动本地 Server\n→ 等待 health\n→ 打开 Web UI\n→ 关闭时终止子进程\n```\n\n---\n\n## 10. 持久化和目录\n\n### 10.1 SQLite 表（目标）\n\n- `projects`\n- `bot_profiles`\n- `skills`\n- `runs`\n- `run_events`\n- `handoffs`\n- `approval_requests`\n- `sources`\n- `artifacts`\n- `memory_items`\n- `provider_receipts`\n\n`run_events` 必须有：\n\n```sql\nUNIQUE(run_id, sequence)\n```\n\n### 10.2 clean checkout\n\n```bash\npnpm install\npnpm setup\npnpm demo\npnpm dev\npnpm dev:web\npnpm package:mac\n```\n\n无 Key 必须能完成 Fixture demo；真实 DeepSeek 只在用户主动配置 Key 后启用。\n\n---\n\n## 11. 验证体系\n\n### 11.1 单元测试\n\n- 状态迁移；\n- 非法迁移；\n- event sequence；\n- idempotencyKey；\n- Handoff depth/cycle；\n- 权限 allowlist；\n- Provider identity；\n- Fixture 输出；\n- Source/Artifact 引用。\n\n当前已通过 6 个原生测试，详见 `TRACEABILITY.md`。\n\n### 11.2 集成测试\n\n依赖恢复后必须运行：\n\n- Server 启动和 health；\n- API 创建/审批/重试/取消；\n- Web 调用本地 API；\n- SQLite 重启恢复；\n- Electron 启动和退出；\n- clean-room 安装。\n\n### 11.3 AI 对照实验\n\n固定 10 个任务，每个任务比较：\n\n1. 单次模型调用；\n2. 单 Bot + 结构化 Workflow；\n3. 多 Bot + Handoff。\n\n记录：通过率、人工修改量、耗时、Token/成本、失败类型和可追溯性。\n\n### 11.4 现实验证\n\n使用 3 个非敏感真实任务：\n\n- 一个产品想法；\n- 一个技术路线判断；\n- 一个面试/项目方案整理。\n\n最低通过条件：至少 2/3 任务完成，人工整理步骤减少，且用户愿意再次使用；否则标记 `PARTIAL`，不宣称产品成立。\n\n---\n\n## 12. 完成定义\n\n项目只有满足以下条件才能标记 `complete`：\n\n- SPEC、代码、测试和状态文件一致；\n- Fixture clean checkout 成功；\n- Server、Web、Electron 至少各有一次真实启动/构建证据；\n- Provider receipt 能区分 Fixture、DeepSeek、Codex；\n- 权限和审批边界有测试；\n- 至少 3 个现实任务完成验证；\n- 未把模型自评、截图或静态页面当成真实效果。\n\n当前只满足前两项中的大部分，尚未满足最终完成定义。\nimport { createHash } from \"node:crypto\";\nimport type {\n  ContextLedger,\n  ContextPacket,\n  ContextPolicy,\n  ContextSnapshot,\n  ContextSnapshotId,\n  ContextTrigger,\n  JsonValue,\n  RunEvent,\n} from \"./types.ts\";\n\nexport type CompactionLevel = \"none\" | \"soft\" | \"hard\";\n\nexport interface ContextSnapshotOptions {\n  id: ContextSnapshotId;\n  createdAt: string;\n  createdBy?: ContextSnapshot[\"createdBy\"];\n  trigger: ContextTrigger;\n  parentSnapshotId?: ContextSnapshotId;\n}\n\nfunction ordered(value: unknown): unknown {\n  if (Array.isArray(value)) return value.map(ordered);\n  if (value && typeof value === \"object\") {\n    return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => [key, ordered(item)]));\n  }\n  return value;\n}\n\nexport function stableJson(value: unknown): string {\n  return JSON.stringify(ordered(value));\n}\n\nexport function sha256(value: string): string {\n  return createHash(\"sha256\").update(value).digest(\"hex\");\n}\n\nexport function estimateTokens(value: string | JsonValue | unknown): number {\n  const text = typeof value === \"string\" ? value : stableJson(value);\n  return Math.ceil(Buffer.byteLength(text, \"utf8\") / 4);\n}\n\nexport function shouldCompact(tokenEstimate: number, policy: ContextPolicy): CompactionLevel {\n  const budget = Math.max(0, policy.hardThresholdTokens - policy.reserveOutputTokens);\n  if (tokenEstimate >= budget) return \"hard\";\n  if (tokenEstimate >= policy.softThresholdTokens) return \"soft\";\n  return \"none\";\n}\n\nexport function selectTail(events: RunEvent[], maxTailEvents: number): RunEvent[] {\n  if (maxTailEvents <= 0) return [];\n  return [...events].sort((a, b) => a.sequence - b.sequence).slice(-maxTailEvents);\n}\n\nfunction summaryFor(ledger: ContextLedger): ContextSnapshot[\"summary\"] {\n  return {\n    objective: ledger.objective,\n    durableFacts: ledger.durableFacts,\n    decisions: ledger.decisions,\n    constraints: [...ledger.constraints],\n    unknowns: [...ledger.unknowns],\n    pendingApprovalRefs: [...ledger.pendingApprovalRefs],\n    activeHandoffRefs: [...ledger.activeHandoffRefs],\n    artifactRefs: [...ledger.artifactRefs],\n    sourceRefs: [...ledger.sourceRefs],\n    nextAction: ledger.nextAction,\n  };\n}\n\nfunction snapshotPayload(snapshot: Omit<ContextSnapshot, \"contentSha256\">): Omit<ContextSnapshot, \"contentSha256\"> {\n  return snapshot;\n}\n\nexport function buildContextSnapshot(\n  ledger: ContextLedger,\n  policy: ContextPolicy,\n  options: ContextSnapshotOptions,\n): ContextSnapshot {\n  const events = [...ledger.events].sort((a, b) => a.sequence - b.sequence);\n  const firstSequence = events[0]?.sequence ?? 0;\n  const lastSequence = events.at(-1)?.sequence ?? 0;\n  const summary = summaryFor(ledger);\n  const summaryTokenEstimate = estimateTokens(summary);\n  if (summaryTokenEstimate > policy.maxSummaryTokens) {\n    throw new Error(`Context summary exceeds maxSummaryTokens (${summaryTokenEstimate} > ${policy.maxSummaryTokens})`);\n  }\n  const tail = selectTail(events, policy.maxTailEvents);\n  const tokenEstimate = estimateTokens({ summary, events: ledger.events, items: ledger.items });\n  const snapshotWithoutHash: Omit<ContextSnapshot, \"contentSha256\"> = {\n    id: options.id,\n    schemaVersion: \"context.snapshot.v1\",\n    projectId: ledger.projectId,\n    runId: ledger.runId,\n    parentSnapshotId: options.parentSnapshotId,\n    covers: { fromSequence: firstSequence, toSequence: lastSequence },\n    trigger: options.trigger,\n    summary,\n    tailEventIds: tail.map((event) => event.id),\n    tokenEstimate,\n    summaryTokenEstimate,\n    createdAt: options.createdAt,\n    createdBy: options.createdBy ?? \"system\",\n  };\n  return {\n    ...snapshotWithoutHash,\n    contentSha256: sha256(stableJson(snapshotPayload(snapshotWithoutHash))),\n  };\n}\n\nexport function verifyContextSnapshot(snapshot: ContextSnapshot, events: RunEvent[], projectId: string, runId: string): string[] {\n  const errors: string[] = [];\n  if (snapshot.schemaVersion !== \"context.snapshot.v1\") errors.push(\"unsupported_schema\");\n  if (snapshot.projectId !== projectId) errors.push(\"project_mismatch\");\n  if (snapshot.runId !== runId) errors.push(\"run_mismatch\");\n  if (snapshot.covers.fromSequence > snapshot.covers.toSequence && snapshot.covers.toSequence !== 0) errors.push(\"invalid_event_range\");\n  const sorted = [...events].sort((a, b) => a.sequence - b.sequence);\n  const covered = sorted.filter((event) => event.sequence >= snapshot.covers.fromSequence && event.sequence <= snapshot.covers.toSequence);\n  const expectedCount = snapshot.covers.toSequence === 0 ? 0 : snapshot.covers.toSequence - snapshot.covers.fromSequence + 1;\n  if (covered.length !== expectedCount || covered.some((event, index) => event.sequence !== snapshot.covers.fromSequence + index)) errors.push(\"event_range_gap\");\n  const eventIds = new Set(covered.map((event) => String(event.id)));\n  if (snapshot.tailEventIds.some((id) => !eventIds.has(id))) errors.push(\"tail_event_missing\");\n  const { contentSha256: _ignored, ...withoutHash } = snapshot;\n  if (sha256(stableJson(withoutHash)) !== snapshot.contentSha256) errors.push(\"content_hash_mismatch\");\n  return errors;\n}\n\nexport function buildContextPacket(snapshot: ContextSnapshot, events: RunEvent[]): ContextPacket {\n  const errors = verifyContextSnapshot(snapshot, events, snapshot.projectId, snapshot.runId);\n  if (errors.length > 0) throw new Error(`Cannot restore context snapshot: ${errors.join(\",\")}`);\n  const byId = new Map(events.map((event) => [String(event.id), event]));\n  const tailEvents = snapshot.tailEventIds.map((id) => byId.get(String(id))).filter((event): event is RunEvent => Boolean(event)).sort((a, b) => a.sequence - b.sequence);\n  return {\n    snapshot,\n    tailEvents,\n    continuationInstruction: \"Continue the same logical Run. Treat the snapshot as a verified summary, use tail events for recent detail, preserve constraints and pending approvals, and do not repeat completed tool or artifact work.\",\n  };\n}\nimport { appendFile, mkdir, readFile } from 'node:fs/promises';\nimport path from 'node:path';\nimport type { ContextSnapshot } from '../../../packages/core/src/types.ts';\n\nexport type PersistedEvent = Record<string, unknown>;\n\n/**\n * Append-only event log used when the optional SQLite native module is not\n * installed. The public API is intentionally storage-neutral so the server\n * can run from a clean checkout and upgrade to SQLite without changing the\n * domain or HTTP contract.\n */\nexport class JsonlEventLog {\n  private readonly filePath: string;\n  constructor(filePath: string) { this.filePath = filePath; }\n\n  async append(event: PersistedEvent): Promise<void> {\n    await mkdir(path.dirname(this.filePath), { recursive: true });\n    await appendFile(this.filePath, `${JSON.stringify(event)}\\n`, 'utf8');\n  }\n\n  async readAll(): Promise<PersistedEvent[]> {\n    try {\n      const text = await readFile(this.filePath, 'utf8');\n      return text.split('\\n').filter(Boolean).map((line) => JSON.parse(line) as PersistedEvent);\n    } catch (error: any) {\n      if (error?.code === 'ENOENT') return [];\n      throw error;\n    }\n  }\n}\n\nexport interface ContextSnapshotStore {\n  append(snapshot: ContextSnapshot): Promise<void>;\n  readAll(): Promise<ContextSnapshot[]>;\n  latest(projectId: string, runId: string): Promise<ContextSnapshot | undefined>;\n}\n\n/**\n * Append-only ContextSnapshot storage for clean checkouts and crash recovery.\n *\n * Snapshots are immutable records. The store rejects duplicate snapshot ids\n * before appending, while keeping the original RunEvent log untouched.\n */\nexport class JsonlContextSnapshotStore implements ContextSnapshotStore {\n  private readonly filePath: string;\n  private writeQueue: Promise<void> = Promise.resolve();\n\n  constructor(filePath: string) { this.filePath = filePath; }\n\n  async append(snapshot: ContextSnapshot): Promise<void> {\n    const operation = this.writeQueue.then(async () => {\n      const existing = await this.readAll();\n      if (existing.some((item) => item.id === snapshot.id)) {\n        throw new Error(`Context snapshot already exists: ${snapshot.id}`);\n      }\n      await mkdir(path.dirname(this.filePath), { recursive: true });\n      await appendFile(this.filePath, `${JSON.stringify(snapshot)}\\n`, 'utf8');\n    });\n    this.writeQueue = operation.catch(() => undefined);\n    return operation;\n  }\n\n  async readAll(): Promise<ContextSnapshot[]> {\n    try {\n      const text = await readFile(this.filePath, 'utf8');\n      return text.split('\\n').filter(Boolean).map((line) => JSON.parse(line) as ContextSnapshot);\n    } catch (error: any) {\n      if (error?.code === 'ENOENT') return [];\n      throw error;\n    }\n  }\n\n  async latest(projectId: string, runId: string): Promise<ContextSnapshot | undefined> {\n    const matching = (await this.readAll())\n      .filter((snapshot) => snapshot.projectId === projectId && snapshot.runId === runId)\n      .sort((a, b) => {\n        const createdAt = a.createdAt.localeCompare(b.createdAt);\n        if (createdAt !== 0) return createdAt;\n        return a.covers.toSequence - b.covers.toSequence;\n      });\n    return matching.at(-1);\n  }\n}\n\nexport const SQLITE_SCHEMA = `\nCREATE TABLE IF NOT EXISTS run_events (\n  id TEXT PRIMARY KEY,\n  run_id TEXT NOT NULL,\n  sequence INTEGER NOT NULL,\n  type TEXT NOT NULL,\n  occurred_at TEXT NOT NULL,\n  actor_json TEXT NOT NULL,\n  data_json TEXT NOT NULL,\n  correlation_id TEXT,\n  UNIQUE(run_id, sequence)\n);\n`;\n\nexport type EventLog = JsonlEventLog | { backend: 'sqlite'; append(event: PersistedEvent): Promise<void>; readAll(): Promise<PersistedEvent[]> };\n\n/** Uses SQLite when the optional native dependency is present, otherwise keeps the clean-checkout JSONL path usable. */\nexport async function openEventLog(filePath: string): Promise<{ backend: 'sqlite' | 'jsonl'; log: EventLog }> {\n  try {\n    const module = await import('better-sqlite3');\n    const Database = (module as any).default ?? module;\n    const db = new Database(filePath);\n    db.exec(SQLITE_SCHEMA);\n    const insert = db.prepare('INSERT INTO run_events (id, run_id, sequence, type, occurred_at, actor_json, data_json, correlation_id) VALUES (@id, @run_id, @sequence, @type, @occurred_at, @actor_json, @data_json, @correlation_id)');\n    const list = db.prepare('SELECT * FROM run_events ORDER BY run_id, sequence');\n    return {\n      backend: 'sqlite',\n      log: {\n        backend: 'sqlite',\n        async append(event) {\n          insert.run({ id: event.id, run_id: event.runId, sequence: event.sequence, type: event.type, occurred_at: event.occurredAt, actor_json: JSON.stringify(event.actor), data_json: JSON.stringify(event.data), correlation_id: event.correlationId ?? null });\n        },\n        async readAll() { return list.all().map((row: any) => ({ ...row, actor: JSON.parse(row.actor_json), data: JSON.parse(row.data_json) })); },\n      },\n    };\n  } catch {\n    return { backend: 'jsonl', log: new JsonlEventLog(`${filePath}.jsonl`) };\n  }\n}\n{\n  \"suite\": \"M9 Context Continuity v1\",\n  \"generated_at\": \"2026-09-27\",\n  \"status\": \"PASS_CONTRACT_ONLY\",\n  \"command\": \"COREPACK_HOME=/Users/m4air/Work Agent开发。/.corepack pnpm test:all\",\n  \"tests_passed\": 17,\n  \"checks\": {\n    \"synthetic_provider_limit_creates_new_segment\": true,\n    \"same_logical_run_id_is_preserved\": true,\n    \"verified_context_packet_reaches_next_segment\": true,\n    \"jsonl_snapshot_survives_reload\": true,\n    \"snapshot_hash_and_event_range_are_verified\": true,\n    \"duplicate_product_builder_checkpoint_is_skipped\": true,\n    \"cross_project_restore_is_rejected\": true,\n    \"raw_events_are_append_only\": true\n  },\n  \"evidence\": [\n    \"apps/server/src/runtime.test.ts\",\n    \"apps/server/src/persistence.test.ts\",\n    \"apps/server/src/product-builder-continuity.test.ts\",\n    \"packages/core/src/context.test.ts\"\n  ],\n  \"limitations\": [\n    \"This validates the local contract and deterministic recovery path; it does not prove native Codex or DeepSeek resume.\",\n    \"No real DeepSeek API key was used.\",\n    \"This is not M8-04 model quality evidence or reality validation.\"\n  ]\n}\n",
+            "exit_code": 0,
+            "status": "completed"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-9bce55be-91fa-438b-bad4-4ecd9a80b6ec",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:04:20.185Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "item.completed",
+          "item": {
+            "id": "item_2",
+            "type": "agent_message",
+            "text": "{\"objective\":\"决定 v1 前 ContextSnapshot 持久化采用 JSONL-first（可选 SQLite 索引）还是迁移 SQLite-first。\",\"recommendation\":\"保留 JSONL-first，v1 暂不迁移 SQLite-first；将 SQLite 限定为可选索引或后续优化，并保持领域与 HTTP 契约存储无关。现有 ContextSnapshot JSONL 实现支持追加、去重、重载、latest 查询和崩溃恢复；M9 契约验证已通过。\",\"options\":{\"JSONL-first\":{\"fit\":\"与当前实现和 clean checkout 目标一致。ContextSnapshot 为不可变追加记录，JSONL 可直接审计、复制和恢复。\",\"benefits\":[\"无需原生数据库依赖即可运行\",\"实现已覆盖快照追加、重复 ID 拒绝、重载和 latest 查询\",\"失败时可保留原始记录，便于诊断和回滚\"],\"costs\":[\"按项目和 Run 查询需要扫描文件\",\"并发、索引和大规模数据管理能力有限\",\"尚未证明在高并发或大数据量下的性能\"]},\"SQLite-first\":{\"fit\":\"与 MASTER-SPEC 中的目标 SQLite 表和重启恢复方向一致，但当前 ContextSnapshot 存储接口及验证证据仍以 JSONL 为主。\",\"benefits\":[\"查询、唯一约束和排序更直接\",\"可为 project_id、run_id、created_at 建立索引\",\"更适合未来多表关联和规模增长\"],\"costs\":[\"引入原生依赖、初始化和迁移复杂度\",\"clean checkout 与跨平台打包风险增加\",\"当前没有 ContextSnapshot SQLite 表、迁移方案或对应验证结果\"]}},\"tradeoffs\":{\"durability\":\"两者都可支持追加记录；当前证据只证明 JSONL 路径的快照重载、哈希和事件范围校验。\",\"operability\":\"JSONL 更容易人工检查、复制和恢复；SQLite 更适合结构化查询与约束。\",\"delivery_risk\":\"JSONL-first 不改变已验证路径；SQLite-first 会在 v1 引入未验证的依赖、迁移和恢复风险。\",\"performance\":\"SQLite 预期更适合大规模查询，但当前没有基准数据，不能据此宣称实际优势。\",\"consistency\":\"继续使用存储中立接口可避免业务层绑定后端；若增加 SQLite 索引，JSONL 仍应作为事实记录源。\"},\"dependencies\":[\"ContextSnapshot 继续使用现有 schema、contentSha256、事件范围和 project/run 隔离校验。\",\"JsonlContextSnapshotStore 保持 append-only、重复 snapshot ID 拒绝和 latest 语义。\",\"若启用 SQLite 索引，需要定义索引重建、损坏恢复、版本迁移和 JSONL 与索引的一致性规则。\",\"需要后续执行冻结的 M8-06 paired baseline，比较人工整理步骤、耗时、返工和来源覆盖。\"],\"risks\":[\"JSONL 文件增长后读取和 latest 查询可能变慢；当前没有容量或性能阈值证据。\",\"并发写入依赖进程内 writeQueue，跨进程并发安全性未知。\",\"可选 SQLite 索引若失步，可能产生查询结果不完整；必须允许从 JSONL 重建。\",\"MASTER-SPEC 规划了 SQLite 目标表，但当前 ContextSnapshot SQLite 落地范围和迁移时点未知。\"],\"rollback\":[\"保留 JSONL 作为唯一事实记录源。\",\"若 SQLite 索引出现错误，停止读取索引并从 JSONL 重建或直接回退 JSONL 查询。\",\"不要在 v1 执行不可逆的 SQLite-only 迁移；迁移前需有可验证的导出和恢复路径。\"],\"source_refs\":[\"AGENTS.md\",\"RUN_STATE.json\",\"HANDOFF.md\",\"SPEC/MASTER-SPEC.md\",\"packages/core/src/context.ts\",\"apps/server/src/persistence.ts\",\"validation/m9-context-continuity-results.json\"],\"unknowns\":[\"尚无 JSONL 与 SQLite 的真实数据规模、并发和查询性能基准。\",\"尚无 ContextSnapshot SQLite 表结构、迁移脚本和索引重建实现。\",\"尚无跨进程写入、磁盘损坏恢复和 SQLite 原生模块跨平台验证证据。\",\"M8-06 两条 paired baseline 尚未执行，因此人工整理步骤、返工和 owner willingness 仍未知。\"],\"next_action\":\"按冻结的 M8-06 baseline 卡，用同一输入白名单分别执行 JSONL-first 与 SQLite-first 结构化只读 Run，记录耗时、人工整理步骤、返工和来源覆盖。\"}"
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-87af1b56-0d24-40f3-aac4-0e05aa0a451a",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:04:20.214Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "stream": {
+          "type": "turn.completed",
+          "usage": {
+            "input_tokens": 58076,
+            "cached_input_tokens": 23296,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 1363,
+            "reasoning_output_tokens": 208
+          }
+        }
+      }
+    },
+    {
+      "id": "provider-event-6505a670-ea71-430e-ba17-9809e29ef2e4",
+      "runId": "external-1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+      "sequence": 1,
+      "type": "provider.event",
+      "occurredAt": "2026-09-27T06:04:25.145Z",
+      "actor": {
+        "type": "provider",
+        "provider": "openai-codex"
+      },
+      "data": {
+        "bridge": "codex-cli",
+        "status": "completed",
+        "exitCode": 0
+      }
+    }
+  ]
+}

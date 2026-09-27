@@ -1,0 +1,117 @@
+{
+  "record_version": "m8-06.structured-run.v1",
+  "task_id": "TECH-01",
+  "arm": "structured_run",
+  "started_at": "2026-09-27T06:03:28.911Z",
+  "finished_at": "2026-09-27T06:04:25.145Z",
+  "elapsed_ms": 56234,
+  "provider": {
+    "authMode": "subscription",
+    "billingSource": "unknown",
+    "isMock": false,
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "model": "codex-managed-session"
+  },
+  "run_id": "1b5dc3e6-f9a3-4947-a53f-b6d26893d261",
+  "event_count": 8,
+  "output_sha256": "4b7d95e20a39acbebf00e30c1215584c276866ee91c6bc2896d1bbb5b0e1c3f1",
+  "raw_output": "老黄，我会严格按声明的文件清单只读检查，依据代码、规范和验证结果给出 JSONL-first 与 SQLite-first 的结构化比较；不运行项目命令、不写文件。\n{\"objective\":\"决定 v1 前 ContextSnapshot 持久化采用 JSONL-first（可选 SQLite 索引）还是迁移 SQLite-first。\",\"recommendation\":\"保留 JSONL-first，v1 暂不迁移 SQLite-first；将 SQLite 限定为可选索引或后续优化，并保持领域与 HTTP 契约存储无关。现有 ContextSnapshot JSONL 实现支持追加、去重、重载、latest 查询和崩溃恢复；M9 契约验证已通过。\",\"options\":{\"JSONL-first\":{\"fit\":\"与当前实现和 clean checkout 目标一致。ContextSnapshot 为不可变追加记录，JSONL 可直接审计、复制和恢复。\",\"benefits\":[\"无需原生数据库依赖即可运行\",\"实现已覆盖快照追加、重复 ID 拒绝、重载和 latest 查询\",\"失败时可保留原始记录，便于诊断和回滚\"],\"costs\":[\"按项目和 Run 查询需要扫描文件\",\"并发、索引和大规模数据管理能力有限\",\"尚未证明在高并发或大数据量下的性能\"]},\"SQLite-first\":{\"fit\":\"与 MASTER-SPEC 中的目标 SQLite 表和重启恢复方向一致，但当前 ContextSnapshot 存储接口及验证证据仍以 JSONL 为主。\",\"benefits\":[\"查询、唯一约束和排序更直接\",\"可为 project_id、run_id、created_at 建立索引\",\"更适合未来多表关联和规模增长\"],\"costs\":[\"引入原生依赖、初始化和迁移复杂度\",\"clean checkout 与跨平台打包风险增加\",\"当前没有 ContextSnapshot SQLite 表、迁移方案或对应验证结果\"]}},\"tradeoffs\":{\"durability\":\"两者都可支持追加记录；当前证据只证明 JSONL 路径的快照重载、哈希和事件范围校验。\",\"operability\":\"JSONL 更容易人工检查、复制和恢复；SQLite 更适合结构化查询与约束。\",\"delivery_risk\":\"JSONL-first 不改变已验证路径；SQLite-first 会在 v1 引入未验证的依赖、迁移和恢复风险。\",\"performance\":\"SQLite 预期更适合大规模查询，但当前没有基准数据，不能据此宣称实际优势。\",\"consistency\":\"继续使用存储中立接口可避免业务层绑定后端；若增加 SQLite 索引，JSONL 仍应作为事实记录源。\"},\"dependencies\":[\"ContextSnapshot 继续使用现有 schema、contentSha256、事件范围和 project/run 隔离校验。\",\"JsonlContextSnapshotStore 保持 append-only、重复 snapshot ID 拒绝和 latest 语义。\",\"若启用 SQLite 索引，需要定义索引重建、损坏恢复、版本迁移和 JSONL 与索引的一致性规则。\",\"需要后续执行冻结的 M8-06 paired baseline，比较人工整理步骤、耗时、返工和来源覆盖。\"],\"risks\":[\"JSONL 文件增长后读取和 latest 查询可能变慢；当前没有容量或性能阈值证据。\",\"并发写入依赖进程内 writeQueue，跨进程并发安全性未知。\",\"可选 SQLite 索引若失步，可能产生查询结果不完整；必须允许从 JSONL 重建。\",\"MASTER-SPEC 规划了 SQLite 目标表，但当前 ContextSnapshot SQLite 落地范围和迁移时点未知。\"],\"rollback\":[\"保留 JSONL 作为唯一事实记录源。\",\"若 SQLite 索引出现错误，停止读取索引并从 JSONL 重建或直接回退 JSONL 查询。\",\"不要在 v1 执行不可逆的 SQLite-only 迁移；迁移前需有可验证的导出和恢复路径。\"],\"source_refs\":[\"AGENTS.md\",\"RUN_STATE.json\",\"HANDOFF.md\",\"SPEC/MASTER-SPEC.md\",\"packages/core/src/context.ts\",\"apps/server/src/persistence.ts\",\"validation/m9-context-continuity-results.json\"],\"unknowns\":[\"尚无 JSONL 与 SQLite 的真实数据规模、并发和查询性能基准。\",\"尚无 ContextSnapshot SQLite 表结构、迁移脚本和索引重建实现。\",\"尚无跨进程写入、磁盘损坏恢复和 SQLite 原生模块跨平台验证证据。\",\"M8-06 两条 paired baseline 尚未执行，因此人工整理步骤、返工和 owner willingness 仍未知。\"],\"next_action\":\"按冻结的 M8-06 baseline 卡，用同一输入白名单分别执行 JSONL-first 与 SQLite-first 结构化只读 Run，记录耗时、人工整理步骤、返工和来源覆盖。\"}",
+  "parsed_output": {
+    "objective": "决定 v1 前 ContextSnapshot 持久化采用 JSONL-first（可选 SQLite 索引）还是迁移 SQLite-first。",
+    "recommendation": "保留 JSONL-first，v1 暂不迁移 SQLite-first；将 SQLite 限定为可选索引或后续优化，并保持领域与 HTTP 契约存储无关。现有 ContextSnapshot JSONL 实现支持追加、去重、重载、latest 查询和崩溃恢复；M9 契约验证已通过。",
+    "options": {
+      "JSONL-first": {
+        "fit": "与当前实现和 clean checkout 目标一致。ContextSnapshot 为不可变追加记录，JSONL 可直接审计、复制和恢复。",
+        "benefits": [
+          "无需原生数据库依赖即可运行",
+          "实现已覆盖快照追加、重复 ID 拒绝、重载和 latest 查询",
+          "失败时可保留原始记录，便于诊断和回滚"
+        ],
+        "costs": [
+          "按项目和 Run 查询需要扫描文件",
+          "并发、索引和大规模数据管理能力有限",
+          "尚未证明在高并发或大数据量下的性能"
+        ]
+      },
+      "SQLite-first": {
+        "fit": "与 MASTER-SPEC 中的目标 SQLite 表和重启恢复方向一致，但当前 ContextSnapshot 存储接口及验证证据仍以 JSONL 为主。",
+        "benefits": [
+          "查询、唯一约束和排序更直接",
+          "可为 project_id、run_id、created_at 建立索引",
+          "更适合未来多表关联和规模增长"
+        ],
+        "costs": [
+          "引入原生依赖、初始化和迁移复杂度",
+          "clean checkout 与跨平台打包风险增加",
+          "当前没有 ContextSnapshot SQLite 表、迁移方案或对应验证结果"
+        ]
+      }
+    },
+    "tradeoffs": {
+      "durability": "两者都可支持追加记录；当前证据只证明 JSONL 路径的快照重载、哈希和事件范围校验。",
+      "operability": "JSONL 更容易人工检查、复制和恢复；SQLite 更适合结构化查询与约束。",
+      "delivery_risk": "JSONL-first 不改变已验证路径；SQLite-first 会在 v1 引入未验证的依赖、迁移和恢复风险。",
+      "performance": "SQLite 预期更适合大规模查询，但当前没有基准数据，不能据此宣称实际优势。",
+      "consistency": "继续使用存储中立接口可避免业务层绑定后端；若增加 SQLite 索引，JSONL 仍应作为事实记录源。"
+    },
+    "dependencies": [
+      "ContextSnapshot 继续使用现有 schema、contentSha256、事件范围和 project/run 隔离校验。",
+      "JsonlContextSnapshotStore 保持 append-only、重复 snapshot ID 拒绝和 latest 语义。",
+      "若启用 SQLite 索引，需要定义索引重建、损坏恢复、版本迁移和 JSONL 与索引的一致性规则。",
+      "需要后续执行冻结的 M8-06 paired baseline，比较人工整理步骤、耗时、返工和来源覆盖。"
+    ],
+    "risks": [
+      "JSONL 文件增长后读取和 latest 查询可能变慢；当前没有容量或性能阈值证据。",
+      "并发写入依赖进程内 writeQueue，跨进程并发安全性未知。",
+      "可选 SQLite 索引若失步，可能产生查询结果不完整；必须允许从 JSONL 重建。",
+      "MASTER-SPEC 规划了 SQLite 目标表，但当前 ContextSnapshot SQLite 落地范围和迁移时点未知。"
+    ],
+    "rollback": [
+      "保留 JSONL 作为唯一事实记录源。",
+      "若 SQLite 索引出现错误，停止读取索引并从 JSONL 重建或直接回退 JSONL 查询。",
+      "不要在 v1 执行不可逆的 SQLite-only 迁移；迁移前需有可验证的导出和恢复路径。"
+    ],
+    "source_refs": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "HANDOFF.md",
+      "SPEC/MASTER-SPEC.md",
+      "packages/core/src/context.ts",
+      "apps/server/src/persistence.ts",
+      "validation/m9-context-continuity-results.json"
+    ],
+    "unknowns": [
+      "尚无 JSONL 与 SQLite 的真实数据规模、并发和查询性能基准。",
+      "尚无 ContextSnapshot SQLite 表结构、迁移脚本和索引重建实现。",
+      "尚无跨进程写入、磁盘损坏恢复和 SQLite 原生模块跨平台验证证据。",
+      "M8-06 两条 paired baseline 尚未执行，因此人工整理步骤、返工和 owner willingness 仍未知。"
+    ],
+    "next_action": "按冻结的 M8-06 baseline 卡，用同一输入白名单分别执行 JSONL-first 与 SQLite-first 结构化只读 Run，记录耗时、人工整理步骤、返工和来源覆盖。"
+  },
+  "structural_check": {
+    "json_object": true,
+    "missing_required_keys": [],
+    "source_refs": [
+      "AGENTS.md",
+      "RUN_STATE.json",
+      "HANDOFF.md",
+      "SPEC/MASTER-SPEC.md",
+      "packages/core/src/context.ts",
+      "apps/server/src/persistence.ts",
+      "validation/m9-context-continuity-results.json"
+    ],
+    "undeclared_source_refs": [],
+    "traceability_pass": true
+  },
+  "prompt": "M8-06 TECH-01 structured baseline. Return exactly one JSON object and no markdown.\n\nDecide whether ContextSnapshot persistence should remain JSONL-first with optional SQLite indexing, or migrate to SQLite-first before v1.\n\nRead only these exact files relative to the workspace root: AGENTS.md, RUN_STATE.json, HANDOFF.md, SPEC/MASTER-SPEC.md, packages/core/src/context.ts, apps/server/src/persistence.ts, validation/m9-context-continuity-results.json\n\nDo not read credentials, cookies, tokens, .env files, or any undeclared path. Do not write, run project commands, send, publish, or install anything.\n\nRequired keys: objective, recommendation, options, tradeoffs, dependencies, risks, rollback, source_refs, unknowns, next_action. options must compare JSONL-first and SQLite-first; tradeoffs, dependencies, risks and rollback must be explicit; source_refs must contain only allowlist paths; unknowns must be explicit; next_action must be one concrete action. Do not claim an external fact without a source; use UNKNOWN when evidence is absent.",
+  "input_allowlist": [
+    "AGENTS.md",
+    "RUN_STATE.json",
+    "HANDOFF.md",
+    "SPEC/MASTER-SPEC.md",
+    "packages/core/src/context.ts",
+    "apps/server/src/persistence.ts",
+    "validation/m9-context-continuity-results.json"
+  ]
+}
