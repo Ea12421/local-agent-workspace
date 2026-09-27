@@ -12,7 +12,7 @@ import {
   type RunId,
 } from '../../../packages/core/src/index.ts';
 import type { ProductBuilderCheckpoint, ProductBuilderResult } from '../../../packages/workflow/src/index.ts';
-import { openContextSnapshotStore, openEventLog, openSqliteProductBuilderContinuity, type ContextSnapshotStore, type EventLog, type EventLogHandle, type ContextSnapshotStoreHandle } from './persistence.ts';
+import { openContextSnapshotStore, openEventLog, openSqliteProductBuilderContinuity, type ContextSnapshotStore, type EventLog, type EventLogHandle, type ContextSnapshotStoreHandle, type SqliteEntityStore } from './persistence.ts';
 
 export type ProductBuilderContinuityOptions = {
   eventLog: EventLog;
@@ -23,6 +23,7 @@ export type ProductBuilderContinuityOptions = {
   };
   close?: () => void;
   contextPolicy?: ContextPolicy;
+  entityStore?: SqliteEntityStore;
 };
 
 export type ProductBuilderContinuityResult = {
@@ -55,6 +56,7 @@ export async function defaultProductBuilderContinuityStores(root: string): Promi
       },
       close: sharedSqlite.close,
       contextPolicy: defaultPolicy,
+      entityStore: sharedSqlite.entityStore,
     };
   }
   const eventLog = await openEventLog(databasePath);
@@ -172,6 +174,21 @@ export async function checkpointProductBuilderResult(
   }
 
   const events = runEvents(await stores.eventLog.readAll(), input.runId);
+  if (stores.entityStore && createdCheckpoints > 0) {
+    stores.entityStore.saveProductBuilderEntities({
+      handoffs: result.handoffs,
+      approval: result.approval,
+      sources: result.sources,
+      artifacts: result.artifacts,
+      receipts: [{
+        id: `${input.runId}:product-builder:receipt`,
+        runId: input.runId,
+        provider: { harness: result.receipt.harness, provider: result.receipt.provider, model: result.receipt.model, authMode: 'local', billingSource: 'local', isMock: result.receipt.isMock },
+        receipt: result.receipt,
+        createdAt: new Date().toISOString(),
+      }],
+    });
+  }
   if (latestSnapshot) buildContextPacket(latestSnapshot, events.slice(0, latestSnapshot.covers.toSequence));
   return { runId: input.runId, createdCheckpoints, skippedCheckpoints, createdSnapshots, latestSnapshot, events };
 }

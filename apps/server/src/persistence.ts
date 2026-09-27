@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { createRunEventId, transitionRun } from '../../../packages/core/src/index.ts';
 import type { RunStore } from '../../../packages/core/src/run-store.ts';
-import type { ContextSnapshot, CreateRunInput, ProviderIdentity, Run, RunAction, RunEvent, RunId, RunSegment, RunTransitionOptions, RunTransitionResult } from '../../../packages/core/src/types.ts';
+import type { ApprovalRequest, Artifact, ContextSnapshot, CreateRunInput, HandoffEnvelope, JsonObject, MemoryItem, ProviderIdentity, Run, RunAction, RunEvent, RunId, RunSegment, RunTransitionOptions, RunTransitionResult, Source } from '../../../packages/core/src/types.ts';
 
 export type PersistedEvent = Record<string, unknown>;
 
@@ -632,6 +632,7 @@ export type SqliteProductBuilderContinuityHandle = {
   driver?: SqliteDriverName;
   eventLog: EventLog;
   snapshotStore: ContextSnapshotStore;
+  entityStore: SqliteEntityStore;
   close: () => void;
 };
 
@@ -640,7 +641,8 @@ export function openSqliteProductBuilderContinuity(filePath: string): SqliteProd
   if (!opened.db || !opened.driver) return undefined;
   const eventLog = createSqliteEventLog(opened.db);
   const snapshotStore = new SqliteContextSnapshotStore(filePath, opened.db);
-  return { backend: 'sqlite', mode: 'full', driver: opened.driver, eventLog, snapshotStore, close: () => opened.db?.close() };
+  const entityStore = new SqliteEntityStore(opened.db);
+  return { backend: 'sqlite', mode: 'full', driver: opened.driver, eventLog, snapshotStore, entityStore, close: () => opened.db?.close() };
 }
 
 /** Uses SQLite when the optional native dependency is present, otherwise keeps the clean-checkout JSONL path usable. */
@@ -901,6 +903,272 @@ export class SqliteRunStore implements RunStore {
   }
 
   close(): void { this.db.close(); }
+}
+
+export type ProviderReceipt = {
+  id: string;
+  runId: RunId;
+  segment?: number;
+  provider: ProviderIdentity;
+  receipt: JsonObject;
+  createdAt: string;
+};
+
+export type ProductBuilderEntityBundle = {
+  handoffs: HandoffEnvelope[];
+  approval: ApprovalRequest;
+  sources: Source[];
+  artifacts: Artifact[];
+  memories?: MemoryItem[];
+  receipts?: ProviderReceipt[];
+};
+
+/** Typed persistence for Product Builder entities on the shared SQLite connection. */
+export class SqliteEntityStore {
+  private readonly db: SqliteDatabase;
+
+  constructor(database: SqliteDatabase) {
+    this.db = database;
+    runSqliteMigrations(this.db);
+  }
+
+  private transaction<T>(work: () => T): T {
+    this.db.exec('BEGIN IMMEDIATE');
+    try {
+      const result = work();
+      this.db.exec('COMMIT');
+      return result;
+    } catch (error) {
+      try { this.db.exec('ROLLBACK'); } catch { /* preserve entity persistence error */ }
+      throw error;
+    }
+  }
+
+  private saveHandoffRow(item: HandoffEnvelope): void {
+    this.db.prepare(`
+      INSERT OR IGNORE INTO handoffs (
+        id, from_bot_id, to_bot_id, objective, input_refs_json, output_schema,
+        constraints_json, approval_required, status, depth, parent_handoff_id,
+        created_at, updated_at, result_refs_json, error_json
+      ) VALUES (@id, @from_bot_id, @to_bot_id, @objective, @input_refs_json, @output_schema,
+        @constraints_json, @approval_required, @status, @depth, @parent_handoff_id,
+        @created_at, @updated_at, @result_refs_json, @error_json)
+    `).run({
+      id: item.id,
+      from_bot_id: item.fromBotId,
+      to_bot_id: item.toBotId,
+      objective: item.objective,
+      input_refs_json: JSON.stringify(item.inputRefs),
+      output_schema: item.outputSchema,
+      constraints_json: JSON.stringify(item.constraints),
+      approval_required: item.approvalRequired ? 1 : 0,
+      status: item.status,
+      depth: item.depth,
+      parent_handoff_id: item.parentHandoffId ?? null,
+      created_at: item.createdAt,
+      updated_at: item.updatedAt,
+      result_refs_json: item.resultRefs ? JSON.stringify(item.resultRefs) : null,
+      error_json: item.error ? JSON.stringify(item.error) : null,
+    });
+  }
+
+  private saveApprovalRow(item: ApprovalRequest): void {
+    this.db.prepare(`
+      INSERT OR REPLACE INTO approval_requests (
+        id, project_id, run_id, action, description, permission_tier, status,
+        requested_at, resolved_at, resolved_by, decision_reason, metadata_json
+      ) VALUES (@id, @project_id, @run_id, @action, @description, @permission_tier, @status,
+        @requested_at, @resolved_at, @resolved_by, @decision_reason, @metadata_json)
+    `).run({
+      id: item.id,
+      project_id: item.projectId,
+      run_id: item.runId,
+      action: item.action,
+      description: item.description,
+      permission_tier: item.permissionTier,
+      status: item.status,
+      requested_at: item.requestedAt,
+      resolved_at: item.resolvedAt ?? null,
+      resolved_by: item.resolvedBy ?? null,
+      decision_reason: item.decisionReason ?? null,
+      metadata_json: item.metadata ? JSON.stringify(item.metadata) : null,
+    });
+  }
+
+  private saveSourceRow(item: Source): void {
+    this.db.prepare(`
+      INSERT OR REPLACE INTO sources (id, project_id, uri, title, excerpt, retrieved_at, metadata_json)
+      VALUES (@id, @project_id, @uri, @title, @excerpt, @retrieved_at, @metadata_json)
+    `).run({
+      id: item.id,
+      project_id: item.projectId,
+      uri: item.uri,
+      title: item.title ?? null,
+      excerpt: item.excerpt ?? null,
+      retrieved_at: item.retrievedAt,
+      metadata_json: item.metadata ? JSON.stringify(item.metadata) : null,
+    });
+  }
+
+  private saveArtifactRow(item: Artifact): void {
+    this.db.prepare(`
+      INSERT OR REPLACE INTO artifacts (
+        id, project_id, run_id, kind, name, content_type, content, source_refs_json, created_at
+      ) VALUES (@id, @project_id, @run_id, @kind, @name, @content_type, @content, @source_refs_json, @created_at)
+    `).run({
+      id: item.id,
+      project_id: item.projectId,
+      run_id: item.runId,
+      kind: item.kind,
+      name: item.name,
+      content_type: item.contentType,
+      content: item.content,
+      source_refs_json: JSON.stringify(item.sourceRefs),
+      created_at: item.createdAt,
+    });
+  }
+
+  private saveMemoryRow(item: MemoryItem): void {
+    this.db.prepare(`
+      INSERT OR REPLACE INTO memory_items (
+        id, project_id, scope, content, source_refs_json, created_at, updated_at
+      ) VALUES (@id, @project_id, @scope, @content, @source_refs_json, @created_at, @updated_at)
+    `).run({
+      id: item.id,
+      project_id: item.projectId,
+      scope: item.scope,
+      content: item.content,
+      source_refs_json: JSON.stringify(item.sourceRefs),
+      created_at: item.createdAt,
+      updated_at: item.updatedAt,
+    });
+  }
+
+  private saveReceiptRow(item: ProviderReceipt): void {
+    this.db.prepare(`
+      INSERT OR REPLACE INTO provider_receipts (id, run_id, segment, provider_json, receipt_json, created_at)
+      VALUES (@id, @run_id, @segment, @provider_json, @receipt_json, @created_at)
+    `).run({
+      id: item.id,
+      run_id: item.runId,
+      segment: item.segment ?? null,
+      provider_json: JSON.stringify(item.provider),
+      receipt_json: JSON.stringify(item.receipt),
+      created_at: item.createdAt,
+    });
+  }
+
+  saveProductBuilderEntities(bundle: ProductBuilderEntityBundle): void {
+    this.transaction(() => {
+      for (const item of bundle.handoffs) this.saveHandoffRow(item);
+      this.saveApprovalRow(bundle.approval);
+      for (const item of bundle.sources) this.saveSourceRow(item);
+      for (const item of bundle.artifacts) this.saveArtifactRow(item);
+      for (const item of bundle.memories ?? []) this.saveMemoryRow(item);
+      for (const item of bundle.receipts ?? []) this.saveReceiptRow(item);
+    });
+  }
+
+  listHandoffs(): HandoffEnvelope[] {
+    return this.db.prepare('SELECT * FROM handoffs ORDER BY created_at, id').all().map((row: any) => ({
+      id: row.id,
+      fromBotId: row.from_bot_id,
+      toBotId: row.to_bot_id,
+      objective: row.objective,
+      inputRefs: JSON.parse(row.input_refs_json),
+      outputSchema: row.output_schema,
+      constraints: JSON.parse(row.constraints_json),
+      approvalRequired: Boolean(row.approval_required),
+      status: row.status,
+      depth: Number(row.depth),
+      ...(row.parent_handoff_id ? { parentHandoffId: row.parent_handoff_id } : {}),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+      ...(row.result_refs_json ? { resultRefs: JSON.parse(row.result_refs_json) } : {}),
+      ...(row.error_json ? { error: JSON.parse(row.error_json) } : {}),
+    }));
+  }
+
+  listApprovals(projectId?: string): ApprovalRequest[] {
+    const rows = projectId
+      ? this.db.prepare('SELECT * FROM approval_requests WHERE project_id = @project_id ORDER BY requested_at, id').all({ project_id: projectId })
+      : this.db.prepare('SELECT * FROM approval_requests ORDER BY requested_at, id').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      projectId: row.project_id,
+      runId: row.run_id,
+      action: row.action,
+      description: row.description,
+      permissionTier: row.permission_tier,
+      status: row.status,
+      requestedAt: row.requested_at,
+      ...(row.resolved_at ? { resolvedAt: row.resolved_at } : {}),
+      ...(row.resolved_by ? { resolvedBy: row.resolved_by } : {}),
+      ...(row.decision_reason ? { decisionReason: row.decision_reason } : {}),
+      ...(row.metadata_json ? { metadata: JSON.parse(row.metadata_json) } : {}),
+    }));
+  }
+
+  listSources(projectId?: string): Source[] {
+    const rows = projectId
+      ? this.db.prepare('SELECT * FROM sources WHERE project_id = @project_id ORDER BY retrieved_at, id').all({ project_id: projectId })
+      : this.db.prepare('SELECT * FROM sources ORDER BY retrieved_at, id').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      projectId: row.project_id,
+      uri: row.uri,
+      ...(row.title ? { title: row.title } : {}),
+      ...(row.excerpt ? { excerpt: row.excerpt } : {}),
+      retrievedAt: row.retrieved_at,
+      ...(row.metadata_json ? { metadata: JSON.parse(row.metadata_json) } : {}),
+    }));
+  }
+
+  listArtifacts(projectId?: string): Artifact[] {
+    const rows = projectId
+      ? this.db.prepare('SELECT * FROM artifacts WHERE project_id = @project_id ORDER BY created_at, id').all({ project_id: projectId })
+      : this.db.prepare('SELECT * FROM artifacts ORDER BY created_at, id').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      projectId: row.project_id,
+      runId: row.run_id,
+      kind: row.kind,
+      name: row.name,
+      contentType: row.content_type,
+      content: row.content,
+      sourceRefs: JSON.parse(row.source_refs_json),
+      createdAt: row.created_at,
+    }));
+  }
+
+  listMemories(projectId?: string): MemoryItem[] {
+    const rows = projectId
+      ? this.db.prepare('SELECT * FROM memory_items WHERE project_id = @project_id ORDER BY updated_at, id').all({ project_id: projectId })
+      : this.db.prepare('SELECT * FROM memory_items ORDER BY updated_at, id').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      projectId: row.project_id,
+      scope: row.scope,
+      content: row.content,
+      sourceRefs: JSON.parse(row.source_refs_json),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    }));
+  }
+
+  listReceipts(runId?: string): ProviderReceipt[] {
+    const rows = runId
+      ? this.db.prepare('SELECT * FROM provider_receipts WHERE run_id = @run_id ORDER BY created_at, id').all({ run_id: runId })
+      : this.db.prepare('SELECT * FROM provider_receipts ORDER BY created_at, id').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      runId: row.run_id,
+      ...(row.segment === null ? {} : { segment: Number(row.segment) }),
+      provider: JSON.parse(row.provider_json),
+      receipt: JSON.parse(row.receipt_json),
+      createdAt: row.created_at,
+    }));
+  }
 }
 
 export type SqliteRunStoreHandle = {

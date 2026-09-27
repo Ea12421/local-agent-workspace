@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m10-05-product-builder-persistence-pass",
+  "phase": "m10-05-typed-entity-pass",
   "progress": {
-    "completed_units": 33,
-    "total_units": 33
+    "completed_units": 34,
+    "total_units": 34
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -64,8 +64,8 @@
     "used": 0,
     "blocking_corrections_left": 1
   },
-  "blocked_reason": "M10-05 仍需 Handoff/Approval/Artifact/Source/Memory/ProviderReceipt typed persistence 和完整 HTTP 读写；M10-04 JSONL 导入导出、M10-06 kill/restart、规模验证仍未完成；M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
-  "next_action": "完成 M10-05 剩余 typed persistence：Handoff、Approval、Artifact、Source、Memory、ProviderReceipt，并补对应 HTTP 读写路由；不复制 packages/core 业务逻辑。",
-  "last_evidence": "2026-09-27：Product Builder 默认 continuity 已切到共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等记录同一事务提交。重开数据库后 replay 跳过 10 个 checkpoint；HTTP 连续 preview 第二次返回 created=0/skipped=10。typecheck、Product Builder/HTTP 专项 3/3、全套等价 Node tests 25/25、diff check 通过。",
-  "updated_at": "2026-09-27T20:02:13+08:00"
+  "blocked_reason": "M10-05 仍需 Project/BotProfile/Skill typed persistence、完整 HTTP 读写和持久化审批/重试/取消路径；M10-04 JSONL 导入导出、M10-06 kill/restart、规模验证仍未完成；M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
+  "next_action": "实现 Project/BotProfile/Skill typed repositories，并让 HTTP 提供持久化实体摘要和审批/重试/取消读写；不复制 packages/core 业务逻辑。",
+  "last_evidence": "2026-09-27：SqliteEntityStore 已接入 Product Builder continuity；4 个 Handoff、1 个 Approval、1 个 Source、5 个 Artifact、1 个 Provider receipt 可写入并重开回读，replay 不重复实体。typecheck、Product Builder/HTTP 专项 3/3、全套等价 Node tests 25/25、diff check 通过。Project/BotProfile/Skill typed repositories 和完整 HTTP 读写仍未完成。",
+  "updated_at": "2026-09-27T20:16:21+08:00"
 }

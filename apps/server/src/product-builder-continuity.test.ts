@@ -40,6 +40,11 @@ test('Product Builder uses one SQLite continuity source and replays after reopen
   assert.equal(first.createdSnapshots, 10);
   assert.equal(firstStores.eventLog.backend, 'sqlite');
   assert.equal(typeof firstStores.eventLog.checkpoint, 'function');
+  assert.equal(firstStores.entityStore?.listHandoffs().length, 4);
+  assert.equal(firstStores.entityStore?.listApprovals(input.projectId).length, 1);
+  assert.equal(firstStores.entityStore?.listSources(input.projectId).length, 1);
+  assert.equal(firstStores.entityStore?.listArtifacts(input.projectId).length, 5);
+  assert.equal(firstStores.entityStore?.listReceipts(input.runId).length, 1);
   firstStores.close?.();
 
   const reopenedStores = await defaultProductBuilderContinuityStores(dir);
@@ -48,6 +53,8 @@ test('Product Builder uses one SQLite continuity source and replays after reopen
   assert.equal(replay.skippedCheckpoints, 10);
   assert.equal((await reopenedStores.eventLog.readAll()).filter((event) => event.runId === input.runId).length, 20);
   assert.equal((await reopenedStores.snapshotStore.readAll()).filter((snapshot) => snapshot.runId === input.runId).length, 10);
+  assert.equal(reopenedStores.entityStore?.listArtifacts(input.projectId).length, 5);
+  assert.equal(reopenedStores.entityStore?.listReceipts(input.runId).length, 1);
   reopenedStores.close?.();
   await rm(dir, { recursive: true, force: true });
 });

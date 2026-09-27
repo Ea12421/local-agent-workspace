@@ -192,3 +192,11 @@
 - **验证**：重开数据库后 replay 跳过 10 个 checkpoint；HTTP 连续 preview 第二次返回 `created=0/skipped=10`；Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、typecheck 和 diff check 通过。
 - **边界**：Handoff、Approval、Artifact、Source、Memory、ProviderReceipt 还没有 typed entity repository；HTTP 其他读写路由、JSONL 导入导出和规模验证仍待完成。
 - **下一步**：补剩余 typed persistence 和完整 HTTP 读写。
+
+
+### 2026-09-27 M10-05 · typed entity persistence
+
+- **实现**：新增 `SqliteEntityStore`，将 Product Builder 的 Handoff、ApprovalRequest、Source、Artifact 和 ProviderReceipt 写入 SQLite；replay 时仅在本轮创建 checkpoint 才写实体 bundle，避免随机 Artifact 重复。
+- **验证**：实体写入、关闭重开回读和 replay 去重通过；Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、typecheck 和 diff check 通过。
+- **边界**：Project、BotProfile、Skill typed repositories、完整 HTTP 实体读写、JSONL 导入导出和规模验证仍待完成。
+- **下一步**：补三类基础实体 repository，再接持久化实体摘要和审批/重试/取消 HTTP 路由。

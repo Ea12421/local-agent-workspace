@@ -65,7 +65,7 @@
 - M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`。
 - M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`。
 - M10-03 当前为 PARTIAL：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；runtime 已切换到 SQLite 默认路径，重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；全实体 typed CRUD、长时规模和 Product Builder 完整接入仍未完成。
-- M10-05 第一段已完成：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，重开后 replay 跳过 10 个 checkpoint；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`；Handoff/Approval/Artifact/Source/Memory/ProviderReceipt typed persistence 和完整 HTTP 读写仍未完成。
+- M10-05 当前为 PARTIAL：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，Handoff/Approval/Artifact/Source/ProviderReceipt typed round-trip 已通过，重开后 replay 跳过 10 个 checkpoint；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`；Project/BotProfile/Skill typed repositories 和完整 HTTP 读写仍未完成。
 
 ## 当前卡点
 
@@ -80,7 +80,7 @@
 
 ## 当前唯一下一步
 
-完成 M10-05 剩余 typed persistence：Handoff、Approval、Artifact、Source、Memory、ProviderReceipt，并补对应 HTTP 读写路由；不复制 `packages/core` 业务逻辑。
+实现 Project/BotProfile/Skill typed repositories，并让 HTTP 提供持久化实体摘要和审批/重试/取消读写；不复制 `packages/core` 业务逻辑。
 
 ## 网络恢复后的下一步
 
