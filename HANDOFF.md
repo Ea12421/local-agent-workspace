@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层和 M10-02 schema/migration 已通过，Desktop 仍部分验证
-- 阶段：`m10-02-schema-migration-pass`
+- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层、M10-02 schema/migration 已通过，M10-03 RunStore 第一段为 PARTIAL，Desktop 仍部分验证
+- 阶段：`m10-03-sqlite-runstore-pass`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -51,6 +51,7 @@
   - `SPEC/08-persistence-architecture-decision.md`：长期 SQLite-first 决策、portable 边界和 M10 实施顺序
   - `validation/m10-01-sqlite-adapter-results.json`：SQLite adapter、驱动探针、20/20 测试与限制
   - `validation/m10-02-schema-migration-results.json`：schema v1、migration runner、21/21 测试、幂等 inspection 与限制
+  - `validation/m10-03-sqlite-runstore-results.json`：schema v2、单连接 RunStore、22/22 测试、重启/幂等边界与限制
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -98,11 +99,12 @@
 15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。SQLite-first 是长期运行时路线，JSONL 仅作 portable/demo/export/灾备。
 16. M10-01 SQLite 适配层已通过：全套等价 Node tests 20/20、typecheck、diff check；better-sqlite3 ABI 不匹配时由 node:sqlite 接管并返回显式 persistence mode。
 17. M10-02 schema/migration 已通过：schema v1、schema_meta、run_events、context_snapshots、run_segments、idempotency_keys 已验证，21/21 测试通过；失败注入、全实体事务、导入导出和恢复规模验证仍未完成。
-18. 当前唯一下一步是 M10-03 全实体 SQLite 事务与幂等；Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
+18. M10-03 第一段为 PARTIAL：schema v2、单连接 SqliteRunStore、Run/Event/idempotency/segment 事务和重启回读已验证，22/22 测试通过；runtime 接入、失败注入/并发/跨项目隔离和 Product Builder 完整接入仍未完成。
+19. 当前唯一下一步是把 SqliteRunStore 接入可恢复 runtime 默认路径并补专项失败验证；Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
 
 ### 当前唯一下一步
 
-实现 M10-03 全实体 SQLite 事务与幂等，先把 `run_segments`、`idempotency_keys` 接入 runtime/Product Builder，再补 Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 表。
+完成 M10-03 剩余：把 `SqliteRunStore` 接入可恢复 runtime 默认路径，补失败注入、并发幂等与跨项目隔离测试；Product Builder/HTTP 全量接入留到 M10-05。
 
 ## 重要文件
 
@@ -130,3 +132,10 @@
 - `apps/server/src/persistence.ts` 使用版本化 `SQLITE_MIGRATIONS`，通过 `schema_meta` 记录版本，并在迁移失败时回滚。
 - `validation/m10-02-schema-migration-results.json` 记录 schema v1、五类表、二次 inspection 幂等和 21/21 测试结果。
 - 当前不要把 schema v1 当作全实体持久化完成；下一步只接 M10-03 的事务与幂等。
+
+### 2026-09-27 M10-03 RunStore checkpoint
+
+- `RUN_STATE.json` 已推进到 `m10-03-sqlite-runstore-pass`；M10-03 只完成第一段，仍为 PARTIAL。
+- `apps/server/src/persistence.ts` 的 schema v2 增加领域表；`SqliteRunStore` 以单连接事务写入 Run、RunEvent、幂等记录和 Run segment。
+- `validation/m10-03-sqlite-runstore-results.json` 记录 22/22 全套测试、重启回读、同 key 重放和冲突边界。
+- 下一步是 runtime 默认接入和失败/并发/跨项目隔离专项；Product Builder/HTTP 完整接入留在 M10-05。

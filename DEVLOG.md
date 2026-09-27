@@ -159,3 +159,12 @@
 - **边界**：回滚分支已实现，但还没有失败注入测试；全实体事务、JSONL 导入导出、崩溃/跨进程/备份恢复和规模验证仍未完成。better-sqlite3 ABI 不匹配时继续由 `node:sqlite` 接管。
 - **证据**：`validation/m10-02-schema-migration-results.json`。
 - **下一步**：M10-03 全实体 SQLite 事务与幂等，先接入 `run_segments`、`idempotency_keys`，再扩展其余领域实体。
+
+
+### 2026-09-27 M10-03 · SQLite RunStore 第一段
+
+- **实现**：schema v2 增加 Project、Skill、BotProfile、Run、Handoff、Approval、Source、Artifact、Memory 和 Provider Receipt 表；新增单连接 `SqliteRunStore`，把 Run 创建、状态迁移、RunEvent 和 idempotency 记录放进同一事务，并提供 Run segment 写入与回读。
+- **验证**：typecheck、persistence 专项 8/8、全套等价 Node tests 22/22、diff check 通过；关闭并重新打开数据库后 Run、事件和 segment 可读回；同一个 key 重放返回原事件，不同 action 报冲突。
+- **边界**：现有 runtime 仍使用 `InMemoryRunStore`；Product Builder checkpoint 仍未通过该仓储原子写入；失败注入、并发、跨项目隔离、全实体 typed CRUD、导入导出和备份恢复仍待补。
+- **证据**：`validation/m10-03-sqlite-runstore-results.json`。
+- **下一步**：把 `SqliteRunStore` 接入可恢复 runtime 默认路径；Product Builder/HTTP 完整接入留到 M10-05。

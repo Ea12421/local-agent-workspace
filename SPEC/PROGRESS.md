@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`m10-02-schema-migration-pass-m8-04-quality-blocked-desktop-partial`
+`m10-03-sqlite-runstore-pass-m8-04-quality-blocked-desktop-partial`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -63,7 +63,8 @@
 - M10-01 适配层已完成：`SqliteContextSnapshotStore`、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、`node:sqlite` 兼容驱动和 HTTP `persistence.mode` 回执已落地；runtime 与 Product Builder 不再硬编码 JSONL 默认路径。
 - M10-01 验证：全套等价 Node tests 20/20、typecheck 和 diff check 通过；当前 better-sqlite3 二进制与 Node 22 ABI 不匹配，已由 node:sqlite 接管，不再静默失败。
 - M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`。
-- M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`；失败注入和全实体事务仍未完成。
+- M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`。
+- M10-03 第一段已完成：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；重启回读、幂等重放和冲突专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；runtime 默认接入、失败注入/并发测试和 Product Builder 完整接入仍未完成。
 
 ## 当前卡点
 
@@ -78,7 +79,7 @@
 
 ## 当前唯一下一步
 
-实现 M10-03 全实体 SQLite 事务与幂等，先把 `run_segments`、`idempotency_keys` 接入 runtime/Product Builder，再补 Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 表。
+完成 M10-03 剩余：把 `SqliteRunStore` 接入可恢复 runtime 默认路径，补失败注入、并发幂等与跨项目隔离测试；Product Builder/HTTP 全量接入留到 M10-05。
 
 ## 网络恢复后的下一步
 

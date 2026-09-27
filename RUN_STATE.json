@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m10-02-schema-migration-pass",
+  "phase": "m10-03-sqlite-runstore-pass",
   "progress": {
-    "completed_units": 29,
-    "total_units": 29
+    "completed_units": 30,
+    "total_units": 30
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -64,8 +64,8 @@
     "used": 0,
     "blocking_corrections_left": 1
   },
-  "blocked_reason": "M10-03 全实体事务、M10-04 JSONL 导入导出、M10-06 跨进程/崩溃/备份恢复验证仍未完成；M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
-  "next_action": "实现 M10-03 全实体 SQLite 事务与幂等，先把 run_segments、idempotency_keys 接入 runtime/Product Builder，再补 Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 表。",
-  "last_evidence": "2026-09-27：M10-02 版本化 SQLite schema 与 migration runner 已完成；schema_meta 记录版本 1，run_events/context_snapshots/run_segments/idempotency_keys 五类表可重启复用，二次 inspection 与首次结果一致。typecheck、全套等价 Node tests 21/21、diff check 通过。回滚分支已实现但尚未做失败注入测试。better-sqlite3 ABI 不匹配时仍由 node:sqlite 接管。",
+  "blocked_reason": "M10-03 仍需接入可恢复 runtime、补失败注入/并发/跨项目隔离测试；M10-04 JSONL 导入导出、M10-06 跨进程/崩溃/备份恢复验证仍未完成；M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
+  "next_action": "完成 M10-03 剩余：把 SqliteRunStore 接入可恢复 runtime 默认路径，补失败注入、并发幂等与跨项目隔离测试；Product Builder/HTTP 全量接入留到 M10-05。",
+  "last_evidence": "2026-09-27：M10-03 第一段已完成 schema v2 和单连接 SqliteRunStore；Run、RunEvent、幂等记录在同一事务中，Run segment 可重启回读，同 key 重放不追加事件，冲突会失败。typecheck、persistence 8/8、全套等价 Node tests 22/22、diff check 通过。现有 runtime 仍使用 InMemoryRunStore，Product Builder checkpoint 尚未接入该事务仓储。",
   "updated_at": "2026-09-27T17:28:20+08:00"
 }

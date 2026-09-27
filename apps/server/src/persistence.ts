@@ -1,7 +1,9 @@
 import { appendFile, mkdir, readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
-import type { ContextSnapshot } from '../../../packages/core/src/types.ts';
+import { createRunEventId, transitionRun } from '../../../packages/core/src/index.ts';
+import type { RunStore } from '../../../packages/core/src/run-store.ts';
+import type { ContextSnapshot, CreateRunInput, ProviderIdentity, Run, RunAction, RunEvent, RunId, RunSegment, RunTransitionOptions, RunTransitionResult } from '../../../packages/core/src/types.ts';
 
 export type PersistedEvent = Record<string, unknown>;
 
@@ -173,7 +175,7 @@ export class JsonlContextSnapshotStore implements ContextSnapshotStore {
   }
 }
 
-export const SQLITE_SCHEMA_VERSION = 1;
+export const SQLITE_SCHEMA_VERSION = 2;
 
 type SqliteMigration = { version: number; name: string; sql: string };
 
@@ -239,6 +241,143 @@ export const SQLITE_MIGRATIONS: SqliteMigration[] = [
       );
       CREATE INDEX IF NOT EXISTS idx_idempotency_scope_resource
         ON idempotency_keys(scope, resource_id);
+    `,
+  },
+  {
+    version: 2,
+    name: 'domain-entity-tables-and-run-store',
+    sql: `
+      CREATE TABLE IF NOT EXISTS projects (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        workspace_path TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        archived_at TEXT
+      );
+      CREATE TABLE IF NOT EXISTS skills (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT NOT NULL,
+        version TEXT NOT NULL,
+        instructions TEXT NOT NULL,
+        input_schema_json TEXT,
+        output_schema_json TEXT,
+        enabled INTEGER NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS bot_profiles (
+        id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        description TEXT NOT NULL,
+        responsibility TEXT NOT NULL,
+        input_schema_json TEXT NOT NULL,
+        output_schema_json TEXT NOT NULL,
+        skill_ids_json TEXT NOT NULL,
+        tool_policy_json TEXT NOT NULL,
+        provider_policy_json TEXT NOT NULL,
+        memory_policy_json TEXT NOT NULL,
+        approval_policy_json TEXT NOT NULL,
+        enabled INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        disabled_at TEXT
+      );
+      CREATE INDEX IF NOT EXISTS idx_bot_profiles_project ON bot_profiles(project_id, updated_at);
+
+      CREATE TABLE IF NOT EXISTS runs (
+        id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        bot_id TEXT NOT NULL,
+        request_json TEXT NOT NULL,
+        status TEXT NOT NULL,
+        version INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        started_at TEXT,
+        completed_at TEXT,
+        waiting_reason TEXT,
+        result_json TEXT,
+        error_json TEXT
+      );
+      CREATE INDEX IF NOT EXISTS idx_runs_project_updated ON runs(project_id, updated_at, id);
+
+      CREATE TABLE IF NOT EXISTS handoffs (
+        id TEXT PRIMARY KEY,
+        from_bot_id TEXT NOT NULL,
+        to_bot_id TEXT NOT NULL,
+        objective TEXT NOT NULL,
+        input_refs_json TEXT NOT NULL,
+        output_schema TEXT NOT NULL,
+        constraints_json TEXT NOT NULL,
+        approval_required INTEGER NOT NULL,
+        status TEXT NOT NULL,
+        depth INTEGER NOT NULL,
+        parent_handoff_id TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        result_refs_json TEXT,
+        error_json TEXT
+      );
+      CREATE TABLE IF NOT EXISTS approval_requests (
+        id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        run_id TEXT NOT NULL,
+        action TEXT NOT NULL,
+        description TEXT NOT NULL,
+        permission_tier TEXT NOT NULL,
+        status TEXT NOT NULL,
+        requested_at TEXT NOT NULL,
+        resolved_at TEXT,
+        resolved_by TEXT,
+        decision_reason TEXT,
+        metadata_json TEXT
+      );
+      CREATE INDEX IF NOT EXISTS idx_approval_requests_run_status ON approval_requests(run_id, status, requested_at);
+
+      CREATE TABLE IF NOT EXISTS sources (
+        id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        uri TEXT NOT NULL,
+        title TEXT,
+        excerpt TEXT,
+        retrieved_at TEXT NOT NULL,
+        metadata_json TEXT
+      );
+      CREATE TABLE IF NOT EXISTS artifacts (
+        id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        run_id TEXT NOT NULL,
+        kind TEXT NOT NULL,
+        name TEXT NOT NULL,
+        content_type TEXT NOT NULL,
+        content TEXT NOT NULL,
+        source_refs_json TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_artifacts_project_created ON artifacts(project_id, created_at, id);
+
+      CREATE TABLE IF NOT EXISTS memory_items (
+        id TEXT PRIMARY KEY,
+        project_id TEXT NOT NULL,
+        scope TEXT NOT NULL,
+        content TEXT NOT NULL,
+        source_refs_json TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_memory_items_project_scope ON memory_items(project_id, scope, updated_at);
+
+      CREATE TABLE IF NOT EXISTS provider_receipts (
+        id TEXT PRIMARY KEY,
+        run_id TEXT NOT NULL,
+        segment INTEGER,
+        provider_json TEXT NOT NULL,
+        receipt_json TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_provider_receipts_run_created ON provider_receipts(run_id, created_at, id);
     `,
   },
 ];
@@ -428,4 +567,251 @@ export async function openEventLog(filePath: string): Promise<EventLogHandle> {
     };
   }
   return { backend: 'jsonl', mode: 'portable', reason: opened.reason, log: new JsonlEventLog(portablePath(filePath)) };
+}
+
+function optionalJson<T>(value: unknown): T | undefined {
+  return value === null || value === undefined ? undefined : JSON.parse(String(value)) as T;
+}
+
+function runFromRow(row: Record<string, unknown>): Run {
+  return {
+    id: row.id as Run['id'],
+    projectId: row.project_id as Run['projectId'],
+    botId: row.bot_id as Run['botId'],
+    request: JSON.parse(String(row.request_json)) as Run['request'],
+    status: row.status as Run['status'],
+    version: Number(row.version),
+    createdAt: String(row.created_at),
+    updatedAt: String(row.updated_at),
+    ...(row.started_at ? { startedAt: String(row.started_at) } : {}),
+    ...(row.completed_at ? { completedAt: String(row.completed_at) } : {}),
+    ...(row.waiting_reason ? { waitingReason: String(row.waiting_reason) } : {}),
+    ...(optionalJson<Run['result']>(row.result_json) !== undefined ? { result: optionalJson<Run['result']>(row.result_json) } : {}),
+    ...(optionalJson<Run['error']>(row.error_json) !== undefined ? { error: optionalJson<Run['error']>(row.error_json) } : {}),
+  };
+}
+
+function eventFromRow(row: Record<string, unknown>): RunEvent {
+  return {
+    id: row.id as RunEvent['id'],
+    runId: row.run_id as RunEvent['runId'],
+    sequence: Number(row.sequence),
+    type: row.type as RunEvent['type'],
+    occurredAt: String(row.occurred_at),
+    actor: JSON.parse(String(row.actor_json)),
+    data: JSON.parse(String(row.data_json)),
+    ...(row.correlation_id ? { correlationId: String(row.correlation_id) } : {}),
+  } as RunEvent;
+}
+
+/**
+ * SQLite RunStore used by the M10 transactional boundary. A single database
+ * connection owns Run, RunEvent and idempotency writes so a replay cannot
+ * leave a state row without its event (or the reverse).
+ */
+export class SqliteRunStore implements RunStore {
+  readonly backend = 'sqlite' as const;
+  private readonly db: SqliteDatabase;
+
+  constructor(filePath: string, database?: SqliteDatabase) {
+    const opened = database ? { db: database } : openSqliteDatabase(filePath);
+    if (!opened.db) throw new Error('SQLite driver unavailable; use openEventLog() for explicit portable fallback');
+    this.db = opened.db;
+    runSqliteMigrations(this.db);
+  }
+
+  private transaction<T>(work: () => T): T {
+    this.db.exec('BEGIN IMMEDIATE');
+    try {
+      const result = work();
+      this.db.exec('COMMIT');
+      return result;
+    } catch (error) {
+      try { this.db.exec('ROLLBACK'); } catch { /* preserve the transaction error */ }
+      throw error;
+    }
+  }
+
+  async createRun(input: CreateRunInput): Promise<Run> {
+    return this.transaction(() => {
+      const now = input.now ?? new Date().toISOString();
+      const run: Run = {
+        id: input.id ?? `run_${Date.now().toString(36)}` as Run['id'],
+        projectId: input.projectId,
+        botId: input.botId,
+        request: JSON.parse(JSON.stringify(input.request)),
+        status: 'queued',
+        version: 0,
+        createdAt: now,
+        updatedAt: now,
+      };
+      const existing = this.db.prepare('SELECT id FROM runs WHERE id = @id').get({ id: run.id });
+      if (existing) throw new Error(`Run already exists: ${run.id}`);
+      this.db.prepare(`
+        INSERT INTO runs (id, project_id, bot_id, request_json, status, version, created_at, updated_at)
+        VALUES (@id, @project_id, @bot_id, @request_json, @status, @version, @created_at, @updated_at)
+      `).run({
+        id: run.id,
+        project_id: run.projectId,
+        bot_id: run.botId,
+        request_json: JSON.stringify(run.request),
+        status: run.status,
+        version: run.version,
+        created_at: run.createdAt,
+        updated_at: run.updatedAt,
+      });
+      const event: RunEvent = {
+        id: createRunEventId(),
+        runId: run.id,
+        sequence: 1,
+        type: 'run.created',
+        occurredAt: now,
+        actor: { type: 'system' },
+        data: { status: 'queued', projectId: run.projectId, botId: run.botId, objective: run.request.objective },
+      };
+      this.insertEvent(event);
+      return JSON.parse(JSON.stringify(run)) as Run;
+    });
+  }
+
+  async getRun(runId: RunId): Promise<Run | undefined> {
+    const row = this.db.prepare('SELECT * FROM runs WHERE id = @id').get({ id: runId });
+    return row ? runFromRow(row as Record<string, unknown>) : undefined;
+  }
+
+  async listRuns(projectId?: string): Promise<Run[]> {
+    const rows = projectId
+      ? this.db.prepare('SELECT * FROM runs WHERE project_id = @project_id ORDER BY created_at, id').all({ project_id: projectId })
+      : this.db.prepare('SELECT * FROM runs ORDER BY created_at, id').all();
+    return rows.map((row) => runFromRow(row as Record<string, unknown>));
+  }
+
+  async listEvents(runId: RunId): Promise<RunEvent[]> {
+    return this.db.prepare('SELECT * FROM run_events WHERE run_id = @run_id ORDER BY sequence').all({ run_id: runId })
+      .map((row) => eventFromRow(row as Record<string, unknown>));
+  }
+
+  appendSegment(segment: RunSegment): void {
+    this.transaction(() => {
+      this.db.prepare(`
+        INSERT INTO run_segments (id, run_id, segment, status, context_snapshot_id, provider_json, started_at, completed_at)
+        VALUES (@id, @run_id, @segment, @status, @context_snapshot_id, @provider_json, @started_at, @completed_at)
+      `).run({
+        id: segment.id,
+        run_id: segment.runId,
+        segment: segment.sequence,
+        status: segment.status,
+        context_snapshot_id: segment.contextSnapshotId ?? null,
+        provider_json: JSON.stringify(segment.provider),
+        started_at: segment.startedAt,
+        completed_at: segment.completedAt ?? null,
+      });
+    });
+  }
+
+  listSegments(runId: RunId): RunSegment[] {
+    return this.db.prepare('SELECT * FROM run_segments WHERE run_id = @run_id ORDER BY segment').all({ run_id: runId })
+      .map((row) => {
+        const item = row as Record<string, unknown>;
+        return {
+          id: String(item.id),
+          runId: item.run_id as RunId,
+          sequence: Number(item.segment),
+          status: item.status as RunSegment['status'],
+          provider: JSON.parse(String(item.provider_json)) as ProviderIdentity,
+          ...(item.context_snapshot_id ? { contextSnapshotId: String(item.context_snapshot_id) as RunSegment['contextSnapshotId'] } : {}),
+          startedAt: String(item.started_at),
+          ...(item.completed_at ? { completedAt: String(item.completed_at) } : {}),
+        };
+      });
+  }
+
+  private insertEvent(event: RunEvent): void {
+    this.db.prepare(`
+      INSERT INTO run_events (id, run_id, sequence, type, occurred_at, actor_json, data_json, correlation_id)
+      VALUES (@id, @run_id, @sequence, @type, @occurred_at, @actor_json, @data_json, @correlation_id)
+    `).run({
+      id: event.id,
+      run_id: event.runId,
+      sequence: event.sequence,
+      type: event.type,
+      occurred_at: event.occurredAt,
+      actor_json: JSON.stringify(event.actor),
+      data_json: JSON.stringify(event.data),
+      correlation_id: event.correlationId ?? null,
+    });
+  }
+
+  async appendEvent(event: RunEvent): Promise<void> {
+    this.transaction(() => {
+      const run = this.db.prepare('SELECT id FROM runs WHERE id = @id').get({ id: event.runId });
+      if (!run) throw new Error(`Cannot append event for unknown run: ${event.runId}`);
+      const row = this.db.prepare('SELECT MAX(sequence) AS sequence FROM run_events WHERE run_id = @run_id').get({ run_id: event.runId }) as { sequence?: unknown } | undefined;
+      const expected = Number(row?.sequence ?? 0) + 1;
+      if (event.sequence !== expected) throw new Error(`Event sequence must be ${expected}, received ${event.sequence}`);
+      const duplicate = this.db.prepare('SELECT id FROM run_events WHERE id = @id').get({ id: event.id });
+      if (duplicate) throw new Error(`Duplicate event id: ${event.id}`);
+      this.insertEvent(event);
+    });
+  }
+
+  async transition(runId: RunId, action: RunAction, options: RunTransitionOptions = {}): Promise<RunTransitionResult> {
+    return this.transaction(() => {
+      const idempotencyKey = options.idempotencyKey;
+      const storageKey = idempotencyKey ? `${runId}:${idempotencyKey}` : undefined;
+      if (storageKey) {
+        const previous = this.db.prepare('SELECT result_json FROM idempotency_keys WHERE key = @key').get({ key: storageKey }) as { result_json?: unknown } | undefined;
+        if (previous) {
+          const stored = JSON.parse(String(previous.result_json)) as { action: RunAction; result: RunTransitionResult };
+          if (stored.action !== action) throw new Error(`Idempotency key already used for action ${stored.action}: ${idempotencyKey}`);
+          return stored.result;
+        }
+      }
+      const row = this.db.prepare('SELECT * FROM runs WHERE id = @id').get({ id: runId });
+      if (!row) throw new Error(`Unknown run: ${runId}`);
+      const current = runFromRow(row as Record<string, unknown>);
+      const sequenceRow = this.db.prepare('SELECT MAX(sequence) AS sequence FROM run_events WHERE run_id = @run_id').get({ run_id: runId }) as { sequence?: unknown } | undefined;
+      const result = transitionRun(current, action, options, Number(sequenceRow?.sequence ?? 0) + 1);
+      this.db.prepare(`
+        UPDATE runs SET status=@status, version=@version, updated_at=@updated_at,
+          started_at=@started_at, completed_at=@completed_at, waiting_reason=@waiting_reason,
+          result_json=@result_json, error_json=@error_json
+        WHERE id=@id
+      `).run({
+        id: result.run.id,
+        status: result.run.status,
+        version: result.run.version,
+        updated_at: result.run.updatedAt,
+        started_at: result.run.startedAt ?? null,
+        completed_at: result.run.completedAt ?? null,
+        waiting_reason: result.run.waitingReason ?? null,
+        result_json: result.run.result === undefined ? null : JSON.stringify(result.run.result),
+        error_json: result.run.error === undefined ? null : JSON.stringify(result.run.error),
+      });
+      this.insertEvent(result.event);
+      if (storageKey) {
+        this.db.prepare(`
+          INSERT INTO idempotency_keys (key, scope, resource_id, created_at, result_json)
+          VALUES (@key, @scope, @resource_id, @created_at, @result_json)
+        `).run({ key: storageKey, scope: 'run.transition', resource_id: String(runId), created_at: result.event.occurredAt, result_json: JSON.stringify({ action, result }) });
+      }
+      return result;
+    });
+  }
+
+  close(): void { this.db.close(); }
+}
+
+export type SqliteRunStoreHandle = {
+  backend: 'sqlite';
+  driver?: SqliteDriverName;
+  store: SqliteRunStore;
+  close: () => void;
+};
+
+export function openSqliteRunStore(filePath: string): SqliteRunStoreHandle {
+  const opened = openSqliteDatabase(filePath);
+  if (!opened.db) throw new Error(`SQLite driver unavailable: ${opened.reason ?? 'unknown reason'}`);
+  const store = new SqliteRunStore(filePath, opened.db);
+  return { backend: 'sqlite', driver: opened.driver, store, close: () => store.close() };
 }

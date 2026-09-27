@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import type { ContextLedger, RunEvent } from '../../../packages/core/src/types.ts';
 import { buildContextSnapshot } from '../../../packages/core/src/context.ts';
-import { JsonlContextSnapshotStore, JsonlEventLog, inspectSqliteSchema, openContextSnapshotStore, openEventLog } from './persistence.ts';
+import { JsonlContextSnapshotStore, JsonlEventLog, inspectSqliteSchema, openContextSnapshotStore, openEventLog, openSqliteRunStore, SQLITE_SCHEMA_VERSION } from './persistence.ts';
 
 test('persistence exposes SQLite boundary with a clean-checkout fallback', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-'));
@@ -140,9 +140,54 @@ test('SQLite schema migrations are versioned and idempotent', async () => {
     await rm(dir, { recursive: true, force: true });
     return;
   }
-  assert.equal(first.version, 1);
-  assert.deepEqual(first.tables, ['context_snapshots', 'idempotency_keys', 'run_events', 'run_segments', 'schema_meta']);
+  assert.equal(first.version, SQLITE_SCHEMA_VERSION);
+  assert.ok(first.tables.includes('context_snapshots'));
+  assert.ok(first.tables.includes('idempotency_keys'));
+  assert.ok(first.tables.includes('run_events'));
+  assert.ok(first.tables.includes('run_segments'));
+  assert.ok(first.tables.includes('runs'));
   const second = inspectSqliteSchema(filePath);
   assert.deepEqual(second, first);
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('SQLite RunStore atomically persists state, events, segments and idempotent transitions across reopen', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-run-store-'));
+  const filePath = path.join(dir, 'workspace.db');
+  const first = openSqliteRunStore(filePath);
+  const created = await first.store.createRun({
+    id: 'run-persisted-1' as any,
+    projectId: 'project-persisted-1' as any,
+    botId: 'bot-persisted-1' as any,
+    now: '2026-09-27T09:00:00.000Z',
+    request: { objective: '持久化运行', input: { idea: 'SQLite' } },
+  });
+  const started = await first.store.transition(created.id, 'start', { now: '2026-09-27T09:00:01.000Z', idempotencyKey: 'start-1' });
+  const replay = await first.store.transition(created.id, 'start', { idempotencyKey: 'start-1' });
+  assert.equal(replay.event.id, started.event.id);
+  await assert.rejects(() => first.store.transition(created.id, 'cancel', { idempotencyKey: 'start-1' }), /Idempotency key already used/);
+  first.store.appendSegment({
+    id: 'segment-persisted-1',
+    runId: created.id,
+    sequence: 1,
+    status: 'running',
+    provider: { harness: 'test', provider: 'fixture', model: 'fixture', authMode: 'local', billingSource: 'local', isMock: true },
+    startedAt: '2026-09-27T09:00:01.000Z',
+  });
+  assert.equal(first.store.listSegments(created.id).length, 1);
+  first.close();
+
+  const reopened = openSqliteRunStore(filePath);
+  assert.equal((await reopened.store.getRun(created.id))?.status, 'running');
+  assert.equal((await reopened.store.listEvents(created.id)).length, 2);
+  assert.equal(reopened.store.listSegments(created.id)[0]?.id, 'segment-persisted-1');
+  await assert.rejects(() => reopened.store.createRun({
+    id: created.id,
+    projectId: 'project-persisted-1' as any,
+    botId: 'bot-persisted-1' as any,
+    request: { objective: 'duplicate', input: {} },
+  }), /Run already exists/);
+  assert.equal((await reopened.store.listEvents(created.id)).length, 2);
+  reopened.close();
   await rm(dir, { recursive: true, force: true });
 });

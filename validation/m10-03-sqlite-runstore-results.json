@@ -1,0 +1,37 @@
+{
+  "record_version": "m10-03.sqlite-runstore-results.v1",
+  "executed_at": "2026-09-27T17:28:20+08:00",
+  "status": "PARTIAL_TRANSACTIONAL_RUNSTORE",
+  "implementation": [
+    "SQLite schema v2 for projects, skills, bot_profiles, runs, handoffs, approval_requests, sources, artifacts, memory_items and provider_receipts",
+    "single-connection SqliteRunStore",
+    "Run creation and RunEvent creation in one transaction",
+    "Run transition, RunEvent append and idempotency record in one transaction",
+    "Run segment append and restart readback",
+    "same-key replay returns the original transition; same-key different action fails"
+  ],
+  "commands": [
+    "node scripts/typecheck.mjs",
+    "node --experimental-strip-types --test apps/server/src/persistence.test.ts",
+    "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts",
+    "git diff --check"
+  ],
+  "results": {
+    "typecheck": "PASS",
+    "persistence_suite": { "passed": 8, "failed": 0 },
+    "full_suite": { "passed": 22, "failed": 0 },
+    "schema_version": 2,
+    "restart_readback": "PASS",
+    "idempotent_replay": "PASS",
+    "idempotency_conflict": "PASS",
+    "segment_readback": "PASS"
+  },
+  "limitations": [
+    "The existing runtime still uses InMemoryRunStore; the new repository is not the default control-plane store yet.",
+    "Product Builder continuity still records idempotency keys in event data and does not yet atomically write checkpoint, snapshot and idempotency rows through this store.",
+    "Project/Bot/Handoff/Approval/Source/Artifact/Memory/ProviderReceipt tables exist, but typed CRUD repositories and receipts are not implemented.",
+    "Failure-injection rollback, cross-process contention, crash recovery and backup/restore tests remain pending.",
+    "Schema v2 is persistence-contract evidence only; it does not prove model quality or real-world productivity."
+  ],
+  "next_action": "Finish M10-03 by wiring SqliteRunStore into the recoverable runtime path and adding rollback/concurrency/project-isolation tests; keep full Product Builder and HTTP integration in M10-05."
+}
