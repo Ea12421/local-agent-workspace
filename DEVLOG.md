@@ -283,3 +283,11 @@
 - **结论**：M8-07、M8-08、M8-11 证明了受控只读执行、来源白名单、原始回执和 Artifact 可追溯；M8-08 原始严格 JSON 曾为 PARTIAL，现以 embedded normalization 保留，不改写历史结论。
 - **未证明**：内容质量、人工修改量下降、成本/延迟收益、真人再次使用、多 Bot 优势、DeepSeek parity、Codex native resume 和 Electron 可见性。
 - **下一步**：冻结一个由用户本人完成的非敏感固定任务基线，测量 ChatGPT→手工整理→Codex 与 Agent Workspace 两条路径；不以主控代理时间或模型自评代替。
+
+### 2026-09-28 M8-13 · 真人基线卡冻结
+
+- **卡片**：`validation/m8-13-user-baseline-card-v1.md`。
+- **固定任务**：为 `personal-knowledge-mcp-mvp` 设计 fixture-only 离线验证报告下一步计划。
+- **两条路径**：当前 ChatGPT→手工整理→Codex，与 Agent Workspace 结构化路径，必须使用同一输入和同一成功标准。
+- **待记录**：真实耗时、手工步骤、人工修改、返工、来源可追溯性、中断恢复和再次使用意愿。
+- **状态**：`PENDING_USER_EXECUTION`；没有代填任何用户测量数据。
