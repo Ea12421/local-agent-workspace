@@ -92,7 +92,7 @@
 13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`；质量证据仍阻断。
 14. M8-05 已完成：3/3 真实本地状态任务通过预注册追踪门；一次真实 Codex provider 中断后，同一 `runId` 追加 Snapshot 和 resume segment 并成功收口。Recovery 内容本身因提示禁止读取命令而返回 blocked，已单独记录，不能写成业务任务完成。
 15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。M8-06 paired baseline 为 PARTIAL：保留 JSONL-first provisional recommendation，不执行 SQLite-first 迁移。
-16. JSONL 边界专项已通过：5/5 persistence tests、typecheck、diff check；证据为 `validation/m8-06-jsonl-failure-results.json`，只覆盖同进程契约。
+16. JSONL 边界专项已通过：5/5 persistence tests、19/19 全套等价 Node tests、typecheck、diff check；证据为 `validation/m8-06-jsonl-failure-results.json`，只覆盖同进程契约。`pnpm test:all` 仅因 Corepack 用户缓存权限未运行。
 17. Git 已在本地建立 `main` 基线并提交；当前没有 remote，不 push。
 
 ### 当前唯一下一步

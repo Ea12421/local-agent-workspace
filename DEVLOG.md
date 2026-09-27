@@ -138,6 +138,6 @@
 ### 2026-09-27 M8-06 · JSONL 边界专项
 
 - **实现**：`apps/server/src/persistence.test.ts` 新增尾行损坏、同进程并发 append 和重载后 latest 重建测试；夹具时间统一为固定宽度 ISO 秒，避免字符串排序制造假失败。
-- **结果**：`node scripts/typecheck.mjs`、`node --experimental-strip-types --test apps/server/src/persistence.test.ts`（5/5）和 `git diff --check` 均通过；损坏尾行按 `SyntaxError` fail-closed，20 个并发快照完整写入且按 project/run 重建最新记录。
+- **结果**：`node scripts/typecheck.mjs`、专项 persistence tests（5/5）、全套等价 Node 测试（19/19）和 `git diff --check` 均通过；损坏尾行按 `SyntaxError` fail-closed，20 个并发快照完整写入且按 project/run 重建最新记录。`pnpm test:all` 的 Corepack wrapper 受用户缓存权限阻断，未把它写成代码失败。
 - **边界**：这是 JSONL-first 的有界契约检查，只覆盖同进程写队列；未证明跨进程锁、长时吞吐、M8-04 质量或现实提效。证据为 `validation/m8-06-jsonl-failure-results.json`。
 - **下一步**：保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark。

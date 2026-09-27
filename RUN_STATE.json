@@ -66,6 +66,6 @@
   },
   "blocked_reason": "M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone、Codex 原生 resume 和多 Bot/人工提效仍未验证。M8-05 只通过窄范围真实输入追踪和一次真实 provider 同 Run 恢复 smoke，未证明业务质量或稳定提效。",
   "next_action": "保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark。owner willingness 仍为 UNKNOWN。",
-  "last_evidence": "2026-09-27：M8-06 两条 arm 已执行且比较为 PARTIAL；随后 JSONL 边界专项通过。5/5 persistence tests、typecheck 和 diff check 通过：损坏尾行 fail-closed，同进程 20 次并发 append 完整，重载后按 project/run 重建 latest。该专项只覆盖同进程契约，不证明跨进程锁、长时吞吐、M8-04 质量或现实提效。",
+  "last_evidence": "2026-09-27：M8-06 两条 arm 已执行且比较为 PARTIAL；随后 JSONL 边界专项通过。5/5 persistence tests、19/19 全套等价 Node tests、typecheck 和 diff check 通过：损坏尾行 fail-closed，同进程 20 次并发 append 完整，重载后按 project/run 重建 latest。pnpm test:all 仅因 Corepack 用户缓存权限未运行。该专项只覆盖同进程契约，不证明跨进程锁、长时吞吐、M8-04 质量或现实提效。",
   "updated_at": "2026-09-27T06:30:00+08:00"
 }

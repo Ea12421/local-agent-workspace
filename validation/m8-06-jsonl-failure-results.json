@@ -6,6 +6,7 @@
   "commands": [
     "node scripts/typecheck.mjs",
     "node --experimental-strip-types --test apps/server/src/persistence.test.ts",
+    "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts",
     "git diff --check"
   ],
   "results": {
@@ -21,6 +22,11 @@
         "Malformed trailing JSONL event fails closed with SyntaxError",
         "Twenty same-process concurrent snapshot appends remain complete and latest index rebuilds"
       ]
+    },
+    "full_suite": {
+      "passed": 19,
+      "failed": 0,
+      "note": "Equivalent Node command passed; pnpm wrapper was not used because Corepack cache permissions blocked its bootstrap."
     }
   },
   "evidence": {
