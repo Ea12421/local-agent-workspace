@@ -206,3 +206,11 @@
 - **实现**：Project、Skill、BotProfile typed persistence roundtrip 已接通；新增 `GET /api/persistence/entities` 汇总持久化实体；approve route 已验证持久化写入。
 - **验证**：`node scripts/typecheck.mjs`、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 通过。
 - **边界**：retry/cancel 与完整 HTTP entity create/read/update 路由仍待完成；下一阶段是 M10-04 JSONL 导入导出，之后再做 M10-06 崩溃恢复和规模验证。
+
+
+### 2026-09-27 M10-05 · HTTP routes 收口
+
+- **实现**：完成 Project/Skill/BotProfile POST/GET/PATCH 持久化路由；POST `/api/runs` 返回真实 runtime Run ID；cancel route 经 `SqliteRunStore` 持久化，未知 Run 返回 404；retry route 经状态机事务覆盖 failed→queued、幂等重放和非法状态 409；entity summary 增加 ProviderReceipt。
+- **验证**：typecheck、HTTP smoke、全套等价 Node tests `25/25`、`git diff --check` 全部通过。
+- **边界**：M8-04 质量证据、Electron 可见性、DeepSeek、literal GitHub clone 和 Codex 原生 resume 的既有阻断保持不变。
+- **唯一下一步**：实施 M10-04 JSONL import/export（导入、导出、校验、重建）；M10-06 崩溃恢复与规模验证后置。

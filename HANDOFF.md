@@ -8,7 +8,7 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层、M10-02 schema/migration 已通过，M10-03 RunStore 边界已通过但整体仍为 PARTIAL；M10-05 Product Builder SQLite checkpoint、全 typed entity round-trip、entity summary 和 approve persistence 已通过，Desktop 仍部分验证
+- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层、M10-02 schema/migration 已通过，M10-03 RunStore 边界已通过但整体仍为 PARTIAL；M10-05 Product Builder SQLite checkpoint、全 typed entity round-trip、Project/Skill/BotProfile HTTP CRUD、Run create/cancel/retry、entity summary 和 approve persistence 已通过，Desktop 仍部分验证
 - 阶段：`m10-05-http-persistence-pass`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
@@ -101,11 +101,11 @@
 16. M10-01 SQLite 适配层已通过：全套等价 Node tests 20/20、typecheck、diff check；better-sqlite3 ABI 不匹配时由 node:sqlite 接管并返回显式 persistence mode。
 17. M10-02 schema/migration 已通过：schema v1、schema_meta、run_events、context_snapshots、run_segments、idempotency_keys 已验证，21/21 测试通过；失败注入、全实体事务、导入导出和恢复规模验证仍未完成。
 18. M10-03 仍为 PARTIAL：schema v2、单连接 SqliteRunStore、Run/Event/idempotency/segment 事务、runtime 默认接入、重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离已验证，24/24 测试通过；全实体 typed CRUD、长时规模和 Product Builder 完整接入仍未完成。
-19. M10-05 当前为 PARTIAL：Product Builder checkpoint、ContextSnapshot、snapshot-created event、幂等行和 Handoff/Approval/Artifact/Source/ProviderReceipt typed round-trip 已验证，HTTP replay 已验证；Project/BotProfile/Skill typed repositories 和完整 HTTP 读写仍未完成。Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
+19. M10-05 已完成：Product Builder checkpoint、ContextSnapshot、snapshot-created event、幂等行和全 typed entity round-trip 已验证；Project/Skill/BotProfile POST/GET/PATCH、Run create、cancel、retry、entity summary 和 approve HTTP 持久化均已验证。Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
 
 ### 当前唯一下一步
 
-实现 Project/BotProfile/Skill typed repositories，并让 HTTP 提供持久化实体摘要和审批/重试/取消读写；不复制 `packages/core` 业务逻辑。
+实施 M10-04 JSONL import/export：导入、导出、校验与从导出重建；随后再做 M10-06 kill/restart、备份恢复与规模验证。
 
 ## 重要文件
 
@@ -171,4 +171,4 @@
 
 - `Project`、`Skill`、`BotProfile` typed persistence roundtrip 已 PASS；`GET /api/persistence/entities` entity summary 已 PASS；approve route persistence 已 PASS。
 - typecheck、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 均通过。
-- 当前唯一下一步：完成持久化 retry/cancel 与完整 HTTP entity routes；随后进入 M10-04 JSONL import/export。
+- 当前唯一下一步：实施 M10-04 JSONL import/export（导入、导出、校验、重建）；M10-06 后置。

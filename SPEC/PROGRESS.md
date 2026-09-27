@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`m10-05-http-persistence-pass-m8-04-quality-blocked-desktop-partial`
+`m10-05-http-persistence-pass-complete-m8-04-quality-blocked-desktop-partial`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -65,7 +65,7 @@
 - M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`。
 - M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`。
 - M10-03 当前为 PARTIAL：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；runtime 已切换到 SQLite 默认路径，重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；全实体 typed CRUD、长时规模和 Product Builder 完整接入仍未完成。
-- M10-05 当前为 PARTIAL：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，Handoff/Approval/Artifact/Source/ProviderReceipt typed round-trip 已通过，重开后 replay 跳过 10 个 checkpoint；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`；Project/BotProfile/Skill typed repositories 和完整 HTTP 读写仍未完成。
+- M10-05 已完成：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，全部 typed entity round-trip、Project/Skill/BotProfile POST/GET/PATCH、Run create/cancel/retry、entity summary 和 approve persistence 已通过；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`。M10-04 JSONL 导入导出仍未完成。
 
 ## 当前卡点
 
@@ -80,7 +80,7 @@
 
 ## 当前唯一下一步
 
-实现 Project/BotProfile/Skill typed repositories，并让 HTTP 提供持久化实体摘要和审批/重试/取消读写；不复制 `packages/core` 业务逻辑。
+实施 M10-04 JSONL import/export：导入、导出、校验与从导出重建；随后再做 M10-06 kill/restart、备份恢复与规模验证。
 
 ## 网络恢复后的下一步
 
@@ -94,9 +94,10 @@ pnpm package:mac
 
 随后按 `IMPLEMENTATION-BACKLOG.md` 的 M8 顺序继续，不重新设计产品。
 
-### 2026-09-27 M10-05 · Project/Skill/BotProfile 与 HTTP 摘要
+### 2026-09-27 M10-05 · HTTP persistence routes 收口
 
 - **实现**：Project、Skill、BotProfile typed persistence roundtrip 已通过；新增 `GET /api/persistence/entities` entity summary，并验证 approve route 写入持久化状态。
 - **验证**：`node scripts/typecheck.mjs`、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 均通过。
-- **边界**：retry/cancel 与完整 HTTP entity create/read/update 路由仍待补；随后进入 M10-04 JSONL 导入导出，再做 M10-06 恢复与规模验证。
+- **验证**：typecheck、HTTP smoke、全套等价 Node tests `25/25`、`git diff --check` 均通过。
+- **边界**：M10-04 JSONL 导入导出、M10-06 恢复与规模验证仍待完成；M8-04 质量证据阻断保持不变。
 - **证据**：`validation/m10-05-product-builder-persistence-results.json`。

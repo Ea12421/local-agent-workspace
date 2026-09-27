@@ -1,7 +1,7 @@
 {
   "record_version": "m10-05.product-builder-persistence-results.v1",
-  "executed_at": "2026-09-27T20:16:21+08:00",
-  "status": "PARTIAL_TYPED_ENTITY_PERSISTENCE",
+  "executed_at": "2026-09-27T20:28:41+08:00",
+  "status": "PASS_TYPED_ENTITY_HTTP_PERSISTENCE",
   "implementation": [
     "shared SQLite connection for Product Builder event log and ContextSnapshot store",
     "atomic checkpoint transaction for checkpoint event, ContextSnapshot, snapshot-created event and idempotency row",
@@ -10,7 +10,12 @@
     "typed SQLite entity persistence for Handoff, ApprovalRequest, Source, Artifact and ProviderReceipt",
     "replay guard prevents newly generated Product Builder artifacts from duplicating persisted rows",
     "typed SQLite persistence for Project, Skill and BotProfile entities",
-    "persisted entity summary plus approval HTTP write coverage"
+    "persisted entity summary plus approval HTTP write coverage",
+    "HTTP Project/Skill/BotProfile POST/GET/PATCH routes backed by typed SQLite repositories",
+    "POST /api/runs returns the persisted runtime Run ID",
+    "cancel route uses SqliteRunStore and returns 404 for unknown Run IDs",
+    "retry route uses state-machine transaction with failed-to-queued transition, idempotent replay and illegal-state 409",
+    "entity summary includes ProviderReceipt rows"
   ],
   "commands": [
     "node scripts/typecheck.mjs",
@@ -35,12 +40,20 @@
     "replay_entity_deduplication": "PASS",
     "project_botprofile_skill_roundtrip": "PASS",
     "entity_summary_http": "PASS",
-    "approval_route_persistence": "PASS"
+    "approval_route_persistence": "PASS",
+    "http_entity_routes": "PASS",
+    "run_create_route_persistence": "PASS",
+    "cancel_route_persistence": "PASS",
+    "cancel_unknown_run_404": "PASS",
+    "retry_failed_to_queued": "PASS",
+    "retry_idempotent_replay": "PASS",
+    "retry_illegal_state_409": "PASS",
+    "entity_summary_receipts": "PASS"
   },
   "limitations": [
-    "Remaining HTTP coverage is retry/cancel and full entity create/read/update routes against persisted domain rows.",
-    "MemoryItem typed write is supported by the repository but Product Builder has no memory input in this workflow; JSONL import/export and long-running scale validation remain pending.",
-    "This is persistence and replay evidence, not model-quality or real-world productivity evidence."
+    "M10-04 JSONL import/export, validation and rebuild remain pending.",
+    "M10-06 kill/restart, backup recovery and long-running scale validation remain pending.",
+    "This is persistence and HTTP contract evidence, not model-quality or real-world productivity evidence."
   ],
-  "next_action": "Finish persisted retry/cancel and full HTTP entity routes, then implement M10-04 JSONL import/export before M10-06 recovery and scale validation."
+  "next_action": "Implement M10-04 JSONL import/export: import, export, validation and rebuild from export; then M10-06 recovery and scale validation."
 }

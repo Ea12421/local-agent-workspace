@@ -1136,6 +1136,10 @@ export class SqliteEntityStore {
     }));
   }
 
+  getProject(id: string): Project | undefined {
+    return this.listProjects().find((item) => item.id === id);
+  }
+
   listSkills(): Skill[] {
     return this.db.prepare('SELECT * FROM skills ORDER BY name, version, id').all().map((row: any) => ({
       id: row.id,
@@ -1147,6 +1151,10 @@ export class SqliteEntityStore {
       ...(row.output_schema_json ? { outputSchema: JSON.parse(row.output_schema_json) } : {}),
       enabled: Boolean(row.enabled),
     }));
+  }
+
+  getSkill(id: string): Skill | undefined {
+    return this.listSkills().find((item) => item.id === id);
   }
 
   listBotProfiles(projectId?: string): BotProfile[] {
@@ -1171,6 +1179,10 @@ export class SqliteEntityStore {
       updatedAt: row.updated_at,
       ...(row.disabled_at ? { disabledAt: row.disabled_at } : {}),
     }));
+  }
+
+  getBotProfile(id: string): BotProfile | undefined {
+    return this.listBotProfiles().find((item) => item.id === id);
   }
 
   resolveApproval(runId: string, status: ApprovalRequest['status'], resolvedBy = 'user', decisionReason?: string): number {

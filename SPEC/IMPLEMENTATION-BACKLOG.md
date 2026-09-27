@@ -122,7 +122,7 @@
 | M10-02 | 版本化 schema 与 migration runner | `apps/server/src/persistence.ts`, `apps/server/src/persistence.test.ts`, `validation/m10-02-schema-migration-results.json` | M10-01 | DONE | schema v1、`schema_meta`、四类运行时表、幂等重跑和重启 inspection 已验证；失败注入仍待补 |
 | M10-03 | 全实体 SQLite 事务与幂等 | `packages/core`, `apps/server/src/persistence.ts`, `validation/m10-03-sqlite-runstore-results.json` | M10-02 | PARTIAL | schema v2、单连接 Run/Event/idempotency/segment 事务、runtime 默认接入、重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离已通过；全实体 typed CRUD 与长时规模验证仍待补 |
 | M10-04 | JSONL 导入、导出和校验 | `scripts/import-export/*`, `validation/` | M10-02 | TODO | 校验 sequence/hash/idempotency，事务导入后回读一致，可从导出重建 |
-| M10-05 | runtime/Product Builder 完整持久化接入 | `apps/server/src/runtime.ts`, `apps/server/src/product-builder-continuity.ts`, `apps/server/src/http-smoke.test.ts`, `validation/m10-05-product-builder-persistence-results.json` | M10-03 | PARTIAL | 共享 SQLite checkpoint 事务、ContextSnapshot、幂等 replay、全 typed entity round-trip、entity summary 和 approve persistence 已通过；retry/cancel 与完整 HTTP entity 读写仍待补 |
+| M10-05 | runtime/Product Builder 完整持久化接入 | `apps/server/src/runtime.ts`, `apps/server/src/product-builder-continuity.ts`, `apps/server/src/http-smoke.test.ts`, `validation/m10-05-product-builder-persistence-results.json` | M10-03 | DONE | 共享 SQLite checkpoint 事务、ContextSnapshot、幂等 replay、全 typed entity round-trip；Project/Skill/BotProfile POST/GET/PATCH、Run create、cancel、retry 与 entity summary HTTP 路由均已验证 |
 | M10-06 | 崩溃、多进程、备份恢复和规模验证 | `apps/server/src/*.test.ts`, `validation/` | M10-03, M10-04 | TODO | kill/restart、跨进程竞争、DB lock、备份恢复、10k/100k 事件边界有证据 |
 
 M10 的详细架构决策见 `SPEC/08-persistence-architecture-decision.md`。
@@ -139,4 +139,4 @@ M3-04/M8-03（Codex CLI bridge）
 → M8-04（质量证据收口）→ M8-05（现实任务）→ M8-06（面试掌握包）→ M8-02（DeepSeek 可选对比）
 ```
 
-在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。SQLite M10-02/M10-03 当前增量不依赖新增网络包；M10-03 边界已通过，下一步进入 M10-05。
+在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。SQLite M10-02/M10-03/M10-05 当前增量不依赖新增网络包；M10-05 HTTP 持久化边界已通过，下一步进入 M10-04 JSONL 导入导出。

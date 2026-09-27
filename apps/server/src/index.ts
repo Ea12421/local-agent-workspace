@@ -1,9 +1,10 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { randomUUID } from 'node:crypto';
-import { readFile, appendFile, mkdir } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRunEvent } from '../../../packages/core/src/index.ts';
 import { cancelCodexRun, createRuntimeRun, executeCodexRun, runtimeStore, snapshot as coreSnapshot } from './runtime.ts';
 import { runProductBuilder } from '../../../packages/workflow/src/index.ts';
 import { checkpointProductBuilderResult, defaultProductBuilderContinuityStores } from './product-builder-continuity.ts';
@@ -12,7 +13,6 @@ type Json = Record<string, unknown> | unknown[];
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const fixturePath = path.join(root, 'fixtures/demo-project.json');
 const dataDir = path.join(root, 'data');
-const eventsPath = path.join(dataDir, 'events.jsonl');
 const port = Number(process.env.PORT ?? 4310);
 
 type RequestLike = { method?: string; url?: string; headers: Record<string, string | undefined> } & AsyncIterable<Buffer | string>;
@@ -20,10 +20,6 @@ type ResponseLike = { writeHead(status: number, headers?: Record<string, string>
 
 async function loadFixture() {
   return JSON.parse(await readFile(fixturePath, 'utf8')) as any;
-}
-async function writeEvent(event: Record<string, unknown>) {
-  await mkdir(dataDir, { recursive: true });
-  await appendFile(eventsPath, `${JSON.stringify(event)}\n`, 'utf8');
 }
 function send(res: ResponseLike, status: number, body: Json) {
   res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'access-control-allow-origin': '*' });
@@ -70,6 +66,81 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
     if (req.method === 'GET' && url.pathname === '/api/ui-snapshot') return send(res, 200, toUiSnapshot(fixture));
     if (req.method === 'GET' && url.pathname === '/api/core/snapshot') return send(res, 200, await coreSnapshot());
     if (req.method === 'GET' && url.pathname === '/api/core/runs') return send(res, 200, { runs: await runtimeStore.listRuns() });
+    const entityMatch = url.pathname.match(/^\/api\/persistence\/(projects|skills|bots)(?:\/([^/]+))?$/);
+    if (entityMatch) {
+      const entity = entityMatch[1];
+      const entityId = entityMatch[2];
+      const stores = await defaultProductBuilderContinuityStores(dataDir);
+      try {
+        if (!stores.entityStore) return send(res, 503, { error: 'sqlite_entity_store_unavailable', reason: 'Entity writes require the SQLite operational backend.' });
+        const input = ['POST', 'PATCH'].includes(req.method ?? '') ? await body(req) : {};
+        const now = new Date().toISOString();
+        if (entity === 'projects') {
+          if (req.method === 'GET') {
+            const project = entityId ? stores.entityStore.getProject(entityId) : undefined;
+            if (entityId && !project) return send(res, 404, { error: 'project_not_found', id: entityId });
+            return send(res, 200, (project ?? stores.entityStore.listProjects()) as any);
+          }
+          if (req.method === 'POST') {
+            if (!input.name || !input.workspacePath) return send(res, 400, { error: 'project_name_and_workspacePath_required' });
+            const project = { id: String(input.id ?? `project-${randomUUID()}`), name: String(input.name), ...(input.description ? { description: String(input.description) } : {}), workspacePath: String(input.workspacePath), createdAt: now, updatedAt: now } as any;
+            stores.entityStore.saveProject(project);
+            return send(res, 201, project);
+          }
+          if (req.method === 'PATCH' && entityId) {
+            const existing = stores.entityStore.getProject(entityId);
+            if (!existing) return send(res, 404, { error: 'project_not_found', id: entityId });
+            const project = { ...existing, ...input, id: existing.id, updatedAt: now } as any;
+            stores.entityStore.saveProject(project);
+            return send(res, 200, project);
+          }
+        }
+        if (entity === 'skills') {
+          if (req.method === 'GET') {
+            const skill = entityId ? stores.entityStore.getSkill(entityId) : undefined;
+            if (entityId && !skill) return send(res, 404, { error: 'skill_not_found', id: entityId });
+            return send(res, 200, (skill ?? stores.entityStore.listSkills()) as any);
+          }
+          if (req.method === 'POST') {
+            if (!input.name || !input.description || !input.version || !input.instructions) return send(res, 400, { error: 'skill_name_description_version_instructions_required' });
+            const skill = { id: String(input.id ?? `skill-${randomUUID()}`), name: String(input.name), description: String(input.description), version: String(input.version), instructions: String(input.instructions), ...(input.inputSchema ? { inputSchema: input.inputSchema } : {}), ...(input.outputSchema ? { outputSchema: input.outputSchema } : {}), enabled: input.enabled !== false } as any;
+            stores.entityStore.saveSkill(skill);
+            return send(res, 201, skill);
+          }
+          if (req.method === 'PATCH' && entityId) {
+            const existing = stores.entityStore.getSkill(entityId);
+            if (!existing) return send(res, 404, { error: 'skill_not_found', id: entityId });
+            const skill = { ...existing, ...input, id: existing.id } as any;
+            stores.entityStore.saveSkill(skill);
+            return send(res, 200, skill);
+          }
+        }
+        if (entity === 'bots') {
+          if (req.method === 'GET') {
+            const bot = entityId ? stores.entityStore.getBotProfile(entityId) : undefined;
+            if (entityId && !bot) return send(res, 404, { error: 'bot_not_found', id: entityId });
+            return send(res, 200, (bot ?? stores.entityStore.listBotProfiles(url.searchParams.get('projectId') ?? undefined)) as any);
+          }
+          if (req.method === 'POST') {
+            const required = ['projectId', 'name', 'description', 'responsibility', 'inputSchema', 'outputSchema', 'skillIds', 'toolPolicy', 'providerPolicy', 'memoryPolicy', 'approvalPolicy'];
+            if (required.some((key) => input[key] === undefined)) return send(res, 400, { error: 'bot_profile_fields_required', fields: required });
+            const bot = { id: String(input.id ?? `bot-${randomUUID()}`), projectId: String(input.projectId), name: String(input.name), description: String(input.description), responsibility: String(input.responsibility), inputSchema: input.inputSchema, outputSchema: input.outputSchema, skillIds: input.skillIds, toolPolicy: input.toolPolicy, providerPolicy: input.providerPolicy, memoryPolicy: input.memoryPolicy, approvalPolicy: input.approvalPolicy, enabled: input.enabled !== false, createdAt: now, updatedAt: now } as any;
+            stores.entityStore.saveBotProfile(bot);
+            return send(res, 201, bot);
+          }
+          if (req.method === 'PATCH' && entityId) {
+            const existing = stores.entityStore.getBotProfile(entityId);
+            if (!existing) return send(res, 404, { error: 'bot_not_found', id: entityId });
+            const bot = { ...existing, ...input, id: existing.id, projectId: existing.projectId, createdAt: existing.createdAt, updatedAt: now } as any;
+            stores.entityStore.saveBotProfile(bot);
+            return send(res, 200, bot);
+          }
+        }
+        return send(res, 405, { error: 'method_not_allowed', entity, id: entityId ?? null });
+      } finally {
+        stores.close?.();
+      }
+    }
     if (req.method === 'GET' && url.pathname === '/api/persistence/entities') {
       const stores = await defaultProductBuilderContinuityStores(dataDir);
       try {
@@ -83,6 +154,7 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
           sources: stores.entityStore?.listSources(projectId) ?? [],
           artifacts: stores.entityStore?.listArtifacts(projectId) ?? [],
           memories: stores.entityStore?.listMemories(projectId) ?? [],
+          receipts: stores.entityStore?.listReceipts() ?? [],
         });
       } finally {
         stores.close?.();
@@ -126,29 +198,41 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
     if (req.method === 'POST' && url.pathname === '/api/runs') {
       const input = await body(req);
       const coreRun = await createRuntimeRun(String(input.goal ?? '未命名目标'));
-      const id = `run-${randomUUID()}`;
-      const event = { id: randomUUID(), type: 'run.created', at: new Date().toISOString(), runId: id, summary: `创建运行：${String(input.goal ?? '未命名目标')}` };
-      await writeEvent(event);
-      return send(res, 201, { id, coreRun: coreRun.run, status: 'queued', goal: input.goal ?? '', provider: input.provider ?? 'fixture', events: [event, coreRun.event] });
+      return send(res, 201, { id: coreRun.run.id, coreRun: coreRun.run, status: coreRun.run.status, goal: input.goal ?? '', provider: input.provider ?? 'fixture', events: [coreRun.event] });
     }
     if (req.method === 'POST' && /^\/api\/runs\/[^/]+\/cancel$/.test(url.pathname)) {
       const runId = url.pathname.split('/')[3];
       const cancellation = await cancelCodexRun(runId);
-      if (cancellation) return send(res, 200, cancellation as any);
-      const event = { id: randomUUID(), type: 'run.cancelled', at: new Date().toISOString(), runId, summary: '用户取消运行' };
-      await writeEvent(event);
-      return send(res, 200, { runId, status: 'cancelled', event });
+      if (!cancellation) return send(res, 404, { error: 'run_not_found', runId });
+      return send(res, 200, cancellation as any);
     }
     if (req.method === 'POST' && /^\/api\/runs\/[^/]+\/(approve|retry)$/.test(url.pathname)) {
       const parts = url.pathname.split('/');
       const runId = parts[3];
       const action = parts[4];
-      const event = { id: randomUUID(), type: action === 'approve' ? 'approval.resolved' : 'run.retry_requested', at: new Date().toISOString(), runId, summary: action === 'approve' ? '用户确认继续' : '用户请求重试' };
-      await writeEvent(event);
+      if (action === 'retry') {
+        const current = await runtimeStore.getRun(runId as any);
+        if (!current) return send(res, 404, { error: 'run_not_found', runId });
+        try {
+          const transition = await runtimeStore.transition(runId as any, 'retry', { actor: { type: 'user' }, reason: '用户请求重试', idempotencyKey: `retry:${runId}` });
+          return send(res, 200, { ok: true, runId, action, run: transition.run, event: transition.event });
+        } catch (error) {
+          if (error instanceof Error && error.name === 'InvalidRunTransitionError') return send(res, 409, { error: 'invalid_run_transition', runId, action, status: current.status, message: error.message });
+          throw error;
+        }
+      }
       let approvalRowsUpdated = 0;
+      let event: unknown = null;
       if (action === 'approve') {
         const stores = await defaultProductBuilderContinuityStores(dataDir);
-        try { approvalRowsUpdated = stores.entityStore?.resolveApproval(runId, 'approved', 'user', 'HTTP approval route') ?? 0; }
+        try {
+          approvalRowsUpdated = stores.entityStore?.resolveApproval(runId, 'approved', 'user', 'HTTP approval route') ?? 0;
+          if (approvalRowsUpdated > 0) {
+            const events = (await stores.eventLog.readAll()).filter((item) => item.runId === runId);
+            event = createRunEvent(runId as any, 'approval.resolved', { approvalRowsUpdated, decision: 'approved' }, events.length + 1, { type: 'user' });
+            await stores.eventLog.append(event as any);
+          }
+        }
         finally { stores.close?.(); }
       }
       return send(res, 200, { ok: true, runId, action, approvalRowsUpdated, event });
