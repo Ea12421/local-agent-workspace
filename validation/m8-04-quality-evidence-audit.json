@@ -1,6 +1,6 @@
 {
   "audit_version": "m8-04.quality-evidence-audit.v1",
-  "generated_at": "2026-09-27T12:58:45.345Z",
+  "generated_at": "2026-09-27T13:38:30.138Z",
   "suite_version": "m8-04.v1",
   "source_results": "validation/m8-04-results.jsonl",
   "source_record_count": 36,
