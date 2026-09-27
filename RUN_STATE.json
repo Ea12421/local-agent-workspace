@@ -61,8 +61,8 @@
   "review": {
     "level": "R1",
     "budget": 1,
-    "used": 0,
-    "blocking_corrections_left": 1
+    "used": 1,
+    "blocking_corrections_left": 0
   },
   "blocked_reason": "M8-04 质量结论仍阻断：36 条 receipt 中 27 条可严格 JSON 回放、9 条输出无效；人工编辑、reviewer rubric、usage/cost 和真人门未补齐。Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。",
   "next_action": "补录 M8-04 人工评审/人工编辑/usage 边界，并按 SPEC/06 执行 3 个非敏感真人任务；不提升 quality_eligible，不把 multi_bot 设为默认。",
