@@ -184,3 +184,11 @@
 - **结果**：persistence 专项 `10/10`、runtime 专项 `3/3`、全套等价 Node tests `24/24`、typecheck 和 diff check 通过。
 - **边界**：这仍不覆盖长时锁竞争、kill/restart、10k/100k 事件规模、全实体 typed CRUD 或 Product Builder checkpoint 的同事务接入。
 - **下一步**：进入 M10-05，把 Product Builder checkpoint、ContextSnapshot、幂等记录和 HTTP 读取接入同一 SQLite 事实源。
+
+
+### 2026-09-27 M10-05 · Product Builder SQLite checkpoint
+
+- **实现**：Product Builder 默认 event log 与 ContextSnapshot store 改为共享 SQLite 连接；每个 checkpoint 将 checkpoint event、ContextSnapshot、snapshot-created event 和幂等记录放在同一事务。
+- **验证**：重开数据库后 replay 跳过 10 个 checkpoint；HTTP 连续 preview 第二次返回 `created=0/skipped=10`；Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、typecheck 和 diff check 通过。
+- **边界**：Handoff、Approval、Artifact、Source、Memory、ProviderReceipt 还没有 typed entity repository；HTTP 其他读写路由、JSONL 导入导出和规模验证仍待完成。
+- **下一步**：补剩余 typed persistence 和完整 HTTP 读写。

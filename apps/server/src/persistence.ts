@@ -522,7 +522,19 @@ export function openContextSnapshotStore(filePath: string): ContextSnapshotStore
 
 export const SQLITE_SCHEMA = SQLITE_MIGRATIONS[0].sql;
 
-export type EventLog = JsonlEventLog | { backend: 'sqlite'; append(event: PersistedEvent): Promise<void>; readAll(): Promise<PersistedEvent[]> };
+export type AtomicProductBuilderCheckpoint = {
+  event: PersistedEvent;
+  snapshot: ContextSnapshot;
+  snapshotEvent: PersistedEvent;
+  idempotencyKey: string;
+};
+
+export type EventLog = JsonlEventLog | {
+  backend: 'sqlite';
+  append(event: PersistedEvent): Promise<void>;
+  readAll(): Promise<PersistedEvent[]>;
+  checkpoint?(input: AtomicProductBuilderCheckpoint): Promise<void>;
+};
 
 export type EventLogHandle = {
   backend: 'sqlite' | 'jsonl';
@@ -533,37 +545,115 @@ export type EventLogHandle = {
   close?: () => void;
 };
 
+function insertSnapshotRow(db: SqliteDatabase, snapshot: ContextSnapshot): void {
+  db.prepare(`
+    INSERT INTO context_snapshots (
+      id, project_id, run_id, schema_version, parent_snapshot_id,
+      covers_from_sequence, covers_to_sequence, trigger, summary_json,
+      tail_event_ids_json, token_estimate, summary_token_estimate,
+      content_sha256, created_at, created_by
+    ) VALUES (
+      @id, @project_id, @run_id, @schema_version, @parent_snapshot_id,
+      @covers_from_sequence, @covers_to_sequence, @trigger, @summary_json,
+      @tail_event_ids_json, @token_estimate, @summary_token_estimate,
+      @content_sha256, @created_at, @created_by
+    )
+  `).run({
+    id: snapshot.id,
+    project_id: snapshot.projectId,
+    run_id: snapshot.runId,
+    schema_version: snapshot.schemaVersion,
+    parent_snapshot_id: snapshot.parentSnapshotId ?? null,
+    covers_from_sequence: snapshot.covers.fromSequence,
+    covers_to_sequence: snapshot.covers.toSequence,
+    trigger: snapshot.trigger,
+    summary_json: JSON.stringify(snapshot.summary),
+    tail_event_ids_json: JSON.stringify(snapshot.tailEventIds),
+    token_estimate: snapshot.tokenEstimate,
+    summary_token_estimate: snapshot.summaryTokenEstimate,
+    content_sha256: snapshot.contentSha256,
+    created_at: snapshot.createdAt,
+    created_by: snapshot.createdBy,
+  });
+}
+
+function createSqliteEventLog(db: SqliteDatabase): EventLog {
+  runSqliteMigrations(db);
+  const insert = db.prepare('INSERT INTO run_events (id, run_id, sequence, type, occurred_at, actor_json, data_json, correlation_id) VALUES (@id, @run_id, @sequence, @type, @occurred_at, @actor_json, @data_json, @correlation_id)');
+  const list = db.prepare('SELECT * FROM run_events ORDER BY run_id, sequence');
+  const readAll = async (): Promise<PersistedEvent[]> => list.all().map((row: any) => ({
+    id: row.id,
+    runId: row.run_id,
+    sequence: row.sequence,
+    type: row.type,
+    occurredAt: row.occurred_at,
+    actor: JSON.parse(row.actor_json),
+    data: JSON.parse(row.data_json),
+    ...(row.correlation_id ? { correlationId: row.correlation_id } : {}),
+  }));
+  return {
+    backend: 'sqlite',
+    async append(event) {
+      insert.run({ id: event.id, run_id: event.runId, sequence: event.sequence, type: event.type, occurred_at: event.occurredAt, actor_json: JSON.stringify(event.actor), data_json: JSON.stringify(event.data), correlation_id: event.correlationId ?? null });
+    },
+    readAll,
+    async checkpoint(input) {
+      db.exec('BEGIN IMMEDIATE');
+      try {
+        const existingKey = db.prepare('SELECT key FROM idempotency_keys WHERE key = @key').get({ key: input.idempotencyKey });
+        if (existingKey) throw new Error(`Product Builder checkpoint already exists: ${input.idempotencyKey}`);
+        const last = db.prepare('SELECT MAX(sequence) AS sequence FROM run_events WHERE run_id = @run_id').get({ run_id: input.event.runId }) as { sequence?: unknown } | undefined;
+        const expected = Number(last?.sequence ?? 0) + 1;
+        if (Number(input.event.sequence) !== expected || Number(input.snapshotEvent.sequence) !== expected + 1) {
+          throw new Error(`Product Builder checkpoint sequence must continue at ${expected}`);
+        }
+        insert.run({ id: input.event.id, run_id: input.event.runId, sequence: input.event.sequence, type: input.event.type, occurred_at: input.event.occurredAt, actor_json: JSON.stringify(input.event.actor), data_json: JSON.stringify(input.event.data), correlation_id: input.event.correlationId ?? null });
+        insertSnapshotRow(db, input.snapshot);
+        insert.run({ id: input.snapshotEvent.id, run_id: input.snapshotEvent.runId, sequence: input.snapshotEvent.sequence, type: input.snapshotEvent.type, occurred_at: input.snapshotEvent.occurredAt, actor_json: JSON.stringify(input.snapshotEvent.actor), data_json: JSON.stringify(input.snapshotEvent.data), correlation_id: input.snapshotEvent.correlationId ?? null });
+        db.prepare('INSERT INTO idempotency_keys (key, scope, resource_id, created_at, result_json) VALUES (@key, @scope, @resource_id, @created_at, @result_json)').run({
+          key: input.idempotencyKey,
+          scope: 'product_builder.checkpoint',
+          resource_id: String(input.event.runId),
+          created_at: input.event.occurredAt,
+          result_json: JSON.stringify({ eventId: input.event.id, snapshotId: input.snapshot.id, snapshotEventId: input.snapshotEvent.id }),
+        });
+        db.exec('COMMIT');
+      } catch (error) {
+        try { db.exec('ROLLBACK'); } catch { /* preserve the checkpoint error */ }
+        throw error;
+      }
+    },
+  };
+}
+
+export type SqliteProductBuilderContinuityHandle = {
+  backend: 'sqlite';
+  mode: 'full';
+  driver?: SqliteDriverName;
+  eventLog: EventLog;
+  snapshotStore: ContextSnapshotStore;
+  close: () => void;
+};
+
+export function openSqliteProductBuilderContinuity(filePath: string): SqliteProductBuilderContinuityHandle | undefined {
+  const opened = openSqliteDatabase(filePath);
+  if (!opened.db || !opened.driver) return undefined;
+  const eventLog = createSqliteEventLog(opened.db);
+  const snapshotStore = new SqliteContextSnapshotStore(filePath, opened.db);
+  return { backend: 'sqlite', mode: 'full', driver: opened.driver, eventLog, snapshotStore, close: () => opened.db?.close() };
+}
+
 /** Uses SQLite when the optional native dependency is present, otherwise keeps the clean-checkout JSONL path usable. */
 export async function openEventLog(filePath: string): Promise<EventLogHandle> {
   const opened = openSqliteDatabase(filePath);
   if (opened.db) {
     const db = opened.db;
-    runSqliteMigrations(db);
-    const insert = db.prepare('INSERT INTO run_events (id, run_id, sequence, type, occurred_at, actor_json, data_json, correlation_id) VALUES (@id, @run_id, @sequence, @type, @occurred_at, @actor_json, @data_json, @correlation_id)');
-    const list = db.prepare('SELECT * FROM run_events ORDER BY run_id, sequence');
     return {
       backend: 'sqlite',
       mode: 'full',
       driver: opened.driver,
       close: () => db.close(),
-      log: {
-        backend: 'sqlite',
-        async append(event) {
-          insert.run({ id: event.id, run_id: event.runId, sequence: event.sequence, type: event.type, occurred_at: event.occurredAt, actor_json: JSON.stringify(event.actor), data_json: JSON.stringify(event.data), correlation_id: event.correlationId ?? null });
-        },
-        async readAll() {
-          return list.all().map((row: any) => ({
-            id: row.id,
-            runId: row.run_id,
-            sequence: row.sequence,
-            type: row.type,
-            occurredAt: row.occurred_at,
-            actor: JSON.parse(row.actor_json),
-            data: JSON.parse(row.data_json),
-            ...(row.correlation_id ? { correlationId: row.correlation_id } : {}),
-          }));
-        },
-      },
+      log: createSqliteEventLog(db),
     };
   }
   return { backend: 'jsonl', mode: 'portable', reason: opened.reason, log: new JsonlEventLog(portablePath(filePath)) };

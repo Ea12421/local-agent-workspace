@@ -33,4 +33,8 @@ test('HTTP handler can be verified without opening a port', async () => {
   assert.ok(['full', 'portable'].includes(preview.body.continuity.persistence.snapshotStore.mode));
   if (preview.body.continuity.persistence.eventLog.mode === 'portable') assert.ok(preview.body.continuity.persistence.eventLog.reason);
   if (preview.body.continuity.persistence.snapshotStore.mode === 'portable') assert.ok(preview.body.continuity.persistence.snapshotStore.reason);
+  const replay = await call('POST', '/api/product-builder/preview', { idea: '验证一个 AI 产品', user: '独立开发者' });
+  assert.equal(replay.status, 200);
+  assert.equal(replay.body.continuity.createdCheckpoints, 0);
+  assert.equal(replay.body.continuity.skippedCheckpoints, 10);
 });

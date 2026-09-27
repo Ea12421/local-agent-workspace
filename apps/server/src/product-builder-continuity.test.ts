@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { runProductBuilder } from '../../../packages/workflow/src/index.ts';
 import { JsonlContextSnapshotStore, JsonlEventLog } from './persistence.ts';
-import { checkpointProductBuilderResult } from './product-builder-continuity.ts';
+import { checkpointProductBuilderResult, defaultProductBuilderContinuityStores } from './product-builder-continuity.ts';
 
 test('Product Builder checkpoints each boundary and skips completed work on replay', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-product-builder-continuity-'));
@@ -28,5 +28,26 @@ test('Product Builder checkpoints each boundary and skips completed work on repl
   assert.equal(replay.createdSnapshots, 0);
   assert.equal((await stores.eventLog.readAll()).length, 20);
   assert.equal((await stores.snapshotStore.latest('project-a', 'run-a'))?.runId, 'run-a');
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('Product Builder uses one SQLite continuity source and replays after reopening', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-product-builder-sqlite-'));
+  const input = { projectId: 'project-sqlite-builder' as any, runId: 'run-sqlite-builder' as any, idea: '验证 SQLite Product Builder 交接' };
+  const firstStores = await defaultProductBuilderContinuityStores(dir);
+  const first = await checkpointProductBuilderResult(input, runProductBuilder(input), firstStores);
+  assert.equal(first.createdCheckpoints, 10);
+  assert.equal(first.createdSnapshots, 10);
+  assert.equal(firstStores.eventLog.backend, 'sqlite');
+  assert.equal(typeof firstStores.eventLog.checkpoint, 'function');
+  firstStores.close?.();
+
+  const reopenedStores = await defaultProductBuilderContinuityStores(dir);
+  const replay = await checkpointProductBuilderResult(input, runProductBuilder(input), reopenedStores);
+  assert.equal(replay.createdCheckpoints, 0);
+  assert.equal(replay.skippedCheckpoints, 10);
+  assert.equal((await reopenedStores.eventLog.readAll()).filter((event) => event.runId === input.runId).length, 20);
+  assert.equal((await reopenedStores.snapshotStore.readAll()).filter((snapshot) => snapshot.runId === input.runId).length, 10);
+  reopenedStores.close?.();
   await rm(dir, { recursive: true, force: true });
 });

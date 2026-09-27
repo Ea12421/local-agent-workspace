@@ -1,0 +1,32 @@
+{
+  "record_version": "m10-05.product-builder-persistence-results.v1",
+  "executed_at": "2026-09-27T20:02:13+08:00",
+  "status": "PARTIAL_PRODUCT_BUILDER_SQLITE",
+  "implementation": [
+    "shared SQLite connection for Product Builder event log and ContextSnapshot store",
+    "atomic checkpoint transaction for checkpoint event, ContextSnapshot, snapshot-created event and idempotency row",
+    "reopen and replay skips previously persisted checkpoint keys",
+    "HTTP Product Builder preview reads the same persisted state and reports replay counts"
+  ],
+  "commands": [
+    "node scripts/typecheck.mjs",
+    "node --experimental-strip-types --test apps/server/src/product-builder-continuity.test.ts apps/server/src/http-smoke.test.ts",
+    "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts",
+    "git diff --check"
+  ],
+  "results": {
+    "typecheck": "PASS",
+    "product_builder_and_http_smoke": { "passed": 3, "failed": 0 },
+    "full_suite": { "passed": 25, "failed": 0 },
+    "atomic_checkpoint": "PASS",
+    "reopen_replay": "PASS",
+    "http_replay": "PASS"
+  },
+  "limitations": [
+    "Handoff, Approval, Artifact, Source, Memory and ProviderReceipt rows are not yet written as typed entity repositories; they remain represented by Product Builder events and result objects.",
+    "HTTP coverage currently verifies Product Builder preview and replay, not every create/approve/retry/cancel route against persisted domain rows.",
+    "JSONL import/export and long-running scale validation remain pending.",
+    "This is persistence and replay evidence, not model-quality or real-world productivity evidence."
+  ],
+  "next_action": "Finish M10-05 typed persistence for Handoff, Approval, Artifact, Source, Memory and ProviderReceipt, then add HTTP read/write routes without duplicating domain logic."
+}

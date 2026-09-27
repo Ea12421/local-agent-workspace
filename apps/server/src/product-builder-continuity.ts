@@ -7,13 +7,12 @@ import {
   type ContextPolicy,
   type ContextSnapshot,
   type ContextSnapshotId,
-  type JsonObject,
   type ProjectId,
   type RunEvent,
   type RunId,
 } from '../../../packages/core/src/index.ts';
 import type { ProductBuilderCheckpoint, ProductBuilderResult } from '../../../packages/workflow/src/index.ts';
-import { openContextSnapshotStore, openEventLog, type ContextSnapshotStore, type EventLog, type EventLogHandle, type ContextSnapshotStoreHandle } from './persistence.ts';
+import { openContextSnapshotStore, openEventLog, openSqliteProductBuilderContinuity, type ContextSnapshotStore, type EventLog, type EventLogHandle, type ContextSnapshotStoreHandle } from './persistence.ts';
 
 export type ProductBuilderContinuityOptions = {
   eventLog: EventLog;
@@ -45,6 +44,19 @@ const defaultPolicy: ContextPolicy = {
 
 export async function defaultProductBuilderContinuityStores(root: string): Promise<ProductBuilderContinuityOptions> {
   const databasePath = `${root}/workspace.db`;
+  const sharedSqlite = openSqliteProductBuilderContinuity(databasePath);
+  if (sharedSqlite) {
+    return {
+      eventLog: sharedSqlite.eventLog,
+      snapshotStore: sharedSqlite.snapshotStore,
+      persistence: {
+        eventLog: { backend: sharedSqlite.backend, mode: sharedSqlite.mode, driver: sharedSqlite.driver },
+        snapshotStore: { backend: sharedSqlite.backend, mode: sharedSqlite.mode, driver: sharedSqlite.driver },
+      },
+      close: sharedSqlite.close,
+      contextPolicy: defaultPolicy,
+    };
+  }
   const eventLog = await openEventLog(databasePath);
   const snapshotStore = openContextSnapshotStore(databasePath);
   return {
@@ -70,14 +82,6 @@ function eventTypeFor(checkpoint: ProductBuilderCheckpoint): RunEvent['type'] {
 
 function runEvents(all: Record<string, unknown>[], runId: string): RunEvent[] {
   return all.filter((event) => event.runId === runId) as unknown as RunEvent[];
-}
-
-async function appendEvent(log: EventLog, runId: RunId, type: RunEvent['type'], data: JsonObject): Promise<RunEvent> {
-  const all = await log.readAll();
-  const events = runEvents(all, runId);
-  const event = createRunEvent(runId, type, data, events.length + 1);
-  await log.append(event as unknown as Record<string, unknown>);
-  return event;
 }
 
 async function checkpointSnapshot(
@@ -113,7 +117,6 @@ async function checkpointSnapshot(
     createdAt: new Date().toISOString(),
     trigger: 'handoff',
   });
-  await stores.snapshotStore.append(snapshot);
   return snapshot;
 }
 
@@ -139,24 +142,33 @@ export async function checkpointProductBuilderResult(
       skippedCheckpoints += 1;
       continue;
     }
-    const event = await appendEvent(stores.eventLog, input.runId, eventTypeFor(checkpoint), {
+    const allEvents = await stores.eventLog.readAll();
+    const events = runEvents(allEvents, input.runId);
+    const event = createRunEvent(input.runId, eventTypeFor(checkpoint), {
       idempotencyKey: checkpoint.idempotencyKey,
       boundary: checkpoint.boundary,
       ref: checkpoint.ref,
       label: checkpoint.label,
       order: checkpoint.order,
-    });
+    }, events.length + 1);
     recordedKeys.add(checkpoint.idempotencyKey);
     createdCheckpoints += 1;
-    const events = runEvents(await stores.eventLog.readAll(), input.runId);
-    latestSnapshot = await checkpointSnapshot(input, result, events, stores);
+    const nextEvents = [...events, event];
+    latestSnapshot = await checkpointSnapshot(input, result, nextEvents, stores);
     createdSnapshots += 1;
-    await appendEvent(stores.eventLog, input.runId, 'context.snapshot_created', {
+    const snapshotEvent = createRunEvent(input.runId, 'context.snapshot_created', {
       snapshotId: latestSnapshot.id,
       contentSha256: latestSnapshot.contentSha256,
       covers: latestSnapshot.covers,
       afterEventId: String(event.id),
-    });
+    }, nextEvents.length + 1);
+    if (stores.eventLog.backend === 'sqlite' && stores.eventLog.checkpoint) {
+      await stores.eventLog.checkpoint({ event: event as unknown as Record<string, unknown>, snapshot: latestSnapshot, snapshotEvent: snapshotEvent as unknown as Record<string, unknown>, idempotencyKey: checkpoint.idempotencyKey });
+    } else {
+      await stores.eventLog.append(event as unknown as Record<string, unknown>);
+      await stores.snapshotStore.append(latestSnapshot);
+      await stores.eventLog.append(snapshotEvent as unknown as Record<string, unknown>);
+    }
   }
 
   const events = runEvents(await stores.eventLog.readAll(), input.runId);
