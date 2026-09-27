@@ -46,6 +46,7 @@
   - `validation/m8-05-review.md`：窄范围结论、恢复内容阻断说明与未验证项
   - `validation/m8-06-paired-baseline-card-v1.json`：ContextSnapshot JSONL-first vs SQLite-first 的 paired baseline 卡
   - `validation/m8-06-manual-baseline.md`、`validation/m8-06-structured-run.json`、`validation/m8-06-comparison.json`：两条 arm 和比较结果
+  - `validation/m8-06-owner-review.md`：给人阅读的 JSONL-first / SQLite-first 判断卡
   - `validation/m8-06-jsonl-failure-results.json`：JSONL 尾行损坏、同进程并发 append 和重建 latest 的专项结果
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断

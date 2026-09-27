@@ -134,6 +134,7 @@
 - **结构化 arm**：同一输入白名单、Codex subscription、read-only，耗时 `56234ms`；单 JSON、必填键、来源白名单全部通过，原始 receipt 为 `validation/m8-06-raw/structured-run.json`。
 - **比较结果**：`validation/m8-06-comparison.json` 为 `PARTIAL`。不能计算人工整理步骤下降率，因为 baseline 是 proxy、structured arm 尚未经过 owner 编辑，owner willingness 仍 UNKNOWN。
 - **临时路线判断**：保留 JSONL-first 作为 provisional recommendation，不执行 SQLite-first 迁移；下一步补 JSONL 尾行损坏、并发 append 和从日志重建索引的有界故障注入/性能测试。
+- **可读性修正**：`validation/m8-06-structured-run.json` 明确作为机器审计回执；新增 `validation/m8-06-owner-review.md`，把技术结论、证据边界和 owner 只需回答的判断改成人话。
 
 ### 2026-09-27 M8-06 · JSONL 边界专项
 
