@@ -105,7 +105,7 @@
 
 ### 当前唯一下一步
 
-实施 M10-04 JSONL import/export：导入、导出、校验与从导出重建；随后再做 M10-06 kill/restart、备份恢复与规模验证。
+实施 M10-06：kill/restart、backup recovery、跨进程边界与规模验证。
 
 ## 重要文件
 
@@ -171,4 +171,16 @@
 
 - `Project`、`Skill`、`BotProfile` typed persistence roundtrip 已 PASS；`GET /api/persistence/entities` entity summary 已 PASS；approve route persistence 已 PASS。
 - typecheck、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 均通过。
-- 当前唯一下一步：实施 M10-04 JSONL import/export（导入、导出、校验、重建）；M10-06 后置。
+- 该 checkpoint 后续已完成 M10-04；当前唯一下一步已转为 M10-06 恢复与规模验证。
+
+### 2026-09-27 M10-04 JSONL import/export checkpoint
+
+- `scripts/import-export/cli.mjs` 与 `cli.test.mjs` 已完成；格式 `local-agent-workspace.export.v1`、schemaVersion 2，manifest 含 payloadSha256。
+- 校验覆盖 JSON、表白名单、主键重复、run_events sequence 连续、ContextSnapshot hash 和 JSON columns；导入为事务，非空 target 拒绝并回滚。
+- 专项测试 2/2；真实 `data/workspace.db` export→validate→import 54 rows，重开 `projects=1,runs=0,events=19,idempotency=0`。
+- 证据：`validation/m10-04-jsonl-import-export-results.json`。主任务另行记录 27/27、typecheck、full suite、diff check。
+- M10-04 已 DONE。M8-04 质量证据、Electron 可见性、DeepSeek、literal GitHub clone、Codex 原生 resume 限制保留。
+
+### 当前唯一下一步
+
+M10-06 kill/restart、backup recovery、scale validation。

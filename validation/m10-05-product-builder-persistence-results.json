@@ -51,7 +51,7 @@
     "entity_summary_receipts": "PASS"
   },
   "limitations": [
-    "M10-04 JSONL import/export, validation and rebuild remain pending.",
+    "M10-04 JSONL import/export is recorded separately in validation/m10-04-jsonl-import-export-results.json; M10-06 recovery and scale validation remain pending.",
     "M10-06 kill/restart, backup recovery and long-running scale validation remain pending.",
     "This is persistence and HTTP contract evidence, not model-quality or real-world productivity evidence."
   ],

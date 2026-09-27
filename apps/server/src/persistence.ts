@@ -13,7 +13,7 @@ type SqliteStatement = {
   get(params?: Record<string, unknown>): unknown;
 };
 
-type SqliteDatabase = {
+export type SqliteDatabase = {
   exec(sql: string): void;
   pragma?(sql: string): unknown;
   prepare(sql: string): SqliteStatement;
@@ -21,7 +21,7 @@ type SqliteDatabase = {
 };
 
 type SqliteDriver = new (filePath: string) => SqliteDatabase;
-type SqliteDriverName = 'better-sqlite3' | 'node:sqlite';
+export type SqliteDriverName = 'better-sqlite3' | 'node:sqlite';
 
 function loadSqliteDriver(): { driver?: SqliteDriver; name?: SqliteDriverName; reason?: string } {
   const reasons: string[] = [];
@@ -77,6 +77,14 @@ function openSqliteDatabase(filePath: string): { db?: SqliteDatabase; driver?: S
     }
     return { reason: primaryReason };
   }
+}
+
+/** Shared SQLite connection boundary for maintenance tools such as export/import. */
+export function openSqliteConnection(filePath: string): { db: SqliteDatabase; driver: SqliteDriverName; close: () => void } {
+  const opened = openSqliteDatabase(filePath);
+  if (!opened.db || !opened.driver) throw new Error(`SQLite driver unavailable: ${opened.reason ?? 'unknown reason'}`);
+  runSqliteMigrations(opened.db);
+  return { db: opened.db, driver: opened.driver, close: () => opened.db?.close() };
 }
 
 function portablePath(filePath: string): string {

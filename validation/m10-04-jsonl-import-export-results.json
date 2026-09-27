@@ -1,0 +1,50 @@
+{
+  "milestone": "M10-04",
+  "status": "DONE",
+  "implementation": [
+    "scripts/import-export/cli.mjs",
+    "scripts/import-export/cli.test.mjs"
+  ],
+  "format": "local-agent-workspace.export.v1",
+  "schemaVersion": 2,
+  "manifest": {
+    "payloadSha256": true,
+    "tables": "per-table row counts",
+    "driver": "node:sqlite"
+  },
+  "validation": {
+    "json_records": true,
+    "table_allowlist": true,
+    "primary_key_duplicates": true,
+    "run_events_sequence_continuous": true,
+    "context_snapshot_hash": true,
+    "json_columns": true,
+    "tamper_payload_sha256_rejected": true,
+    "non_empty_target_rejected": true
+  },
+  "import": {
+    "transactional": true,
+    "rebuild_from_export": true,
+    "rollback_on_failure": true
+  },
+  "specialized_tests": { "passed": 2, "total": 2 },
+  "real_database": {
+    "source": "data/workspace.db",
+    "export_validate_import": "PASS",
+    "imported_rows": 54,
+    "reopened_counts": {
+      "projects": 1,
+      "runs": 0,
+      "run_events": 19,
+      "idempotency_keys": 0
+    }
+  },
+  "follow_up": "主任务另行记录 27/27、typecheck、full suite、git diff --check；唯一下一步为 M10-06 kill/restart、backup recovery、scale validation。",
+  "preserved_limits": [
+    "M8-04 quality evidence remains blocked",
+    "Electron visibility remains PARTIAL",
+    "DeepSeek real call remains unverified",
+    "literal GitHub clone remains unverified",
+    "Codex native resume remains unverified"
+  ]
+}

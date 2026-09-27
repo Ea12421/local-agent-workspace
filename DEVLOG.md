@@ -214,3 +214,12 @@
 - **验证**：typecheck、HTTP smoke、全套等价 Node tests `25/25`、`git diff --check` 全部通过。
 - **边界**：M8-04 质量证据、Electron 可见性、DeepSeek、literal GitHub clone 和 Codex 原生 resume 的既有阻断保持不变。
 - **唯一下一步**：实施 M10-04 JSONL import/export（导入、导出、校验、重建）；M10-06 崩溃恢复与规模验证后置。
+
+### 2026-09-27 M10-04 · JSONL import/export
+
+- **实现**：新增 `scripts/import-export/cli.mjs` 的 export、validate、import/rebuild；导出格式 `local-agent-workspace.export.v1`，schemaVersion 2，manifest 记录 payloadSha256 与逐表计数。
+- **校验**：JSON record、表白名单、主键重复、run_events sequence 连续、ContextSnapshot hash、JSON columns；篡改 payload 与非空 target 明确拒绝。
+- **验证**：`scripts/import-export/cli.test.mjs` 专项 2/2；真实 `data/workspace.db` export→validate→import 54 rows，重开计数 projects=1、runs=0、events=19、idempotency=0。
+- **证据**：`validation/m10-04-jsonl-import-export-results.json`。主任务另行记录 27/27、typecheck、full suite、git diff check。
+- **状态**：M10-04 DONE；M8-04、Electron、DeepSeek、literal GitHub clone、Codex 原生 resume 限制保持不变。
+- **下一步**：M10-06 kill/restart、backup recovery、scale validation。

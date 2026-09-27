@@ -65,7 +65,7 @@
 - M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`。
 - M10-02 已完成：`schema_meta` 记录 schema v1，migration runner 以事务执行并在错误时回滚；`run_events`、`context_snapshots`、`run_segments`、`idempotency_keys` 五类表已创建，二次 inspection 与首次结果一致。证据为 `validation/m10-02-schema-migration-results.json`。
 - M10-03 当前为 PARTIAL：schema v2 增加领域表，单连接 `SqliteRunStore` 以事务写入 Run、RunEvent、幂等记录和 Run segment；runtime 已切换到 SQLite 默认路径，重启回读、回滚、三个独立进程并发写、备份恢复和项目隔离专项通过。证据为 `validation/m10-03-sqlite-runstore-results.json`；全实体 typed CRUD、长时规模和 Product Builder 完整接入仍未完成。
-- M10-05 已完成：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，全部 typed entity round-trip、Project/Skill/BotProfile POST/GET/PATCH、Run create/cancel/retry、entity summary 和 approve persistence 已通过；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`。M10-04 JSONL 导入导出仍未完成。
+- M10-05 已完成：Product Builder event log 与 ContextSnapshot 共享 SQLite 连接；checkpoint event、ContextSnapshot、snapshot-created event 和幂等行同事务写入，全部 typed entity round-trip、Project/Skill/BotProfile POST/GET/PATCH、Run create/cancel/retry、entity summary 和 approve persistence 已通过；HTTP preview 第二次调用返回 created=0/skipped=10。证据为 `validation/m10-05-product-builder-persistence-results.json`。
 
 ## 当前卡点
 
@@ -80,7 +80,7 @@
 
 ## 当前唯一下一步
 
-实施 M10-04 JSONL import/export：导入、导出、校验与从导出重建；随后再做 M10-06 kill/restart、备份恢复与规模验证。
+实施 M10-06：kill/restart、backup recovery、跨进程边界与规模验证。
 
 ## 网络恢复后的下一步
 
@@ -97,7 +97,19 @@ pnpm package:mac
 ### 2026-09-27 M10-05 · HTTP persistence routes 收口
 
 - **实现**：Project、Skill、BotProfile typed persistence roundtrip 已通过；新增 `GET /api/persistence/entities` entity summary，并验证 approve route 写入持久化状态。
-- **验证**：`node scripts/typecheck.mjs`、Product Builder/HTTP 专项 `3/3`、全套等价 Node tests `25/25`、`git diff --check` 均通过。
 - **验证**：typecheck、HTTP smoke、全套等价 Node tests `25/25`、`git diff --check` 均通过。
-- **边界**：M10-04 JSONL 导入导出、M10-06 恢复与规模验证仍待完成；M8-04 质量证据阻断保持不变。
+- **边界**：M10-04 已完成；M10-06 恢复与规模验证仍待完成；M8-04 质量证据阻断保持不变。
 - **证据**：`validation/m10-05-product-builder-persistence-results.json`。
+
+## 2026-09-27 M10-04 · JSONL import/export 完成
+
+- 实现：`scripts/import-export/cli.mjs` 提供 SQLite workspace 的 export、validate、import/rebuild；格式为 `local-agent-workspace.export.v1`，`schemaVersion=2`，manifest 记录 `payloadSha256`。
+- 校验：覆盖 JSON record、表白名单、主键重复、`run_events` sequence 连续、ContextSnapshot 内容 hash、JSON columns；篡改 payload 和非空 target 均 fail-closed。
+- 导入：使用单事务写入，失败回滚；目标表非空时拒绝，支持从导出重建并重开回读。
+- 证据：专项测试 `2/2`；真实 `data/workspace.db` export→validate→import 共 `54` rows，重开计数 `projects=1,runs=0,events=19,idempotency=0`；详见 `validation/m10-04-jsonl-import-export-results.json`。
+- 主任务另行记录：27/27、typecheck、full suite、`git diff --check` 已通过。
+- M8-04、Electron、DeepSeek、literal GitHub clone、Codex 原生 resume 限制保持原状。
+
+### 当前唯一下一步
+
+M10-06：kill/restart、backup recovery、scale validation。

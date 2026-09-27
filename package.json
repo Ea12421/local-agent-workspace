@@ -9,7 +9,7 @@
     "demo": "node --experimental-strip-types scripts/demo.ts",
     "dev": "node --experimental-strip-types apps/server/src/index.ts",
     "test": "node --experimental-strip-types --test packages/core/src/*.test.ts",
-    "test:all": "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts",
+    "test:all": "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts scripts/import-export/*.test.mjs",
     "typecheck": "node scripts/typecheck.mjs",
     "dev:web": "vite --config apps/web/vite.config.ts",
     "build:desktop": "tsc -p apps/desktop/tsconfig.json && node scripts/build-desktop-entry.mjs",
