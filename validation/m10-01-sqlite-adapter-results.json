@@ -1,0 +1,41 @@
+{
+  "record_version": "m10-01.sqlite-adapter-results.v1",
+  "executed_at": "2026-09-27T15:12:09+08:00",
+  "status": "PASS_ADAPTER_BOUNDARY",
+  "decision": "SQLite-first operational source of truth; JSONL explicit portable/demo/export/backup mode",
+  "implementation": [
+    "SqliteContextSnapshotStore",
+    "openContextSnapshotStore factory",
+    "SQLite WAL/foreign_keys/busy_timeout configuration",
+    "better-sqlite3 then node:sqlite driver probe",
+    "HTTP persistence backend/mode/reason receipt",
+    "runtime and Product Builder default factory injection"
+  ],
+  "driver_observed": {
+    "node": "v22.23.1",
+    "better_sqlite3": "present but binary ABI mismatched (compiled for Node 24 / module 132; current Node requires 127)",
+    "node_sqlite": "available and used",
+    "observed_mode": "full",
+    "observed_backend": "sqlite",
+    "observed_driver": "node:sqlite"
+  },
+  "commands": [
+    "node scripts/typecheck.mjs",
+    "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts",
+    "git diff --check"
+  ],
+  "results": {
+    "typecheck": "PASS",
+    "full_suite": { "passed": 20, "failed": 0 },
+    "diff_check": "PASS",
+    "sqlite_snapshot_reload": "PASS",
+    "http_persistence_mode_receipt": "PASS"
+  },
+  "limitations": [
+    "M10-02 versioned schema_meta and migration runner are not implemented yet.",
+    "Only context_snapshots and run_events are currently persisted through the SQLite adapter; the remaining entities still need schema and transactional stores.",
+    "Cross-process contention, kill/restart, backup/restore and 10k/100k event benchmarks are still pending.",
+    "Portable JSONL fallback is explicit in the factory result but import/export is not implemented yet."
+  ],
+  "next_action": "Implement M10-02 versioned SQLite schema and migration runner for schema_meta, context_snapshots, run_segments and idempotency_keys."
+}

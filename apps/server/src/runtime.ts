@@ -1,7 +1,7 @@
 import { InMemoryRunStore, buildContextPacket, buildContextSnapshot, createOpaqueId, createRunEvent, type BotId, type ContextLedger, type ContextPacket, type ContextPolicy, type ContextSnapshotId, type JsonValue, type ProjectId, type ProviderAdapter, type Run, type RunEvent, type RunId, type RunHandle } from '../../../packages/core/src/index.ts';
 import type { JsonObject } from '../../../packages/core/src/types.ts';
 import { CodexExternalAdapter } from '../../../packages/adapters/src/index.ts';
-import { JsonlContextSnapshotStore, type ContextSnapshotStore } from './persistence.ts';
+import { openContextSnapshotStore, type ContextSnapshotStore } from './persistence.ts';
 import path from 'node:path';
 
 const projectId = 'project-product-builder' as ProjectId;
@@ -32,7 +32,7 @@ const defaultContextPolicy: ContextPolicy = {
 };
 
 function defaultContextSnapshotStore(): ContextSnapshotStore {
-  return new JsonlContextSnapshotStore(path.join(process.cwd(), 'data', 'context-snapshots.jsonl'));
+  return openContextSnapshotStore(path.join(process.cwd(), 'data', 'workspace.db')).store;
 }
 
 async function appendRuntimeEvent(runId: RunId, type: RunEvent['type'], data: JsonObject, actor: RunEvent['actor'] = { type: 'system' }) {
@@ -110,6 +110,7 @@ export async function executeCodexRun(objective: string, input: JsonValue = {}, 
   });
   const started = await runtimeStore.transition(created.id, 'start');
   const maxSegments = Math.max(1, Math.floor(options.maxSegments ?? 1));
+  const ownsContextSnapshotStore = !options.contextSnapshotStore;
   const snapshotStore = options.contextSnapshotStore ?? defaultContextSnapshotStore();
   const contextPolicy = options.contextPolicy ?? defaultContextPolicy;
   const adapterFactory = options.adapterFactory ?? (() => new CodexExternalAdapter(process.env.CODEX_BIN ?? 'codex'));
@@ -211,6 +212,7 @@ export async function executeCodexRun(objective: string, input: JsonValue = {}, 
     return { run: final.run, startEvent: started.event, providerEvents, finalEvent: final.event, provider: handle?.provider ?? lastProvider };
   } finally {
     activeCodexRuns.delete(created.id);
+    if (ownsContextSnapshotStore) snapshotStore.close?.();
   }
 }
 

@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import type { ContextLedger, RunEvent } from '../../../packages/core/src/types.ts';
 import { buildContextSnapshot } from '../../../packages/core/src/context.ts';
-import { JsonlContextSnapshotStore, JsonlEventLog, openEventLog } from './persistence.ts';
+import { JsonlContextSnapshotStore, JsonlEventLog, openContextSnapshotStore, openEventLog } from './persistence.ts';
 
 test('persistence exposes SQLite boundary with a clean-checkout fallback', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-'));
@@ -108,5 +108,24 @@ test('JSONL snapshot appends remain complete under same-process concurrency and 
   for (const snapshot of all) rebuiltIndex.set(`${snapshot.projectId}/${snapshot.runId}`, snapshot);
   assert.equal(rebuiltIndex.get('project-a/run-a')?.id, 'snapshot-concurrent-20');
   assert.equal((await reloaded.latest('project-a', 'run-a'))?.id, 'snapshot-concurrent-20');
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('SQLite is the operational snapshot backend when a usable driver exists', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-context-sqlite-'));
+  const handle = openContextSnapshotStore(path.join(dir, 'workspace.db'));
+  if (handle.backend === 'jsonl') {
+    assert.equal(handle.mode, 'portable');
+    assert.ok(handle.reason);
+    await rm(dir, { recursive: true, force: true });
+    return;
+  }
+  const snapshot = snapshotFixture('project-sqlite', 'run-sqlite', 1, 'snapshot-sqlite-1');
+  await handle.store.append(snapshot);
+  handle.close?.();
+  const reloaded = openContextSnapshotStore(path.join(dir, 'workspace.db'));
+  assert.equal(reloaded.backend, 'sqlite');
+  assert.equal((await reloaded.store.latest('project-sqlite', 'run-sqlite'))?.id, snapshot.id);
+  reloaded.close?.();
   await rm(dir, { recursive: true, force: true });
 });

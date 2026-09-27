@@ -109,10 +109,23 @@
 | ID | 任务 | 文件/区域 | 依赖 | 状态 | 完成标准 |
 |---|---|---|---|---|---|
 | M9-01 | ContextSnapshot 纯函数契约 | `packages/core/src/context.ts`, `types.ts` | M1 | DONE | 阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 有专项测试 |
-| M9-02 | JSONL Snapshot 持久化 | `apps/server/src/persistence.ts` | M9-01 | DONE | snapshot 写入、读取、重复拒绝、latest 隔离和重启 hydration |
+| M9-02 | JSONL portable Snapshot 持久化 | `apps/server/src/persistence.ts` | M9-01 | DONE | portable 模式下 snapshot 写入、读取、重复拒绝、latest 隔离和重启 hydration |
 | M9-03 | Run segment 与 fallback resume | `packages/adapters`, `apps/server/src/runtime.ts` | M9-01 | DONE | Provider limit/中断后同一 Run 创建新 segment，snapshot + tail 传入下一段，事件可追溯 |
 | M9-04 | Product Builder 长窗口接入 | `packages/workflow`, `apps/server` | M9-02, M9-03 | DONE | Handoff、Approval、Artifact 后自动 checkpoint，恢复不重复工作 |
 | M9-05 | Context Continuity 验证 | `validation/`, `SPEC/07` | M9-04 | DONE | synthetic limit、崩溃恢复、重复提交、跨项目隔离通过 |
+
+## Milestone M10：SQLite-first 持久化
+
+| ID | 任务 | 文件/区域 | 依赖 | 状态 | 完成标准 |
+|---|---|---|---|---|---|
+| M10-01 | storage-neutral factory 与 SQLite ContextSnapshot backend | `apps/server/src/persistence.ts`, `runtime.ts`, `product-builder-continuity.ts` | M9 | DONE | SQLite 默认；JSONL 仅 portable；HTTP 返回 backend/mode/reason；20/20 测试通过 |
+| M10-02 | 版本化 schema 与 migration runner | `apps/server/src/persistence.ts`, `scripts/migrations/*` | M10-01 | NEXT | `schema_meta`、`context_snapshots`、`run_segments`、`idempotency_keys` 有版本迁移、回滚和重启验证 |
+| M10-03 | 全实体 SQLite 事务与幂等 | `packages/core`, `apps/server/src/persistence.ts` | M10-02 | TODO | Project/Bot/Run/Handoff/Approval/Source/Artifact/Memory/Receipt 事务一致，唯一约束和幂等通过 |
+| M10-04 | JSONL 导入、导出和校验 | `scripts/import-export/*`, `validation/` | M10-02 | TODO | 校验 sequence/hash/idempotency，事务导入后回读一致，可从导出重建 |
+| M10-05 | runtime/Product Builder 完整持久化接入 | `apps/server/src/runtime.ts`, `product-builder-continuity.ts` | M10-03 | PARTIAL | Run segment、checkpoint、approval、artifact 全部进入 SQLite，业务/API 契约不变 |
+| M10-06 | 崩溃、多进程、备份恢复和规模验证 | `apps/server/src/*.test.ts`, `validation/` | M10-03, M10-04 | TODO | kill/restart、跨进程竞争、DB lock、备份恢复、10k/100k 事件边界有证据 |
+
+M10 的详细架构决策见 `SPEC/08-persistence-architecture-decision.md`。
 
 ## 当前唯一优先级
 
@@ -121,7 +134,9 @@
 ```text
 M3-04/M8-03（Codex CLI bridge）
 → M6-06 → M7-01/M7-02 → M7-03 → M8-01
-→ M9-01/M9-02/M9-03/M9-04/M9-05（Context Continuity）→ M8-04（10 题机械执行收口，质量证据阻断）→ M8-05（现实任务）→ M8-06 → M8-02（DeepSeek 可选对比）
+→ M9-01/M9-02/M9-03/M9-04/M9-05（Context Continuity）
+→ M10-01/M10-02/M10-03/M10-04/M10-05/M10-06（SQLite-first）
+→ M8-04（质量证据收口）→ M8-05（现实任务）→ M8-06（面试掌握包）→ M8-02（DeepSeek 可选对比）
 ```
 
 在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。

@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 质量证据仍阻断；M8-05 窄范围验证完成，M8-06 paired baseline 为 PARTIAL，JSONL 边界专项通过，Desktop 仍部分验证
-- 阶段：`m8-06-jsonl-failure-boundary-pass`
+- `RUN_STATE.json`：当前为 `running`，长期路线已改为 SQLite-first；M8-04 质量证据仍阻断，M8-05 窄范围验证完成，M8-06 比较保留为历史 PARTIAL，M10-01 SQLite 适配层已通过，Desktop 仍部分验证
+- 阶段：`m10-sqlite-first-adapter-pass`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -48,6 +48,8 @@
   - `validation/m8-06-manual-baseline.md`、`validation/m8-06-structured-run.json`、`validation/m8-06-comparison.json`：两条 arm 和比较结果
   - `validation/m8-06-owner-review.md`：给人阅读的 JSONL-first / SQLite-first 判断卡
   - `validation/m8-06-jsonl-failure-results.json`：JSONL 尾行损坏、同进程并发 append 和重建 latest 的专项结果
+  - `SPEC/08-persistence-architecture-decision.md`：长期 SQLite-first 决策、portable 边界和 M10 实施顺序
+  - `validation/m10-01-sqlite-adapter-results.json`：SQLite adapter、驱动探针、20/20 测试与限制
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -66,7 +68,7 @@
   - M8-04 10 题三路径机械执行已完成；所有记录仍缺质量补证，不能写成多 Bot 质量或提效通过
   - PB-01 当前有 9 条真实 provider 记录（8 条完成、1 条 provider_incomplete），全部是 `quality_eligible=false`；可解析的 multi Bot receipts 自动校验为 7/8，另有前缀/拼接输出被严格拒绝，必须先人工复核，不能据此宣称单/多 Bot 质量优劣
   - 为同步最新桌面入口而重打包时，`.app` 编译成功，但 `hdiutil` 报 `设备未配置`；已有 DMG 保留，需在 DiskManagement 可用的 macOS 环境再复验封装
-  - M8-05 窄范围 reality validation 已完成；M8-06 paired baseline 两条 arm 已执行但为 PARTIAL，JSONL 边界专项已通过，用户本人 baseline 和 willingness 仍未知
+  - M8-05 窄范围 reality validation 已完成；M8-06 paired baseline 两条 arm 已执行但为 PARTIAL，现作为历史证据；长期存储路线已改为 SQLite-first
 
 ## 不要重新打开的决定
 
@@ -92,13 +94,13 @@
 12. M8-04 EX-02 三条路径已完成并校验为 7/8、0/8、0/8；single_bot/multi_bot schema failure，multi_bot 比 single_bot 慢约 6.18 倍，质量证据仍阻断，记录为 `validation/m8-04-manual-review-EX-02.json`。
 13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`；质量证据仍阻断。
 14. M8-05 已完成：3/3 真实本地状态任务通过预注册追踪门；一次真实 Codex provider 中断后，同一 `runId` 追加 Snapshot 和 resume segment 并成功收口。Recovery 内容本身因提示禁止读取命令而返回 blocked，已单独记录，不能写成业务任务完成。
-15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。M8-06 paired baseline 为 PARTIAL：保留 JSONL-first provisional recommendation，不执行 SQLite-first 迁移。
-16. JSONL 边界专项已通过：5/5 persistence tests、19/19 全套等价 Node tests、typecheck、diff check；证据为 `validation/m8-06-jsonl-failure-results.json`，只覆盖同进程契约。`pnpm test:all` 仅因 Corepack 用户缓存权限未运行。
-17. Git 已在本地建立 `main` 基线并提交；当前没有 remote，不 push。
+15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。SQLite-first 是长期运行时路线，JSONL 仅作 portable/demo/export/灾备。
+16. M10-01 SQLite 适配层已通过：全套等价 Node tests 20/20、typecheck、diff check；better-sqlite3 ABI 不匹配时由 node:sqlite 接管并返回显式 persistence mode。
+17. 当前唯一下一步是 M10-02 版本化 SQLite schema 与 migration runner；Git 已在本地建立 `main` 基线并提交，当前没有 remote，不 push。
 
 ### 当前唯一下一步
 
-保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark；owner willingness 仍需用户复核。
+实现 M10-02 版本化 SQLite schema 与 migration runner，先覆盖 `schema_meta`、`context_snapshots`、`run_segments` 和 `idempotency_keys`，再补 JSONL 导入导出与恢复测试。
 
 ## 重要文件
 
@@ -111,7 +113,7 @@
 - `packages/adapters/src/`：Provider/权限适配层
 - `apps/server/src/index.ts`：本地 HTTP control plane
 - `apps/server/src/runtime.ts`：core 运行时 fixture
-- `apps/server/src/persistence.ts`：事件 JSONL 与 ContextSnapshot JSONL 存储
+- `apps/server/src/persistence.ts`：SQLite 运行时存储、JSONL portable 后端与能力诊断
 - `apps/web/src/`：Web UI
 - `apps/desktop/src/main.ts`：Electron 薄壳
 - `fixtures/demo-project.json`：无 Key 演示输入

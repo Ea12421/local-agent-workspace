@@ -20,12 +20,6 @@
   "recent_corrections": [
     {
       "at": "2026-09-26T19:50:00+08:00",
-      "source_ref": "runtime-landscape",
-      "rejected": "Codex 订阅没有任何公开嵌入路径",
-      "required": "使用官方 Codex SDK/CLI 作为本地 ExecutionAgentAdapter 探针；它不是通用 ModelProvider，能力和账号状态必须单独记录"
-    },
-    {
-      "at": "2026-09-26T19:50:00+08:00",
       "source_ref": "environment-check",
       "rejected": "当前可直接 pnpm install 并完成打包",
       "required": "先落盘依赖和代码；网络恢复后再做依赖安装、Vite 构建和 Electron 打包验证"
@@ -35,6 +29,12 @@
       "source_ref": "user-2026-09-27",
       "rejected": "依赖聊天连续性或立即接 DeepSeek 作为主线",
       "required": "先持久化 ContextSnapshot、执行 segment 和 fallback recovery；DeepSeek 后置"
+    },
+    {
+      "at": "2026-09-27T15:12:09+08:00",
+      "source_ref": "user-long-term-architecture-decision",
+      "rejected": "只按当前小规模验证把 JSONL-first 作为长期默认事实源",
+      "required": "SQLite-first 作为运行时唯一事实源；JSONL 仅作 portable/demo/export/灾备，并显式报告降级"
     }
   ],
   "scope": {
@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-06-jsonl-failure-boundary-pass",
+  "phase": "m10-sqlite-first-adapter-pass",
   "progress": {
-    "completed_units": 25,
-    "total_units": 25
+    "completed_units": 28,
+    "total_units": 28
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -64,8 +64,8 @@
     "used": 0,
     "blocking_corrections_left": 1
   },
-  "blocked_reason": "M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone、Codex 原生 resume 和多 Bot/人工提效仍未验证。M8-05 只通过窄范围真实输入追踪和一次真实 provider 同 Run 恢复 smoke，未证明业务质量或稳定提效。",
-  "next_action": "保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark。owner willingness 仍为 UNKNOWN。",
-  "last_evidence": "2026-09-27：M8-06 两条 arm 已执行且比较为 PARTIAL；随后 JSONL 边界专项通过。5/5 persistence tests、19/19 全套等价 Node tests、typecheck 和 diff check 通过：损坏尾行 fail-closed，同进程 20 次并发 append 完整，重载后按 project/run 重建 latest。pnpm test:all 仅因 Corepack 用户缓存权限未运行。该专项只覆盖同进程契约，不证明跨进程锁、长时吞吐、M8-04 质量或现实提效。",
-  "updated_at": "2026-09-27T06:30:00+08:00"
+  "blocked_reason": "M10 SQLite schema/迁移、全实体事务、JSONL 导入导出、跨进程/崩溃/备份恢复验证仍未完成；M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。当前环境的 better-sqlite3 ABI 不匹配，已由 node:sqlite 兼容驱动接管并显式记录。",
+  "next_action": "实现 M10-02 版本化 SQLite schema 与 migration runner，先覆盖 schema_meta、context_snapshots、run_segments 和 idempotency_keys，再补导入导出与恢复测试。",
+  "last_evidence": "2026-09-27：长期路线已改为 SQLite-first。新增 SqliteContextSnapshotStore、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、node:sqlite 兼容驱动和 HTTP persistence mode 回执；全套等价 Node tests 20/20 通过，typecheck 通过。better-sqlite3 当前二进制按 Node 24 编译而当前 Node 22 要求 ABI 127，已明确降级/兼容，不再静默失败。",
+  "updated_at": "2026-09-27T15:12:09+08:00"
 }

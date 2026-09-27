@@ -73,12 +73,27 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
     if (req.method === 'POST' && url.pathname === '/api/product-builder/preview') {
       const input = await body(req);
       const builderResult = runProductBuilder({ projectId: fixture.project.id as any, runId: fixture.run.id, idea: String(input.idea ?? fixture.run.goal), user: input.user ? String(input.user) : undefined });
-      const continuity = await checkpointProductBuilderResult(
-        { projectId: fixture.project.id as any, runId: fixture.run.id as any, idea: String(input.idea ?? fixture.run.goal) },
-        builderResult,
-        defaultProductBuilderContinuityStores(dataDir),
-      );
-      return send(res, 200, { ...builderResult, continuity: { createdCheckpoints: continuity.createdCheckpoints, skippedCheckpoints: continuity.skippedCheckpoints, createdSnapshots: continuity.createdSnapshots, latestSnapshotId: continuity.latestSnapshot?.id ?? null } });
+      const stores = await defaultProductBuilderContinuityStores(dataDir);
+      let continuity;
+      try {
+        continuity = await checkpointProductBuilderResult(
+          { projectId: fixture.project.id as any, runId: fixture.run.id as any, idea: String(input.idea ?? fixture.run.goal) },
+          builderResult,
+          stores,
+        );
+      } finally {
+        stores.close?.();
+      }
+      return send(res, 200, {
+        ...builderResult,
+        continuity: {
+          createdCheckpoints: continuity.createdCheckpoints,
+          skippedCheckpoints: continuity.skippedCheckpoints,
+          createdSnapshots: continuity.createdSnapshots,
+          latestSnapshotId: continuity.latestSnapshot?.id ?? null,
+          persistence: stores.persistence ?? null,
+        },
+      });
     }
     if (req.method === 'GET' && url.pathname === '/api/provider/codex-probe') return send(res, 200, await codexProbe());
     if (req.method === 'POST' && url.pathname === '/api/provider/codex-run') {

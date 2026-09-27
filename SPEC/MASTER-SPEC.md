@@ -151,14 +151,14 @@ Planner → Evaluation Bot
 ┌───────▼──────┐ ┌────▼────────┐ ┌────▼─────────┐
 │ Core Domain  │ │ Adapters    │ │ Persistence  │
 │ State machine│ │ DeepSeek    │ │ SQLite       │
-│ Schemas      │ │ Codex CLI   │ │ JSONL fallback│
+│ Schemas      │ │ Codex CLI   │ │ JSONL portable│
 │ Event rules  │ │ Fixture     │ │ Recovery     │
 └──────────────┘ └─────────────┘ └──────────────┘
 ```
 
 ### 3.2 事实源原则
 
-`packages/core` 的类型、状态机和事件规则是业务事实源。LangGraph、OpenAI Agents SDK、Pi、Hermes、OpenHands 如果未来接入，只能实现一个执行节点或 Provider Adapter，不能直接拥有 Project、Run、Approval 或 Artifact 的最终状态。
+`packages/core` 的类型、状态机和事件规则定义业务事实；SQLite 是运行时持久化事实源，RunEvent 以 append-only 行保存。LangGraph、OpenAI Agents SDK、Pi、Hermes、OpenHands 如果未来接入，只能实现一个执行节点或 Provider Adapter，不能直接拥有 Project、Run、Approval 或 Artifact 的最终状态。JSONL 只用于 portable/demo/export/灾备，不与 SQLite 并列为两个运行时事实源。
 
 ### 3.3 技术栈
 
@@ -169,8 +169,8 @@ Planner → Evaluation Bot
 | 包管理 | pnpm 9.15 | workspace 管理 | 目标版本，当前被 registry 阻塞 |
 | Web | React 19 + Vite 6 | 本地 Web UI | 代码已写，真实构建待依赖 |
 | Server | Node 原生 HTTP | 本地 control plane | 代码已写 |
-| 数据库 | SQLite + better-sqlite3 | 本地持久化 | schema/边界已写，真实 native 模块待安装 |
-| 回退存储 | JSONL | clean checkout 和无依赖演示 | 已测试 |
+| 数据库 | SQLite（优先 better-sqlite3，兼容 Node `node:sqlite`） | 运行时唯一持久化事实源 | schema/边界已写；当前 Node 22 使用 `node:sqlite` |
+| Portable 存储 | JSONL | clean checkout、Fixture、导出和灾备 | 已测试；必须显式标记 `mode=portable` |
 | Desktop | Electron 34 + electron-builder | macOS `.dmg` | 壳已写，打包待依赖 |
 | 模型 | DeepSeek API | 第一条真实 Model Provider，对比通道 | Adapter 已写，未实跑 |
 | 执行 Agent | 官方 Codex CLI/SDK | 当前优先的本地执行桥 | CLI 0.155.1 真实最小调用已通过；Product Builder 接入待验证 |
@@ -556,7 +556,7 @@ Electron 不复制 Product Builder 和状态机，只负责：
 
 ## 10. 持久化和目录
 
-### 10.1 SQLite 表（目标）
+### 10.1 SQLite 运行时表
 
 - `projects`
 - `bot_profiles`
@@ -569,6 +569,13 @@ Electron 不复制 Product Builder 和状态机，只负责：
 - `artifacts`
 - `memory_items`
 - `provider_receipts`
+- `run_segments`
+- `context_snapshots`
+- `idempotency_keys`
+
+SQLite 是运行时唯一事实源。JSONL 不默认双写，只通过显式导入、导出或 portable factory 使用。
+
+数据库启动时启用 WAL、foreign keys 和 busy timeout。若 SQLite 驱动不可用，API 和诊断必须返回 `mode=portable` 及失败原因。
 
 `run_events` 必须有：
 

@@ -4,7 +4,7 @@
 
 ## 总状态
 
-`m8-06-jsonl-failure-boundary-pass-m8-04-quality-blocked-desktop-partial`
+`m10-sqlite-first-adapter-pass-m8-04-quality-blocked-desktop-partial`
 
 这表示：代码实现单元已完成，但项目最终验收没有完成。
 
@@ -41,7 +41,7 @@
 - M8-04 自动校验已完成：9 条真实 provider 记录（其中 8 条完成、1 条 provider_incomplete）均有 JSON/schema 校验结果；当前有效完成记录为 `single_call` 7/8、`single_bot` 两次 8/8、旧 `multi_bot` 拼接/前缀输出被严格拒绝、可解析的 `multi_bot` 记录为 7/8；没有记录被提升为质量证据
 - M8-04 试跑、重试和校验均写入 `validation/m8-04-results.jsonl`、`validation/m8-04-validation-summary.json` 和 `evidence/receipts/m804-*.json`
 - Context Continuity v1 纯函数已完成：软/硬阈值、结构化摘要、事件范围、hash、tail 和恢复 Packet 均有专项测试。
-- `JsonlContextSnapshotStore` 已完成：快照追加、重启读取、重复 ID 拒绝、按 project/run 查询 latest，并保持原始 RunEvent 不变。
+- `JsonlContextSnapshotStore` 已完成为 portable 后端：快照追加、重启读取、重复 ID 拒绝、按 project/run 查询 latest，并保持原始 RunEvent 不变；SQLite 已成为默认运行时后端。
 - Run segment/fallback resume 已完成：provider 未完成或抛错时，同一逻辑 Run 追加 segment、snapshot 和 resume 事件，并把已校验的 ContextPacket 传给下一段；专项恢复测试通过。
 - Product Builder checkpoint 已完成：4 个 Handoff、5 个 Artifact、1 个 Approval 生成稳定幂等键；边界事件和 Snapshot 追加到 JSONL，重放同一 Run 会跳过已记录工作。
 - M9-05 Context Continuity 验证已完成并写入 `validation/m9-context-continuity-results.json`：synthetic provider limit、同一 Run 恢复、snapshot 重启/篡改校验、重复 checkpoint、跨项目隔离和原始事件保留均通过；这是契约证据，不是模型质量或现实使用证据。
@@ -57,8 +57,12 @@
 - M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、`overExpected=0`、`quality_eligible=0`；总账本为 `validation/m8-04-aggregate-summary.json`。这不是多 Bot 优势结论，也不是现实使用验证。
 - M8-05 窄范围现实验证已完成：REAL-01/02/03 三个真实本地状态任务均通过结构化追踪门；一次真实 Codex provider segment 人为中断后，同一 `runId` 追加 `ContextSnapshot`、`run.resume_requested` 和第二 segment，最终 succeeded。结果为 `validation/m8-05-reality-results.json`，复核为 `validation/m8-05-review.md`。这只验证追踪和执行链恢复，不验证业务质量或提效。
 - M8-06 paired baseline 卡已冻结：真实任务为 ContextSnapshot 的 JSONL-first vs SQLite-first 技术路线判断；固定了同一输入白名单、7 步手工基线、结构化 Run 输出键、25% 整理步骤阈值、来源/未知项/回滚护栏和 owner willingness 未知边界。卡片为 `validation/m8-06-paired-baseline-card-v1.json`。
-- M8-06 两条 arm 已执行，比较结果为 `PARTIAL`：controller proxy 手工基线 7 步且未冒充用户计时；结构化 Codex subscription Run 为 56234ms，结构化追踪通过。由于缺少用户本人 baseline、人工修改和复用意愿，不能计算真实提效率。结果在 `validation/m8-06-comparison.json`；当前 provisional recommendation 保留 JSONL-first，不迁移 SQLite-first。
+- M8-06 两条 arm 已执行，比较结果为 `PARTIAL`：controller proxy 手工基线 7 步且未冒充用户计时；结构化 Codex subscription Run 为 56234ms，结构化追踪通过。由于缺少用户本人 baseline、人工修改和复用意愿，不能计算真实提效率。结果在 `validation/m8-06-comparison.json`；该比较保留为历史证据，不再作为长期存储路线决定。
 - M8-06 JSONL 边界专项已通过：尾行损坏按 `SyntaxError` fail-closed；同进程 20 次并发 append 完整；重载后可按 project/run 重建 latest；typecheck、5/5 persistence tests、19/19 全套等价 Node tests 和 diff check 均通过。证据在 `validation/m8-06-jsonl-failure-results.json`。`pnpm test:all` 仅因 Corepack 用户缓存权限未运行；该结果不覆盖跨进程锁或长时吞吐。
+- 长期架构重新评估后已决定 SQLite-first：SQLite 是运行时唯一事实源，JSONL 只用于 portable/demo/export/灾备。详细决策见 `SPEC/08-persistence-architecture-decision.md`。
+- M10-01 适配层已开始：`SqliteContextSnapshotStore`、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、`node:sqlite` 兼容驱动和 HTTP `persistence.mode` 回执已落地；runtime 与 Product Builder 不再硬编码 JSONL 默认路径。
+- M10-01 验证：全套等价 Node tests 20/20、typecheck 和 diff check 通过；当前 better-sqlite3 二进制与 Node 22 ABI 不匹配，已由 node:sqlite 接管，不再静默失败。
+- M10-01 证据已落盘到 `validation/m10-01-sqlite-adapter-results.json`；M10-02 schema_meta、migration runner、全实体事务、导入导出和跨进程/备份恢复验证仍未完成。
 
 ## 当前卡点
 
@@ -73,7 +77,7 @@
 
 ## 当前唯一下一步
 
-保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark；保留 owner willingness 为 UNKNOWN。
+实现 M10-02 版本化 SQLite schema 与 migration runner，先覆盖 `schema_meta`、`context_snapshots`、`run_segments` 和 `idempotency_keys`，再补 JSONL 导入导出与恢复测试。
 
 ## 网络恢复后的下一步
 

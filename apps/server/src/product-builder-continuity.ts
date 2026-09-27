@@ -13,11 +13,16 @@ import {
   type RunId,
 } from '../../../packages/core/src/index.ts';
 import type { ProductBuilderCheckpoint, ProductBuilderResult } from '../../../packages/workflow/src/index.ts';
-import { JsonlContextSnapshotStore, JsonlEventLog, type ContextSnapshotStore } from './persistence.ts';
+import { openContextSnapshotStore, openEventLog, type ContextSnapshotStore, type EventLog, type EventLogHandle, type ContextSnapshotStoreHandle } from './persistence.ts';
 
 export type ProductBuilderContinuityOptions = {
-  eventLog: JsonlEventLog;
+  eventLog: EventLog;
   snapshotStore: ContextSnapshotStore;
+  persistence?: {
+    eventLog: Pick<EventLogHandle, 'backend' | 'mode' | 'driver' | 'reason'>;
+    snapshotStore: Pick<ContextSnapshotStoreHandle, 'backend' | 'mode' | 'driver' | 'reason'>;
+  };
+  close?: () => void;
   contextPolicy?: ContextPolicy;
 };
 
@@ -38,10 +43,21 @@ const defaultPolicy: ContextPolicy = {
   maxTailEvents: 12,
 };
 
-export function defaultProductBuilderContinuityStores(root: string): ProductBuilderContinuityOptions {
+export async function defaultProductBuilderContinuityStores(root: string): Promise<ProductBuilderContinuityOptions> {
+  const databasePath = `${root}/workspace.db`;
+  const eventLog = await openEventLog(databasePath);
+  const snapshotStore = openContextSnapshotStore(databasePath);
   return {
-    eventLog: new JsonlEventLog(`${root}/product-builder-events.jsonl`),
-    snapshotStore: new JsonlContextSnapshotStore(`${root}/context-snapshots.jsonl`),
+    eventLog: eventLog.log,
+    snapshotStore: snapshotStore.store,
+    persistence: {
+      eventLog: { backend: eventLog.backend, mode: eventLog.mode, driver: eventLog.driver, reason: eventLog.reason },
+      snapshotStore: { backend: snapshotStore.backend, mode: snapshotStore.mode, driver: snapshotStore.driver, reason: snapshotStore.reason },
+    },
+    close: () => {
+      eventLog.close?.();
+      snapshotStore.close?.();
+    },
     contextPolicy: defaultPolicy,
   };
 }
@@ -56,7 +72,7 @@ function runEvents(all: Record<string, unknown>[], runId: string): RunEvent[] {
   return all.filter((event) => event.runId === runId) as unknown as RunEvent[];
 }
 
-async function appendEvent(log: JsonlEventLog, runId: RunId, type: RunEvent['type'], data: JsonObject): Promise<RunEvent> {
+async function appendEvent(log: EventLog, runId: RunId, type: RunEvent['type'], data: JsonObject): Promise<RunEvent> {
   const all = await log.readAll();
   const events = runEvents(all, runId);
   const event = createRunEvent(runId, type, data, events.length + 1);

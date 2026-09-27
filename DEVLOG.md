@@ -141,4 +141,12 @@
 - **实现**：`apps/server/src/persistence.test.ts` 新增尾行损坏、同进程并发 append 和重载后 latest 重建测试；夹具时间统一为固定宽度 ISO 秒，避免字符串排序制造假失败。
 - **结果**：`node scripts/typecheck.mjs`、专项 persistence tests（5/5）、全套等价 Node 测试（19/19）和 `git diff --check` 均通过；损坏尾行按 `SyntaxError` fail-closed，20 个并发快照完整写入且按 project/run 重建最新记录。`pnpm test:all` 的 Corepack wrapper 受用户缓存权限阻断，未把它写成代码失败。
 - **边界**：这是 JSONL-first 的有界契约检查，只覆盖同进程写队列；未证明跨进程锁、长时吞吐、M8-04 质量或现实提效。证据为 `validation/m8-06-jsonl-failure-results.json`。
-- **下一步**：保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark。
+- **后续处理**：该比较已被 M10 长期架构决策覆盖；JSONL 边界测试保留为 portable/灾备契约，不再决定运行时事实源。
+
+### 2026-09-27 M10 · 长期持久化路线改为 SQLite-first
+
+- **决策**：结合未来多项目、多 Bot、长时间 Run、审批竞态、Web/Electron 多进程、跨项目检索和长期留存，SQLite 定为运行时唯一事实源；JSONL 降级为 portable/demo/export/灾备格式。
+- **评审依据**：当前 JSONL 的 19/19 测试只证明同进程小规模契约，不能证明跨进程原子写、复杂查询、长期规模和多实体事务。原始比较结果保留在 `validation/m8-06-comparison.json`，不再作为长期路线决定。
+- **M10-01 实现**：新增 `SqliteContextSnapshotStore`、SQLite 默认 factory、WAL/foreign_keys/busy_timeout、Node 22 `node:sqlite` 兼容驱动；Product Builder 和 runtime 不再硬编码 JSONL 默认路径；HTTP 回执显示 `persistence.mode`、backend、driver 和降级原因。
+- **验证**：全套等价 Node tests 20/20、typecheck 和 diff check 通过。当前 `better-sqlite3` 二进制按 Node 24 编译，与 Node 22 ABI 不匹配；系统已自动选择 `node:sqlite`，未修改 VPN 或安装凭据。
+- **下一步**：M10-02 版本化 SQLite schema 与 migration runner，先覆盖 `schema_meta`、`context_snapshots`、`run_segments` 和 `idempotency_keys`。

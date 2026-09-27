@@ -29,4 +29,8 @@ test('HTTP handler can be verified without opening a port', async () => {
   assert.equal(preview.status, 200);
   assert.equal(preview.body.status, 'waiting_user');
   assert.equal(preview.body.handoffs.length, 4);
+  assert.ok(['full', 'portable'].includes(preview.body.continuity.persistence.eventLog.mode));
+  assert.ok(['full', 'portable'].includes(preview.body.continuity.persistence.snapshotStore.mode));
+  if (preview.body.continuity.persistence.eventLog.mode === 'portable') assert.ok(preview.body.continuity.persistence.eventLog.reason);
+  if (preview.body.continuity.persistence.snapshotStore.mode === 'portable') assert.ok(preview.body.continuity.persistence.snapshotStore.reason);
 });
