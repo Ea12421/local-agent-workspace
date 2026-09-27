@@ -1,0 +1,11 @@
+{
+  "artifact_version": "m8-04.derived-artifact.v1",
+  "artifact_id": "m804-artifact-9c17b37b772212f79ed28e9e",
+  "source_receipt_id": "m804-RS-02-single_bot-1790447709535",
+  "task_id": "RS-02",
+  "path": "single_bot",
+  "input_hash": "2c53391a58194a165f8e9a0df23a995002c4561c78e0e9c5874d3adb951ffa6c",
+  "output_sha256": "68e992812281ef95545594f3b4f3ff0acaffba214f0d6c9f41af6391ddb404bd",
+  "output_bytes": 1271,
+  "output": "{\"known\":[\"应用需要 SQLite 和 Electron\"],\"unknowns\":[\"目标系统版本覆盖\",\"许可证兼容性\",\"公开搜索额度\"],\"verification_plan\":[{\"fact\":\"目标系统版本覆盖\",\"action\":\"查阅 Electron 官方支持矩阵及目标操作系统文档，记录版本、发布日期和支持范围；无来源则保持 unknown。\"},{\"fact\":\"许可证兼容性\",\"action\":\"核对 SQLite、Electron 及直接依赖的官方许可证文本，逐项比较项目分发方式；无法确认则保持 unknown。\"},{\"fact\":\"公开搜索额度\",\"action\":\"查阅所用搜索服务的官方配额与限制文档，记录账户无关的公开额度；无公开来源则保持 unknown。\"}],\"sources\":[{\"fact\":\"目标系统版本覆盖\",\"source\":\"未访问外部来源，当前无证据。\"},{\"fact\":\"许可证兼容性\",\"source\":\"未访问外部来源，当前无证据。\"},{\"fact\":\"公开搜索额度\",\"source\":\"未访问外部来源，当前无证据。\"}],\"privacy_boundary\":\"仅使用工作区内输入和公开文档；不访问私有凭据、cookies、tokens、账户数据或工作区外路径。artifact_replayable\":\"使用给定 Input JSON 逐项执行 verification_plan，保存每项来源 URL、访问日期、摘录和结论；缺少来源时保留对应 unknown。\"}"
+}

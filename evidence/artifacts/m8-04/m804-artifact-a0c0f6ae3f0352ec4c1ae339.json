@@ -1,0 +1,11 @@
+{
+  "artifact_version": "m8-04.derived-artifact.v1",
+  "artifact_id": "m804-artifact-a0c0f6ae3f0352ec4c1ae339",
+  "source_receipt_id": "m804-RS-02-multi_bot-1790447848373",
+  "task_id": "RS-02",
+  "path": "multi_bot",
+  "input_hash": "2c53391a58194a165f8e9a0df23a995002c4561c78e0e9c5874d3adb951ffa6c",
+  "output_sha256": "d66d37c56c4551a2ba24d3327f1e99b5820176c07e2b9aed2b758dc4a712b5f1",
+  "output_bytes": 1949,
+  "output": "{\"known\":[\"应用需要 SQLite 和 Electron\"],\"unknowns\":[\"目标系统版本覆盖\",\"许可证兼容性\",\"公开搜索额度\"],\"verification_plan\":{\"stages\":{\"research\":{\"status\":\"complete\",\"output\":\"已确认输入事实；三项外部事实暂无证据。\"},\"product\":{\"status\":\"complete\",\"output\":\"按可用性、发布风险和成本排序核验系统版本、许可证和搜索额度。\"},\"architecture\":{\"status\":\"complete\",\"output\":\"待查阅 Electron 官方支持平台与版本文档、SQLite 及直接依赖的公开许可证、公开搜索服务官方额度文档。\"},\"evaluation\":{\"status\":\"complete\",\"output\":\"已检查来源、隐私边界和可重放记录；无证据项继续保留 unknown。\"}},\"actions\":[\"查询并记录 Electron 官方支持的操作系统与版本及来源 URL。\",\"查询 SQLite 和直接依赖的公开许可证文本并判断兼容性；无证据则保留 unknown。\",\"查询公开搜索服务官方额度与限制及来源 URL；无证据则保留 unknown。\",\"为每项结论记录来源 URL、文档版本或发布日期、访问日期和原始输入引用。\"],\"conflicts\":[]},\"sources\":[\"输入 JSON：known、unknown、constraint。\",\"当前无外部来源证据；目标系统版本覆盖、许可证兼容性、公开搜索额度均明确保留 unknown。\"],\"privacy_boundary\":\"仅处理工作区内输入和公开资料；不访问私有凭据、cookies、tokens、私有路径或私有搜索接口；不发送或发布任何内容。\",\"input_refs\":{\"known\":[\"应用需要 SQLite 和 Electron\"],\"unknown\":[\"目标系统版本覆盖\",\"许可证兼容性\",\"公开搜索额度\"],\"constraint\":\"不能访问私有凭据\"},\"artifact_replayable\":{\"input_ref\":\"input_refs\",\"stage_outputs_preserved\":true,\"external_accessed\":false,\"replay_steps\":[\"读取 input_refs\",\"按 verification_plan.actions 查询公开官方文档\",\"记录来源与访问日期\",\"逐项更新 unknowns 或形成有来源结论\"]}}"
+}

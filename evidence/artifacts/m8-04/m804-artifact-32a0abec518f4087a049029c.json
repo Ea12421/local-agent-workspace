@@ -1,0 +1,11 @@
+{
+  "artifact_version": "m8-04.derived-artifact.v1",
+  "artifact_id": "m804-artifact-32a0abec518f4087a049029c",
+  "source_receipt_id": "m804-EX-02-multi_bot-1790450669189",
+  "task_id": "EX-02",
+  "path": "multi_bot",
+  "input_hash": "95eddd45582690710a9013177cd1ebea162b2c6bc01138fe7c398bd3cec2b727",
+  "output_sha256": "9d90cedaa6783cd3062eaa5c1a27b659a689b65ade23a12ccaf1857c7db4889b",
+  "output_bytes": 173,
+  "output": "老黄，我会按 Research → Product → Architecture → Evaluation 四阶段推进，先读取工作区证据与可回放入口，再汇总冲突并输出严格 JSON。"
+}

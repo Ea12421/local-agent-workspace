@@ -1,0 +1,11 @@
+{
+  "artifact_version": "m8-04.derived-artifact.v1",
+  "artifact_id": "m804-artifact-ac3790af67204441e067f245",
+  "source_receipt_id": "m804-RS-01-multi_bot-1790447533776",
+  "task_id": "RS-01",
+  "path": "multi_bot",
+  "input_hash": "872715df47cde11b4bc075de908e08dda041d1f6ff219e8b73511039cecd0b17",
+  "output_sha256": "b673992149f17f829b021a24d280cdb356498036724c93d06dffb45dcc640c5f",
+  "output_bytes": 755,
+  "output": "{\"facts\":[{\"claim\":\"用户过去30天平均每周发布3条视频。\",\"source\":\"资料 A\"},{\"claim\":\"某竞品声称可提升效率，但未公开测试方法。\",\"source\":\"资料 B\"}],\"sources\":{\"资料 A\":\"用户过去30天平均每周发布3条视频。\",\"资料 B\":\"某竞品声称可提升效率，但未公开测试方法。\",\"资料 C\":\"没有定价信息。\"},\"inferences\":[\"用户近期保持稳定的视频发布节奏。\"],\"unknowns\":[\"该竞品是否实际提升效率及提升幅度。\",\"该竞品的定价信息。\"],\"confidence\":{\"facts\":\"高；资料A、B直接支持，资料B仅证明竞品声称，不能证明实际效果。\",\"inferences\":\"中；由资料A推断。\",\"unknowns\":\"高；资料B、C明确表明证据或信息缺失。\"}}"
+}

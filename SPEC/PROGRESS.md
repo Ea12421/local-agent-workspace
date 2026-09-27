@@ -55,6 +55,7 @@
 - M8-04 EX-01 已完成三条 Codex subscription 路径并自动校验：三条均 schema 通过、7/8 hard constraints；`multi_bot` 约为 `single_bot` 的 3.98 倍。人工复核已落盘，质量证据仍阻断。
 - M8-04 EX-02 已完成三条 Codex subscription 路径并自动校验：single_call 7/8，single_bot 和 multi_bot schema failure 0/8；`multi_bot` 为 480462ms，约为 `single_bot` 的 6.18 倍。人工复核已落盘，质量证据仍阻断。
 - M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、`overExpected=0`、`quality_eligible=0`；总账本为 `validation/m8-04-aggregate-summary.json`。这不是多 Bot 优势结论，也不是现实使用验证。
+- M8-04 质量证据审计已完成：`scripts/m804-evidence-audit.mjs` 读取并核对 36 条原始 receipt，生成 36 个不可覆盖的派生 artifact，并从 artifact 回读后严格 JSON 回放；36 条 source receipt 对应成功，27 条 artifact 可回放，9 条因前缀/拼接/不完整输出被拒绝。审计账本为 `validation/m8-04-quality-evidence-audit.json`，所有记录仍 `quality_eligible=0`，人工编辑、reviewer rubric、usage/cost 和真人门仍明确阻断。
 - M8-05 窄范围现实验证已完成：REAL-01/02/03 三个真实本地状态任务均通过结构化追踪门；一次真实 Codex provider segment 人为中断后，同一 `runId` 追加 `ContextSnapshot`、`run.resume_requested` 和第二 segment，最终 succeeded。结果为 `validation/m8-05-reality-results.json`，复核为 `validation/m8-05-review.md`。这只验证追踪和执行链恢复，不验证业务质量或提效。
 - M8-06 paired baseline 卡已冻结：真实任务为 ContextSnapshot 的 JSONL-first vs SQLite-first 技术路线判断；固定了同一输入白名单、7 步手工基线、结构化 Run 输出键、25% 整理步骤阈值、来源/未知项/回滚护栏和 owner willingness 未知边界。卡片为 `validation/m8-06-paired-baseline-card-v1.json`。
 - M8-06 两条 arm 已执行，比较结果为 `PARTIAL`：controller proxy 手工基线 7 步且未冒充用户计时；结构化 Codex subscription Run 为 56234ms，结构化追踪通过。由于缺少用户本人 baseline、人工修改和复用意愿，不能计算真实提效率。结果在 `validation/m8-06-comparison.json`；该比较保留为历史证据，不再作为长期存储路线决定。
@@ -81,7 +82,7 @@
 
 ## 当前唯一下一步
 
-切到 M8-04 质量证据审计/现实验证；DeepSeek 仍需 Key，Electron 可见性仍 PARTIAL。
+继续 M8-04 质量证据补录/现实验证；DeepSeek 仍需 Key，Electron 可见性仍 PARTIAL。
 
 ## 网络恢复后的下一步
 

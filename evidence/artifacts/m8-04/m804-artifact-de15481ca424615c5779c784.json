@@ -1,0 +1,11 @@
+{
+  "artifact_version": "m8-04.derived-artifact.v1",
+  "artifact_id": "m804-artifact-de15481ca424615c5779c784",
+  "source_receipt_id": "m804-PB-01-multi_bot-1790439923800",
+  "task_id": "PB-01",
+  "path": "multi_bot",
+  "input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+  "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "output_bytes": 0,
+  "output": ""
+}

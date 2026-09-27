@@ -40,6 +40,8 @@
   - `validation/m8-04-manual-review-EX-01.json`：EX-01 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-manual-review-EX-02.json`：EX-02 三条路径自动结果和质量证据阻断项
   - `validation/m8-04-aggregate-summary.json`：M8-04 全套机械执行汇总
+  - `scripts/m804-evidence-audit.mjs`、`scripts/m804-evidence-audit.test.mjs`：M8-04 派生 artifact、严格 JSON 回放和质量阻断审计
+  - `validation/m8-04-quality-evidence-audit.json`、`evidence/artifacts/m8-04/`：36 条 receipt→artifact 对应审计与 36 个派生 artifact（27 条可严格回放）
   - `validation/m8-05-reality-card-v1.json`：M8-05 执行前冻结卡与结果状态
   - `validation/m8-05-reality-results.json`：3 个真实本地任务与 recovery smoke 汇总
   - `validation/m8-05-raw/REAL-01.json`、`REAL-02.json`、`REAL-03.json`：原始 provider 回执
@@ -68,7 +70,7 @@
   - Web Vite production build 已通过；Firefox Computer Use 已打开 `localhost:5173` 并完成审批按钮交互
   - arm64 Electron DMG 已生成并且打包进程已启动；Computer Use 读取 Electron 窗口连续超时，所以桌面可见性仍是 PARTIAL
   - DeepSeek 尚未用用户 Key 实跑；Codex Product Builder 端到端 Run、取消和恢复仍待验证
-  - M8-04 10 题三路径机械执行已完成；所有记录仍缺质量补证，不能写成多 Bot 质量或提效通过
+  - M8-04 10 题三路径机械执行已完成；质量证据审计已补齐 receipt→artifact/readback 账本，但人工编辑、reviewer rubric、usage/cost 和真人门仍缺，不能写成多 Bot 质量或提效通过
   - PB-01 当前有 9 条真实 provider 记录（8 条完成、1 条 provider_incomplete），全部是 `quality_eligible=false`；可解析的 multi Bot receipts 自动校验为 7/8，另有前缀/拼接输出被严格拒绝，必须先人工复核，不能据此宣称单/多 Bot 质量优劣
   - 为同步最新桌面入口而重打包时，`.app` 编译成功，但 `hdiutil` 报 `设备未配置`；已有 DMG 保留，需在 DiskManagement 可用的 macOS 环境再复验封装
   - M8-05 窄范围 reality validation 已完成；M8-06 paired baseline 两条 arm 已执行但为 PARTIAL，现作为历史证据；长期存储路线已改为 SQLite-first
@@ -105,7 +107,7 @@
 
 ### 当前唯一下一步
 
-切到 M8-04 质量证据审计/现实验证。
+继续 M8-04 质量证据补录/现实验证。
 
 ## 重要文件
 

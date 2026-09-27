@@ -1,0 +1,11 @@
+{
+  "artifact_version": "m8-04.derived-artifact.v1",
+  "artifact_id": "m804-artifact-f2bb78e5fa9d4ef7dc8e1381",
+  "source_receipt_id": "m804-RS-01-single_call-1790447302297",
+  "task_id": "RS-01",
+  "path": "single_call",
+  "input_hash": "872715df47cde11b4bc075de908e08dda041d1f6ff219e8b73511039cecd0b17",
+  "output_sha256": "7c785069ff64e997aeda5ea9f4d8f1e2e0a63fcb49bb2beaa1fffc2285bfb22a",
+  "output_bytes": 581,
+  "output": "{\"facts\":[\"用户过去30天平均每周发布3条视频。\",\"某竞品声称可提升效率，但未公开测试方法。\"],\"sources\":{\"资料A\":\"用户过去30天平均每周发布3条视频\",\"资料B\":\"某竞品声称可提升效率，但没有公开测试方法\",\"资料C\":\"未提供定价信息\"},\"inferences\":[\"无法根据资料B判断该竞品实际提升了效率。\"],\"unknowns\":[\"竞品效率提升的实际幅度及验证结果未知。\",\"定价信息未知。\"],\"confidence\":\"高：事实均直接对应输入资料；对竞品效果和定价未作无证据断言。\"}"
+}

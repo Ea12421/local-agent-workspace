@@ -1,0 +1,2332 @@
+{
+  "audit_version": "m8-04.quality-evidence-audit.v1",
+  "generated_at": "2026-09-27T12:58:45.345Z",
+  "suite_version": "m8-04.v1",
+  "source_results": "validation/m8-04-results.jsonl",
+  "source_record_count": 36,
+  "audited_record_count": 36,
+  "unique_task_path_count": 30,
+  "artifact_replay": {
+    "artifact_valid_count": 27,
+    "replay_pass_count": 27,
+    "source_receipt_verified_count": 36
+  },
+  "quality_eligible_records": 0,
+  "status": "MECHANICAL_EVIDENCE_AUDITED_QUALITY_BLOCKED",
+  "blocker_counts": {
+    "manual_edits_unrecorded": 36,
+    "reviewer_rubric_unrecorded": 36,
+    "usage_cost_undecidable": 36,
+    "artifact_not_strict_json_object": 9,
+    "schema_keys_missing": 9,
+    "provider_not_completed": 1
+  },
+  "decision": "Do not promote any path or claim multi_bot quality/efficiency. Collect manual edit counts, independent reviewer rubric, usage/cost where available, then run the three-task real-user gate.",
+  "records": [
+    {
+      "receipt_id": "m804-PB-01-single_call-1790437934892",
+      "task_id": "PB-01",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-311641476efe9dcf0927711e",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-311641476efe9dcf0927711e.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "3c4eaf611eb0fb3e1b426431c218122eeb482f14c4fc4d1f0b765ae0633a25be",
+        "bytes": 1646,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-single_call-1790437934892.json",
+        "exists": true,
+        "sha256": "76e0756146adbf5fd9641a0c2fc713cc2a3b0b5b8177487b13613aed2cb1d8ab",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "fdd5e9b14440ac0fe222c15a53415c03ac22a314ef3d5126c8dc0eb8c2354196",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-single_bot-1790438007747",
+      "task_id": "PB-01",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-12cdec7db336d65031d98630",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-12cdec7db336d65031d98630.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "ed3dd800a90c30826a57e4206cb2ce5d55821e4ea3875bc25349062e4a4b652c",
+        "bytes": 2562,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-single_bot-1790438007747.json",
+        "exists": true,
+        "sha256": "6979081b53893065d6d9901f5fde148211eec6d3d66c5367657829a3d643803a",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "fa00243a685dfc8b9bd507db12fd2781cf3994e193a765a4dc5efe7cd0d2da6f",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-single_bot-1790438087354",
+      "task_id": "PB-01",
+      "path": "single_bot",
+      "attempt": 2,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-de0401e03d0020d6a51f13c9",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-de0401e03d0020d6a51f13c9.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "17a7febe1fb476b6f8a65b0d4226bd6489a02f892218a40bd1ee1bcbd086d3f1",
+        "bytes": 1893,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-single_bot-1790438087354.json",
+        "exists": true,
+        "sha256": "ac7cf2c79579562f9a27a6344a63fdfc89d47363b8efdc3590bbdc456dda144e",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "ef313a2787eb24a2af7e4c6b4de4a3598415d3f2b0c1e30536d9922c2efc75a6",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-multi_bot-1790438219289",
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-ae40e57c0230e47bf1faba81",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-ae40e57c0230e47bf1faba81.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "7ee690a53cf028224c5c660778237db22b8cd02e8a7a5ea0d51f159b138a35d4",
+        "bytes": 8944,
+        "valid": false,
+        "missing_schema_keys": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-multi_bot-1790438219289.json",
+        "exists": true,
+        "sha256": "5a690eda68d16b99d3338a6e159d85e9de5d74f7a1791a5ccd72b504d2d8cfc9",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "c4907bc09d3e714f7af855bfe64c3cd4d3fe1a1a34fb26c9e26003c03cab5f5b",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-multi_bot-1790438299998",
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 2,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-b7d109113bfd5762f0e0f65b",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-b7d109113bfd5762f0e0f65b.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "dc81f904a23537943af436971d6d7fc95d9b98caf60179937f49c70ad08089c9",
+        "bytes": 9638,
+        "valid": false,
+        "missing_schema_keys": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-multi_bot-1790438299998.json",
+        "exists": true,
+        "sha256": "ab8d3375fd250c187720a59420bf1d90d9436866f8859ab41060038d3f1b4bc4",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "a28fbd1743eb3b59ab0e563dc999470054194cc17c1f8ce544b95369ba6af916",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-multi_bot-1790439923800",
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 3,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_incomplete",
+      "artifact": {
+        "artifact_id": "m804-artifact-de15481ca424615c5779c784",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-de15481ca424615c5779c784.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "valid": false,
+        "missing_schema_keys": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-multi_bot-1790439923800.json",
+        "exists": true,
+        "sha256": "2a5bc7c40d3eb02bd98d5a78bfc5469bfe4233a437af232ce219c1d987d0651a",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "65eddbcff36981b241df97def33d3c149a9b8e194dbc15ad25e7bcd149b03f44",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "provider_not_completed",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-multi_bot-1790440371983",
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 4,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-b51a65929017a6ff88499db8",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-b51a65929017a6ff88499db8.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "7f01d07f4883c56987c55f283a5932bb30217da17e5204a312ae96e4f50e2c08",
+        "bytes": 1884,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-multi_bot-1790440371983.json",
+        "exists": true,
+        "sha256": "966188215b3c20383202b3e6ba91b957abf21b24a020f8b8ffb863368bdb1bd7",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "25e35a2abb8511fcec564a37320e626c48e6941a6002222e82049d67feb9d422",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-multi_bot-1790440498449",
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 4,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-e5c947b17cd6672c1f7a02e7",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-e5c947b17cd6672c1f7a02e7.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "9afbc17d444f1b3f5f9f1528e0060623187ea8be4b91902c51499e7fd3ce4faf",
+        "bytes": 2299,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-multi_bot-1790440498449.json",
+        "exists": true,
+        "sha256": "520efba16ee68c0d92687c5ff4c72da901ef4a0c9355202d0900a91b5722d403",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "57978e5e7df172dfd356b571c29a22a8725000554ce7038d3e261fd8b3000d3c",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-01-multi_bot-1790440650935",
+      "task_id": "PB-01",
+      "path": "multi_bot",
+      "attempt": 4,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-c0793342115be9f603949801",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-c0793342115be9f603949801.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "d2a908a56aa6aa86b2c8b5bde91f9b2b6d882e474e4c2fc7c1e711eb2ab0937c",
+        "bytes": 2166,
+        "valid": false,
+        "missing_schema_keys": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-01-multi_bot-1790440650935.json",
+        "exists": true,
+        "sha256": "e650610e443c44f37bf46f03f6004fe8fff78186d69bbe8fb5ec5f9040622d44",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c6206af1584d0c2ce9a230cfd73cfef3a0e69a33372feb056feb99ddda1c576",
+        "replay_result_sha256": "db482e3a38121bfa16b2cc7012c78480f61e80c3138e5bc600746f7a984a22ed",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "user",
+          "scenario",
+          "pain",
+          "value",
+          "mvp",
+          "success_metrics",
+          "unknowns"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-02-single_call-1790445709804",
+      "task_id": "PB-02",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-1175ad5c4b01492e568a2c6c",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-1175ad5c4b01492e568a2c6c.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "e5258e3d1e06a2f84212e6f0c9c6ac85986c5707e2d71951803191d8e8a7f766",
+        "bytes": 1738,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-02-single_call-1790445709804.json",
+        "exists": true,
+        "sha256": "005bfadee0426a31612ced9d7adacf0ee2f332361c0e9e938fe79823205a7ae5",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "87af7121089f982dbd46d4847b1f48a78c1a4fc2883e3f06dd5ed510429e4ae4",
+        "replay_result_sha256": "74e9f5b4a01e6c174888a0db5d9298e435cba8c4143e7834b8e94620b86f1d7b",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-02-single_bot-1790445774110",
+      "task_id": "PB-02",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-8da6285ebb9ab4aa621e580e",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-8da6285ebb9ab4aa621e580e.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "b2a85c455b4e53128438dbf14011ba169d4091e73429e96dfcd573c431b41ae2",
+        "bytes": 1792,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-02-single_bot-1790445774110.json",
+        "exists": true,
+        "sha256": "0aba9a72923bf3acaf34ea4084c0c32d4fac8b29b3feeda94eeae839dc04af99",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "87af7121089f982dbd46d4847b1f48a78c1a4fc2883e3f06dd5ed510429e4ae4",
+        "replay_result_sha256": "0fe70bfb9de20aca0b0d2ce345874f82811f6c59fef150d174aef8a420280d63",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-PB-02-multi_bot-1790445955409",
+      "task_id": "PB-02",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-671fc1b22e102babc9b3556a",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-671fc1b22e102babc9b3556a.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "922f348c06e0db85ff74c2f24aa070becc50395c6b9009eff27e3aadc5c7886d",
+        "bytes": 1822,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-PB-02-multi_bot-1790445955409.json",
+        "exists": true,
+        "sha256": "4c2aa90acc946813e1527b25f31350a27433abe14b30e62662a2fcf64d78bb41",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "87af7121089f982dbd46d4847b1f48a78c1a4fc2883e3f06dd5ed510429e4ae4",
+        "replay_result_sha256": "4ae6825a33c4a3ed73e1010f6626b0cdc79c7eca7e1ad8f842bb4610e9b75010",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-RS-01-single_call-1790447302297",
+      "task_id": "RS-01",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-f2bb78e5fa9d4ef7dc8e1381",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-f2bb78e5fa9d4ef7dc8e1381.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "7c785069ff64e997aeda5ea9f4d8f1e2e0a63fcb49bb2beaa1fffc2285bfb22a",
+        "bytes": 581,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-RS-01-single_call-1790447302297.json",
+        "exists": true,
+        "sha256": "d89b6087d3e217f9f7932179842884aa4df323e89b361df059eea9749ca2f345",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "872715df47cde11b4bc075de908e08dda041d1f6ff219e8b73511039cecd0b17",
+        "replay_result_sha256": "97cac5c3e876d6c5448cbb1e20aac19035974e9367e8d4f785720590f35eb872",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-RS-01-single_bot-1790447343306",
+      "task_id": "RS-01",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-a9b3a11827d4b4ae44325091",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-a9b3a11827d4b4ae44325091.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "97204a7dabe8ebaba3aec02d9be294476094adf723f64b0d8391be7e8f4c8f94",
+        "bytes": 771,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-RS-01-single_bot-1790447343306.json",
+        "exists": true,
+        "sha256": "2367bd0f7a54f229bdbb2abf4494b1507c787f9ada2464728e4c8389cf6ccf0f",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "872715df47cde11b4bc075de908e08dda041d1f6ff219e8b73511039cecd0b17",
+        "replay_result_sha256": "ce1824d57eaf82345f6b83d021f0aef16091d503014ac2d8897fd179e27deda3",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-RS-01-multi_bot-1790447533776",
+      "task_id": "RS-01",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-ac3790af67204441e067f245",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-ac3790af67204441e067f245.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "b673992149f17f829b021a24d280cdb356498036724c93d06dffb45dcc640c5f",
+        "bytes": 755,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-RS-01-multi_bot-1790447533776.json",
+        "exists": true,
+        "sha256": "8fdb4b3c2f86d5450d5a1f6135a45e83e5c0224356719cda07a49856d61fd11b",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "872715df47cde11b4bc075de908e08dda041d1f6ff219e8b73511039cecd0b17",
+        "replay_result_sha256": "bc6f285952ea21a085befd1e6f0ba8485090ef04809ce793157d0ceda9df8700",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-RS-02-single_call-1790447655962",
+      "task_id": "RS-02",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-d3aeb544231ef4886cc88aa9",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-d3aeb544231ef4886cc88aa9.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "75f95eb2b6530789f19470d8e0b7717ea513ec0c8909f237f7f0b578904d7794",
+        "bytes": 1176,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-RS-02-single_call-1790447655962.json",
+        "exists": true,
+        "sha256": "2426ec0fedcca170f7a46ceb2be80d11a272915e89ac05d739459c320e031f49",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c53391a58194a165f8e9a0df23a995002c4561c78e0e9c5874d3adb951ffa6c",
+        "replay_result_sha256": "1c01e07b0a2566a14f4095779389a4e007954c2b15082bc197951d9aa1dd7de3",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-RS-02-single_bot-1790447709535",
+      "task_id": "RS-02",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-9c17b37b772212f79ed28e9e",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-9c17b37b772212f79ed28e9e.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "68e992812281ef95545594f3b4f3ff0acaffba214f0d6c9f41af6391ddb404bd",
+        "bytes": 1271,
+        "valid": false,
+        "missing_schema_keys": [
+          "known",
+          "unknowns",
+          "verification_plan",
+          "sources",
+          "privacy_boundary"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-RS-02-single_bot-1790447709535.json",
+        "exists": true,
+        "sha256": "c24437c1687a8d2bfc141ec34fa4a976f436e9e4d89ec0245e1959761ebcf663",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c53391a58194a165f8e9a0df23a995002c4561c78e0e9c5874d3adb951ffa6c",
+        "replay_result_sha256": "2cfb9d451a7e30382783604ddcea687db466485f347c846d41044a11b7c20101",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "known",
+          "unknowns",
+          "verification_plan",
+          "sources",
+          "privacy_boundary"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-RS-02-multi_bot-1790447848373",
+      "task_id": "RS-02",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-a0c0f6ae3f0352ec4c1ae339",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-a0c0f6ae3f0352ec4c1ae339.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "d66d37c56c4551a2ba24d3327f1e99b5820176c07e2b9aed2b758dc4a712b5f1",
+        "bytes": 1949,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-RS-02-multi_bot-1790447848373.json",
+        "exists": true,
+        "sha256": "5bdc334d4d454a46bd4e190b5a92113a40a54aa412b755249245a95c7257838d",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "2c53391a58194a165f8e9a0df23a995002c4561c78e0e9c5874d3adb951ffa6c",
+        "replay_result_sha256": "4cb3c35f2befae263418090d6fa109f969c49fa0f70ecdf9268c24bba5645c67",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-AR-01-single_call-1790448059086",
+      "task_id": "AR-01",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-c2a01c7070b24ec95682298c",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-c2a01c7070b24ec95682298c.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "e6ba406ccb2e468f2dd1520c871249e1c6185dae8e775d80337e4bfab7546a12",
+        "bytes": 3035,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-AR-01-single_call-1790448059086.json",
+        "exists": true,
+        "sha256": "7c1b49d94a13f5becb97d9c6d926776ab352c2afd59b1eefa8a07fbe62f4e7cf",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "a91b6e820d3ea1088fef333e44380b6d84ccb02b2c1b15f78ac78e4879d9de2c",
+        "replay_result_sha256": "da65d668d05b3aee58e132e98792ef0cf8a17da817de0f56c78a51bdcc890a8f",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-AR-01-single_bot-1790448106997",
+      "task_id": "AR-01",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-2ca6e9727c65e4e330e315aa",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-2ca6e9727c65e4e330e315aa.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "72778cae218521f397dedaf2c62d9ee5e616bf90c03093493334ca1bdbd2101e",
+        "bytes": 2706,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-AR-01-single_bot-1790448106997.json",
+        "exists": true,
+        "sha256": "2acd2677cb5470b278d1cfceba6d3d6154317ae8c731c9e6222f65dad0709d70",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "a91b6e820d3ea1088fef333e44380b6d84ccb02b2c1b15f78ac78e4879d9de2c",
+        "replay_result_sha256": "bab16b8149878eeb0f71d4e74cfe51a859fbc6cd42ee94ceb3c631820c47054d",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-AR-01-multi_bot-1790448264333",
+      "task_id": "AR-01",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-bdd55fc0e738bf5e3e285b01",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-bdd55fc0e738bf5e3e285b01.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "36892ce720ccf2581cae3bb380a6e408a0de138309c27ec3979a155bf414fdb1",
+        "bytes": 2979,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-AR-01-multi_bot-1790448264333.json",
+        "exists": true,
+        "sha256": "f0b3ae263bcc49f020586cfbab6932d90d622a9ed947599d60c8ad934f72a61c",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "a91b6e820d3ea1088fef333e44380b6d84ccb02b2c1b15f78ac78e4879d9de2c",
+        "replay_result_sha256": "bcf2e54ac5ede70b8e95648f939a741ab6b81a30ac6e260abb501314e89c6d1a",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-AR-02-single_call-1790448414854",
+      "task_id": "AR-02",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-f8b3b95f2ecf0e153cc1f65b",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-f8b3b95f2ecf0e153cc1f65b.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "8f035522c88b57039b38e4d70dcaf0ed89ae4c0a6a7a08f2899ff447ad8bc697",
+        "bytes": 2839,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-AR-02-single_call-1790448414854.json",
+        "exists": true,
+        "sha256": "54fb3d82accab1771e22fc871a953f0cd041dde6b7d176c1cdb8068d6bca09e1",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "65c6190e006acf90777ded75025e34ad8c647b7da7521b13a3462b864ae9544a",
+        "replay_result_sha256": "cfbe2e77b77db4f33cd8f40be19adb2e45994f49b74df316514c01a5c1b7b445",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-AR-02-single_bot-1790448474378",
+      "task_id": "AR-02",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-b7a9e06670e43ff7574aa10c",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-b7a9e06670e43ff7574aa10c.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "56ee78b370672d63f83b663034d5819491761eb3c5eae3361404255253a4f7b5",
+        "bytes": 3145,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-AR-02-single_bot-1790448474378.json",
+        "exists": true,
+        "sha256": "2f25ff7a78d249222717b83675dcdc3c200a70f312119d8cc9b986a19b8bc4b9",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "65c6190e006acf90777ded75025e34ad8c647b7da7521b13a3462b864ae9544a",
+        "replay_result_sha256": "e3c53391f96f0c1a412d3a91ec91efc0149cad5e209c2e4dfa264b265b8d0af7",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-AR-02-multi_bot-1790448621693",
+      "task_id": "AR-02",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-3f2f9dcc9ae522c6fbc88354",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-3f2f9dcc9ae522c6fbc88354.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "dc9b676c93f55aca9016c85f5e10e1dd87d54e37157b73e5af52edeb1332fc82",
+        "bytes": 2792,
+        "valid": false,
+        "missing_schema_keys": [
+          "provider_matrix",
+          "routing_rules",
+          "identity",
+          "billing",
+          "failure_modes",
+          "recommendation"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-AR-02-multi_bot-1790448621693.json",
+        "exists": true,
+        "sha256": "0047008771418c5248061cc327e71265bc2647dbd3b37e7e4f60b543d701a3c2",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "65c6190e006acf90777ded75025e34ad8c647b7da7521b13a3462b864ae9544a",
+        "replay_result_sha256": "746ff523f1c3ca3b8ebfb3dfdba538ce7357f48ad8894138d99a6fd1d9bba194",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "provider_matrix",
+          "routing_rules",
+          "identity",
+          "billing",
+          "failure_modes",
+          "recommendation"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EV-01-single_call-1790448778009",
+      "task_id": "EV-01",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-22ebc8ad2d33f3c2e4c7ec9b",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-22ebc8ad2d33f3c2e4c7ec9b.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "5bb804cc3351956f582862dade05c2c7757a8e930bb14860ff006b5f5dd4791e",
+        "bytes": 4127,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EV-01-single_call-1790448778009.json",
+        "exists": true,
+        "sha256": "c9e8f23191fe42b64b5b4de48fbd58d17a01b998b4286f034098148560d30f97",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "5f3c6fa27adcfbe43479d99ddab238521fceb573e656d89a280397349e81eef1",
+        "replay_result_sha256": "5ddf5371255ef6cb6b3c526c2b4b28fe72eb6e58884a95bd864728d9b1028bca",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EV-01-single_bot-1790448823786",
+      "task_id": "EV-01",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-d6a9855185e5b4d626a8484e",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-d6a9855185e5b4d626a8484e.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "cb52aaed41acb489278440d80f519998d3bc6866d4dccb1d84bde60d7a196b82",
+        "bytes": 3325,
+        "valid": false,
+        "missing_schema_keys": [
+          "metrics",
+          "fixed_tasks",
+          "bad_cases",
+          "thresholds",
+          "review_process"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EV-01-single_bot-1790448823786.json",
+        "exists": true,
+        "sha256": "573002b310ab7af758f8070cfca989b84dc3f85954c3021d57b4e1e9380b4ccb",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "5f3c6fa27adcfbe43479d99ddab238521fceb573e656d89a280397349e81eef1",
+        "replay_result_sha256": "f05e68e14f0a8a4002c0bbc41bb394a9c07ba52decbed19bb1705b563b3539e7",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "metrics",
+          "fixed_tasks",
+          "bad_cases",
+          "thresholds",
+          "review_process"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EV-01-multi_bot-1790448981342",
+      "task_id": "EV-01",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-24e29ae72a611c1d7e16d5f0",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-24e29ae72a611c1d7e16d5f0.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "16c5073bc2b617e31815f0e8495b01a04f8cf4a5deedf9f0496dc1527cf5f436",
+        "bytes": 3478,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EV-01-multi_bot-1790448981342.json",
+        "exists": true,
+        "sha256": "5a7f0efd71b6b67c279ebfe48fa42ded26d7dc589026864f7896f580528f8e99",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "5f3c6fa27adcfbe43479d99ddab238521fceb573e656d89a280397349e81eef1",
+        "replay_result_sha256": "19c0f6f8477efb2bcab92aaa025ae579e2e9e18714b3d505ad6fa9812bd0581f",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EV-02-single_call-1790449087223",
+      "task_id": "EV-02",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-2f586a6e53fce6364f9aecc1",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-2f586a6e53fce6364f9aecc1.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "ccc913f0071e8926dde5eab891d9a3f62b1471d41422d16e945151e228fec509",
+        "bytes": 2490,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EV-02-single_call-1790449087223.json",
+        "exists": true,
+        "sha256": "4b9b0ae2a3137af75d43a09f232edcbabb839be04b50c68af2358a4e7adeb1d9",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "e03e0669298f102f59b757c1c4b171793f9dccda4960d7786bfaf4553aef9284",
+        "replay_result_sha256": "17b9714365cf5bdc118c23c4df81c5fc0d73c6d0ac9b53326e99813857e7dc05",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EV-02-single_bot-1790449130158",
+      "task_id": "EV-02",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-6a140599face05241a5a8231",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-6a140599face05241a5a8231.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "7ad6c4ae02d02771bc453c3d32ff54e4f7215324a68f0cee0e62c9c0009675e0",
+        "bytes": 2350,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EV-02-single_bot-1790449130158.json",
+        "exists": true,
+        "sha256": "a8770b6c15b1aad2cf078cd16d401bab786f37ac3a70b236ab378201f977fc5f",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "e03e0669298f102f59b757c1c4b171793f9dccda4960d7786bfaf4553aef9284",
+        "replay_result_sha256": "48b8d8ef4d30d7080281bddb2f1515f5cbc99e82a638f0789d100b0467b83ca2",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EV-02-multi_bot-1790449366205",
+      "task_id": "EV-02",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-8c6771861d21eb51a5baf15a",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-8c6771861d21eb51a5baf15a.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "cde79512604b2c1913185a103af4c529466208e1b117a5a1524efe65867c7674",
+        "bytes": 2878,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EV-02-multi_bot-1790449366205.json",
+        "exists": true,
+        "sha256": "77320c1cf091b3d0c7d79b67ea5d816b2a63384669bcace98456de0011f070b5",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "e03e0669298f102f59b757c1c4b171793f9dccda4960d7786bfaf4553aef9284",
+        "replay_result_sha256": "15a89b7cbe145f95b21a10fdd3b9a680f7d1b7dfd899efab75a5519924f8197c",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EX-01-single_call-1790449571826",
+      "task_id": "EX-01",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-4729d29e00f72bbfdbccca35",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-4729d29e00f72bbfdbccca35.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "eb7ed965b792e0d94fcf08ef89ca3a0adb6b27de8abe712f3a2de3027e57b788",
+        "bytes": 4754,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EX-01-single_call-1790449571826.json",
+        "exists": true,
+        "sha256": "3149da0facdc637389e0ea418c8fad8d635860de2276a2ce2b01e07867def58c",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "fdcfb914e2488d02b94264666635eb977257915aa5e43913388786390ba0c60d",
+        "replay_result_sha256": "6cb9c7cd3643b9879c78a8db8f99e22841a0c8d6ae97d124fba1dfff0d0bf33e",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EX-01-single_bot-1790449647167",
+      "task_id": "EX-01",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-102b4c4bbfb3df6e414a2610",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-102b4c4bbfb3df6e414a2610.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "278887bf6ac22570ab47338dad73e0609ca8cf298fb179f951daede283c290f0",
+        "bytes": 3664,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EX-01-single_bot-1790449647167.json",
+        "exists": true,
+        "sha256": "2456c11b6bc3b5bb11979c3a97a513e4b3e6779ba57585005d37c242b91e27bf",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "fdcfb914e2488d02b94264666635eb977257915aa5e43913388786390ba0c60d",
+        "replay_result_sha256": "a5acdb28fc57f97f021cf73bd21e872728c825892be35b6b1a9fd65efe6d26c4",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EX-01-multi_bot-1790449916910",
+      "task_id": "EX-01",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-158e7b5c134743ea79c45c62",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-158e7b5c134743ea79c45c62.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "9d425dfb46e944eb16cbe81984d982a95fcd1151584ab810979c004d852a0de5",
+        "bytes": 4159,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EX-01-multi_bot-1790449916910.json",
+        "exists": true,
+        "sha256": "c59a2c4bb063759679cbdcdcaab1d3341c17a71e81e4512acde5421c6ca0a76c",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "fdcfb914e2488d02b94264666635eb977257915aa5e43913388786390ba0c60d",
+        "replay_result_sha256": "93a1d9d29a01d8e2c66e5a0d5c3059c876e76325b2cb3fee2d10f6f14219b938",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EX-02-single_call-1790450087395",
+      "task_id": "EX-02",
+      "path": "single_call",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-e0a600d7d04571e79abfca91",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-e0a600d7d04571e79abfca91.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "7a850c5aa1179df5cc568c59dbb87c5027c01a8fb7b719a808a1e12eecc7324c",
+        "bytes": 2707,
+        "valid": true,
+        "missing_schema_keys": []
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EX-02-single_call-1790450087395.json",
+        "exists": true,
+        "sha256": "b9d3ee9f43a37c86dc781611fa2b2dd5e8518db77dfd87c06c58d78ae102a0e2",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "95eddd45582690710a9013177cd1ebea162b2c6bc01138fe7c398bd3cec2b727",
+        "replay_result_sha256": "adfa3bad44651c3ea06435a17ce239ad1dac3849acd829528e4c7d080eb41c95",
+        "parsed_object": true,
+        "schema_keys_missing": [],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EX-02-single_bot-1790450179052",
+      "task_id": "EX-02",
+      "path": "single_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-69f1dd34c4a06004309ad128",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-69f1dd34c4a06004309ad128.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "5964224f5cf5d324ff3afbf48929a33e1e61109a93404cc6484213ebf08abda9",
+        "bytes": 3926,
+        "valid": false,
+        "missing_schema_keys": [
+          "demo_script",
+          "mastery_pack",
+          "interviewer_pack",
+          "evidence_map",
+          "limitations"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EX-02-single_bot-1790450179052.json",
+        "exists": true,
+        "sha256": "df99b42166032f45879e720360e407bcca6c8de65547cb64aa25d434ef5cf826",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "95eddd45582690710a9013177cd1ebea162b2c6bc01138fe7c398bd3cec2b727",
+        "replay_result_sha256": "10ad702a80bc6f1fd702b69ed4f19a17dc7990b03ba61e9ae5fd3f0dd846450a",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "demo_script",
+          "mastery_pack",
+          "interviewer_pack",
+          "evidence_map",
+          "limitations"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    },
+    {
+      "receipt_id": "m804-EX-02-multi_bot-1790450669189",
+      "task_id": "EX-02",
+      "path": "multi_bot",
+      "attempt": 1,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "execution_status": "provider_completed_pending_review",
+      "artifact": {
+        "artifact_id": "m804-artifact-32a0abec518f4087a049029c",
+        "artifact_path": "evidence/artifacts/m8-04/m804-artifact-32a0abec518f4087a049029c.json",
+        "id_source": "derived_from_receipt_and_output_hash",
+        "sha256": "9d90cedaa6783cd3062eaa5c1a27b659a689b65ade23a12ccaf1857c7db4889b",
+        "bytes": 173,
+        "valid": false,
+        "missing_schema_keys": [
+          "demo_script",
+          "mastery_pack",
+          "interviewer_pack",
+          "evidence_map",
+          "limitations"
+        ]
+      },
+      "source_receipt": {
+        "path": "evidence/receipts/m804-EX-02-multi_bot-1790450669189.json",
+        "exists": true,
+        "sha256": "fb799cac01de34a66d297356336a3ece2153a6615067db679a08cd6a31f884b5",
+        "receipt_id_match": true,
+        "output_matches": true
+      },
+      "replay": {
+        "method": "strict-json-parse-v1",
+        "replay_input_hash": "95eddd45582690710a9013177cd1ebea162b2c6bc01138fe7c398bd3cec2b727",
+        "replay_result_sha256": "2605ab78a7e7041e331f59bbbb27cb722f6abac608853b4773ff99337e1ece49",
+        "parsed_object": false,
+        "schema_keys_missing": [
+          "demo_script",
+          "mastery_pack",
+          "interviewer_pack",
+          "evidence_map",
+          "limitations"
+        ],
+        "result_matches_artifact": true
+      },
+      "manual_edits": {
+        "steps": null,
+        "chars": null,
+        "rule_version": "m8-04.manual-edit.v1"
+      },
+      "reviewer": {
+        "rubric_1_5": null,
+        "notes": "pending_manual_review"
+      },
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "total_tokens": null,
+        "cost_minor": null
+      },
+      "quality_eligible": false,
+      "blocker_reasons": [
+        "artifact_not_strict_json_object",
+        "schema_keys_missing",
+        "manual_edits_unrecorded",
+        "reviewer_rubric_unrecorded",
+        "usage_cost_undecidable"
+      ]
+    }
+  ]
+}

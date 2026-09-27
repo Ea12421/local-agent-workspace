@@ -100,7 +100,7 @@
 | M8-01 | clean-room install | README/SPEC | M6-06 | PARTIAL | 当前工作区 `pnpm install`、`pnpm run setup` 已通过；全新 clone 仍待验证 |
 | M8-02 | DeepSeek 真实调用 | `.env`（不提交） | M3-02 | BLOCKED | receipt 和失败诊断存在 |
 | M8-03 | Codex 真实执行桥 | Adapter + receipt | M3-04 | PARTIAL | 真实只读 Product Builder Run、适配器取消和控制面取消竞态已通过；resume 与 Web 端到端仍待验证 |
-| M8-04 | 10 任务消融实验 | `validation/` | M4 | PARTIAL | 10 题三路径机械执行已收口（36 条 receipt、30 个唯一 task×path、0 条 quality evidence）；Artifact/replay、人工编辑、rubric、usage/cost 仍阻断质量结论 |
+| M8-04 | 10 任务消融实验 | `validation/` | M4 | PARTIAL | 10 题三路径机械执行已收口（36 条 receipt、30 个唯一 task×path）；新增 receipt→artifact 对应审计和 36 个派生 artifact，27 条可严格 JSON 回放，但人工编辑、rubric、usage/cost 和真人门仍阻断质量结论 |
 | M8-05 | 3 个现实任务 | `validation/` | M8-01, M8-02 | TODO | reality-card，不能用模型自评替代 |
 | M8-06 | 面试掌握包 | `docs/interview-playbook.md` | M8-04 | PARTIAL | 初稿存在；需要真实证据映射 |
 
@@ -136,7 +136,7 @@ M3-04/M8-03（Codex CLI bridge）
 → M6-06 → M7-01/M7-02 → M7-03 → M8-01
 → M9-01/M9-02/M9-03/M9-04/M9-05（Context Continuity）
 → M10-01（SQLite adapter）→ M10-02（schema/migrations）→ M10-03（RunStore 事务与 runtime 接入）→ M10-05（Product Builder/HTTP 持久化）→ M10-04（导入导出）→ M10-06（恢复与规模，已完成）
-→ M8-04（质量证据审计/现实验证）→ M8-05（现实任务）→ M8-06（面试掌握包）→ M8-02（DeepSeek 可选对比）
+→ M8-04（质量证据补录/现实验证）→ M8-05（现实任务）→ M8-06（面试掌握包）→ M8-02（DeepSeek 可选对比）
 ```
 
 在 registry/DNS 未恢复前，不重复 `pnpm install`，继续补不依赖外部包的测试或文档时，必须先更新 `RUN_STATE.next_action`。SQLite M10-02/M10-03/M10-05/M10-04 当前增量不依赖新增网络包；M10-04 导入导出边界已通过，M10-06 恢复与规模验证已完成，下一步进入 M8-04 质量证据审计/现实验证。

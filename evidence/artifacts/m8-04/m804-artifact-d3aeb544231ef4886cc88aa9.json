@@ -1,0 +1,11 @@
+{
+  "artifact_version": "m8-04.derived-artifact.v1",
+  "artifact_id": "m804-artifact-d3aeb544231ef4886cc88aa9",
+  "source_receipt_id": "m804-RS-02-single_call-1790447655962",
+  "task_id": "RS-02",
+  "path": "single_call",
+  "input_hash": "2c53391a58194a165f8e9a0df23a995002c4561c78e0e9c5874d3adb951ffa6c",
+  "output_sha256": "75f95eb2b6530789f19470d8e0b7717ea513ec0c8909f237f7f0b578904d7794",
+  "output_bytes": 1176,
+  "output": "{\"known\":[\"应用需要 SQLite 和 Electron\"],\"unknowns\":[\"目标系统版本覆盖\",\"许可证兼容性\",\"公开搜索额度\"],\"verification_plan\":[{\"item\":\"目标系统版本覆盖\",\"action\":\"查阅项目支持矩阵、Electron 官方兼容性文档和目标系统测试环境，记录版本范围与证据链接。\"},{\"item\":\"许可证兼容性\",\"action\":\"盘点 SQLite、Electron 及直接依赖的许可证，核对项目分发方式与许可证要求，保存许可证文本和来源链接。\"},{\"item\":\"公开搜索额度\",\"action\":\"查阅所用公开搜索服务的官方配额文档或账户公开信息；无可验证资料时标记为未知。\"}],\"sources\":[{\"claim\":\"应用需要 SQLite 和 Electron\",\"source\":\"输入 JSON known 字段\"},{\"claim\":\"目标系统版本覆盖、许可证兼容性、公开搜索额度\",\"source\":\"输入 JSON unknown 字段；当前无外部证据，保持未知\"}],\"privacy_boundary\":\"仅使用工作区文件、公开官方文档和不含凭据的公开信息；不访问私有凭据、cookies、tokens、账户数据或工作区外路径。输入字段作为可回放记录保留，验证结果须附来源或明确标记未知。\"}"
+}

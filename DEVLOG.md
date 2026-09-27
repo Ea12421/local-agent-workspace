@@ -43,6 +43,13 @@
 
 ## 2026-09-27
 
+### M8-04 质量证据审计
+
+- 新增 `scripts/m804-evidence-audit.mjs`：按 `receipt_id` 读取并核对已有 36 条 provider receipt，生成 36 个不可覆盖派生 artifact，再从 artifact 回读后做严格 JSON 解析和回放 hash。
+- 审计结果：36 条 source receipt 对应成功，27 条 artifact 可严格解析和回放，9 条因前缀、拼接或 provider 不完整被拒绝；所有记录继续保持 `quality_eligible=false`。
+- 36 条记录都缺人工编辑统计、独立 reviewer rubric 和 usage/cost，因此这些字段写为明确阻断原因，不用派生 artifact 冒充人工质量证据。结果见 `validation/m8-04-quality-evidence-audit.json`。
+- 专项审计测试通过；typecheck 和 `git diff --check` 通过。下一步是补录真实人工评审与真人三任务门，仍不把多 Bot 设为默认。
+
 ### M8-04 首个真实试跑
 
 - 使用已核验的本机 Codex CLI subscription execution bridge 执行固定任务 PB-01 的三条路径：`single_call`、`single_bot`、`multi_bot`。
