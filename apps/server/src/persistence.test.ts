@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
 import type { ContextLedger, RunEvent } from '../../../packages/core/src/types.ts';
 import { buildContextSnapshot } from '../../../packages/core/src/context.ts';
-import { JsonlContextSnapshotStore, JsonlEventLog, inspectSqliteSchema, openContextSnapshotStore, openEventLog, openSqliteRunStore, SQLITE_SCHEMA_VERSION } from './persistence.ts';
+import { JsonlContextSnapshotStore, JsonlEventLog, inspectSqliteSchema, openContextSnapshotStore, openEventLog, openSqliteRunStore, SQLITE_SCHEMA_VERSION, SqliteRunStore } from './persistence.ts';
 
 test('persistence exposes SQLite boundary with a clean-checkout fallback', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-'));
@@ -205,5 +206,59 @@ test('SQLite RunStore atomically persists state, events, segments and idempotent
   }), /Run already exists/);
   assert.equal((await reopened.store.listEvents(created.id)).length, 2);
   reopened.close();
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('SQLite RunStore rolls back injected failures and restores from an online backup', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-run-store-backup-'));
+  const filePath = path.join(dir, 'workspace.db');
+  const backupPath = path.join(dir, 'workspace-backup.db');
+  const first = openSqliteRunStore(filePath);
+  const created = await first.store.createRun({
+    id: 'run-rollback-1' as any,
+    projectId: 'project-rollback-1' as any,
+    botId: 'bot-rollback-1' as any,
+    request: { objective: '事务回滚', input: {} },
+  });
+  first.close();
+  let shouldFail = true;
+  const failureStore = new SqliteRunStore(filePath, undefined, {
+    failureInjector: (phase) => { if (shouldFail && phase === 'after_event_insert') { shouldFail = false; throw new Error('injected failure'); } },
+  });
+  await assert.rejects(() => failureStore.transition(created.id, 'start', { idempotencyKey: 'rollback-start' }), /injected failure/);
+  assert.equal((await failureStore.getRun(created.id))?.status, 'queued');
+  assert.equal((await failureStore.listEvents(created.id)).length, 1);
+  const succeeded = await failureStore.transition(created.id, 'start', { idempotencyKey: 'rollback-start' });
+  assert.equal(succeeded.run.status, 'running');
+  failureStore.backupTo(backupPath);
+  failureStore.close();
+
+  const restored = openSqliteRunStore(backupPath);
+  assert.equal((await restored.store.getRun(created.id))?.status, 'running');
+  assert.equal((await restored.store.listEvents(created.id)).length, 2);
+  restored.close();
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('SQLite RunStore tolerates concurrent writers from separate processes', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-run-store-processes-'));
+  const filePath = path.join(dir, 'workspace.db');
+  const worker = `
+    import { openSqliteRunStore } from './apps/server/src/persistence.ts';
+    const handle = openSqliteRunStore(process.argv[1]);
+    await handle.store.createRun({ id: process.argv[2], projectId: process.argv[3], botId: 'bot-process', request: { objective: 'process writer', input: {} } });
+    handle.close();
+  `;
+  const children = Array.from({ length: 3 }, (_, index) => new Promise<void>((resolve, reject) => {
+    const child = spawn(process.execPath, ['--experimental-strip-types', '--input-type=module', '-e', worker, filePath, `run-process-${index}`, `project-process-${index}`], { cwd: path.resolve(process.cwd()), stdio: ['ignore', 'ignore', 'pipe'] });
+    let stderr = '';
+    child.stderr.on('data', (chunk) => { stderr += String(chunk); });
+    child.on('error', reject);
+    child.on('close', (code) => code === 0 ? resolve() : reject(new Error(`worker exited ${code}: ${stderr}`)));
+  }));
+  await Promise.all(children);
+  const store = openSqliteRunStore(filePath);
+  assert.equal((await store.store.listRuns()).length, 3);
+  store.close();
   await rm(dir, { recursive: true, force: true });
 });

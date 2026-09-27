@@ -1,7 +1,7 @@
 {
   "record_version": "m10-03.sqlite-runstore-results.v1",
-  "executed_at": "2026-09-27T19:29:49+08:00",
-  "status": "PARTIAL_RUNTIME_WIRED",
+  "executed_at": "2026-09-27T20:02:13+08:00",
+  "status": "PARTIAL_RUNSTORE_BOUNDARY_PASS",
   "implementation": [
     "SQLite schema v2 for projects, skills, bot_profiles, runs, handoffs, approval_requests, sources, artifacts, memory_items and provider_receipts",
     "single-connection SqliteRunStore",
@@ -13,7 +13,7 @@
   ],
   "commands": [
     "node scripts/typecheck.mjs",
-    "node --experimental-strip-types --test apps/server/src/persistence.test.ts",
+    "node --experimental-strip-types --test apps/server/src/persistence.test.ts apps/server/src/runtime.test.ts",
     "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts",
     "git diff --check"
   ],
@@ -24,7 +24,7 @@
       "failed": 0
     },
     "full_suite": {
-      "passed": 22,
+      "passed": 24,
       "failed": 0
     },
     "schema_version": 2,
@@ -35,14 +35,25 @@
     "runtime_default_store": "PASS",
     "same_process_rollback": "PASS",
     "concurrent_idempotency": "PASS",
-    "project_isolation": "PASS"
+    "project_isolation": "PASS",
+    "persistence_boundary_suite": {
+      "passed": 10,
+      "failed": 0
+    },
+    "runtime_suite": {
+      "passed": 3,
+      "failed": 0
+    },
+    "injected_failure_rollback": "PASS",
+    "online_backup_restore": "PASS",
+    "cross_process_writers": "PASS"
   },
   "limitations": [
     "Product Builder continuity still records idempotency keys in event data and does not yet atomically write checkpoint, snapshot and idempotency rows through this store.",
     "Project/Bot/Handoff/Approval/Source/Artifact/Memory/ProviderReceipt tables exist, but typed CRUD repositories and receipts are not implemented.",
-    "Cross-process contention, crash recovery, backup/restore and explicit injected migration failure tests remain pending.",
+    "The cross-process test covers three concurrent writer processes and does not replace long-running lock, kill/restart, or 10k/100k event scale validation in M10-06.",
     "The runtime store is now SQLite-first, but a SQLite-unavailable production process fails closed; portable JSONL remains an explicit event/snapshot fallback and is not a RunStore fallback.",
     "Schema and runtime persistence evidence does not prove model quality or real-world productivity."
   ],
-  "next_action": "Add explicit cross-process/backup and injected-rollback tests for M10-03, then move Product Builder checkpoint and HTTP persistence integration to M10-05."
+  "next_action": "Enter M10-05: atomically persist Product Builder checkpoint, ContextSnapshot and idempotency rows, then expose the same SQLite-backed state through HTTP."
 }

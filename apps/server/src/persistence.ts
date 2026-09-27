@@ -612,11 +612,13 @@ function eventFromRow(row: Record<string, unknown>): RunEvent {
 export class SqliteRunStore implements RunStore {
   readonly backend = 'sqlite' as const;
   private readonly db: SqliteDatabase;
+  private readonly failureInjector?: (phase: 'after_run_update' | 'after_event_insert' | 'after_idempotency_insert') => void;
 
-  constructor(filePath: string, database?: SqliteDatabase) {
+  constructor(filePath: string, database?: SqliteDatabase, options: { failureInjector?: (phase: 'after_run_update' | 'after_event_insert' | 'after_idempotency_insert') => void } = {}) {
     const opened = database ? { db: database } : openSqliteDatabase(filePath);
     if (!opened.db) throw new Error('SQLite driver unavailable; use openEventLog() for explicit portable fallback');
     this.db = opened.db;
+    this.failureInjector = options.failureInjector;
     runSqliteMigrations(this.db);
   }
 
@@ -788,15 +790,24 @@ export class SqliteRunStore implements RunStore {
         result_json: result.run.result === undefined ? null : JSON.stringify(result.run.result),
         error_json: result.run.error === undefined ? null : JSON.stringify(result.run.error),
       });
+      this.failureInjector?.('after_run_update');
       this.insertEvent(result.event);
+      this.failureInjector?.('after_event_insert');
       if (storageKey) {
         this.db.prepare(`
           INSERT INTO idempotency_keys (key, scope, resource_id, created_at, result_json)
           VALUES (@key, @scope, @resource_id, @created_at, @result_json)
         `).run({ key: storageKey, scope: 'run.transition', resource_id: String(runId), created_at: result.event.occurredAt, result_json: JSON.stringify({ action, result }) });
+        this.failureInjector?.('after_idempotency_insert');
       }
       return result;
     });
+  }
+
+  /** Create a consistent SQLite backup using SQLite's own online backup primitive. */
+  backupTo(filePath: string): void {
+    const escaped = filePath.replaceAll("'", "''");
+    this.db.exec(`VACUUM INTO '${escaped}'`);
   }
 
   close(): void { this.db.close(); }

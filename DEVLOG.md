@@ -176,3 +176,11 @@
 - **验证**：persistence/runtime 专项 `11/11`、全套等价 Node tests `22/22`、typecheck、diff check 通过；覆盖同 key 并发重放、错误序号回滚、重启回读和跨项目 listRuns。
 - **边界**：Product Builder checkpoint 仍未通过同一事务仓储写入；跨进程竞争、显式失败注入、备份恢复、全实体 typed CRUD 和 HTTP 完整接入仍待完成。
 - **下一步**：补 M10-03 剩余边界后进入 M10-05。
+
+
+### 2026-09-27 M10-03 · 边界验证收口
+
+- **验证**：增加一次性失败注入，确认 Run 更新、RunEvent 和幂等记录在中途异常时一起回滚；使用 SQLite `VACUUM INTO` 创建备份并重新打开恢复库；三个独立 Node 进程同时写同一个数据库，全部成功。
+- **结果**：persistence 专项 `10/10`、runtime 专项 `3/3`、全套等价 Node tests `24/24`、typecheck 和 diff check 通过。
+- **边界**：这仍不覆盖长时锁竞争、kill/restart、10k/100k 事件规模、全实体 typed CRUD 或 Product Builder checkpoint 的同事务接入。
+- **下一步**：进入 M10-05，把 Product Builder checkpoint、ContextSnapshot、幂等记录和 HTTP 读取接入同一 SQLite 事实源。
