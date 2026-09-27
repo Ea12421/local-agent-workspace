@@ -50,6 +50,7 @@
 - 落盘：`validation/m8-07-real-project-codex-pet.json`、`validation/m8-07-real-project-codex-pet-artifact.json`、`validation/m8-07-codex-pet-dry-run.json`、`validation/m8-07-codex-pet-install-candidate.json`、`validation/m8-07-reality-card.json`。
 - 结论是窄范围 `PASS / Real-input Ready`：Product Builder 能把真实项目状态推进为可审查的安装候选计划和只读预检。Codex 实际加载、用户接受和安装仍未知；项目规则要求安装前再次确认，因此当前状态为 `blocked_user`。
 - 用户随后明确授权安装；安装 smoke 新增 `~/.codex/pets/sha-wujing`，前后 manifest 与逐文件 hash 校验通过，既有 `angelina-mellow-wish` 未改动。Computer Use 尝试读取 Codex app 被平台安全策略拒绝，因此安装文件 PASS 与 Codex 加载 PASS 分开记录，当前转为 `blocked_environment`。
+- 用户随后确认 Codex 界面已出现沙悟净；M8-07 安装 smoke 现在收口为 `PASS_INSTALLED_AND_USER_CONFIRMED`。Computer Use 的限制仍保留为工具事实，但不再阻断用户可见加载证据。下一步切入 `personal-knowledge-mcp-mvp`，验证更接近 Agent 产品的数据边界与产品推进能力。
 
 ### M8-04 质量证据审计
 

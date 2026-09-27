@@ -1,6 +1,6 @@
 {
   "record_version": "m8-07.install-smoke.v1",
-  "status": "PASS_INSTALLED_FILES",
+  "status": "PASS_INSTALLED_AND_USER_CONFIRMED",
   "executed_at": "2026-09-27T14:04:58.951Z",
   "source_root": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing",
   "target_root": "/Users/m4air/.codex/pets/sha-wujing",
@@ -16,7 +16,8 @@
     "spritesheet.webp"
   ],
   "rollback": "Delete only the newly created sha-wujing directory after user approval if load or visual smoke fails; preserve the before manifest and existing sibling pets.",
-  "codex_load_status": "BLOCKED_COMPUTER_USE",
-  "computer_use_attempt": "cua.getApp('Codex') was rejected by the platform safety policy for com.openai.codex; no UI load claim is made.",
-  "user_acceptance": "PENDING"
+  "codex_load_status": "PASS_USER_CONFIRMED",
+  "computer_use_attempt": "Computer Use was blocked for com.openai.codex; user manually confirmed that 沙悟净 is visible in Codex.",
+  "user_acceptance": "LOAD_VISIBLE_CONFIRMED",
+  "user_confirmation_at": "2026-09-27T15:34:51Z"
 }
