@@ -48,10 +48,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-06-paired-baseline-partial",
+  "phase": "m8-06-jsonl-failure-boundary-pass",
   "progress": {
-    "completed_units": 24,
-    "total_units": 24
+    "completed_units": 25,
+    "total_units": 25
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -65,7 +65,7 @@
     "blocking_corrections_left": 1
   },
   "blocked_reason": "M8-04 质量证据仍阻断；Electron 窗口可见性仍 PARTIAL；DeepSeek、literal GitHub clone、Codex 原生 resume 和多 Bot/人工提效仍未验证。M8-05 只通过窄范围真实输入追踪和一次真实 provider 同 Run 恢复 smoke，未证明业务质量或稳定提效。",
-  "next_action": "在不迁移 SQLite-first 的前提下，为 JSONL-first 增加尾行损坏、并发 append 和从日志重建索引的有界故障注入/性能测试；保留 owner willingness 为 UNKNOWN。",
-  "last_evidence": "2026-09-27：M8-06 两条 arm 已执行。手工 baseline 是 7 步 controller proxy，未冒充用户计时；结构化 Codex subscription Run 用同一白名单在 56234ms 完成，单 JSON、必填字段和 source_refs 全部通过。比较结果为 PARTIAL：无法计算真实人工步骤减少率，owner willingness、用户计时和结构化输出返工仍未知。JSONL-first 仅作为当前 provisional recommendation，不执行 SQLite-first 迁移。",
-  "updated_at": "2026-09-27T04:30:00+08:00"
+  "next_action": "保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark。owner willingness 仍为 UNKNOWN。",
+  "last_evidence": "2026-09-27：M8-06 两条 arm 已执行且比较为 PARTIAL；随后 JSONL 边界专项通过。5/5 persistence tests、typecheck 和 diff check 通过：损坏尾行 fail-closed，同进程 20 次并发 append 完整，重载后按 project/run 重建 latest。该专项只覆盖同进程契约，不证明跨进程锁、长时吞吐、M8-04 质量或现实提效。",
+  "updated_at": "2026-09-27T06:30:00+08:00"
 }

@@ -1,0 +1,40 @@
+{
+  "record_version": "m8-06.jsonl-failure-results.v1",
+  "executed_at": "2026-09-27T06:30:00+08:00",
+  "status": "PASS_CONTRACT_BOUNDARY",
+  "scope": "JSONL-first ContextSnapshot and event-log failure/concurrency boundaries",
+  "commands": [
+    "node scripts/typecheck.mjs",
+    "node --experimental-strip-types --test apps/server/src/persistence.test.ts",
+    "git diff --check"
+  ],
+  "results": {
+    "typecheck": "PASS",
+    "format_diff_check": "PASS",
+    "persistence_tests": {
+      "passed": 5,
+      "failed": 0,
+      "cases": [
+        "SQLite/JSONL event-log boundary remains available",
+        "ContextSnapshot reload and project/run isolation",
+        "Duplicate immutable snapshot ids are rejected",
+        "Malformed trailing JSONL event fails closed with SyntaxError",
+        "Twenty same-process concurrent snapshot appends remain complete and latest index rebuilds"
+      ]
+    }
+  },
+  "evidence": {
+    "test_file": "apps/server/src/persistence.test.ts",
+    "implementation": "apps/server/src/persistence.ts",
+    "same_process_write_queue": true,
+    "malformed_trailing_line_policy": "readAll rejects the log; it does not silently truncate or skip corruption",
+    "raw_run_events_preserved": true
+  },
+  "limitations": [
+    "Concurrency coverage is same-process and uses the store write queue; cross-process append locking is not proven.",
+    "No long-running throughput or large-file benchmark was run; this is a bounded fault-injection/contract check.",
+    "This does not upgrade M8-04 quality evidence or prove user productivity.",
+    "M8-06 owner willingness and user-timed baseline remain UNKNOWN."
+  ],
+  "next_action": "Keep JSONL-first provisional; owner review remains required, and only add a bounded benchmark if a performance claim is needed."
+}

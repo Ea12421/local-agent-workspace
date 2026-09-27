@@ -126,7 +126,7 @@
 - **输入范围**：冻结为当前项目 `AGENTS.md`、`RUN_STATE.json`、`HANDOFF.md`、`SPEC/MASTER-SPEC.md`、`packages/core/src/context.ts`、`apps/server/src/persistence.ts` 和 `validation/m9-context-continuity-results.json`；不读取凭据、Cookie、Token、`.env` 或外部资料。
 - **paired arms**：手工 baseline 固定 7 步，结构化 arm 为同一白名单的一次 Codex read-only Run；两边都要求 options、trade-offs、dependencies、risks、rollback、source_refs、unknowns 和唯一 next_action。
 - **阈值**：人工整理步骤相对减少至少 25%；来源覆盖、未知项、回滚和零越权是硬护栏；owner willingness 在用户复核前保持 UNKNOWN。
-- **当前状态**：卡片已冻结但两条 arm 尚未执行。下一步只执行这两条 arm，不重跑 M8-05，不接 DeepSeek。
+- **当前状态**：卡片已冻结且两条 arm 已执行；比较结果为 `PARTIAL`。不重跑 M8-05，不接 DeepSeek。
 
 ### 2026-09-27 M8-06 · paired baseline 结果
 
@@ -134,3 +134,10 @@
 - **结构化 arm**：同一输入白名单、Codex subscription、read-only，耗时 `56234ms`；单 JSON、必填键、来源白名单全部通过，原始 receipt 为 `validation/m8-06-raw/structured-run.json`。
 - **比较结果**：`validation/m8-06-comparison.json` 为 `PARTIAL`。不能计算人工整理步骤下降率，因为 baseline 是 proxy、structured arm 尚未经过 owner 编辑，owner willingness 仍 UNKNOWN。
 - **临时路线判断**：保留 JSONL-first 作为 provisional recommendation，不执行 SQLite-first 迁移；下一步补 JSONL 尾行损坏、并发 append 和从日志重建索引的有界故障注入/性能测试。
+
+### 2026-09-27 M8-06 · JSONL 边界专项
+
+- **实现**：`apps/server/src/persistence.test.ts` 新增尾行损坏、同进程并发 append 和重载后 latest 重建测试；夹具时间统一为固定宽度 ISO 秒，避免字符串排序制造假失败。
+- **结果**：`node scripts/typecheck.mjs`、`node --experimental-strip-types --test apps/server/src/persistence.test.ts`（5/5）和 `git diff --check` 均通过；损坏尾行按 `SyntaxError` fail-closed，20 个并发快照完整写入且按 project/run 重建最新记录。
+- **边界**：这是 JSONL-first 的有界契约检查，只覆盖同进程写队列；未证明跨进程锁、长时吞吐、M8-04 质量或现实提效。证据为 `validation/m8-06-jsonl-failure-results.json`。
+- **下一步**：保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark。

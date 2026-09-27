@@ -8,8 +8,8 @@
 
 ## 当前状态
 
-- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 质量证据仍阻断；M8-05 窄范围验证完成，M8-06 paired baseline 为 PARTIAL，Desktop 仍部分验证
-- 阶段：`m8-06-paired-baseline-partial`
+- `RUN_STATE.json`：当前为 `running`，Context Continuity M9 已完成，M8-04 质量证据仍阻断；M8-05 窄范围验证完成，M8-06 paired baseline 为 PARTIAL，JSONL 边界专项通过，Desktop 仍部分验证
+- 阶段：`m8-06-jsonl-failure-boundary-pass`
 - 已完成：
   - 根 monorepo 配置、AGENTS.md、环境样例和 setup/demo/typecheck 脚本
   - `SPEC/00-06`、`SPEC/MASTER-SPEC.md`、`SPEC/IMPLEMENTATION-BACKLOG.md`、`SPEC/TRACEABILITY.md`、`SPEC/PROGRESS.md`、`SPEC/AI-EXECUTION-PROTOCOL.md`、`docs/architecture.md`、`docs/interview-playbook.md`
@@ -46,6 +46,7 @@
   - `validation/m8-05-review.md`：窄范围结论、恢复内容阻断说明与未验证项
   - `validation/m8-06-paired-baseline-card-v1.json`：ContextSnapshot JSONL-first vs SQLite-first 的 paired baseline 卡
   - `validation/m8-06-manual-baseline.md`、`validation/m8-06-structured-run.json`、`validation/m8-06-comparison.json`：两条 arm 和比较结果
+  - `validation/m8-06-jsonl-failure-results.json`：JSONL 尾行损坏、同进程并发 append 和重建 latest 的专项结果
 - `scripts/checkpoint.mjs`、`scripts/validate-state.mjs`、`scripts/recover.mjs`：限额/压缩后的原子 checkpoint、状态校验和恢复入口
 - `scripts/diagnose.mjs`：不依赖安装的 Node/npm/pnpm/Codex/Fixture 环境诊断
 - 验证通过：
@@ -64,7 +65,7 @@
   - M8-04 10 题三路径机械执行已完成；所有记录仍缺质量补证，不能写成多 Bot 质量或提效通过
   - PB-01 当前有 9 条真实 provider 记录（8 条完成、1 条 provider_incomplete），全部是 `quality_eligible=false`；可解析的 multi Bot receipts 自动校验为 7/8，另有前缀/拼接输出被严格拒绝，必须先人工复核，不能据此宣称单/多 Bot 质量优劣
   - 为同步最新桌面入口而重打包时，`.app` 编译成功，但 `hdiutil` 报 `设备未配置`；已有 DMG 保留，需在 DiskManagement 可用的 macOS 环境再复验封装
-  - M8-05 窄范围 reality validation 已完成；M8-06 paired baseline 两条 arm 已执行但为 PARTIAL，用户本人 baseline 和 willingness 仍未知
+  - M8-05 窄范围 reality validation 已完成；M8-06 paired baseline 两条 arm 已执行但为 PARTIAL，JSONL 边界专项已通过，用户本人 baseline 和 willingness 仍未知
 
 ## 不要重新打开的决定
 
@@ -91,11 +92,12 @@
 13. M8-04 机械执行已收口：36 条 receipt、30 个唯一 task×path 组合、quality_eligible=0，总账本为 `validation/m8-04-aggregate-summary.json`；质量证据仍阻断。
 14. M8-05 已完成：3/3 真实本地状态任务通过预注册追踪门；一次真实 Codex provider 中断后，同一 `runId` 追加 Snapshot 和 resume segment 并成功收口。Recovery 内容本身因提示禁止读取命令而返回 blocked，已单独记录，不能写成业务任务完成。
 15. M8-04 先保留质量证据阻断状态；DeepSeek 有 Key 后再做 API 对比。M8-06 paired baseline 为 PARTIAL：保留 JSONL-first provisional recommendation，不执行 SQLite-first 迁移。
-16. Git 已在本地建立 `main` 基线并提交；当前没有 remote，不 push。
+16. JSONL 边界专项已通过：5/5 persistence tests、typecheck、diff check；证据为 `validation/m8-06-jsonl-failure-results.json`，只覆盖同进程契约。
+17. Git 已在本地建立 `main` 基线并提交；当前没有 remote，不 push。
 
 ### 当前唯一下一步
 
-为 JSONL-first 增加尾行损坏、并发 append 和从日志重建索引的有界故障注入/性能测试；owner willingness 仍需用户复核。
+保持 JSONL-first provisional，等待 owner review；只有需要性能主张时才补有界 benchmark；owner willingness 仍需用户复核。
 
 ## 重要文件
 

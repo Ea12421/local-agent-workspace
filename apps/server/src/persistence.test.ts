@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import type { ContextLedger, RunEvent } from '../../../packages/core/src/types.ts';
 import { buildContextSnapshot } from '../../../packages/core/src/context.ts';
-import { JsonlContextSnapshotStore, openEventLog } from './persistence.ts';
+import { JsonlContextSnapshotStore, JsonlEventLog, openEventLog } from './persistence.ts';
 
 test('persistence exposes SQLite boundary with a clean-checkout fallback', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-'));
@@ -17,12 +17,13 @@ test('persistence exposes SQLite boundary with a clean-checkout fallback', async
 });
 
 function snapshotFixture(projectId: string, runId: string, sequence: number, id: string) {
+  const second = String(sequence).padStart(2, '0');
   const event = {
     id: `event-${sequence}` as RunEvent['id'],
     runId: runId as RunEvent['runId'],
     sequence,
     type: 'run.started',
-    occurredAt: `2026-09-27T00:00:0${sequence}.000Z`,
+    occurredAt: `2026-09-27T00:00:${second}.000Z`,
     actor: { type: 'system' },
     data: {},
   } as RunEvent;
@@ -50,7 +51,7 @@ function snapshotFixture(projectId: string, runId: string, sequence: number, id:
     maxTailEvents: 4,
   }, {
     id: id as ContextLedger['runId'] as never,
-    createdAt: `2026-09-27T00:00:0${sequence}.500Z`,
+    createdAt: `2026-09-27T00:00:${second}.500Z`,
     trigger: 'interrupt',
   });
 }
@@ -81,5 +82,31 @@ test('JSONL context snapshot store rejects duplicate immutable ids', async () =>
   await store.append(snapshot);
   await assert.rejects(() => store.append(snapshot), /already exists/);
   assert.equal((await store.readAll()).length, 1);
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('JSONL event log fails closed on a malformed trailing line', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-event-corruption-'));
+  const filePath = path.join(dir, 'events.jsonl');
+  await writeFile(filePath, `${JSON.stringify({ id: 'e1', runId: 'r1', sequence: 1 })}\n{not-json}\n`, 'utf8');
+  const log = new JsonlEventLog(filePath);
+  await assert.rejects(() => log.readAll(), SyntaxError);
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('JSONL snapshot appends remain complete under same-process concurrency and rebuild latest index', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-context-concurrency-'));
+  const filePath = path.join(dir, 'context-snapshots.jsonl');
+  const store = new JsonlContextSnapshotStore(filePath);
+  const snapshots = Array.from({ length: 20 }, (_, index) => snapshotFixture('project-a', 'run-a', index + 1, `snapshot-concurrent-${index + 1}`));
+  await Promise.all(snapshots.map((snapshot) => store.append(snapshot)));
+
+  const reloaded = new JsonlContextSnapshotStore(filePath);
+  const all = await reloaded.readAll();
+  assert.equal(all.length, snapshots.length);
+  const rebuiltIndex = new Map<string, typeof all[number]>();
+  for (const snapshot of all) rebuiltIndex.set(`${snapshot.projectId}/${snapshot.runId}`, snapshot);
+  assert.equal(rebuiltIndex.get('project-a/run-a')?.id, 'snapshot-concurrent-20');
+  assert.equal((await reloaded.latest('project-a', 'run-a'))?.id, 'snapshot-concurrent-20');
   await rm(dir, { recursive: true, force: true });
 });
