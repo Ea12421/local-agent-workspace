@@ -1,0 +1,231 @@
+{
+  "validation": "context_benchmark_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "methodology": {
+    "provider": "none",
+    "mode": "deterministic_control_plane",
+    "historySizes": [
+      10,
+      30,
+      100,
+      300
+    ],
+    "repeatedPasses": 20,
+    "packetDefinition": "ContextSnapshot summary + recent tail events + continuation instruction",
+    "fullContextDefinition": "ContextLedger including structured fields, items and all events",
+    "tokenEstimator": "project estimateTokens (UTF-8 bytes / 4, rounded up); not provider billable tokens"
+  },
+  "sizeRows": [
+    {
+      "historyEvents": 10,
+      "repeatedPasses": 20,
+      "fullLedgerTokens": 1983,
+      "packetTokens": 751,
+      "reduction": 0.6212808875441251,
+      "fullLedgerBytes": 7929,
+      "packetBytes": 3002,
+      "fieldsRetained": "10/10",
+      "buildP50Ms": 0.267,
+      "buildP95Ms": 1.771,
+      "restoreP50Ms": 0.109,
+      "restoreP95Ms": 1.044,
+      "parentChainValid": true
+    },
+    {
+      "historyEvents": 30,
+      "repeatedPasses": 20,
+      "fullLedgerTokens": 5576,
+      "packetTokens": 755,
+      "reduction": 0.8645982783357246,
+      "fullLedgerBytes": 22302,
+      "packetBytes": 3017,
+      "fieldsRetained": "10/10",
+      "buildP50Ms": 0.329,
+      "buildP95Ms": 5.853,
+      "restoreP50Ms": 0.07,
+      "restoreP95Ms": 0.103,
+      "parentChainValid": true
+    },
+    {
+      "historyEvents": 100,
+      "repeatedPasses": 20,
+      "fullLedgerTokens": 18154,
+      "packetTokens": 757,
+      "reduction": 0.9583012008372811,
+      "fullLedgerBytes": 72616,
+      "packetBytes": 3027,
+      "fieldsRetained": "10/10",
+      "buildP50Ms": 0.953,
+      "buildP95Ms": 8.475,
+      "restoreP50Ms": 0.109,
+      "restoreP95Ms": 0.257,
+      "parentChainValid": true
+    },
+    {
+      "historyEvents": 300,
+      "repeatedPasses": 20,
+      "fullLedgerTokens": 54438,
+      "packetTokens": 761,
+      "reduction": 0.9860207942981006,
+      "fullLedgerBytes": 217749,
+      "packetBytes": 3042,
+      "fieldsRetained": "10/10",
+      "buildP50Ms": 2.446,
+      "buildP95Ms": 2.881,
+      "restoreP50Ms": 0.171,
+      "restoreP95Ms": 0.227,
+      "parentChainValid": true
+    }
+  ],
+  "depthRows": [
+    {
+      "historyEvents": 10,
+      "pass": 1,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 736
+    },
+    {
+      "historyEvents": 10,
+      "pass": 3,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 750
+    },
+    {
+      "historyEvents": 10,
+      "pass": 10,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 751
+    },
+    {
+      "historyEvents": 10,
+      "pass": 20,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 751
+    },
+    {
+      "historyEvents": 30,
+      "pass": 1,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 740
+    },
+    {
+      "historyEvents": 30,
+      "pass": 3,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 754
+    },
+    {
+      "historyEvents": 30,
+      "pass": 10,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 754
+    },
+    {
+      "historyEvents": 30,
+      "pass": 20,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 755
+    },
+    {
+      "historyEvents": 100,
+      "pass": 1,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 742
+    },
+    {
+      "historyEvents": 100,
+      "pass": 3,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 757
+    },
+    {
+      "historyEvents": 100,
+      "pass": 10,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 757
+    },
+    {
+      "historyEvents": 100,
+      "pass": 20,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 757
+    },
+    {
+      "historyEvents": 300,
+      "pass": 1,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 746
+    },
+    {
+      "historyEvents": 300,
+      "pass": 3,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 760
+    },
+    {
+      "historyEvents": 300,
+      "pass": 10,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 761
+    },
+    {
+      "historyEvents": 300,
+      "pass": 20,
+      "fieldsRetained": "10/10",
+      "restoreSuccess": true,
+      "parentLink": true,
+      "packetTokens": 761
+    }
+  ],
+  "integrity": {
+    "fields": [
+      "objective",
+      "constraints",
+      "durableFacts",
+      "decisions",
+      "unknowns",
+      "approvals",
+      "handoffs",
+      "artifacts",
+      "sources",
+      "nextAction"
+    ],
+    "maxFieldRetention": true,
+    "parentChainValid": true,
+    "tamperDetected": true,
+    "eventGapDetected": true,
+    "thresholdChecksPassed": true
+  },
+  "result": "passed",
+  "interpretation": "结构化恢复包相对于完整 ContextLedger 的体积缩减和连续快照保留率已量化；这些是控制面指标，不等于真实模型语义质量、Provider 原生 resume、提示词缓存命中或成本下降。"
+}

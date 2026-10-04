@@ -1,5 +1,7 @@
 import { createRunEventId, createRunId } from "./ids.ts";
 import { transitionRun } from "./state-machine.ts";
+import { prepareRetryTransition } from "./retry-policy.ts";
+import { currentAttemptTerminalEvent, semanticEventKey } from "./semantic-events.ts";
 import type {
   CreateRunInput,
   EventActor,
@@ -91,12 +93,16 @@ export class InMemoryRunStore implements RunStore {
   async appendEvent(event: RunEvent): Promise<void> {
     const events = this.events.get(event.runId);
     if (!events) throw new Error(`Cannot append event for unknown run: ${event.runId}`);
+    if (events.some((existing) => existing.id === event.id)) return;
+    const incomingSemanticKey = semanticEventKey(event);
+    if (incomingSemanticKey && events.some((existing) => semanticEventKey(existing) === incomingSemanticKey)) return;
+    const existingTerminal = currentAttemptTerminalEvent(events);
+    if (existingTerminal && currentAttemptTerminalEvent([event])) {
+      throw new Error(`Cannot append terminal event after ${existingTerminal.type}`);
+    }
     const expectedSequence = events.length + 1;
     if (event.sequence !== expectedSequence) {
       throw new Error(`Event sequence must be ${expectedSequence}, received ${event.sequence}`);
-    }
-    if (events.some((existing) => existing.id === event.id)) {
-      throw new Error(`Duplicate event id: ${event.id}`);
     }
     events.push(clone(event));
   }
@@ -116,10 +122,13 @@ export class InMemoryRunStore implements RunStore {
     if (!current) throw new Error(`Unknown run: ${runId}`);
     const events = this.events.get(runId);
     if (!events) throw new Error(`Events missing for run: ${runId}`);
-    const result = transitionRun(current, action, options, events.length + 1);
+    const transitionOptions = action === "retry" && current.status === "failed"
+      ? prepareRetryTransition(current, events, options)
+      : options;
+    const result = transitionRun(current, action, transitionOptions, events.length + 1);
     await this.appendEvent(result.event);
     this.runs.set(runId, clone(result.run));
-    if (idempotencyKey) this.idempotentTransitions.set(`${runId}:${idempotencyKey}`, { action, result: clone(result) });
+    if (transitionOptions.idempotencyKey) this.idempotentTransitions.set(`${runId}:${transitionOptions.idempotencyKey}`, { action, result: clone(result) });
     return { run: clone(result.run), event: clone(result.event) };
   }
 }

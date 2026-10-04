@@ -6,7 +6,7 @@
     "status": "active"
   },
   "bots": [
-    {"id":"bot-product-builder","name":"Product Builder","role":"总控：澄清目标、调度交接、汇总冲突","permission":"workspace_write","provider":"fixture"},
+    {"id":"bot-product-builder","name":"Product Builder","role":"总控：澄清目标、调度交接、汇总冲突","permission":"read_only","provider":"fixture"},
     {"id":"bot-research","name":"Research Bot","role":"收集外部事实并保留来源","permission":"read_only","provider":"fixture"},
     {"id":"bot-architecture","name":"Architecture Bot","role":"判断实现路线、依赖和风险","permission":"read_only","provider":"fixture"},
     {"id":"bot-evaluation","name":"Evaluation Bot","role":"定义成功指标与坏案例","permission":"read_only","provider":"fixture"}

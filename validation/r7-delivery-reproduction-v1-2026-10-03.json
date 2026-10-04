@@ -1,0 +1,33 @@
+{
+  "validation": "r7_delivery_reproduction_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "commands": {
+    "setup": "passed",
+    "demo": "passed",
+    "diagnose": "passed",
+    "buildWeb": "passed",
+    "buildDesktop": "passed",
+    "packageMac": "passed",
+    "dmgVerify": "passed",
+    "dmgReadOnlyMount": "passed",
+    "serverProcessTest": "2/2 passed"
+  },
+  "artifacts": {
+    "dmg": "release/Local Agent Workspace-0.1.0-arm64.dmg",
+    "sha256": "671d111e21b9de714fc3f143897a68ef3bab1ce341c286decaadfef4dd6953fa",
+    "signature": "unsigned_no_developer_id_identity"
+  },
+  "diagnostics": {
+    "node": "v22.23.1",
+    "pnpm": "9.15.0",
+    "codex": "codex-cli 0.155.1",
+    "codexStatus": "blocked_environment",
+    "codexReason": "~/.codex/state_5.sqlite and ~/.codex are not writable"
+  },
+  "boundaries": [
+    "没有远程 Git remote，未做 literal GitHub clean-room clone",
+    "DMG 未签名，首次打开可能需要 Finder 右键打开",
+    "真实 DeepSeek 模型质量、Codex native resume 和真人提效仍未验证"
+  ],
+  "evidenceBoundary": "验证当前源码的本地启动、目录包、DMG 完整性和诊断回执；不等于签名发布或 GitHub clean-room 安装。"
+}

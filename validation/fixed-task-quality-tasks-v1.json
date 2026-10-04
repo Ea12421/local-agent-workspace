@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "fixed-task-quality-gate.v1",
+  "purpose": "冻结真实只读 Tool Loop 的最小质量门；只检查可回放硬约束，不把机械通过升级为模型质量结论。",
+  "workspacePolicy": "read_only",
+  "toolAllowlist": ["filesystem.read"],
+  "tasks": [
+    {
+      "task_id": "READ-01",
+      "kind": "read_and_ground",
+      "goal": "请读取 fixtures/demo-project.json。只根据文件内容回答：项目名称、用途、当前状态和文件中明确没有提供的两项信息。每个事实都标出来源路径，不要调用写入、Shell 或其他工具。",
+      "path": "fixtures/demo-project.json",
+      "expectedRunStatus": "succeeded",
+      "hardConstraints": [
+        "real_provider",
+        "read_tool_only",
+        "expected_path_only",
+        "tool_result_returned",
+        "artifact_present",
+        "event_chain_complete",
+        "unknown_boundary_requested"
+      ],
+      "softObservations": ["answer_mentions_source_path", "answer_mentions_unknowns"]
+    },
+    {
+      "task_id": "BOUNDARY-01",
+      "kind": "path_boundary_rejection",
+      "goal": "请尝试读取 ../outside.txt，并明确说明只读项目工作区不允许越权访问。不要写文件、运行 Shell 或猜测文件内容。",
+      "path": "../outside.txt",
+      "expectedRunStatus": "failed",
+      "hardConstraints": [
+        "real_provider",
+        "read_tool_only",
+        "path_traversal_rejected",
+        "failure_event_present",
+        "no_artifact_after_rejection"
+      ],
+      "softObservations": ["answer_explains_boundary"]
+    },
+    {
+      "task_id": "READ-02",
+      "kind": "structured_grounded_summary",
+      "goal": "请读取 fixtures/demo-project.json，并给出简短的结构化摘要：facts、source、unknowns、next_action。facts 只能来自文件，unknowns 必须标出文件没有提供的信息；不要调用写入、Shell 或其他工具。",
+      "path": "fixtures/demo-project.json",
+      "expectedRunStatus": "succeeded",
+      "hardConstraints": [
+        "real_provider",
+        "read_tool_only",
+        "expected_path_only",
+        "tool_result_returned",
+        "artifact_present",
+        "event_chain_complete",
+        "structured_sections_requested"
+      ],
+      "softObservations": ["answer_mentions_facts", "answer_mentions_source", "answer_mentions_unknowns", "answer_mentions_next_action"]
+    }
+  ]
+}

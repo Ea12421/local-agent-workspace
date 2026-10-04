@@ -6,7 +6,7 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import type { ProviderAdapter, ProviderCapabilities, RunEvent, RunHandle, RunRequest } from '../../../packages/core/src/types.ts';
 import { JsonlContextSnapshotStore } from './persistence.ts';
-import { snapshot, cancelCodexRun, createRuntimeRun, executeCodexRun, runtimeStore } from './runtime.ts';
+import { snapshot, cancelCodexRun, createRuntimeRun, executeCodexRun, executeLocalFileReadRun, runtimeStore } from './runtime.ts';
 
 test('core runtime keeps an inspectable fixture and starts new runs', async () => {
   const fixture = await snapshot();
@@ -15,6 +15,24 @@ test('core runtime keeps an inspectable fixture and starts new runs', async () =
   const created = await createRuntimeRun('验证一个新的产品想法');
   assert.equal(created.run.status, 'running');
   assert.equal(created.event.type, 'run.started');
+});
+
+test('local file reads use the persisted project workspace root', async () => {
+  const workspace = await mkdtemp(path.join(tmpdir(), 'agent-workspace-project-root-'));
+  const previous = process.env.AGENT_WORKSPACE_PROJECT_ROOT;
+  await writeFile(path.join(workspace, 'project-only.txt'), 'from persisted project workspace');
+  process.env.AGENT_WORKSPACE_PROJECT_ROOT = workspace;
+  try {
+    const result = await executeLocalFileReadRun('读取当前项目文件', { path: 'project-only.txt' });
+    assert.equal(result.run.status, 'succeeded');
+    assert.equal((result.output as any)?.relativePath, 'project-only.txt');
+    assert.equal((result.output as any)?.content, 'from persisted project workspace');
+    assert.equal(result.receipt.status, 'succeeded');
+  } finally {
+    if (previous === undefined) delete process.env.AGENT_WORKSPACE_PROJECT_ROOT;
+    else process.env.AGENT_WORKSPACE_PROJECT_ROOT = previous;
+    await rm(workspace, { recursive: true, force: true });
+  }
 });
 
 class SequenceAdapter implements ProviderAdapter {
@@ -54,8 +72,30 @@ class SequenceAdapter implements ProviderAdapter {
       type: 'provider.event',
       occurredAt: new Date().toISOString(),
       actor: { type: 'provider', provider: handle.provider.provider },
-      data: this.completes ? { status: 'completed' } : { status: 'failed', retryable: true },
+      data: this.completes
+        ? { stream: { type: 'item.completed', item: { type: 'agent_message', text: '{"ok":true}' } } }
+        : { stream: { type: 'turn.failed', retryable: true } },
     };
+    if (this.completes) {
+      yield {
+        id: `sequence-turn-${randomUUID()}` as RunEvent['id'],
+        runId: `external-${handle.id}` as RunEvent['runId'],
+        sequence: 2,
+        type: 'provider.event',
+        occurredAt: new Date().toISOString(),
+        actor: { type: 'provider', provider: handle.provider.provider },
+        data: { stream: { type: 'turn.completed', usage: { input_tokens: 2, output_tokens: 1 } } },
+      };
+      yield {
+        id: `sequence-status-${randomUUID()}` as RunEvent['id'],
+        runId: `external-${handle.id}` as RunEvent['runId'],
+        sequence: 3,
+        type: 'provider.event',
+        occurredAt: new Date().toISOString(),
+        actor: { type: 'provider', provider: handle.provider.provider },
+        data: { status: 'completed' },
+      };
+    }
   }
 
   async cancel(_handle: RunHandle): Promise<void> {}
@@ -84,6 +124,9 @@ test('runtime resumes the same logical run in a new segment after a provider int
   assert.ok((resumedPacket?.tailEvents.length ?? 0) > 0);
   assert.equal(new Set(events.map((event) => event.runId)).size, 1);
   assert.equal(types.filter((type) => type === 'run.segment_started').length, 2);
+  const modelResponses = events.filter((event) => event.type === 'provider.event' && (event.data as any).phase === 'model.response');
+  assert.equal(modelResponses.length, 2);
+  assert.equal((modelResponses.at(-1)?.data as any).envelope.usage.inputTokens, 2);
   assert.ok(types.includes('run.resume_requested'));
   assert.ok(types.includes('context.snapshot_created'));
   assert.equal((await contextStore.latest('project-product-builder', result.run.id))?.runId, result.run.id);

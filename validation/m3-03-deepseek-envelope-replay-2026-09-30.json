@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "validation.deepseek-envelope-replay.v1",
+  "status": "PASS_CONTRACT_ONLY",
+  "scope": "离线解析 DeepSeek/OpenAI-compatible chat 回执，不发起网络请求",
+  "covered": [
+    "reasoning_content 保留在 providerFields",
+    "tool_calls 归一化为 ProviderResponseEnvelope",
+    "snake_case usage 映射",
+    "prompt cache 未报告时保持 unknown",
+    "非法 tool arguments 显式 provider error"
+  ],
+  "tests": {
+    "targeted": "packages/adapters/src/provider-envelope.test.ts",
+    "passed": 23,
+    "failed": 0,
+    "typecheck": "passed",
+    "diffCheck": "passed"
+  },
+  "limitations": [
+    "没有读取或使用 DeepSeek API key",
+    "没有声明 DeepSeek tool loop、streaming、resume 或真实成本/cache 能力",
+    "真实 API 行为仍需用户提供 key 后单独执行受限 one-shot"
+  ]
+}

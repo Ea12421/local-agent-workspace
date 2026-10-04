@@ -1,0 +1,154 @@
+{
+  "card_id": "m8-20-codex-pet-install-smoke-v1",
+  "version": "1.0",
+  "pre_registered_at": "2026-09-28T15:08:00+08:00",
+  "system_under_test": "codex-pet-studio staging package audited by validation/m8-19-codex-pet-staging-audit.json",
+  "provider_model": "Codex desktop pet directory; runtime load via Computer Use if allowed",
+  "prompt_config_data_version": "validation/m8-19-codex-pet-staging-audit.json; validation/m8-20-install-preflight.json",
+  "test_started_at": "2026-09-28T15:09:00+08:00",
+  "status": "PARTIAL",
+  "current_evidence_level": "Real-input Ready",
+  "claim_and_decision": {
+    "falsifiable_claim": "The existing ~/.codex/pets/sha-wujing directory contains exactly the currently audited sha-wujing staging package, so the package content is installed without a new write.",
+    "failure_condition": "The target is absent, either manifest field differs, or either target file hash/size differs from the audited staging package.",
+    "target_user_and_scenario": "Owner deciding whether the audited pixel-pet package is already installed and whether a runtime load smoke should be attempted.",
+    "decision_driven": "Do not overwrite an identical target; keep runtime loading as a separate pending check.",
+    "scope_exclusions": [
+      "Codex runtime actually rendering or animating the pet",
+      "User aesthetic acceptance",
+      "Public distribution, signing or updates",
+      "Any other pet or directory"
+    ]
+  },
+  "current_evidence": {
+    "facts": [
+      "Target directory existed before this run.",
+      "pet.json SHA-256 matched source: 4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94.",
+      "spritesheet.webp SHA-256 matched source: 90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48.",
+      "No copy or overwrite was performed because both files were already identical.",
+      "Computer Use refused direct access to the Codex app for safety reasons, so runtime load was not observed.",
+      "用户本人报告在当前 Codex App 中看到了名为“沙悟净”的宠物。",
+      "截图显示 Codex Composer 中存在一条尚未发送的 Hatch Pet 升级草稿。",
+      "升级草稿原文为：Hatch Pet upgrade the existing pet at 沙悟净 to the latest pet version with looking directions。",
+      "截图可见模型标签 GPT-6 Astra Ultra；这只是界面标签，不是实际路由或计费证明。"
+    ],
+    "inferences": [
+      "The audited staging package content is already present at the requested target path."
+    ],
+    "unknowns": [
+      "Whether the currently running Codex app has loaded and displays the pet.",
+      "Whether runtime animation behavior matches the staging contract.",
+      "Whether the user accepts the visual result in daily use.",
+      "升级草稿发送后会修改哪些文件、是否覆盖现有资源、目标路径和版本指纹。",
+      "“looking directions”具体对应哪些动画帧或运行时行为。",
+      "截图中的 GPT-6 Astra Ultra 标签是否对应实际执行路由和计费来源。"
+    ],
+    "baseline_evidence_pointers": [
+      "validation/m8-19-codex-pet-staging-audit.json",
+      "validation/m8-19-codex-pet-visual-review.md",
+      "validation/m8-20-install-preflight.json",
+      "validation/m8-20-install-postflight.json",
+      "validation/m8-20-user-visible-observation.md",
+      "validation/m8-20-codex-pet-update-prompt.png"
+    ],
+    "evidence_search_scope": [
+      "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/pet.json",
+      "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/spritesheet.webp",
+      "/Users/m4air/.codex/pets/sha-wujing/pet.json",
+      "/Users/m4air/.codex/pets/sha-wujing/spritesheet.webp"
+    ],
+    "why_the_current_level_is_not_higher": "目标字节已核验，且用户观察到宠物可见；但升级草稿尚未发送，来源、写入副作用、完整动画行为和真人接受度仍未验证。"
+  },
+  "execution_freeze": {
+    "authentic_input": "Real staging package files and the existing real target directory.",
+    "provenance_selection": "Source fixed by M8-19 audit; target fixed by the user-requested ~/.codex/pets/sha-wujing path.",
+    "right_to_use_and_privacy": "User explicitly authorized local project testing and continued after the installation question; scope limited to two package files and target directory.",
+    "primary_metric": "Exact SHA-256 and byte equality for pet.json and spritesheet.webp.",
+    "measurement": "Read source and target bytes, compare SHA-256 and size, then attempt a bounded runtime visibility check.",
+    "evaluator": "Deterministic hash comparison; runtime visibility attempted through Computer Use but blocked by app safety policy.",
+    "pass_threshold": "Both target files exist and match source SHA-256 and size; no unexpected target file is introduced.",
+    "guardrails": [
+      "No overwrite when target is already identical",
+      "No secrets, cookies, tokens or unrelated paths",
+      "No external network or publishing",
+      "No deletion or rollback write unless a separate approved mutation is needed"
+    ],
+    "abort_conditions": [
+      "Any hash mismatch requiring overwrite without a fresh approval",
+      "Target path resolves outside ~/.codex/pets/sha-wujing",
+      "Runtime check asks for credentials, external messages or broader file access",
+      "Computer Use cannot safely observe Codex without bypassing safety policy"
+    ],
+    "execution_steps": [
+      "Read source and target manifest, hashes and sizes.",
+      "Record preflight manifest.",
+      "Treat identical target as an idempotent no-op; do not copy.",
+      "Re-read target for postflight manifest.",
+      "Attempt bounded runtime visibility only through allowed Computer Use."
+    ],
+    "required_authorization": "User continuation after the explicit installation question; no new write was needed because target was already identical.",
+    "raw_evidence_destination": "validation/m8-20-install-preflight.json and validation/m8-20-install-postflight.json",
+    "decision_mapping": {
+      "PASS": "Keep the existing target and proceed only to a separately approved runtime or user-acceptance check.",
+      "PARTIAL": "Preserve the exact target; report the missing runtime evidence and do not claim full install smoke.",
+      "NO-GO": "Do not overwrite or install; investigate target mismatch or boundary violation."
+    }
+  },
+  "run_record": {
+    "executed_at": "2026-09-28T15:10:00+08:00",
+    "environment": "macOS local filesystem; read-only source/target comparison; Computer Use Codex app access refused by safety policy",
+    "actual_input_identifiers": [
+      "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/pet.json",
+      "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/spritesheet.webp",
+      "/Users/m4air/.codex/pets/sha-wujing/pet.json",
+      "/Users/m4air/.codex/pets/sha-wujing/spritesheet.webp"
+    ],
+    "raw_evidence_pointers": [
+      "validation/m8-20-install-preflight.json",
+      "validation/m8-20-install-postflight.json"
+    ],
+    "observed_facts": [
+      "Target existed before the run.",
+      "Both target files matched source hashes and sizes.",
+      "No write was performed.",
+      "Runtime load was not observed because Computer Use could not access Codex app.",
+      "用户可见观察确认 Codex App 当前显示“沙悟净”。",
+      "截图显示升级任务草稿尚未发送，且界面模型标签为 GPT-6 Astra Ultra。"
+    ],
+    "inferences": [
+      "The requested package is already installed at the target content level."
+    ],
+    "unknowns": [
+      "Runtime rendering/animation and user acceptance remain unknown.",
+      "升级草稿发送后的文件变更、版本来源和 looking directions 运行时行为未知。",
+      "界面模型标签与实际路由/计费来源是否一致未知。"
+    ],
+    "deviations": [
+      "The planned runtime visibility check was blocked by Computer Use app safety, not by a package mismatch.",
+      "补充了用户现场观察；没有点击更新或执行弹窗指令。",
+      "用户提供截图补充了升级草稿原文；没有发送草稿或执行升级。"
+    ]
+  },
+  "verdict": {
+    "value": "PARTIAL",
+    "threshold_comparison": "Content-level install threshold PASS; runtime-load observation unavailable.",
+    "supported_claim": "用户现场确认 Codex App 当前显示一个名为“沙悟净”的宠物；审计包内容也已在目标目录逐字节一致；截图显示一条尚未发送的 Hatch Pet 升级草稿。",
+    "unsupported_or_unknown": [
+      "当前显示资源是否就是本次审计包",
+      "发送升级草稿后的目标路径、文件改动、版本指纹和副作用",
+      "“looking directions”是否已实际运行",
+      "当前界面模型标签是否等于实际路由和计费来源"
+    ],
+    "next_decision": "保持当前宠物不变；不发送升级草稿，除非先明确需要升级的目标、验收标准和可回滚写入边界。",
+    "highest_value_next_test": "如果决定研究升级能力，先读取 Hatch Pet 的公开/本地规范并生成变更前后文件清单；本轮不发送自然语言任务。"
+  },
+  "hard_gate_check": {
+    "real_input_or_behavior": true,
+    "pre_registered_version_metric_threshold": true,
+    "raw_evidence_readable": true,
+    "facts_inferences_unknowns_separated": true,
+    "claim_scope_bounded": true,
+    "permissions_privacy_security_cost_boundary": true,
+    "verdict_changes_next_decision": true
+  }
+}

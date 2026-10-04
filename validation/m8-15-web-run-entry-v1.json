@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "validation.m8-15-web-run-entry.v1",
+  "date": "2026-09-28",
+  "phase": "m8-15-web-run-entry",
+  "status": "pass",
+  "scope": "web-new-run-provider-selection-and-receipt",
+  "computerUse": {
+    "browser": "Chrome",
+    "url": "http://localhost:5173/?v=run-entry-4",
+    "fixtureFlow": "pass",
+    "codexFlow": "pass",
+    "codexRunId": "run_mukqh9uy",
+    "codexEventCount": 5,
+    "codexReceiptId": "run_mukqh9uy:codex:segment:1",
+    "codexIsMock": false,
+    "codexAuthMode": "subscription",
+    "codexHarness": "codex-cli",
+    "codexVersion": "codex-cli 0.155.1"
+  },
+  "verification": {
+    "typecheck": "pass",
+    "diffCheck": "pass",
+    "nodeTests": {"passed": 29, "failed": 0},
+    "sqliteProviderReceiptReadback": "pass"
+  },
+  "remainingGaps": [
+    "content-quality-and-human-productivity",
+    "multi-bot-value",
+    "deepseek-api-parity",
+    "codex-native-resume",
+    "electron-computer-use-visibility"
+  ],
+  "nextAction": "run m8-13 fixed-task human A/B baseline"
+}

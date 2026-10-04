@@ -1,0 +1,39 @@
+{
+  "validation": "context_deep_recovery_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "storage": {
+    "backend": "sqlite",
+    "processBoundary": "close_reopen_same_database",
+    "runId": "run-context-deep-recovery",
+    "finalStatus": "succeeded"
+  },
+  "providerInterruption": {
+    "initialRunFailed": true,
+    "persistedAfterReopen": true,
+    "resumedSameRun": true
+  },
+  "toolAndArtifactIdempotency": {
+    "toolInvokedCount": 1,
+    "toolCompletedCount": 1,
+    "artifactCreatedCount": 1
+  },
+  "snapshots": {
+    "count": 3,
+    "ids": [
+      "snapshot-deep-1",
+      "snapshot-deep-2",
+      "snapshot-deep-3"
+    ],
+    "parentChain": [
+      "snapshot-deep-1",
+      "snapshot-deep-1",
+      "snapshot-deep-2"
+    ],
+    "sameObjectiveAcrossRecovery": true,
+    "sameConstraintsAcrossRecovery": true,
+    "sameDecisionAcrossRecovery": true,
+    "sameNextActionAcrossRecovery": true
+  },
+  "result": "passed",
+  "evidenceBoundary": "证明 SQLite 关闭/重开后，同一逻辑 Run 可在工具已完成的情况下恢复，连续 3 个 Snapshot 保留结构化目标/约束/决定并保持工具与 Artifact 幂等；不证明真实模型生成质量、不证明任意自由聊天全文保留、不证明 Provider 原生 resume 或缓存成本收益。"
+}

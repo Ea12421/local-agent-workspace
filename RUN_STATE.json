@@ -1,40 +1,52 @@
 {
   "schema_version": "1.1",
-  "status": "running",
-  "objective": "在当前空目录交付可从 GitHub 复现的本地 Agent Workspace v1：一个 control plane 管理 Project、Bot、Run、Handoff、Approval 与 Artifact，并提供无 Key Fixture 演示、DeepSeek 模型通道、Codex 执行桥探针、Web UI 和 Electron 薄壳。",
+  "status": "complete",
+  "objective": "让受控 RSI 可以按单次运行选择并回放 lexical 或 hybrid 记忆召回策略，同时保持 lexical 默认和现有审批边界。",
   "done_definition": [
-    "SPEC/00-06 与架构/面试材料落盘并与实现一致",
-    "核心状态机、事件回放、交接与权限契约有可执行测试",
-    "本地 server 可在无 Key 下运行 fixture demo，并提供 HTTP API",
-    "Web UI 能展示项目、Bot、Run、审批、来源和 Artifact",
-    "DeepSeek 与 Codex 适配器边界清晰，失败时可诊断",
-    "clean-room 命令、已知限制和未完成的安装验证被如实记录"
+    "审批卡片只展示并提交真实可执行的用户决定，不提供静态假选项",
+    "首屏加载失败、运行失败、刷新失败和重试路径都能被用户看见并恢复",
+    "移动端导航可打开、切换和关闭，运行与产物状态语义准确",
+    "未实现功能不再伪装成可操作控件，辅助信息按需展开",
+    "typecheck、test:all、Web build 和 Computer Use 回归均有证据",
+    "ProviderResponseEnvelope、usage/cache receipt 和 ToolRuntime 的事实源保持统一",
+    "受控只读 Tool Loop 的每一步都有 RunEvent、审批边界和可诊断 receipt",
+    "真实 DeepSeek/Codex 效果、签名 DMG 和真人提效继续明确标为未验证或阻塞",
+    "评测结果、动态事实和改进提案可由 SQLite 与 RunEvent 重建；候选不能未经审批发布",
+    "公开 Benchmark 的数据版本、题目子集、模型、提示词、判分器和重试规则均有可回读记录",
+    "至少产出一份公开协议矩阵、一份可复跑结果包和一张区分同协议结果与公开参考结果的图表",
+    "四个既有外部项目和最多四个新增项目均有具体源码机制、吸收状态、文件范围和验证证据",
+    "一次 prompt 低风险 RSI run 可由 RunEvent/Artifact/Approval 回放、投影并回滚，不新增数据库迁移",
+    "tool_policy、provider、code、bot、routine 候选被硬阻断或停在待审批，不能自动发布",
+    "受控测试/构建命令只接受固定 profile，并具备逐次审批、超时、取消、输出上限、脱敏、幂等和可诊断回执"
   ],
   "anti_goals": [
     "不把旧 AI 产品经理工作台的未提交改动接入或覆盖",
     "不把模型自评或 fixture 结果写成真实生产效果",
     "不把 ChatGPT 订阅伪装成 DeepSeek/API 额度",
     "不在首版加入云端多用户、后台监听或无人审批的自我扩张",
-    "不把聊天连续性当作唯一状态源"
+    "不把聊天连续性当作唯一状态源",
+    "不把不同 Benchmark 协议或不同模型配置的分数直接横向排名，也不因 Benchmark 运行外发数据、发布仓库或修改旧工作台",
+    "不重新进行 DeepSeek/OpenRouter/GPT-4o 或不同 Harness 横向压缩比较",
+    "不复制外部项目代码、品牌、UI 或私有实现，不引入其完整运行时作为依赖"
   ],
   "recent_corrections": [
-    {
-      "at": "2026-09-26T19:50:00+08:00",
-      "source_ref": "environment-check",
-      "rejected": "当前可直接 pnpm install 并完成打包",
-      "required": "先落盘依赖和代码；网络恢复后再做依赖安装、Vite 构建和 Electron 打包验证"
-    },
-    {
-      "at": "2026-09-27T00:00:00+08:00",
-      "source_ref": "user-2026-09-27",
-      "rejected": "依赖聊天连续性或立即接 DeepSeek 作为主线",
-      "required": "先持久化 ContextSnapshot、执行 segment 和 fallback recovery；DeepSeek 后置"
-    },
     {
       "at": "2026-09-27T15:12:09+08:00",
       "source_ref": "user-long-term-architecture-decision",
       "rejected": "只按当前小规模验证把 JSONL-first 作为长期默认事实源",
       "required": "SQLite-first 作为运行时唯一事实源；JSONL 仅作 portable/demo/export/灾备，并显式报告降级"
+    },
+    {
+      "at": "2026-10-03T04:31:07+08:00",
+      "source_ref": "user-public-benchmark-protocol-request",
+      "rejected": "只做内部自定义上下文表，不按公开 Benchmark 协议测试",
+      "required": "优先按 LongMemEval、LoCoMo、LongBench/RULER、NoLiMa 等公开协议建立可复现矩阵；同协议下比较 Harness，公开结果只作带条件参考"
+    },
+    {
+      "at": "2026-10-03T07:00:00+08:00",
+      "source_ref": "user-context-validation-scope",
+      "rejected": "为了展示而继续做不同模型或 Harness 的横向压缩比较",
+      "required": "上下文验证先固定同一个 Codex/Text 执行通道和固定恢复包；记录关键字段恢复、重复副作用、usage/cache 可见性，不能把内部原生压缩或缓存命中写成已测事实"
     }
   ],
   "scope": {
@@ -48,10 +60,10 @@
       "删除文件、数据库迁移、外发消息、发布或支付"
     ]
   },
-  "phase": "m8-13-user-baseline",
+  "phase": "memory-recall-strategy-control-v1",
   "progress": {
-    "completed_units": 44,
-    "total_units": 44
+    "completed_units": 4,
+    "total_units": 4
   },
   "retry": {
     "error_fingerprint": "electron-window-ax-timeout",
@@ -64,8 +76,7 @@
     "used": 1,
     "blocking_corrections_left": 0
   },
-  "blocked_reason": "M8-04 质量结论仍阻断：36 条 receipt 中 27 条可严格 JSON 回放、9 条输出无效；人工编辑、reviewer rubric、usage/cost 和真人门未补齐。Electron Computer Use 对 Codex app 仍受平台安全策略限制；DeepSeek、literal GitHub clone 和 Codex 原生 resume 仍未验证。M8-08 新证据：候选项目 fixture smoke 9/9 通过，但 Codex 输出前置说明文字导致严格结构化门失败。",
-  "next_action": "按 validation/m8-13-user-baseline-card-v1.md，由用户本人执行同一固定任务的 A/B 两条路径并记录真实耗时、修改量、返工和再次使用意愿；不使用代理时间或模型自评替代。",
-  "last_evidence": "2026-09-28：M8-07、M8-08、M8-11 三次现实任务对照已落盘；M8-13 真人基线卡已冻结，固定同一 fixture-only 任务和 A/B 两条路径，当前没有代填任何用户测量数据。",
-  "updated_at": "2026-09-28T00:22:28+08:00"
+  "last_evidence": "RSI 单次运行可选择 lexical 或 hybrid，默认 lexical；hybrid 请求、候选提案和 improvement.run_started 事件均可回读，非法策略 HTTP 400 拒绝；幂等和高风险审批边界保持。专项 5/5、npm run test:all 105/105、npm run typecheck 和 npm run build:web 通过。验证卡为 validation/memory-recall-strategy-control-v1-2026-10-04.json/.md；state validation 与 diff check 在本次状态更新后执行。",
+  "updated_at": "2026-10-04T15:37:43+08:00",
+  "phase_goal": "在不新增数据库迁移、不引入第三方运行时、不改变 lexical 默认行为的前提下，让 RSI 的记忆召回策略可被单次选择、记录、回放和拒绝非法输入。"
 }

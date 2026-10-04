@@ -1,0 +1,21 @@
+{
+  "validation": "web_main_and_failure_cua_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "surface": "Computer Use browser",
+  "checks": {
+    "realProviderFailure": {
+      "provider": "DeepSeek Product Builder 草稿",
+      "status": "失败",
+      "error": "DeepSeek API key is not configured for this local server.",
+      "survivesRefresh": true
+    },
+    "fixtureMainFlow": {
+      "provider": "本地演示",
+      "status": "等待人工确认",
+      "clarificationsVisible": true,
+      "artifactsCount": 5,
+      "message": "本地演示已生成，等待人工审阅"
+    }
+  },
+  "evidenceBoundary": "验证 Web 中真实 Provider 失败与 Fixture 主流程可以并存且语义分开；不代表真实模型质量或多 Bot 生产力。"
+}

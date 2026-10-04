@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "validation.m3-07f-stable-prefix-hash.v1",
+  "validatedAt": "2026-09-30T04:49:30+08:00",
+  "scope": "Provider request cache-aware stable prefix identity",
+  "decision": "PASS_LOCAL_CONTRACT_ONLY",
+  "implemented": [
+    "opportunistic/required 请求生成 stablePrefixSha256",
+    "hash 输入限定为 system messages、constraints、output schema 和 tool definitions",
+    "objective 变化不改变 hash；约束变化会改变 hash",
+    "disabled 请求不生成 stablePrefixSha256"
+  ],
+  "evidence": {
+    "adapterTests": "packages/adapters/src/adapters.test.ts：24/24 PASS",
+    "fullTests": "npm run test:all：70/70 PASS",
+    "typecheck": "npm run typecheck：PASS",
+    "stateValidation": "node scripts/validate-state.mjs：PASS",
+    "diffCheck": "git diff --check：PASS"
+  },
+  "limits": [
+    "hash 只是本地比较键，不代表 Provider cache hit、write 或 cached token",
+    "Codex 和 DeepSeek 当前仍没有真实 cache/cost receipt 证据",
+    "不记录提示词正文或凭据"
+  ],
+  "externalActions": "none",
+  "secretsRead": false,
+  "oldWorkbenchModified": false
+}

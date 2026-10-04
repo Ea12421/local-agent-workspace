@@ -1,0 +1,27 @@
+{
+  "id": "m3-06-tool-operation-guard-2026-09-30",
+  "milestone": "M3-06",
+  "status": "PASS_NARROW_BOUNDARY",
+  "observedAt": "2026-09-30T04:40:00+08:00",
+  "scope": "ToolRuntime 在策略评估前拒绝 tool/operation 不匹配，并保持现有路径、权限、命令白名单和幂等 receipt 约束。",
+  "changes": [
+    "FixtureToolRuntime 和 LocalToolRuntime 新增 operationMatchesTool guard。",
+    "filesystem+shell、shell+read 等 malformed 请求返回 tool_operation_mismatch，不调用工具。",
+    "保留本地 read-only filesystem、git status --short、git diff --stat 的既有边界。"
+  ],
+  "verification": {
+    "adapterTests": "15/15 passed",
+    "fullTestSuiteAfterFollowingWorkspaceWriteUnit": "65/65 passed",
+    "typecheck": "passed",
+    "gitDiffCheck": "passed"
+  },
+  "limits": [
+    "不等于 workspace_write 文件写入已开放。",
+    "不等于任意 Shell、full_access 或真实 Provider Tool Loop 已完成。",
+    "DeepSeek 真实调用、真实 cache/cost 和业务质量仍需要外部条件或后续验证。"
+  ],
+  "evidenceFiles": [
+    "packages/adapters/src/tool-runtime.ts",
+    "packages/adapters/src/adapters.test.ts"
+  ]
+}

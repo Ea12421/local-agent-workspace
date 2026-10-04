@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "validation.bounded-retry.v1",
+  "runAt": "2026-10-03T06:38:44+08:00",
+  "scope": "bounded retry attempt policy and persistence",
+  "implementation": {
+    "defaultMaxRetries": 2,
+    "hardMaxRetries": 5,
+    "attemptRecord": "run.retry_requested RunEvent",
+    "databaseMigration": false,
+    "providerExecutionOnRetryRoute": false
+  },
+  "checks": [
+    { "name": "success_does_not_retry", "status": "passed", "evidence": "HTTP smoke returns 409 retry_not_allowed/run_succeeded" },
+    { "name": "cancel_does_not_retry", "status": "passed", "evidence": "HTTP smoke returns 409 retry_not_allowed/run_cancelled" },
+    { "name": "non_retryable_failure_does_not_retry", "status": "passed", "evidence": "HTTP smoke returns 409 failure_not_retryable" },
+    { "name": "retry_attempts_stop_at_limit", "status": "passed", "evidence": "two retry events are accepted; third request returns 409 retry_limit_reached" },
+    { "name": "retry_has_no_duplicate_tool_or_artifact_side_effect", "status": "passed", "evidence": "retry-only event stream contains no tool.invoked or artifact.created" },
+    { "name": "sqlite_restart_preserves_attempt", "status": "passed", "evidence": "persistence test closes/reopens SQLite and reads attempt 1/maxRetries 2" }
+  ],
+  "commands": [
+    "npm run test:all (82/82)",
+    "node --experimental-strip-types --test packages/core/src/core.test.ts",
+    "node --experimental-strip-types --test apps/server/src/persistence.test.ts",
+    "node --experimental-strip-types --test apps/server/src/http-smoke.test.ts",
+    "node --experimental-strip-types --test apps/server/src/tool-loop.test.ts apps/server/src/product-builder-continuity.test.ts",
+    "npm run typecheck",
+    "git diff --check"
+  ],
+  "boundaries": [
+    "Does not prove provider event semantic idempotency across processes.",
+    "Does not implement automatic background retries.",
+    "Does not compare context compression across models or harnesses."
+  ]
+}

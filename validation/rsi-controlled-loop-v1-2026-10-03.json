@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "validation.rsi-controlled-loop.v1",
+  "generatedAt": "2026-10-03T17:24:58+08:00",
+  "scope": "control-plane-only",
+  "decision": "PASS_CONTROL_PLANE_AND_UI",
+  "reason": "服务端、SQLite 回放、HTTP 契约、Web build、Electron directory package 和新构建 Computer Use 回归均通过。此前的 not_found 来自重建后仍在内存中的旧 Node 服务进程；清理旧实例并从当前 release 包全新启动后，自动更新按钮成功生成并发布候选版本。",
+  "userDecision": "上下文验证固定同一 Codex/Text 通道；不做 DeepSeek、OpenRouter、GPT-4o 或不同 Harness 横向比较。",
+  "checks": [
+    {
+      "name": "improvement-core-projection",
+      "status": "passed",
+      "command": "node --experimental-strip-types --test packages/core/src/improvement.test.ts",
+      "evidence": "3/3"
+    },
+    {
+      "name": "improvement-runtime-sqlite-replay",
+      "status": "passed",
+      "command": "node --experimental-strip-types --test apps/server/src/improvement-runtime.test.ts",
+      "evidence": "2/2"
+    },
+    {
+      "name": "improvement-http-contract",
+      "status": "passed",
+      "command": "node --experimental-strip-types --test apps/server/src/improvement-http.test.ts",
+      "evidence": "1/1"
+    },
+    {
+      "name": "full-test-suite",
+      "status": "passed",
+      "command": "npm run test:all",
+      "evidence": "96/96"
+    },
+    {
+      "name": "typecheck",
+      "status": "passed",
+      "command": "npm run typecheck"
+    },
+    {
+      "name": "web-build",
+      "status": "passed",
+      "command": "npm run build:web"
+    },
+    {
+      "name": "desktop-entry-build",
+      "status": "passed",
+      "command": "npm run build:desktop"
+    },
+    {
+      "name": "desktop-directory-package",
+      "status": "passed",
+      "command": "npx electron-builder --config apps/desktop/electron-builder.yml --mac --dir",
+      "evidence": "release/mac-arm64"
+    },
+    {
+      "name": "state-validation",
+      "status": "passed",
+      "command": "npm run validate:state"
+    },
+    {
+      "name": "diff-check",
+      "status": "passed",
+      "command": "git diff --check"
+    },
+    {
+      "name": "fresh-package-http-route",
+      "status": "passed",
+      "command": "POST http://127.0.0.1:60631/api/improvements/run",
+      "evidence": "201 Created; run_ea1257c2-9070-4224-b84e-3c3e5481a266; isolated temporary data directory"
+    },
+    {
+      "name": "computer-use-ui-regression",
+      "status": "passed",
+      "evidence": "新 Electron 包端口 65498；Computer Use 点击“开始自动更新”后显示“固定检查 通过 / 候选版本 prompt:v3 / 处理方式 自动记录”，并出现“回滚这次更新”按钮；未再出现 not_found。"
+    }
+  ],
+  "claims": {
+    "proven": [
+      "A low-risk prompt candidate can be recorded as a Run, proposal Artifact and fixed control-plane evaluation.",
+      "The candidate can be published, replayed after SQLite reopen, and rolled back without a schema migration.",
+      "A repeated idempotency key does not create a second candidate or publish event.",
+      "High-risk provider candidates stop at a pending approval and do not publish.",
+      "The Web build contains a user-facing controlled update card and API-backed result path."
+    ],
+    "not_proven": [
+      "Real model quality improvement.",
+      "Codex native context compaction or resume behavior.",
+      "Prompt-cache hit rate or billing reduction."
+    ]
+  },
+  "nextAction": "RSI 代码与新构建 UI 回归已收口；保留 Codex/Text 当前 app-server Operation not permitted 为独立环境阻塞，不重复横向模型测试、不改 VPN、不引入 npm 依赖。"
+}

@@ -1,0 +1,594 @@
+{
+  "validation": "longmemeval_retrieval_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "source": {
+    "dataset": "LongMemEval_S cleaned",
+    "officialRepository": "https://github.com/xiaowu0162/LongMemEval",
+    "inputPath": "/private/tmp/longmemeval_s_cleaned.json",
+    "sha256": "d6f21ea9d60a0d56f34a05b609c79c88a451d2ae03597821ea3d5a9678c3a442",
+    "questionCount": 500,
+    "evaluatedQuestionCount": 470,
+    "excludedAbstentionCount": 30
+  },
+  "protocol": {
+    "granularity": "session",
+    "metrics": "official metric names recall_any, recall_all, ndcg_any at k=1,3,5,10,30,50",
+    "methods": {
+      "bm25": "reimplementation of official flat-bm25 session retrieval with whitespace-compatible tokenization",
+      "recency": "most recent sessions first, deterministic baseline",
+      "oracle": "answer sessions first, upper bound only; not a deployable method"
+    },
+    "modelCalls": 0,
+    "answerGeneration": "not run; this is the official retrieval layer only"
+  },
+  "summaries": [
+    {
+      "method": "bm25",
+      "questionCount": 470,
+      "excludedAbstentionCount": 30,
+      "session": {
+        "recall_any@1": 0.7277,
+        "recall_all@1": 0.2319,
+        "ndcg_any@1": 0.7277,
+        "recall_any@3": 0.8468,
+        "recall_all@3": 0.6617,
+        "ndcg_any@3": 0.746,
+        "recall_any@5": 0.8936,
+        "recall_all@5": 0.7468,
+        "ndcg_any@5": 0.7702,
+        "recall_any@10": 0.9255,
+        "recall_all@10": 0.8128,
+        "ndcg_any@10": 0.7914,
+        "recall_any@30": 0.9766,
+        "recall_all@30": 0.9447,
+        "ndcg_any@30": 0.8191,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 0.827
+      },
+      "context": {
+        "fullTokensMean": 15465.6277,
+        "selectedTokensMeanAt5": 1976.1298,
+        "selectedTokensMeanAt10": 3952.9362,
+        "reductionAt5": 0.8726,
+        "reductionAt10": 0.744
+      },
+      "byQuestionType": {
+        "knowledge-update": {
+          "count": 72,
+          "recallAllAt5": 0.9583,
+          "recallAnyAt5": 0.9861
+        },
+        "multi-session": {
+          "count": 121,
+          "recallAllAt5": 0.5702,
+          "recallAnyAt5": 0.9008
+        },
+        "single-session-assistant": {
+          "count": 56,
+          "recallAllAt5": 0.8036,
+          "recallAnyAt5": 0.8036
+        },
+        "single-session-preference": {
+          "count": 30,
+          "recallAllAt5": 0.7333,
+          "recallAnyAt5": 0.7333
+        },
+        "single-session-user": {
+          "count": 64,
+          "recallAllAt5": 0.9375,
+          "recallAnyAt5": 0.9375
+        },
+        "temporal-reasoning": {
+          "count": 127,
+          "recallAllAt5": 0.6772,
+          "recallAnyAt5": 0.8898
+        }
+      }
+    },
+    {
+      "method": "recency",
+      "questionCount": 470,
+      "excludedAbstentionCount": 30,
+      "session": {
+        "recall_any@1": 0.0447,
+        "recall_all@1": 0.0149,
+        "ndcg_any@1": 0.0447,
+        "recall_any@3": 0.1277,
+        "recall_all@3": 0.0319,
+        "ndcg_any@3": 0.0641,
+        "recall_any@5": 0.2383,
+        "recall_all@5": 0.0574,
+        "ndcg_any@5": 0.0929,
+        "recall_any@10": 0.417,
+        "recall_all@10": 0.1298,
+        "ndcg_any@10": 0.1397,
+        "recall_any@30": 0.834,
+        "recall_all@30": 0.4617,
+        "ndcg_any@30": 0.2469,
+        "recall_any@50": 1,
+        "recall_all@50": 0.9915,
+        "ndcg_any@50": 0.3238
+      },
+      "context": {
+        "fullTokensMean": 15465.6277,
+        "selectedTokensMeanAt5": 1646.3787,
+        "selectedTokensMeanAt10": 3322.6872,
+        "reductionAt5": 0.8935,
+        "reductionAt10": 0.785
+      },
+      "byQuestionType": {
+        "knowledge-update": {
+          "count": 72,
+          "recallAllAt5": 0.0139,
+          "recallAnyAt5": 0.4306
+        },
+        "multi-session": {
+          "count": 121,
+          "recallAllAt5": 0.0083,
+          "recallAnyAt5": 0.3058
+        },
+        "single-session-assistant": {
+          "count": 56,
+          "recallAllAt5": 0.1429,
+          "recallAnyAt5": 0.1429
+        },
+        "single-session-preference": {
+          "count": 30,
+          "recallAllAt5": 0.1333,
+          "recallAnyAt5": 0.1333
+        },
+        "single-session-user": {
+          "count": 64,
+          "recallAllAt5": 0.1406,
+          "recallAnyAt5": 0.1406
+        },
+        "temporal-reasoning": {
+          "count": 127,
+          "recallAllAt5": 0.0315,
+          "recallAnyAt5": 0.1811
+        }
+      }
+    },
+    {
+      "method": "oracle",
+      "questionCount": 470,
+      "excludedAbstentionCount": 30,
+      "session": {
+        "recall_any@1": 1,
+        "recall_all@1": 0.3617,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 0.9319,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 0.9936,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      },
+      "context": {
+        "fullTokensMean": 15465.6277,
+        "selectedTokensMeanAt5": 1705.934,
+        "selectedTokensMeanAt10": 3350.8085,
+        "reductionAt5": 0.8889,
+        "reductionAt10": 0.7836
+      },
+      "byQuestionType": {
+        "knowledge-update": {
+          "count": 72,
+          "recallAllAt5": 1,
+          "recallAnyAt5": 1
+        },
+        "multi-session": {
+          "count": 121,
+          "recallAllAt5": 1,
+          "recallAnyAt5": 1
+        },
+        "single-session-assistant": {
+          "count": 56,
+          "recallAllAt5": 1,
+          "recallAnyAt5": 1
+        },
+        "single-session-preference": {
+          "count": 30,
+          "recallAllAt5": 1,
+          "recallAnyAt5": 1
+        },
+        "single-session-user": {
+          "count": 64,
+          "recallAllAt5": 1,
+          "recallAnyAt5": 1
+        },
+        "temporal-reasoning": {
+          "count": 127,
+          "recallAllAt5": 0.9764,
+          "recallAnyAt5": 1
+        }
+      }
+    }
+  ],
+  "samples": [
+    {
+      "questionId": "e47becba",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 13171,
+      "selectedTokensAt5": 1485,
+      "selectedTokensAt10": 2447,
+      "reductionAt5": 0.8872522967124744,
+      "reductionAt10": 0.8142130438083669,
+      "metrics": {
+        "recall_any@1": 0,
+        "recall_all@1": 0,
+        "ndcg_any@1": 0,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 0.6309,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 0.6309,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 0.6309,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 0.6309,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 0.6309
+      }
+    },
+    {
+      "questionId": "118b2229",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 12901,
+      "selectedTokensAt5": 1158,
+      "selectedTokensAt10": 2339,
+      "reductionAt5": 0.9102395163165646,
+      "reductionAt10": 0.8186962250988296,
+      "metrics": {
+        "recall_any@1": 0,
+        "recall_all@1": 0,
+        "ndcg_any@1": 0,
+        "recall_any@3": 0,
+        "recall_all@3": 0,
+        "ndcg_any@3": 0,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 0.3869,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 0.3869,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 0.3869,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 0.3869
+      }
+    },
+    {
+      "questionId": "51a45a95",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 15467,
+      "selectedTokensAt5": 1874,
+      "selectedTokensAt10": 4084,
+      "reductionAt5": 0.8788388181289196,
+      "reductionAt10": 0.7359539665093424,
+      "metrics": {
+        "recall_any@1": 1,
+        "recall_all@1": 1,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      }
+    },
+    {
+      "questionId": "58bf7951",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 20233,
+      "selectedTokensAt5": 1506,
+      "selectedTokensAt10": 2779,
+      "reductionAt5": 0.9255671427865368,
+      "reductionAt10": 0.8626501260317303,
+      "metrics": {
+        "recall_any@1": 1,
+        "recall_all@1": 1,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      }
+    },
+    {
+      "questionId": "1e043500",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 14450,
+      "selectedTokensAt5": 2051,
+      "selectedTokensAt10": 3681,
+      "reductionAt5": 0.8580622837370242,
+      "reductionAt10": 0.7452595155709343,
+      "metrics": {
+        "recall_any@1": 0,
+        "recall_all@1": 0,
+        "ndcg_any@1": 0,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 0.5,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 0.5,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 0.5,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 0.5,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 0.5
+      }
+    },
+    {
+      "questionId": "c5e8278d",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 13188,
+      "selectedTokensAt5": 1383,
+      "selectedTokensAt10": 3488,
+      "reductionAt5": 0.8951319381255687,
+      "reductionAt10": 0.7355171367910222,
+      "metrics": {
+        "recall_any@1": 1,
+        "recall_all@1": 1,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      }
+    },
+    {
+      "questionId": "6ade9755",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 12643,
+      "selectedTokensAt5": 1189,
+      "selectedTokensAt10": 2720,
+      "reductionAt5": 0.9059558649054813,
+      "reductionAt10": 0.784861188009175,
+      "metrics": {
+        "recall_any@1": 1,
+        "recall_all@1": 1,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      }
+    },
+    {
+      "questionId": "6f9b354f",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 19233,
+      "selectedTokensAt5": 1521,
+      "selectedTokensAt10": 3034,
+      "reductionAt5": 0.9209171736078615,
+      "reductionAt10": 0.84225029896532,
+      "metrics": {
+        "recall_any@1": 0,
+        "recall_all@1": 0,
+        "ndcg_any@1": 0,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 0.6309,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 0.6309,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 0.6309,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 0.6309,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 0.6309
+      }
+    },
+    {
+      "questionId": "58ef2f1c",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 13939,
+      "selectedTokensAt5": 2169,
+      "selectedTokensAt10": 3706,
+      "reductionAt5": 0.8443934285099362,
+      "reductionAt10": 0.7341272688141187,
+      "metrics": {
+        "recall_any@1": 1,
+        "recall_all@1": 1,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      }
+    },
+    {
+      "questionId": "f8c5f88b",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 12399,
+      "selectedTokensAt5": 1264,
+      "selectedTokensAt10": 3471,
+      "reductionAt5": 0.898056294862489,
+      "reductionAt10": 0.720058069199129,
+      "metrics": {
+        "recall_any@1": 1,
+        "recall_all@1": 1,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      }
+    },
+    {
+      "questionId": "5d3d2817",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 15990,
+      "selectedTokensAt5": 2104,
+      "selectedTokensAt10": 4545,
+      "reductionAt5": 0.8684177611006879,
+      "reductionAt10": 0.7157598499061913,
+      "metrics": {
+        "recall_any@1": 1,
+        "recall_all@1": 1,
+        "ndcg_any@1": 1,
+        "recall_any@3": 1,
+        "recall_all@3": 1,
+        "ndcg_any@3": 1,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 1,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 1,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 1,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 1
+      }
+    },
+    {
+      "questionId": "7527f7e2",
+      "questionType": "single-session-user",
+      "method": "bm25",
+      "answerSessionCount": 1,
+      "fullTokens": 14409,
+      "selectedTokensAt5": 2532,
+      "selectedTokensAt10": 3973,
+      "reductionAt5": 0.8242764938580054,
+      "reductionAt10": 0.7242695537511278,
+      "metrics": {
+        "recall_any@1": 0,
+        "recall_all@1": 0,
+        "ndcg_any@1": 0,
+        "recall_any@3": 0,
+        "recall_all@3": 0,
+        "ndcg_any@3": 0,
+        "recall_any@5": 1,
+        "recall_all@5": 1,
+        "ndcg_any@5": 0.4307,
+        "recall_any@10": 1,
+        "recall_all@10": 1,
+        "ndcg_any@10": 0.4307,
+        "recall_any@30": 1,
+        "recall_all@30": 1,
+        "ndcg_any@30": 0.4307,
+        "recall_any@50": 1,
+        "recall_all@50": 1,
+        "ndcg_any@50": 0.4307
+      }
+    }
+  ],
+  "boundary": "结果是公开 LongMemEval_S 的 session retrieval/上下文缩减结果，不是最终问答准确率，不是 Harness 总分，也不能与不同模型、不同 judge 或不同 k 的公开成绩直接排名。",
+  "result": "passed"
+}

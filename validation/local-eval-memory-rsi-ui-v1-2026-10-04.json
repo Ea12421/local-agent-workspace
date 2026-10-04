@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "validation.local-eval-memory-rsi-ui.v1",
+  "observedAt": "2026-10-04T06:09:59+08:00",
+  "status": "passed",
+  "scope": [
+    "Improvement API evaluationBundle readback",
+    "Web controlled-update evidence projection",
+    "evaluation score/task/feedback visibility",
+    "historical memory reference visibility"
+  ],
+  "checks": [
+    { "id": "typecheck", "status": "passed", "command": "npm run typecheck" },
+    { "id": "improvement-http", "status": "passed", "tests": 4, "passed": 4, "failed": 0 },
+    { "id": "memory-adapter", "status": "passed", "tests": 1, "passed": 1, "failed": 0 },
+    { "id": "web-build", "status": "passed", "command": "npm run build:web" },
+    { "id": "full-suite", "status": "passed", "tests": 104, "passed": 104, "failed": 0 }
+  ],
+  "userVisibleEvidence": {
+    "score": "4 / 4",
+    "task": "rsi.fixed.proposal-integrity",
+    "feedback": "固定评测通过",
+    "historicalMemoryCount": "shown from the current proposal memoryRefs",
+    "replay": "GET /api/improvements/:runId returns events and evaluationBundle"
+  },
+  "qualityBoundary": {
+    "proven": [
+      "本地评测结果会通过 API 返回并在 Web 自动更新卡片展示",
+      "评分、评测任务、反馈摘要和历史记忆引用可从 RunEvent/Artifact 回读",
+      "Web production build 与现有全量测试没有回归"
+    ],
+    "notProven": [
+      "语义向量检索质量",
+      "真实模型质量提升",
+      "真人使用提效",
+      "自动更新可以自行修改代码、权限或 Provider"
+    ]
+  }
+}

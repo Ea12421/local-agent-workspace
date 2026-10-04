@@ -1,0 +1,3684 @@
+{
+  "schemaVersion": "validation.m8-19-codex-pet-staging-audit.v1",
+  "project": "codex-pet-studio",
+  "executedAt": "2026-09-28T15:00:00+08:00",
+  "mode": "read-only",
+  "readAllowlist": [
+    "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/pet.json",
+    "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/spritesheet.webp",
+    "/Users/m4air/总控/projects/codex-pet-studio/outputs/qa/sha-wujing/spritesheet.png",
+    "/Users/m4air/总控/projects/codex-pet-studio/assets/sha-wujing/native-frames",
+    "/Users/m4air/总控/projects/codex-pet-studio/STYLE_RUBRIC.md"
+  ],
+  "writesPerformed": false,
+  "networkAccess": false,
+  "installPerformed": false,
+  "checks": [
+    {
+      "name": "manifest_fields",
+      "status": "PASS",
+      "detail": {
+        "actual": {
+          "id": "sha-wujing",
+          "displayName": "沙悟净",
+          "description": "一只沉稳、原生像素风的沙悟净 Codex 宠物。",
+          "spritesheetPath": "spritesheet.webp"
+        },
+        "expected": {
+          "id": "sha-wujing",
+          "displayName": "沙悟净",
+          "spritesheetPath": "spritesheet.webp"
+        }
+      },
+      "category": "structural"
+    },
+    {
+      "name": "atlas_dimensions",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          1536,
+          1872
+        ],
+        "expected": [
+          1536,
+          1872
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "alpha_binary",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "opaque_palette_limit",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15,
+        "limit": 16
+      },
+      "category": "structural"
+    },
+    {
+      "name": "transparent_rgb_residue",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_idle_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_idle_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_idle_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_idle_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_idle_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/idle/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21392
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_idle_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_idle_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_idle_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_idle_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_idle_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/idle/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21392
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_idle_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_idle_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_idle_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_idle_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_idle_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/idle/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_idle_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_idle_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_idle_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_idle_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_idle_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/idle/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_idle_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_idle_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_idle_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_idle_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_idle_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/idle/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_idle_5",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_idle_5",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_idle_5",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_idle_5",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_idle_5",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/idle/005.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_idle_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21184
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21248
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20944
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20560
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20944
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_5",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_5",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_5",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_5",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_5",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/005.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21248
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_6",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_6",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_6",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_6",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_6",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/006.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-right_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21184
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-right_7",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-right_7",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-right_7",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-right_7",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-right_7",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-right/007.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21184
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21248
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20944
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20560
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20944
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_5",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_5",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_5",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_5",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_5",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/005.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21248
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_6",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_6",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_6",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_6",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_6",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/006.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running-left_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21184
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running-left_7",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running-left_7",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running-left_7",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running-left_7",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running-left_7",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running-left/007.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21408
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waving_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waving_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waving_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waving_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waving_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waving/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21456
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waving_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waving_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waving_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waving_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waving_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waving/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21200
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waving_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waving_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waving_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waving_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waving_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waving/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21408
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waving_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waving_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waving_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waving_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waving_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waving/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waving_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_jumping_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_jumping_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_jumping_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_jumping_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_jumping_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/jumping/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20592
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_jumping_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_jumping_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_jumping_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_jumping_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_jumping_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/jumping/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 19712
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_jumping_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_jumping_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_jumping_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_jumping_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_jumping_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/jumping/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20192
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_jumping_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_jumping_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_jumping_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_jumping_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_jumping_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/jumping/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_jumping_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_jumping_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_jumping_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_jumping_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_jumping_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/jumping/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_jumping_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20816
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20800
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20544
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20400
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20288
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_5",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_5",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_5",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_5",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_5",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/005.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20320
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_6",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_6",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_6",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_6",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_6",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/006.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_failed_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20256
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_failed_7",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_failed_7",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_failed_7",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_failed_7",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_failed_7",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/failed/007.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waiting_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waiting_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waiting_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waiting_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waiting_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waiting/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waiting_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waiting_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waiting_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waiting_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waiting_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waiting/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waiting_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waiting_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waiting_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waiting_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waiting_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waiting/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20912
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waiting_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waiting_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waiting_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waiting_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waiting_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waiting/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 20896
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waiting_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waiting_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waiting_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waiting_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waiting_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waiting/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21104
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_waiting_5",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_waiting_5",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_waiting_5",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_waiting_5",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_waiting_5",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/waiting/005.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_waiting_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 18496
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 18464
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 18480
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 18432
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 18496
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 18560
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_running_5",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_running_5",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_running_5",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_running_5",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_running_5",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/running/005.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_running_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_0",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_review_0",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_review_0",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_review_0",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_review_0",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_review_0",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/review/000.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_1",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_review_1",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_review_1",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_review_1",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_review_1",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_review_1",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/review/001.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_2",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21392
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_review_2",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_review_2",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_review_2",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_review_2",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_review_2",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/review/002.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_3",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21392
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_review_3",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_review_3",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_review_3",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_review_3",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_review_3",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/review/003.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_4",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_review_4",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_review_4",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_review_4",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_review_4",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_review_4",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/review/004.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_5",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": true,
+        "actualUsed": true,
+        "opaquePixels": 21120
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_size_review_5",
+      "status": "PASS",
+      "detail": {
+        "actual": [
+          48,
+          52
+        ],
+        "expected": [
+          48,
+          52
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_alpha_review_5",
+      "status": "PASS",
+      "detail": {
+        "alphaValues": [
+          0,
+          255
+        ]
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_palette_review_5",
+      "status": "PASS",
+      "detail": {
+        "opaqueColors": 15
+      },
+      "category": "structural"
+    },
+    {
+      "name": "native_transparent_residue_review_5",
+      "status": "PASS",
+      "detail": {
+        "pixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "nearest_neighbor_match_review_5",
+      "status": "PASS",
+      "detail": {
+        "native": "assets/sha-wujing/native-frames/review/005.png"
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_6",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_review_7",
+      "status": "PASS",
+      "detail": {
+        "expectedUsed": false,
+        "actualUsed": false,
+        "opaquePixels": 0
+      },
+      "category": "structural"
+    },
+    {
+      "name": "cell_totals",
+      "status": "PASS",
+      "detail": {
+        "used": 57,
+        "empty": 15,
+        "expected": {
+          "used": 57,
+          "empty": 15
+        }
+      },
+      "category": "structural"
+    },
+    {
+      "name": "png_pixel_roundtrip",
+      "status": "PASS",
+      "detail": {
+        "baseline": "outputs/qa/sha-wujing/spritesheet.png",
+        "baselineSha256": "3e30e679b42b2c57c7a6da7f1ff7c639ec1828c50badb035ad62ddc93ac842a9",
+        "webpSha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48"
+      },
+      "category": "structural"
+    }
+  ],
+  "passCount": 364,
+  "failCount": 0,
+  "visualRubric": "NOT_VERIFIED_BY_MACHINE_ONLY",
+  "verdict": "PASS",
+  "verdictReason": "364 项结构、像素和 nearest-neighbor 回归检查通过；主样品与接触表视觉闸门由审计代理逐项回读通过。该 PASS 只针对当前 staging 包合同，不包含安装运行或用户审美接受。",
+  "nextAction": "保留安装前审批边界；如用户明确批准安装，再单独执行安装 smoke、前后 manifest 和回滚证据。",
+  "visualReview": {
+    "status": "PASS_BY_AGENT",
+    "artifact": "validation/m8-19-codex-pet-visual-review.md",
+    "userAcceptance": false,
+    "installationRuntime": false
+  }
+}

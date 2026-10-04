@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "validation.m8-13-workspace-run.v1",
+  "runId": "run_mukr3edw",
+  "provider": {
+    "harness": "codex-cli",
+    "provider": "openai-codex",
+    "authMode": "subscription",
+    "isMock": false
+  },
+  "structuredOutput": {
+    "summary": "建立一份仅针对 synthetic fixtures 的、可重复的离线验证报告，证明两个只读工具在 localhost 场景下的输入、输出、note_id 读取约束、来源与 SHA-256 可追溯性；不推断真实知识库、生产鉴权或真实用户效果。",
+    "evidence": [
+      {
+        "source": "事实摘要",
+        "fact": "项目使用官方 Node MCP SDK，仅提供 search_knowledge 和 read_knowledge 两个只读工具。",
+        "confidence": "high"
+      },
+      {
+        "source": "事实摘要",
+        "fact": "唯一数据源是 fixtures/notes/ 下三份 synthetic Markdown。",
+        "confidence": "high"
+      },
+      {
+        "source": "事实摘要",
+        "fact": "搜索返回服务端生成的16位 note_id、相对来源和 SHA-256；读取只能按 note_id，禁止任意路径。",
+        "confidence": "high"
+      },
+      {
+        "source": "历史记录",
+        "fact": "2026-07-17 本地 npm test 有9项 PASS，且 real_data_accessed=false；该记录不是本轮复核结果。",
+        "confidence": "high"
+      },
+      {
+        "source": "事实摘要",
+        "fact": "服务和临时 tunnel 当前已停止，默认只监听127.0.0.1。",
+        "confidence": "high"
+      }
+    ],
+    "unknowns": [
+      "当前工作区是否仍包含相同版本的三份 fixture 及其内容。",
+      "当前测试是否仍能稳定得到9项 PASS。",
+      "note_id 是否在不同进程或运行次序下保持稳定。",
+      "错误输入、空查询、未知 note_id 和路径注入输入的实际响应格式。",
+      "报告是否已有固定模板、版本号或保存位置。",
+      "本轮尚未进行任何命令执行、文件读取或服务复核。"
+    ],
+    "boundary": [
+      "只允许使用三份 synthetic Markdown fixture。",
+      "只验证离线或本机127.0.0.1场景；不启动公网服务或 tunnel。",
+      "只验证 search_knowledge、read_knowledge 及其错误边界。",
+      "不读取真实 Obsidian、其他项目、用户目录、账号数据、凭据或 secret。",
+      "不写入、删除、上传或保存请求正文。",
+      "报告结论不得外推到真实资料接入、生产鉴权、长期 tunnel、GPT-Live 或真实用户效果。",
+      "本次仅设计计划，不修改候选项目。"
+    ],
+    "plan": [
+      {
+        "step": "冻结验证合同：记录项目版本、验证日期、运行环境范围、fixture 清单、工具名和 localhost-only 约束。",
+        "why": "让后续报告具备明确的比较基线，避免把历史记录误当成本轮证据。",
+        "acceptance": "报告开头包含版本或提交标识、fixture 数量为3、允许工具为2个、网络边界为127.0.0.1。"
+      },
+      {
+        "step": "生成 fixture manifest：为三份 fixture 记录相对路径、文件 SHA-256 和预期 note_id 关联。",
+        "why": "确认测试输入未漂移，并让结果可复现、可审计。",
+        "acceptance": "manifest 只包含三份 fixture 的相对路径和哈希；不出现绝对路径、真实资料或请求正文。"
+      },
+      {
+        "step": "定义固定测试向量：覆盖已知关键词、多结果排序、无结果、空输入、未知 note_id、路径样式字符串和重复读取。",
+        "why": "同时验证正常检索、确定性和安全边界。",
+        "acceptance": "每个向量都有输入、预期状态、预期字段和判定规则，且不依赖随机人工选择。"
+      },
+      {
+        "step": "执行离线验证并记录原始结果摘要：工具响应字段、note_id 长度、相对来源、SHA-256、错误类型和耗时。",
+        "why": "把行为证据与设计意图分开，支持后续复核。",
+        "acceptance": "所有成功读取均通过 note_id 完成；所有结果均能映射回三份 fixture；报告不保存请求正文。"
+      },
+      {
+        "step": "执行可重复性复核：在相同 fixture 和相同测试向量下重复运行，并比较结果差异。",
+        "why": "验证报告不是一次性演示，而是可再次运行的检查。",
+        "acceptance": "预先定义允许变化项；note_id、来源、哈希、结果集合和错误分类在允许范围内一致。"
+      },
+      {
+        "step": "形成报告结论并分级：PASS、PARTIAL 或 BLOCKED，分别列出证据、未验证项和偏差。",
+        "why": "防止把 fixture-only 通过误写成真实知识库或生产能力已验证。",
+        "acceptance": "结论明确标注 fixture-only、localhost-only、只读，并逐项列出未证明的外部能力。"
+      }
+    ],
+    "next_action": "先冻结上述验证合同和固定测试向量；在获得明确执行窗口后，再仅在候选项目目录内运行离线验证并生成报告。",
+    "stop_conditions": [
+      "发现数据源不是三份 synthetic fixture，立即停止。",
+      "需要访问真实知识库、用户目录、账号数据、secret 或网络时，立即停止。",
+      "需要启动公网监听、tunnel、上传或保存请求正文时，立即停止。",
+      "无法确认结果仅来自 fixture，或出现未解释的路径访问行为时，判定 BLOCKED。",
+      "任何结论需要依赖本轮未取得的历史记录时，转入 unknowns，不补猜。"
+    ],
+    "risks": [
+      {
+        "risk": "fixture 内容或项目版本漂移导致历史 PASS 不可复现。",
+        "mitigation": "在报告中固定版本标识和 fixture SHA-256。"
+      },
+      {
+        "risk": "note_id 含运行时随机性，导致逐字结果比较不稳定。",
+        "mitigation": "分别比较结构、映射关系和允许变化项，不未经证明要求 ID 跨进程恒定。"
+      },
+      {
+        "risk": "测试只覆盖成功路径，遗漏路径注入或未知 ID 行为。",
+        "mitigation": "将错误和边界向量列为必测项，任何越界访问都阻断。"
+      },
+      {
+        "risk": "离线 fixture 通过被误解为真实用户效果或生产安全证明。",
+        "mitigation": "在摘要、结论和限制部分重复标注验证边界。"
+      }
+    ]
+  },
+  "outputMode": "exact-json",
+  "rawOutputSha256": "04c127da50e5b78d0253a2b3a1bb875772a42530905bfd07ed06fa2687e31952",
+  "eventCount": 5,
+  "receipt": {
+    "schemaVersion": "provider.execution-receipt.v1",
+    "status": "succeeded",
+    "bridge": "codex-cli",
+    "eventCount": 5,
+    "eventDigestSha256": "f867153fdd44d4f142de0d62ca14c94162ea4ab76663e6f2783420cf05bcd6fa",
+    "usage": {
+      "input_tokens": 23884,
+      "cached_input_tokens": 6912,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1737,
+      "reasoning_output_tokens": 219
+    }
+  },
+  "sourceInput": "validation/m8-13-fixed-input-v1.md",
+  "projectScope": "fixture-only, localhost-only, read-only",
+  "caveat": "This is a machine-run Workspace arm. It does not fill human A/B timing, manual edits, rework, or willingness fields."
+}

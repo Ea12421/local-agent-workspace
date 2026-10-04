@@ -1,0 +1,113 @@
+{
+  "review_version": "m8-04.posthoc-rubric.v1",
+  "reviewed_at": "2026-09-28T00:00:00+08:00",
+  "task_id": "AR-01",
+  "review_type": "post_hoc_read_only",
+  "reviewer": {
+    "kind": "fresh_context_read_only_review",
+    "scope": "AR-01 three replayable provider records",
+    "not_original_run_reviewer": true,
+    "file_mutation": false,
+    "model_calls": false,
+    "network": false
+  },
+  "sources": [
+    "evidence/receipts/m804-AR-01-single_call-1790448059086.json",
+    "evidence/receipts/m804-AR-01-single_bot-1790448106997.json",
+    "evidence/receipts/m804-AR-01-multi_bot-1790448264333.json",
+    "evidence/artifacts/m8-04/m804-artifact-c2a01c7070b24ec95682298c.json",
+    "evidence/artifacts/m8-04/m804-artifact-2ca6e9727c65e4e330e315aa.json",
+    "evidence/artifacts/m8-04/m804-artifact-bdd55fc0e738bf5e3e285b01.json",
+    "validation/m8-04-quality-evidence-audit.json"
+  ],
+  "rubric": {
+    "scale": "1-5",
+    "schema_contract_correctness": "Does the saved output satisfy the frozen AR-01 schema and remain a single replayable object?",
+    "traceability_replayability": "Can the output be bound to the source receipt and replayed with matching hash?",
+    "decision_usefulness": "Does the output state a usable choice, trade-offs, risks and rollback while keeping unsupported facts unknown?",
+    "promotion_rule": "Scores are descriptive post-hoc evidence only; they do not make a path quality_eligible or prove real-user benefit."
+  },
+  "records": [
+    {
+      "receipt_id": "m804-AR-01-single_call-1790448059086",
+      "path": "single_call",
+      "elapsed_ms": 36092,
+      "artifact_id": "m804-artifact-c2a01c7070b24ec95682298c",
+      "source_receipt_verified": true,
+      "replay_pass": true,
+      "scores": {
+        "schema_contract_correctness": 5,
+        "traceability_replayability": 4,
+        "decision_usefulness": 5
+      },
+      "evidence": [
+        "严格单 JSON 对象，包含 options、tradeoffs、dependencies、cost、risks、recommendation、rollback 和 artifact_replayable。",
+        "receipt、派生 artifact、output_sha256 与严格回放结果已绑定；原始成本和外部规模事实明确为未知。",
+        "明确推荐 SQLite + JSONL fallback，给出离线/本地优先取舍、依赖、风险、回滚和验收，可作为架构选型草案。"
+      ],
+      "post_hoc": true
+    },
+    {
+      "receipt_id": "m804-AR-01-single_bot-1790448106997",
+      "path": "single_bot",
+      "elapsed_ms": 37531,
+      "artifact_id": "m804-artifact-2ca6e9727c65e4e330e315aa",
+      "source_receipt_verified": true,
+      "replay_pass": true,
+      "scores": {
+        "schema_contract_correctness": 4,
+        "traceability_replayability": 4,
+        "decision_usefulness": 4
+      },
+      "evidence": [
+        "严格单 JSON 对象，覆盖两种存储选项、取舍、依赖、风险、推荐和迁移/回滚路径；没有独立顶层 artifact_replayable 字段。",
+        "receipt、派生 artifact、output_sha256 与严格回放结果已绑定；原始 receipt 的 artifact.id/valid 和 usage 仍为空。",
+        "推荐和实施计划清楚，覆盖本地优先、回放、迁移和回滚，但成本与现实规模仍需验证。"
+      ],
+      "post_hoc": true
+    },
+    {
+      "receipt_id": "m804-AR-01-multi_bot-1790448264333",
+      "path": "multi_bot",
+      "elapsed_ms": 148964,
+      "artifact_id": "m804-artifact-bdd55fc0e738bf5e3e285b01",
+      "source_receipt_verified": true,
+      "replay_pass": true,
+      "scores": {
+        "schema_contract_correctness": 5,
+        "traceability_replayability": 4,
+        "decision_usefulness": 4
+      },
+      "evidence": [
+        "严格单 JSON 对象，包含阶段化 handoff、冲突检查、推荐和 artifact_replayable 字段。",
+        "receipt、派生 artifact、output_sha256 与严格回放结果已绑定，并保留 4 个阶段交接、4 个 run_id 和 event_count=20。",
+        "多阶段产物更完整，明确离线/本地优先/回放冲突与迁移顺序；其中“全部硬约束满足”仍是模型自述。"
+      ],
+      "post_hoc": true
+    }
+  ],
+  "unobservable": {
+    "manual_edit_steps": "unobservable",
+    "manual_edit_chars": "unobservable",
+    "usage_tokens": "unavailable",
+    "cost": "undecidable",
+    "real_user_elapsed_time": "not measured",
+    "willing_to_reuse": "not measured"
+  },
+  "decision": {
+    "status": "EVIDENCE_PARTIAL",
+    "supported": [
+      "AR-01 三条路径的输出均可绑定到 source receipt 并严格回放。",
+      "single_call 14/15、single_bot 12/15、multi_bot 13/15；这是事后评分，不是原始运行时评分。",
+      "三条路径均给出与当前本地优先约束一致的 SQLite + JSONL fallback 方向。",
+      "multi_bot 在该任务上约 3.97 倍于 single_bot 的机器耗时。"
+    ],
+    "not_supported": [
+      "不能据此证明 multi_bot 比 single_bot 质量更高。",
+      "不能据此证明人工修改量下降 20%。",
+      "不能据此证明真实用户提效或再次使用意愿。",
+      "不能据此决定把 multi_bot 设为默认路径。"
+    ],
+    "next_action": "保持结构化 single_bot 为默认候选；若继续验证，新增一个固定任务并在运行前后记录真实 artifact diff 和人工编辑量。"
+  }
+}

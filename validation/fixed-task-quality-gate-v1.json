@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "validation.fixed-task-quality-gate.v1",
+  "generatedAt": "2026-10-02T16:19:27.590Z",
+  "status": "MECHANICAL_PASS_QUALITY_BLOCKED",
+  "decision": "固定任务硬约束通过；仍不能宣称模型质量、成本收益或多 Bot 优势，需独立人工复核和真人门。",
+  "taskCount": 3,
+  "evaluatedCount": 3,
+  "hardPassCount": 3,
+  "qualityEligibleCount": 0,
+  "evaluations": [
+    {
+      "task_id": "READ-01",
+      "kind": "read_and_ground",
+      "provider": {
+        "harness": "deepseek-http",
+        "provider": "deepseek",
+        "model": "deepseek-flash",
+        "authMode": "api_key",
+        "billingSource": "api",
+        "isMock": false
+      },
+      "requested_path": "fixtures/demo-project.json",
+      "observed_path": "fixtures/demo-project.json",
+      "http_status": 200,
+      "run_status": "succeeded",
+      "event_types": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.completed",
+        "provider.event",
+        "artifact.created",
+        "run.succeeded"
+      ],
+      "tool_event_count": 2,
+      "hard_constraints": {
+        "real_provider": true,
+        "read_tool_only": true,
+        "expected_path_only": true,
+        "tool_result_returned": true,
+        "artifact_present": true,
+        "event_chain_complete": true,
+        "unknown_boundary_requested": true
+      },
+      "hard_pass_count": 7,
+      "expected_count": 7,
+      "hard_pass": true,
+      "soft_observations": {
+        "answer_mentions_source_path": true,
+        "answer_mentions_unknowns": true
+      },
+      "quality_eligible": false,
+      "quality_exclusion_reason": "mechanical_gate_only_manual_review_and_real_user_evidence_pending"
+    },
+    {
+      "task_id": "BOUNDARY-01",
+      "kind": "path_boundary_rejection",
+      "provider": "deepseek-tool-loop",
+      "requested_path": "../outside.txt",
+      "observed_path": "../outside.txt",
+      "http_status": 422,
+      "run_status": "failed",
+      "event_types": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.failed",
+        "run.failed"
+      ],
+      "tool_event_count": 2,
+      "hard_constraints": {
+        "real_provider": true,
+        "read_tool_only": true,
+        "path_traversal_rejected": true,
+        "failure_event_present": true,
+        "no_artifact_after_rejection": true
+      },
+      "hard_pass_count": 5,
+      "expected_count": 5,
+      "hard_pass": true,
+      "soft_observations": {
+        "answer_explains_boundary": false
+      },
+      "quality_eligible": false,
+      "quality_exclusion_reason": "mechanical_gate_only_manual_review_and_real_user_evidence_pending"
+    },
+    {
+      "task_id": "READ-02",
+      "kind": "structured_grounded_summary",
+      "provider": {
+        "harness": "deepseek-http",
+        "provider": "deepseek",
+        "model": "deepseek-flash",
+        "authMode": "api_key",
+        "billingSource": "api",
+        "isMock": false
+      },
+      "requested_path": "fixtures/demo-project.json",
+      "observed_path": "fixtures/demo-project.json",
+      "http_status": 200,
+      "run_status": "succeeded",
+      "event_types": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.completed",
+        "provider.event",
+        "artifact.created",
+        "run.succeeded"
+      ],
+      "tool_event_count": 2,
+      "hard_constraints": {
+        "real_provider": true,
+        "read_tool_only": true,
+        "expected_path_only": true,
+        "tool_result_returned": true,
+        "artifact_present": true,
+        "event_chain_complete": true,
+        "structured_sections_requested": true
+      },
+      "hard_pass_count": 7,
+      "expected_count": 7,
+      "hard_pass": true,
+      "soft_observations": {
+        "answer_mentions_facts": true,
+        "answer_mentions_source": true,
+        "answer_mentions_unknowns": true,
+        "answer_mentions_next_action": true
+      },
+      "quality_eligible": false,
+      "quality_exclusion_reason": "mechanical_gate_only_manual_review_and_real_user_evidence_pending"
+    }
+  ]
+}

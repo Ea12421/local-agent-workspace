@@ -1,0 +1,40 @@
+{
+  "record_version": "m10-07.persistence-reconciliation.v1",
+  "executed_at": "2026-09-30T04:35:00+08:00",
+  "status": "PASS_DOCUMENTATION_RECONCILIATION",
+  "scope": ["M1-05", "M2-01", "M2-02", "M2-04", "M10-03"],
+  "decision": "当前实现与专项证据已覆盖 Run 重启恢复、SQLite EventLog、全实体 typed CRUD、事务幂等、崩溃恢复、并发和规模边界；早期验证文件中的 PARTIAL/TODO 只描述当时状态。",
+  "evidence": {
+    "m1_05_crash_replay": {
+      "status": "PASS",
+      "refs": ["apps/server/src/persistence.test.ts:266", "validation/m10-06-recovery-scale-results.json"]
+    },
+    "m2_01_schema": {
+      "status": "PASS",
+      "refs": ["apps/server/src/persistence.ts", "validation/m10-02-schema-migration-results.json", "validation/m10-05-product-builder-persistence-results.json"]
+    },
+    "m2_02_event_log": {
+      "status": "PASS",
+      "refs": ["apps/server/src/persistence.ts:createSqliteEventLog", "apps/server/src/persistence.test.ts:155"]
+    },
+    "m2_04_restart_recovery": {
+      "status": "PASS",
+      "refs": ["apps/server/src/persistence.test.ts:266", "validation/m10-06-recovery-scale-results.json"]
+    },
+    "m10_03_typed_crud_and_transactions": {
+      "status": "PASS",
+      "refs": ["apps/server/src/persistence.ts:968", "apps/server/src/http-smoke.test.ts", "validation/m10-05-product-builder-persistence-results.json", "validation/m10-06-recovery-scale-results.json"]
+    }
+  },
+  "verification": {
+    "focused_tests": "PASS",
+    "coverage": ["SQLite RunStore reopen", "SIGKILL child then reopen", "rollback injection", "online backup restore", "three-process writers", "typed entity round-trip", "HTTP Project/Skill/BotProfile routes", "10k/100k event scale"],
+    "historical_snapshot_note": "validation/m10-03-sqlite-runstore-results.json and validation/m10-05-product-builder-persistence-results.json preserve earlier run timestamps and limitations; they were not rewritten. Current status is reconciled in SPEC/IMPLEMENTATION-BACKLOG.md and this record."
+  },
+  "remaining_limits": [
+    "这组证据不证明真实 Provider 的模型质量、成本或现实提效。",
+    "Codex native resume、DeepSeek 真实调用和 Electron clean-room 签名仍是独立边界。",
+    "SQLite migration failure-injection 的专门测试仍不是本单元补充范围。"
+  ],
+  "next_action": "总控继续处理 Provider/Tool 边界与真实消费门；不要重复 M2-04 或 M10-03 已通过的持久化专项。"
+}

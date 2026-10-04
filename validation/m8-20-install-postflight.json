@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "validation.m8-20-install-postflight.v1",
+  "observedAt": "2026-09-28T15:11:00+08:00",
+  "targetRoot": "/Users/m4air/.codex/pets/sha-wujing",
+  "files": [
+    {
+      "name": "pet.json",
+      "sourceSha256": "4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94",
+      "targetSha256": "4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94",
+      "sourceBytes": 175,
+      "targetBytes": 175,
+      "identical": true
+    },
+    {
+      "name": "spritesheet.webp",
+      "sourceSha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48",
+      "targetSha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48",
+      "sourceBytes": 9920,
+      "targetBytes": 9920,
+      "identical": true
+    }
+  ],
+  "allIdentical": true,
+  "writePerformed": false,
+  "runtimeSmoke": "USER_OBSERVED_VISIBLE",
+  "runtimeSmokeEvidence": "validation/m8-20-user-visible-observation.md",
+  "provenance": "UNKNOWN",
+  "updateAction": "PROMPT_DRAFTED_NOT_SENT",
+  "updatePromptText": "Hatch Pet upgrade the existing pet at 沙悟净 to the latest pet version with looking directions",
+  "updatePromptInterpretation": "A natural-language Hatch Pet upgrade request is drafted in Codex Composer; no send or file mutation is evidenced.",
+  "visibleModelLabel": "GPT-6 Astra Ultra",
+  "visibleModelLabelEvidence": "validation/m8-20-codex-pet-update-prompt.png"
+}

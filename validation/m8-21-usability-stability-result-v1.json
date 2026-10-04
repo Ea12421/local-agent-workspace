@@ -1,0 +1,168 @@
+{
+  "schema_version": "m8-21.v1",
+  "observed_at": "2026-09-28T22:55:00+08:00",
+  "sut": {
+    "installed_app": "/Applications/Local Agent Workspace.app",
+    "bundle_id": "com.localagentworkspace.desktop.v1",
+    "local_url": "http://127.0.0.1:4310/",
+    "data_mode": "SQLite-first local persistence",
+    "provider_under_test": "Fixture Adapter / deterministic-demo"
+  },
+  "claim_boundary": "本结果只证明本地 Alpha 的启动、主流程、审批、事件与产物回读、刷新/重开后的可恢复性和界面状态诚实性；不证明真实模型质量、真人提效、多 Bot 优势、DeepSeek 可用性或公开分发资格。",
+  "scope_included": [
+    "安装版 Electron 启动与本地 Server 健康检查",
+    "Fixture 新建运行、审批、事件时间线与执行回执",
+    "Bot、Artifact、来源和运行记录界面",
+    "刷新后的运行记录与审批后事件回读",
+    "SQLite 实体汇总的 Artifact/Handoff/Approval/Receipt 回读",
+    "Fixture Provider 身份、计费和演示边界标识",
+    "已有 Codex subscription receipt 的条件探针",
+    "Artifacts 页面优先读取 SQLite 实体，并显示 release/source 状态",
+    "运行记录页 SQLite RunEvent/receipt 投影与刷新回读",
+    "审批/重试真实 UI 回读与 retry 幂等事件",
+    "Electron 子服务退出清理与端口释放"
+  ],
+  "scope_excluded": [
+    "M8-13 真人提效 A/B",
+    "DeepSeek Key 真实调用",
+    "多 Bot 相对单 Bot 的质量和成本优势",
+    "Developer ID 签名、DMG 安装和 literal GitHub clean-room",
+    "Codex native resume 的完整用户流程"
+  ],
+  "checks": [
+    {
+      "id": "U1",
+      "status": "pass",
+      "threshold": "安装版打开窗口且本地服务显示正常",
+      "observed": "Computer Use 读取安装版窗口 Agent Workspace · 项目工作台；/api/health 返回 200 ok",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md",
+        "validation/m7-electron-native-window-v1.md"
+      ]
+    },
+    {
+      "id": "U2",
+      "status": "pass",
+      "threshold": "概览显示项目、Run、Provider 与待处理决定",
+      "observed": "安装版概览显示项目、已完成 Run、Fixture Adapter、Provider 正常和运行时间线",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md"
+      ]
+    },
+    {
+      "id": "U3",
+      "status": "pass",
+      "threshold": "审批后有明确回执并出现后续事件",
+      "observed": "点击确认并继续后显示已确认；SQLite approval 变为 approved、artifactRelease 变为 released 并包含 5 个 finalArtifactIds；重开后审批卡消失",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md"
+      ]
+    },
+    {
+      "id": "U4",
+      "status": "pass",
+      "threshold": "运行记录可回读审批和执行计划事件",
+      "observed": "安装版运行记录页读取 SQLite receipt run-fixture-001:product-builder:receipt；刷新后从 11 个事件回读为 12 个，时间线新增“已请求重试”，并保留真实 Run ID、receipt 和演示标识。retry:<runId> 重复请求返回 alreadyRecorded，不重复写入。",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md",
+        "apps/web/src/App.tsx",
+        "apps/web/src/lib/api.ts",
+        "apps/server/src/index.ts",
+        "apps/server/src/http-smoke.test.ts"
+      ]
+    },
+    {
+      "id": "U5",
+      "status": "pass",
+      "threshold": "四个内置 Bot 可见且权限/状态可展示",
+      "observed": "Product Builder、Research、Architecture、Evaluation 均可见；后续停用 Bot 仍能在刷新后回读",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md",
+        "validation/m6-02-bot-management-cua-v1.md"
+      ]
+    },
+    {
+      "id": "U6",
+      "status": "pass",
+      "threshold": "Artifact 正文可打开；失败有明确提示",
+      "observed": "安装版 Artifacts 页面显示 5 个 SQLite 产物；打开 research-report.md 后可见正文、最终产物状态、Run ID 和 workspace://user-input 来源引用，不再依赖静态 Fixture 列表",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md",
+        "apps/web/src/App.tsx",
+        "apps/web/src/lib/api.ts"
+      ]
+    },
+    {
+      "id": "U7",
+      "status": "pass",
+      "threshold": "刷新/重开后项目、Run 和事件不丢失",
+      "observed": "安装版刷新/重开后项目、Run 和事件不丢失；补充 before-quit/window-all-closed 后，Computer Use 退出 Alpha，4310 端口释放，重新启动仍能回读同一 SQLite 数据。",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md",
+        "validation/m8-17-persisted-run-replay-v1.md",
+        "apps/desktop/src/main.ts"
+      ]
+    },
+    {
+      "id": "U8",
+      "status": "pass",
+      "threshold": "本地隐私边界可见且本轮不外发/不读凭据",
+      "observed": "UI 显示数据保存在本机、隐私模式已开启；本轮只访问本地服务和项目文件，未读取凭据或发送外部消息",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md",
+        "validation/external-gate-probe-2026-09-28.json"
+      ]
+    },
+    {
+      "id": "U9",
+      "status": "pass",
+      "threshold": "无 Key Fixture 入口能创建/重放，并能回读 RunEvent 与 receipt",
+      "observed": "Computer Use 提交新想法后回到工作台并显示 Fixture 演示完成；运行记录回读 6 个主事件。/api/product-builder/preview 返回 waiting_user、4 个 handoff、5 个 artifact、approval 和 fixture receipt；/api/persistence/entities 回读 5 artifacts、4 handoffs、1 approval、1 receipt，receipt runId=run-fixture-001",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md"
+      ]
+    },
+    {
+      "id": "U10",
+      "status": "pass",
+      "threshold": "Codex 可用时显示 isMock=false、订阅身份和 provider receipt；不可用时明确说明",
+      "observed": "安装版探针显示 codex-cli 0.155.1 可用；真实只读运行 run_mul8tcoe 成功，UI 显示 Codex 订阅执行桥、5 个事件、receipt 和真实执行；SQLite receipt 为 harness=codex-cli、authMode=subscription、isMock=false、status=succeeded",
+      "evidenceRefs": [
+        "validation/m8-21-usability-stability-observation-2026-09-28.md",
+        "validation/m8-14-computer-use-codex-e2e-v1.json"
+      ]
+    }
+  ],
+  "static_gates": {
+    "validate_state": "pass",
+    "typecheck": "pass",
+    "node_tests": {
+      "passed": 41,
+      "failed": 0
+    },
+    "vite_build": "pass",
+    "git_diff_check": "pass",
+    "pnpm_wrapper": "environment_limited: Corepack cache EPERM; equivalent local Node/Vite checks passed",
+    "desktop_directory_package": "pass"
+  },
+  "p0_blockers": [],
+  "known_limits": [
+    "一次 Python urllib 直接请求在已有浏览器请求并发时收到 RemoteDisconnected；服务健康接口仍为 200，随后 curl 单连接请求稳定成功，记录为测试客户端/并发观察，不足以判定产品崩溃。",
+    "安装包为未签名本地 Alpha，Developer ID 和 DMG clean-room 安装仍未完成。",
+    "Fixture 只证明控制面、事件和产物链路，不代表真实模型效果。",
+    "Codex receipt 的 billingSource 仍为 unknown；本轮只证明订阅执行身份和 receipt，不把订阅额度写成 API 额度。",
+    "Fixture Product Builder 的逻辑 Run 是 run-fixture-001，SQLite 核心 seed Run 仍保留 run-core-fixture-001；Web 最近执行已优先按 receipt 回读逻辑 Run，核心 seed 仍是独立的历史演示数据。",
+    "本轮通过本机 curl 触发一次 retry 事件再用 Computer Use 刷新界面；当前已批准 Run 没有可点击的 pending approval 卡，因此 approval click 的完整 UI 路径沿用此前已记录的安装版审批回归。",
+    "M3-06 当前只完成纯安全边界 guard；受控 ToolRuntime 的 dry-run/fixture receipt、超时、错误分类和 secret 脱敏仍未完成。"
+  ],
+  "deferred_gates": [
+    "M8-13 真人提效 A/B：用户明确要求暂缓，保留原始卡片，不伪造耗时、手工修改、返工或再次使用意愿数据。",
+    "DeepSeek Key 真实通道",
+    "Developer ID 签名、公开 GitHub clean-room",
+    "Codex native resume",
+    "多 Bot 相对单 Bot 的真实质量/成本/延迟比较"
+  ],
+  "verdict": "PASS_ALPHA_USABLE_STABLE",
+  "verdict_meaning": "本地 Alpha 已达到可以继续开发、演示和做下一轮受控测试的可用/稳定门；不等同于真实模型效果通过，也不等同于已经证明产品提效。",
+  "next_action": "保持 DeepSeek 真实通道 deferred；M3-06 第一小单元已完成路径/symlink/精确 argv/权限 guard，下一连贯工程单元是受控 ToolRuntime 的 dry-run/fixture receipt。"
+}

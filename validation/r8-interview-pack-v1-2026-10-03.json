@@ -1,0 +1,14 @@
+{
+  "validation": "r8_interview_pack_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "artifact": "docs/INTERVIEW-DEMO-PACK-V1-2026-10-03.md",
+  "checks": {
+    "thirtySecondIntro": true,
+    "fiveMinuteDemo": true,
+    "tenMinuteFollowUps": true,
+    "evidenceIndex": true,
+    "verifiedVsUnverifiedBoundary": true,
+    "fixtureNotClaimedAsModelQuality": true
+  },
+  "evidenceBoundary": "这是掌握与演示材料，不新增产品能力，也不替代真实质量和真人提效验证。"
+}

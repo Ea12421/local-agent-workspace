@@ -1,0 +1,26 @@
+{
+  "unit": "M7 current desktop packaging",
+  "generatedAt": "2026-09-30",
+  "decision": "APP_DIRECTORY_PASS_DMG_BLOCKED",
+  "artifacts": {
+    "app": "/Users/m4air/Work Agent开发。/release/mac-arm64/Local Agent Workspace.app",
+    "dmg": "/Users/m4air/Work Agent开发。/release/Local Agent Workspace-0.1.0-arm64.dmg"
+  },
+  "verified": [
+    "desktop TypeScript entry compiled",
+    "electron-builder macOS arm64 directory package completed",
+    "fresh packaged .app opened with Computer Use",
+    "overview and Bots permission labels matched the read-only boundary"
+  ],
+  "blocked": {
+    "step": "DMG image creation",
+    "command": "npm run package:mac",
+    "error": "hdiutil create exited with code 1; macOS DiskManagement image creation is unavailable in this environment",
+    "impact": "the freshly rebuilt .app is usable; no new DMG was produced",
+    "oldDmg": "Any pre-existing DMG remains a historical build and is not claimed to include this round's changes."
+  },
+  "limitations": [
+    "Developer ID signing is unavailable",
+    "DMG packaging must be retried on a macOS environment where hdiutil can create an image"
+  ]
+}

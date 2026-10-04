@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "validation.v1",
+  "validationId": "m4-02-clarification-resolution-2026-09-30",
+  "status": "PASS",
+  "scope": "Product Builder clarification resolution from Web/Electron UI through SQLite append-only state",
+  "checks": [
+    {
+      "name": "focused-tests",
+      "command": "node --experimental-strip-types --test apps/server/src/http-smoke.test.ts apps/server/src/product-builder-continuity.test.ts",
+      "result": "9/9 passed"
+    },
+    {
+      "name": "full-tests",
+      "command": "pnpm test:all",
+      "result": "63/63 passed"
+    },
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck",
+      "result": "passed"
+    },
+    {
+      "name": "web-build",
+      "command": "pnpm --filter @agent-workspace/web build",
+      "result": "passed"
+    },
+    {
+      "name": "desktop-directory-build",
+      "command": "pnpm run build:desktop && npx electron-builder --config apps/desktop/electron-builder.yml --mac --dir",
+      "result": "passed; unsigned directory package"
+    },
+    {
+      "name": "computer-use-resolution",
+      "result": "Electron UI accepted target user '独立开发者'; status changed to '可以进入审批'; research/product/architecture/evaluation steps changed to '可执行'; clarification_pending was removed"
+    },
+    {
+      "name": "computer-use-restart-replay",
+      "result": "After quitting and reopening the packaged Electron app, the target user and executable plan remained visible"
+    }
+  ],
+  "implementationNotes": [
+    "HTTP smoke now uses a disposable SQLite directory and cannot inherit the developer's persistent demo database.",
+    "ProductBuilderProjection carries its own runId; the UI resolves clarification against the displayed Product Builder state rather than the unrelated current execution Run.",
+    "Approval actions now use approval.runId when resolving a specific approval, while retry remains bound to the current execution Run."
+  ],
+  "limitations": [
+    "Fixture path only; no new DeepSeek request was made.",
+    "Codex native state remains outside the application and is not written by this project.",
+    "This proves persistence and control-plane behavior, not model quality or multi-Bot value."
+  ],
+  "generatedAt": "2026-09-30T03:19:55+08:00"
+}

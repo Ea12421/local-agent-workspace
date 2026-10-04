@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "local-tool-loop-web.v1",
+  "recordedAt": "2026-10-02T18:20:00+08:00",
+  "phase": "local-tool-loop-web-v1",
+  "scope": [
+    "Web/API tool-loop-local entry",
+    "Fixture model decision with LocalToolRuntime execution",
+    "success and path traversal readback"
+  ],
+  "changes": [
+    "Added tool-loop-local to the ProviderChoice contract and New Run UI.",
+    "Added a server route that runs the provider-neutral loop with LocalToolRuntime in read_only mode.",
+    "Kept Fixture model identity explicit while reading a real in-workspace file and producing a replayable artifact.",
+    "Added a configurable fixture read path so traversal denial is exercised through the loop, not only the direct tool API.",
+    "Updated the execution receipt wording to distinguish real tool execution from fixture model quality."
+  ],
+  "verification": {
+    "typecheck": "PASS",
+    "test_all": {
+      "status": "PASS",
+      "passed": 73,
+      "failed": 0
+    },
+    "web_build": "PASS",
+    "state_validation": "PASS",
+    "git_diff_check": "PASS",
+    "http_success": {
+      "status": 200,
+      "provider": "tool-loop-local",
+      "runStatus": "succeeded",
+      "eventTypes": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.completed",
+        "provider.event",
+        "artifact.created",
+        "run.succeeded"
+      ],
+      "artifact": true
+    },
+    "http_traversal": {
+      "status": 422,
+      "provider": "tool-loop-local",
+      "runStatus": "failed",
+      "eventTypes": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.failed",
+        "run.failed"
+      ],
+      "errorCode": "tool_path_traversal",
+      "artifact": false
+    },
+    "computer_use": {
+      "status": "PASS",
+      "steps": [
+        "opened a fresh local Web listener",
+        "opened New Run",
+        "observed the local read-only Tool Loop option and its Fixture limitation text",
+        "selected and started the option",
+        "observed the completed local read-only Tool Loop receipt toast"
+      ],
+      "server": "127.0.0.1:5182 temporary local verification listener"
+    },
+    "ui_copy": {
+      "status": "PASS",
+      "observed": "Fixture 决策 + 真实工具 / 真实文件读取，模型质量未验证"
+    }
+  },
+  "limits": [
+    "The model decision is still Fixture; this proves real local tool execution and control-plane replay, not DeepSeek/Codex model quality.",
+    "Git remains a separate direct read-only diagnostic; it is not yet a model-requested loop tool.",
+    "Real Provider Tool Loop, signed DMG, clean-room installation and human productivity remain unverified."
+  ]
+}

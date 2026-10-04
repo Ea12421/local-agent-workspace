@@ -1,0 +1,48 @@
+{
+  "validation": "openrouter_key_comparison_v1",
+  "observedAt": "2026-10-03T05:40:00+08:00",
+  "transport": "openrouter",
+  "keyValuesPersisted": false,
+  "metadataProbe": {
+    "firstKey": {
+      "endpoint": "/api/v1/key",
+      "httpStatus": 200,
+      "valid": true,
+      "disabled": null,
+      "isFreeTier": false,
+      "reportedUsage": 9.5711,
+      "limit": null,
+      "limitRemaining": null
+    },
+    "secondKey": {
+      "endpoint": "/api/v1/key",
+      "httpStatus": 200,
+      "valid": true,
+      "disabled": null,
+      "isFreeTier": false,
+      "reportedUsage": 0.5671428,
+      "limit": null,
+      "limitRemaining": null
+    },
+    "sameCreatorUser": true,
+    "sameWorkspace": true,
+    "sameOpenRouterAccount": true
+  },
+  "secondKeyCompletionProbe": {
+    "endpoint": "/api/v1/chat/completions",
+    "requestedModel": "openai/gpt-4o",
+    "providerPolicy": {
+      "order": ["OpenAI"],
+      "allowFallbacks": false
+    },
+    "maxTokens": 1,
+    "httpStatus": 402,
+    "usable": false,
+    "errorCode": 402,
+    "error": "Insufficient credits",
+    "modelReturned": null,
+    "usage": null
+  },
+  "conclusion": "两个 Key 都有效且属于同一个 OpenRouter creator/workspace；第二个 Key 也无法完成 GPT-4o 最小调用。当前阻塞是该账户可用额度不足，而不是第二个 Key 被撤销。reportedUsage 不是余额字段，不能据此推断剩余金额。",
+  "nextAction": "不要继续重复探针；只有账户补充额度或提供另一个授权 API 账户后，才重试 GPT-4o reader 子集。"
+}

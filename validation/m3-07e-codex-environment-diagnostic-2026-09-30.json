@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "provider.environment-diagnostic.v1",
+  "generatedAt": "2026-09-30T02:16:00+08:00",
+  "status": "blocked_environment",
+  "harness": "codex-cli",
+  "version": "codex-cli 0.155.1",
+  "publicCapabilities": {
+    "execJson": true,
+    "resume": true,
+    "appServer": true
+  },
+  "stateDb": {
+    "path": "/Users/m4air/.codex/state_5.sqlite",
+    "metadataOnly": true,
+    "exists": true,
+    "fileWritable": false,
+    "directoryWritable": false
+  },
+  "reason": "Codex CLI and public commands are present, but the current execution environment cannot write its own state database or .codex directory. No database contents, credentials, cookies, VPN, DNS, proxy, or firewall were changed.",
+  "nextAction": "Do not repeat live Codex smoke until the external permission state changes; keep Fixture and HTTP/Web receipt paths usable."
+}

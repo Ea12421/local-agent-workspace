@@ -1,0 +1,30 @@
+{
+  "id": "m8-01-clean-room-offline-attempt-2026-09-30",
+  "milestone": "M8-01",
+  "status": "BLOCKED_ENVIRONMENT",
+  "observedAt": "2026-09-30T04:48:00+08:00",
+  "scope": "在 /private/tmp 临时复制的当前源码上按锁文件执行 pnpm install --offline、setup、typecheck 和 test:all。",
+  "temporaryWorkspace": "/private/tmp/local-agent-workspace-clean-room-YvrnXC",
+  "commands": [
+    "rsync 源码副本（排除 .git、node_modules、release、release-final、data、.corepack）",
+    "pnpm install --offline --frozen-lockfile --ignore-scripts",
+    "pnpm run setup",
+    "pnpm run typecheck",
+    "pnpm test:all"
+  ],
+  "observed": {
+    "lockfile": "up to date",
+    "install": "blocked: pnpm store lacks better-sqlite3-11.10.0.tgz and offline mode cannot download",
+    "networkRetry": "blocked_environment: registry.npmjs.org DNS lookup returned ENOTFOUND for pnpm metadata and dependency tarballs",
+    "npmOfflineRetry": "blocked_environment: npm offline mode returned ENOTCACHED for @types/node; npm cache also lacks the complete dependency graph",
+    "setup": "completed before dependency verification",
+    "typecheck": "not accepted as clean-room evidence because dependency install was incomplete",
+    "tests": "not accepted as clean-room evidence because dependency install was incomplete"
+  },
+  "limits": [
+    "这是临时副本的离线安装证据，不代表项目代码失败。",
+    "需要允许一次依赖下载或准备完整 pnpm store 后才能完成 literal clean-room 安装门；本轮没有修改 VPN 配置。",
+    "npm 离线重试同样未完成安装；日志目录权限错误是伴随现象，不改变依赖缓存不足这一根因。",
+    "没有修改原项目、VPN、凭据或旧工作台。"
+  ]
+}

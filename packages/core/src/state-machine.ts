@@ -113,6 +113,16 @@ export function transitionRun(
     if (options.error.details !== undefined) error.details = options.error.details;
     data.error = error;
   }
+  if (options.idempotencyKey && action === "retry") data.idempotencyKey = options.idempotencyKey;
+  if (options.retry && action === "retry") {
+    data.retry = {
+      attempt: options.retry.attempt,
+      maxRetries: options.retry.maxRetries,
+      mode: options.retry.mode,
+      reasonClass: options.retry.reasonClass,
+      ...(options.retry.previousFailureCode ? { previousFailureCode: options.retry.previousFailureCode } : {}),
+    };
+  }
 
   const event: RunEvent = {
     id: createRunEventId(),

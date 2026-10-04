@@ -1,0 +1,25 @@
+{
+  "unit": "M4-05 default permission consistency",
+  "generatedAt": "2026-09-30",
+  "decision": "PASS",
+  "artifact": "/Users/m4air/Work Agent开发。/release/mac-arm64/Local Agent Workspace.app",
+  "computerUse": {
+    "surface": "fresh packaged Electron app",
+    "observed": [
+      "overview security scope says read-only",
+      "Product Builder Bot card says 只读",
+      "Research, Architecture and Evaluation Bot cards say 只读",
+      "new Bot dialog states default permission is read-only"
+    ]
+  },
+  "engineeringEvidence": [
+    "fixtures/demo-project.json default Product Builder permission is read_only",
+    "toUiSnapshot maps read_only/workspace_write/full_access to the three Chinese labels",
+    "HTTP smoke asserts the default Product Builder snapshot is 只读",
+    "offline fallback Bot labels use 只读"
+  ],
+  "limitations": [
+    "workspace_write remains a controlled lower-level capability and is not exposed by the default Product Builder UI",
+    "full_access is only label-mapped; it is not enabled by the default workflow"
+  ]
+}

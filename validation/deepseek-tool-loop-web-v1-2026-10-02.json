@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "validation.deepseek-tool-loop-web.v1",
+  "recordedAt": "2026-10-02T11:28:00+08:00",
+  "status": "PASS",
+  "scope": "Computer Use 读取新建运行对话框，确认真实 DeepSeek 只读 Tool Loop 入口和权限说明可见。",
+  "server": "http://127.0.0.1:5183/",
+  "observations": [
+    "高级诊断中可见“DeepSeek 只读 Tool Loop（真实模型 + 只读文件）”。",
+    "说明明确写出只开放 filesystem.read，不写入、不删除、不执行 Shell；真实质量仍需单独评测。",
+    "本次只打开并关闭对话框，没有启动模型调用，也没有输入或展示 API Key。"
+  ],
+  "security": {
+    "apiKeyEntered": false,
+    "filesUploaded": false,
+    "vpnChanged": false,
+    "externalMessageSent": false
+  },
+  "evidence": "Computer Use AX state from the fresh local page; real API execution evidence is validation/deepseek-tool-loop-v1-2026-10-02.json."
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "validation.m8-19-codex-pet-quality-comparison.v1",
+  "project": "codex-pet-studio",
+  "projectRoot": "/Users/m4air/总控/projects/codex-pet-studio",
+  "fixedPrompt": "/private/tmp/m8-19-codex-pet-quality-prompt.txt",
+  "taskType": "read-only staging contract audit plan",
+  "actualArtifactAuditExecuted": false,
+  "arms": {
+    "A": {
+      "kind": "direct-single-call-machine-baseline",
+      "model": "gpt-5.6-luna",
+      "authMode": "subscription",
+      "elapsedMs": 167948,
+      "jsonlEventLines": 4,
+      "agentMessageCount": 1,
+      "output": "validation/m8-19-codex-pet-direct-single-call.md",
+      "raw": "validation/m8-19-codex-pet-direct-single-call-raw.json",
+      "humanMetricsKnown": false,
+      "projectFilesModified": false
+    },
+    "B": {
+      "kind": "local-agent-workspace-run",
+      "runId": "run_mukw5aif",
+      "provider": "openai-codex",
+      "model": "codex-managed-session",
+      "authMode": "subscription",
+      "isMock": false,
+      "elapsedMs": 56018,
+      "providerEventCount": 5,
+      "receiptId": "run_mukw5aif:codex:segment:1",
+      "output": "validation/m8-19-codex-pet-workspace-single-call.md",
+      "raw": "validation/m8-19-codex-pet-workspace-raw.json",
+      "humanMetricsKnown": false,
+      "projectFilesModified": false,
+      "computerUseReplay": true
+    }
+  },
+  "contentFindings": {
+    "bothBoundarySafe": true,
+    "bothSeparateHistoricalEvidence": true,
+    "workspaceHasMoreGranularChecks": true,
+    "workspaceHasStrongerTraceability": true,
+    "directIsMoreLightweight": true,
+    "modelRoutesComparable": false,
+    "imageContractActuallyRevalidated": false
+  },
+  "decision": "Keep Workspace structured single-Bot/Codex as the default execution path; do not enable multi-Bot by default based on this plan-quality comparison.",
+  "nextAction": "Run the actual read-only staging contract audit against one frozen codex-pet-studio package and emit PASS/PARTIAL/FAIL/BLOCKED with fresh evidence.",
+  "unknowns": [
+    "Current staging package dimensions, grid counts, colors and alpha.",
+    "Current WebP lossless roundtrip against a trusted baseline.",
+    "Current visual and frame-stability gate.",
+    "Human aesthetic acceptance and willingness to reuse."
+  ]
+}

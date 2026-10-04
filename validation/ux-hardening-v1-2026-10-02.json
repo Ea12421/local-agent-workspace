@@ -1,0 +1,40 @@
+{
+  "validationId": "ux-hardening-v1-2026-10-02",
+  "date": "2026-10-02",
+  "scope": "本地工作台 Web/Electron 控制面体验修复",
+  "changes": [
+    "真实审批摘要替代静态业务单选项",
+    "失败事件和已完成运行状态语义修正",
+    "加载、审批、重试、刷新错误恢复提示",
+    "移动导航和 Escape 关闭",
+    "新建运行主要方式与高级诊断分层",
+    "未实现控件明确标记并减少假交互"
+  ],
+  "checks": {
+    "typecheck": "pass",
+    "testAll": { "status": "pass", "passed": 73, "failed": 0 },
+    "stateValidation": "pass",
+    "diffCheck": "pass",
+    "webProductionBuild": "pass",
+    "electronArm64DirectoryBuild": "pass",
+    "impeccableDetector": { "status": "pass", "findings": [] },
+    "computerUse": {
+      "status": "pass",
+      "observed": [
+        "概览显示已完成运行为最近一次运行",
+        "帮助按钮打开本地演示、审批与运行方式说明",
+        "新建运行将主要方式与高级诊断分组",
+        "运行记录显示明确的完成状态和事件时间线",
+        "未实现控件显示后续开放说明"
+      ]
+    }
+  },
+  "limits": [
+    "未在真实模型上验证业务产出质量",
+    "未接入真实 DeepSeek API",
+    "Codex 原生恢复仍受本机状态目录权限边界限制",
+    "DMG 生成仍受当前 hdiutil 环境错误阻塞",
+    "移动断点通过代码和响应式规则修复，当前 CUA 窗口未做可调 viewport 截图验证"
+  ],
+  "decision": "internal_ux_hardening_complete_with_external_limits"
+}

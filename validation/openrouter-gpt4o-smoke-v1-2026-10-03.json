@@ -1,0 +1,34 @@
+{
+  "validation": "openrouter_gpt4o_smoke_v1",
+  "observedAt": "2026-10-03T05:30:00+08:00",
+  "transport": "openrouter",
+  "keyProbe": {
+    "endpoint": "/api/v1/key",
+    "httpStatus": 200,
+    "valid": true,
+    "disabled": null,
+    "isFreeTier": false,
+    "reportedUsage": 9.5711,
+    "limit": null,
+    "limitRemaining": null,
+    "expiresAt": null,
+    "keyValuePersisted": false
+  },
+  "completionProbe": {
+    "endpoint": "/api/v1/chat/completions",
+    "requestedModel": "openai/gpt-4o",
+    "providerPolicy": {
+      "order": ["OpenAI"],
+      "allowFallbacks": false
+    },
+    "maxTokens": 1,
+    "httpStatus": 402,
+    "usable": false,
+    "errorCode": 402,
+    "error": "Insufficient credits",
+    "modelReturned": null,
+    "usage": null
+  },
+  "conclusion": "Key is valid, but the OpenRouter account has insufficient credits for a GPT-4o request. This is an account balance/credit condition, not a key-revocation or model-route condition.",
+  "nextAction": "Add OpenRouter credits or use another authorized API account, then repeat the one-token probe before the 20-question reader run."
+}

@@ -95,3 +95,52 @@ Provider 能提供窗口上限时，按该能力计算；未知上限时使用�
 - 重复 compaction/resume 不重复写 Artifact；
 - provider limit 后能在同一逻辑 Run 下创建新 segment；
 - 不把 Fixture 或模型自评写成 reality validation。
+
+## 2026-10-03 连续压缩验证结果
+
+已用固定非敏感结构化 ContextLedger 连续生成 3 次 Snapshot，并在每次恢复后检查：
+
+- 同一个 `projectId` 和 `runId`；
+- 父 Snapshot 链；
+- 目标、约束、已确认事实、决定、未知项、审批、交接、Artifact 和下一步；
+- 事件范围和最近 tail；
+- 内容 hash 篡改检测。
+
+专项命令为 `npm run context:multi-pass`，证据为 `validation/context-multi-pass-v1-2026-10-03.json`；Core 回归为 `packages/core/src/context-multipass.test.ts`。
+
+这证明结构化上下文连续三次压缩/恢复没有丢失上述字段，不证明自由聊天文本永久保留，也不证明恢复后的真实模型生成质量与未压缩路径完全相同。评测/RSI 增量暂按用户要求暂停。
+
+## 2026-10-03 深层恢复验证结果
+
+在三次纯 Snapshot 验证之外，又执行了真实 SQLite Run + Tool Loop 纵向验证：
+
+```text
+SQLite Run 创建并启动
+→ Provider 在工具完成后中断
+→ 写入失败状态和 Snapshot-1
+→ 关闭 SQLite 连接（模拟进程结束）
+→ 重开同一个数据库
+→ retry/start 同一个 Run
+→ 回放已完成 callId
+→ 生成 Snapshot-2 / Snapshot-3
+→ 成功收口
+```
+
+结果：同一个 Run 在重开后恢复成功；`tool.invoked=1`、`tool.completed=1`、`artifact.created=1`；目标、约束、决定和下一步在 3 个 Snapshot 中保持一致；Snapshot 父链和 SQLite 回读通过。证据为 `validation/context-deep-recovery-v1-2026-10-03.json`，入口为 `npm run context:deep-recovery`。
+
+这已经足以证明当前控制面具备可用的结构化长任务恢复底座。仍不证明真实模型在恢复后生成质量完全等同于未压缩路径，也不证明 Provider 原生 resume、自由聊天全文保留或缓存成本收益。
+
+## 2026-10-03 结构化上下文量化基准
+
+为避免只用“通过”描述效果，新增 `npm run context:benchmark`，固定生成 10、30、100、300 个事件的历史，分别连续生成 20 个 Snapshot，并对每次恢复测量：
+
+- 完整 `ContextLedger` 与恢复 `ContextPacket` 的本地 token 估算；
+- 10 个结构化关键字段的逐项保留率；
+- 父 Snapshot 链、hash 篡改和事件范围缺口；
+- Snapshot 构建与恢复的 P50/P95 耗时。
+
+当前结果：关键字段在 80 次恢复检查中均为 `10/10`；父链、篡改检测和事件缺口检测均通过；恢复包估算从完整账本的 `62.1%` 缩减到 `98.6%`（历史从 10 增长到 300 个事件）。这些 token 是项目内部的 UTF-8/4 估算，不是 Provider 账单 token，也不等价于真实模型语义质量。
+
+表格报告：`validation/context-benchmark-v1-2026-10-03.md`；机器证据：`validation/context-benchmark-v1-2026-10-03.json`。
+
+这使结构化上下文控制面可以告一段落。真实 Provider 的“无压缩 vs 1/3/5 次压缩”语义对照仍是独立后续项，不阻塞当前本地交付。

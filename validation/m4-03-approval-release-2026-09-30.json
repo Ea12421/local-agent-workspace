@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "validation-card.v1",
+  "id": "m4-03-approval-release-2026-09-30",
+  "recordedAt": "2026-09-30T03:39:54+08:00",
+  "scope": "Fixture Product Builder control-plane approval, Artifact promotion and Electron restart readback",
+  "result": "PASS_WITH_FIXTURE_LIMITATION",
+  "runId": "run-fixture-1790710745587-b1y2vt",
+  "input": {
+    "idea": "设计一个面向独立开发者的 AI 视频产品",
+    "targetUser": "独立开发者",
+    "primaryScenario": "每日内容规划中制作 AI 视频",
+    "provider": "Fixture 本地演示（无 Key）"
+  },
+  "computerUse": {
+    "application": "Electron directory package",
+    "packagePath": "/Users/m4air/Work Agent开发。/release/mac-arm64/Local Agent Workspace.app",
+    "observedPort": 53363,
+    "steps": [
+      "重建 Web dist、Desktop entry 和 Electron arm64 directory package",
+      "创建新的独立 Fixture Run",
+      "填写并确认目标用户，确认后 clarification 仍只剩场景",
+      "填写并确认主要使用场景，固定计划的研究、产品、架构和评测步骤变为可执行",
+      "点击精确 approvalId 对应的“确认并继续”",
+      "确认 approval_pending 消失，审批步骤和释放步骤均显示可执行",
+      "在 Artifacts 页面逐项回读，当前 Run 的 5 个 Artifact 均显示“最终产物”；旧 run-fixture-001 的 5 个草稿保持草稿",
+      "退出并重开同一 Electron 包，Run、审批收口、计划状态和最终产物状态仍可回读"
+    ]
+  },
+  "assertions": {
+    "clarificationPendingRemoved": true,
+    "approvalPendingRemoved": true,
+    "approvalPlanStepReady": true,
+    "releasePlanStepReady": true,
+    "finalArtifactCount": 5,
+    "oldDraftsRemainDraft": true,
+    "restartPersistence": true,
+    "crossRunIsolation": true
+  },
+  "automatedVerification": {
+    "focusedTests": "node --experimental-strip-types --test apps/server/src/product-builder-continuity.test.ts apps/server/src/http-smoke.test.ts",
+    "focusedTestsPassed": "9/9",
+    "fullTests": "pnpm test:all",
+    "fullTestsPassed": "63/63",
+    "typecheck": "passed",
+    "webBuild": "pnpm --filter @agent-workspace/web build passed",
+    "desktopDirectoryBuild": "pnpm run build:desktop && npx electron-builder --config apps/desktop/electron-builder.yml --mac --dir passed",
+    "stateValidation": "node scripts/validate-state.mjs passed",
+    "diffCheck": "git diff --check passed"
+  },
+  "implementationFixes": [
+    "精确 approvalId resolve 路由现在会调用 reconcileProductBuilderRelease 并返回 artifactRelease/finalArtifactIds",
+    "Fixture Web 运行使用独立 Run ID，避免新运行覆盖固定 fixture 投影",
+    "审批 reconcile 会同步 approval/release 计划步骤状态，避免 releaseBlockers 已清空但 UI 仍显示阻塞"
+  ],
+  "limitations": [
+    "Fixture 只证明本地控制面、SQLite 持久化、审批审计、Artifact 发布和 UI 回读，不证明真实模型质量",
+    "DeepSeek API 尚未用用户 Key 真实调用",
+    "Codex ~/.codex/state_5.sqlite 和 .codex 目录未写入，Codex native recovery 仍受环境权限条件限制",
+    "未据此宣称多 Bot 质量、成本、提示词缓存命中率或现实提效"
+  ],
+  "nextGate": "Provider 真实消费门：用户提供 DeepSeek Key 后做一次受限 one-shot；或 Codex state DB 权限变化后再做 native recovery。"
+}

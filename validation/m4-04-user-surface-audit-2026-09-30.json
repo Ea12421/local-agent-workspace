@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "validation-card.v1",
+  "id": "m4-04-user-surface-audit-2026-09-30",
+  "recordedAt": "2026-09-30T04:19:53+08:00",
+  "scope": "Electron user-surface audit for current Product Builder run, permissions, artifacts and disabled placeholders",
+  "result": "PASS_WITH_FIXTURE_LIMITATION",
+  "computerUse": {
+    "application": "Electron arm64 directory package",
+    "packagePath": "/Users/m4air/Work Agent开发。/release/mac-arm64/Local Agent Workspace.app",
+    "pagesChecked": [
+      "工作台概览",
+      "Bots",
+      "项目产物"
+    ],
+    "observations": [
+      "概览的当前运行、需求澄清、Provider 和产物均来自同一个 Product Builder Run；当前产物显示 5 个。",
+      "技术字段 Run ID、工作区路径、Provider 细节和计划标识默认折叠到技术详情。",
+      "Fixture 以本地演示显示，并明确不代表真实模型效果；当前项目安全范围显示为只读。",
+      "Bots 页的 Product Builder、Research、Architecture、Evaluation 均显示本地演示；Product Builder 的有效权限显示为只读（可生成草稿）。",
+      "项目产物页当前运行的 5 个最终产物排在历史运行和草稿之前；历史记录未删除。",
+      "项目创建、设置、搜索、时间筛选和视图切换在尚未接入时显示为后续开放并置灰。"
+    ],
+    "finalPackageRecheck": {
+      "rebuiltAfterFrontendChange": true,
+      "observedPort": "55639",
+      "artifactLabels": "当前运行 · 来源 N 条 first; 历史运行 · 来源 N 条 after",
+      "overviewCurrentArtifactCount": 5,
+      "botsPermissionLabel": "只读（可生成草稿）"
+    },
+    "currentPackageRecheck": {
+      "rebuiltAt": "2026-09-30T04:58:00+08:00",
+      "packagePath": "/Users/m4air/Work Agent开发。/release/mac-arm64/Local Agent Workspace.app",
+      "launch": "PASS",
+      "observedHealth": "本地服务正常",
+      "observedOverview": "工作台概览、当前运行、本次运行的安全范围、Provider、Bots、最近产物均可见",
+      "observedScope": "首屏仍明确只读，不会修改文件"
+    }
+  },
+  "automatedVerification": {
+    "typecheck": "npm run typecheck passed",
+    "webBuild": "pnpm exec vite build apps/web --config apps/web/vite.config.ts passed",
+    "fullTests": "pnpm test:all passed 66/66",
+    "desktopBuild": "pnpm run build:desktop and electron-builder --config apps/desktop/electron-builder.yml --mac --dir passed",
+    "stateValidation": "node scripts/validate-state.mjs passed",
+    "diffCheck": "git diff --check passed",
+    "finalWebBuildAfterArtifactLabelChange": "pnpm exec vite build apps/web --config apps/web/vite.config.ts passed",
+    "finalDesktopDirectoryBuildAfterArtifactLabelChange": "pnpm run build:desktop and electron-builder --config apps/desktop/electron-builder.yml --mac --dir passed"
+  },
+  "implementationChanges": [
+    "统一 Product Builder active run 选择，避免旧 ToolRuntime run 覆盖当前主流程。",
+    "按当前 run 优先、时间倒序排列持久化 Artifact，并标记本次运行/历史运行。",
+    "将首屏技术字段、原生占位弹窗和未接入按钮改为用户可理解的说明或折叠详情。",
+    "统一 Bots 有效权限与当前只读安全边界，保留底层策略不做权限扩大。"
+  ],
+  "limitations": [
+    "仍是 Fixture/本地控制面验证，不证明真实模型质量、DeepSeek 消费或多 Bot 价值。",
+    "历史 Artifact 只做排序和标识，没有删除；这是 append-only 事实源的预期行为。",
+    "设置、搜索、项目创建和视图切换仍未实现。"
+  ],
+  "nextGate": "Provider 真实消费门：DeepSeek one-shot 需要用户 Key；Codex native recovery 仍取决于 .codex state DB 权限。"
+}

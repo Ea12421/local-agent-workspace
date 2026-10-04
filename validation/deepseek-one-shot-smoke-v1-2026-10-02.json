@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "deepseek-one-shot-smoke.v1",
+  "recordedAt": "2026-10-02T18:33:21+08:00",
+  "phase": "deepseek-one-shot-smoke-v1",
+  "scope": [
+    "one minimal direct DeepSeek chat/completions request",
+    "one request through the project's DeepSeekApiAdapter",
+    "provider-neutral envelope and usage/cache metadata"
+  ],
+  "security": {
+    "keyPersisted": false,
+    "keyPrinted": false,
+    "localProjectFilesUploaded": false,
+    "vpnChanged": false
+  },
+  "directRequest": {
+    "httpStatus": 200,
+    "ok": true,
+    "requestedModel": "deepseek-chat",
+    "returnedModel": "deepseek-flash",
+    "finishReason": "stop",
+    "toolCallCount": 0,
+    "reasoningContentPresent": false,
+    "usage": {
+      "prompt_tokens": 43,
+      "completion_tokens": 11,
+      "total_tokens": 54,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 43
+    },
+    "responseFormat": "json_object"
+  },
+  "projectAdapter": {
+    "provider": {
+      "harness": "deepseek-http",
+      "provider": "deepseek",
+      "model": "deepseek-chat",
+      "authMode": "api_key",
+      "billingSource": "api",
+      "isMock": false
+    },
+    "eventCount": 1,
+    "phase": "model.response",
+    "returnedModel": "deepseek-flash",
+    "toolCallCount": 0,
+    "reasoningContentPresent": false,
+    "usage": {
+      "prompt_tokens": 85,
+      "completion_tokens": 12,
+      "total_tokens": 97,
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 85
+    },
+    "envelope": {
+      "outputTextPresent": true,
+      "toolCallCount": 0,
+      "promptCache": {
+        "schemaVersion": "provider.prompt-cache-receipt.v1",
+        "status": "unknown",
+        "providerReported": false
+      },
+      "providerFields": ["providerFormat"]
+    }
+  },
+  "verification": {
+    "directRequest": "PASS",
+    "projectAdapterRequest": "PASS",
+    "secretHandling": "PASS",
+    "limits": [
+      "This proves real one-shot connectivity and envelope parsing, not real Tool Loop support.",
+      "The requested deepseek-chat label returned a deepseek-flash response model; this routing behavior must remain observable.",
+      "No quality, cost-benefit, prompt-cache hit rate, or real project task result was established by this short smoke."
+    ]
+  }
+}

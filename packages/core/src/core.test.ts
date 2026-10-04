@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   InMemoryRunStore,
   InvalidRunTransitionError,
+  RetryBudgetExceededError,
   allowedActions,
   canTransition,
   transitionRun,
@@ -69,6 +70,26 @@ export async function runCoreTests(): Promise<void> {
   const replay = await idempotentStore.transition(idempotentRun.id, "start", { idempotencyKey: "start-1" });
   assert.deepEqual(replay, first);
   assert.equal((await idempotentStore.listEvents(idempotentRun.id)).length, 2);
+
+  const boundedStore = new InMemoryRunStore();
+  const boundedRun = await boundedStore.createRun({
+    projectId,
+    botId,
+    request: { objective: "bounded retry", input: {}, retryPolicy: { maxRetries: 2 } },
+  });
+  await boundedStore.transition(boundedRun.id, "start");
+  await boundedStore.transition(boundedRun.id, "fail", { error: { code: "TEMP", message: "temporary", retryable: true } });
+  const retryOne = await boundedStore.transition(boundedRun.id, "retry", { retry: { attempt: 99, maxRetries: 99, mode: "manual", reasonClass: "manual" } });
+  assert.equal((retryOne.event.data.retry as any)?.attempt, 1, "the store owns the canonical attempt number");
+  assert.equal((retryOne.event.data.retry as any)?.maxRetries, 2);
+  await boundedStore.transition(boundedRun.id, "start");
+  await boundedStore.transition(boundedRun.id, "fail", { error: { code: "TEMP", message: "temporary", retryable: true } });
+  const retryTwo = await boundedStore.transition(boundedRun.id, "retry");
+  assert.equal((retryTwo.event.data.retry as any)?.attempt, 2);
+  await boundedStore.transition(boundedRun.id, "start");
+  await boundedStore.transition(boundedRun.id, "fail", { error: { code: "TEMP", message: "temporary", retryable: true } });
+  await assert.rejects(() => boundedStore.transition(boundedRun.id, "retry"), RetryBudgetExceededError);
+  assert.equal((await boundedStore.listEvents(boundedRun.id)).filter((event) => event.type === "run.retry_requested").length, 2);
 }
 
 test("core state machine and in-memory event store", async () => {

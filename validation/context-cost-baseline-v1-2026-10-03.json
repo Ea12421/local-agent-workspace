@@ -1,0 +1,28 @@
+{
+  "validation": "context_cost_baseline_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "checks": {
+    "compactionThresholds": "soft/hard thresholds reserve output tokens",
+    "snapshot": {
+      "schemaVersion": "context.snapshot.v1",
+      "contentSha256": "63b1ce5336f5a8348c172cce3017cb1a9a0a7d45d4c4d7f9569a3590d939e4d0",
+      "tailEventIds": [
+        "event-3",
+        "event-4"
+      ],
+      "packetRestoresSameRun": true
+    },
+    "stablePrefix": {
+      "objectiveDoesNotChangeHash": true,
+      "constraintChangesHash": true,
+      "localHashIsComparisonKeyOnly": true
+    },
+    "providerReplay": {
+      "reasoningContentPreserved": true,
+      "cacheReceiptProviderReported": true,
+      "cachedInputTokens": 12,
+      "cost": "unknown_without_provider_cost"
+    }
+  },
+  "evidenceBoundary": "这是离线契约和可重跑基线，不代表长期缓存命中、成本下降、模型质量或真人提效。"
+}

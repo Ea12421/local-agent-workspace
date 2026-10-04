@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "provider-tool-loop.v1",
+  "recordedAt": "2026-10-02T16:04:00+08:00",
+  "phase": "provider-tool-loop-v1",
+  "scope": [
+    "Fixture Tool Loop Web entry",
+    "ProviderChoice/API routing",
+    "fixture tool-loop receipt and status readback"
+  ],
+  "changes": [
+    "Added tool-loop-fixture to the Web provider choice contract.",
+    "Routed tool-loop-fixture to POST /api/runs with the normal fixture scenario.",
+    "Included tool-loop-fixture in persisted diagnostic run readback and user-facing labels.",
+    "Explained that the loop replays model response, tool call, tool result and artifact without a key or real model cost."
+  ],
+  "verification": {
+    "typecheck": "PASS",
+    "test_all": { "status": "PASS", "passed": 73, "failed": 0 },
+    "web_build": "PASS",
+    "state_validation": "PASS",
+    "git_diff_check": "PASS",
+    "computer_use": {
+      "status": "PASS",
+      "steps": [
+        "opened New Run",
+        "observed Fixture Tool Loop under Advanced Diagnostics",
+        "selected Fixture Tool Loop",
+        "started the run",
+        "observed completed Fixture Tool Loop receipt and provider status"
+      ],
+      "server": "127.0.0.1:5182 temporary local verification listener"
+    }
+  },
+  "limits": [
+    "Fixture Tool Loop is deterministic control-plane evidence, not proof of DeepSeek/Codex output quality.",
+    "Real Provider Tool Loop remains outside this phase because DeepSeek is not configured and Codex native resume is environment-blocked."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "validation.fixture-approval-restart-smoke.v1",
+  "scope": "non-test HTTP control plane",
+  "provider": "fixture-tool-loop",
+  "runStatusBeforeResolve": "waiting_user",
+  "runStatusAfterResolve": "succeeded",
+  "approvalResolution": {
+    "decision": "approved",
+    "resolvedBy": "user",
+    "secondSameDecisionChanged": false,
+    "secondSameDecisionIdempotent": true
+  },
+  "eventTypes": [
+    "run.created",
+    "run.started",
+    "provider.event",
+    "approval.requested",
+    "run.waiting_user",
+    "approval.resolved",
+    "provider.event",
+    "run.resumed",
+    "tool.invoked",
+    "tool.completed",
+    "provider.event",
+    "artifact.created",
+    "run.succeeded"
+  ],
+  "toolInvokedCount": 1,
+  "reopenBoundary": "process A created pending approval; process B reopened the same SQLite database and resolved it",
+  "limitations": [
+    "Fixture ToolRuntime does not touch files and does not prove write-tool safety.",
+    "This is persistence/recovery evidence, not real model quality or DeepSeek evidence."
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "validation.deepseek-tool-loop.v1",
+  "recordedAt": "2026-10-02T11:20:00+08:00",
+  "status": "PASS",
+  "scope": "一次真实 DeepSeek 只读 Tool Loop 回归：模型提议 filesystem.read，本地读取 fixtures/demo-project.json，回传结果并生成 Artifact。",
+  "request": {
+    "provider": "deepseek-tool-loop",
+    "requestedModel": "deepseek-chat",
+    "path": "fixtures/demo-project.json",
+    "toolAllowlist": [
+      "filesystem.read"
+    ],
+    "permissionTier": "read_only",
+    "maxIterations": 3
+  },
+  "result": {
+    "httpStatus": 200,
+    "runStatus": "succeeded",
+    "isMock": false,
+    "eventTypes": [
+      "run.created",
+      "run.started",
+      "provider.event",
+      "tool.invoked",
+      "tool.completed",
+      "provider.event",
+      "artifact.created",
+      "run.succeeded"
+    ],
+    "providerSegments": [
+      {
+        "segment": 1,
+        "provider": {
+          "harness": "deepseek-http",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "authMode": "api_key",
+          "billingSource": "api",
+          "isMock": false
+        },
+        "toolCallCount": 1,
+        "finishReason": "tool_calls",
+        "usage": {
+          "inputTokens": 416,
+          "outputTokens": 50,
+          "totalTokens": 466,
+          "cachedInputTokens": 0,
+          "source": "provider"
+        },
+        "promptCache": {
+          "schemaVersion": "provider.prompt-cache-receipt.v1",
+          "status": "miss",
+          "providerReported": true,
+          "cachedInputTokens": 0,
+          "stablePrefixSha256": "sha256:1e0db9b881dfa36d19627cfb2a0b0b2df54a81207e2ac6ce671a2fd4a40e86e0"
+        },
+        "actualModel": "deepseek-flash",
+        "reasoningContentObserved": false
+      },
+      {
+        "segment": 2,
+        "provider": {
+          "harness": "deepseek-http",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "authMode": "api_key",
+          "billingSource": "api",
+          "isMock": false
+        },
+        "toolCallCount": 0,
+        "finishReason": "stop",
+        "usage": {
+          "inputTokens": 1460,
+          "outputTokens": 648,
+          "totalTokens": 2108,
+          "cachedInputTokens": 0,
+          "source": "provider"
+        },
+        "promptCache": {
+          "schemaVersion": "provider.prompt-cache-receipt.v1",
+          "status": "miss",
+          "providerReported": true,
+          "cachedInputTokens": 0,
+          "stablePrefixSha256": "sha256:1e0db9b881dfa36d19627cfb2a0b0b2df54a81207e2ac6ce671a2fd4a40e86e0"
+        },
+        "actualModel": "deepseek-flash",
+        "reasoningContentObserved": false
+      }
+    ],
+    "toolInvokedCount": 1,
+    "toolCompletedCount": 1,
+    "toolPath": "fixtures/demo-project.json",
+    "toolOutputBytes": 2619,
+    "artifactName": "deepseek Tool Loop Result",
+    "artifactContentSha256": "sha256:4b517492d2cf128087e803662519be5f6c3288e4b50dda1d2e9dd25d39bc2102"
+  },
+  "security": {
+    "apiKeyPersisted": false,
+    "apiKeyPrinted": false,
+    "wholeWorkspaceUploaded": false,
+    "vpnChanged": false,
+    "writeToolExposed": false,
+    "shellExposed": false,
+    "externalMessageSent": false
+  },
+  "limitations": [
+    "本次实际返回模型名为 deepseek-flash，虽请求标签为 deepseek-chat；已在回执记录 actualModel。",
+    "本次 deepseek-flash 没有返回 reasoning_content，因此只验证了 reasoning 字段缺失时的正常闭环；reasoner 专用字段仍需单独验证。",
+    "只证明一次真实工具闭环和事件/Artifact 落盘，不证明模型质量、成本收益、提示词缓存长期命中或崩溃后跨进程上下文恢复。",
+    "API Key 仅注入本地服务进程环境，服务结束后未写入项目。"
+  ]
+}

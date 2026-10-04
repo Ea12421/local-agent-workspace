@@ -3,11 +3,14 @@ node_modules/
 dist/
 out/
 release/
+release-final/
+.impeccable/
 .env
 .env.*
 !.env.example
 data/*.db
 data/*.db-*
+data/*.sqlite
 data/*.jsonl
 
 # Retained local duplicate from an earlier scaffold; it is outside the root build.

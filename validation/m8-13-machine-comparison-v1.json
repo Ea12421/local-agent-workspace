@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "validation.m8-13-machine-comparison.v1",
+  "fixedInput": "validation/m8-13-fixed-input-v1.md",
+  "humanAbaCompleted": false,
+  "arms": {
+    "A": {
+      "kind": "direct-single-call-machine-baseline",
+      "model": "gpt-5.6-luna",
+      "authMode": "subscription",
+      "elapsedMs": 103033,
+      "jsonlEventLines": 4,
+      "agentMessageCount": 1,
+      "toolCalls": 0,
+      "output": "validation/m8-13-baseline-a-single-call.md",
+      "normalized": "validation/m8-13-baseline-a-manual-normalization.json",
+      "humanMetricsKnown": false,
+      "capacityFailure": "validation/m8-13-baseline-a-capacity-failure.json"
+    },
+    "B": {
+      "kind": "local-agent-workspace-run",
+      "runId": "run_mukr3edw",
+      "provider": "openai-codex",
+      "authMode": "subscription",
+      "isMock": false,
+      "providerEventCount": 5,
+      "receiptId": "run_mukr3edw:codex:segment:1",
+      "output": "validation/m8-13-workspace-run-mukr3edw.json",
+      "persistence": "SQLite RunEvent + provider receipt; refresh replay verified in validation/m8-17-persisted-run-replay-v1.md",
+      "humanMetricsKnown": false,
+      "runRowCreatedAt": "2026-09-28T04:31:51.956Z",
+      "runRowCompletedAt": "2026-09-28T04:33:15.150Z",
+      "runRowDurationMs": 83194,
+      "durationNote": "SQLite runs.created_at 到 completed_at；不包含用户在 UI 中打开/提交的交互时间，不能直接等同真人耗时。"
+    }
+  },
+  "machineFindings": [
+    "B has stronger structured output, receipt, event trace, and refresh recovery.",
+    "A is lighter and more readable but requires normalization and separate persistence.",
+    "This does not prove multi-Bot superiority.",
+    "Machine elapsed time is not human editing time."
+  ],
+  "decision": "Keep Workspace structured single-Bot/Codex execution as the default path; defer multi-Bot default until quality and human-efficiency thresholds are measured.",
+  "unknowns": [
+    "Human elapsed time and manual edits for both arms.",
+    "Rework count and willingness to reuse.",
+    "Independent content-quality score.",
+    "DeepSeek, Electron Computer Use, clean-room GitHub clone, and Codex native resume."
+  ]
+}

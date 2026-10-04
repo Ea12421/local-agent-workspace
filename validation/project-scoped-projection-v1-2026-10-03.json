@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "validation.project-scoped-projection.v1",
+  "runAt": "2026-10-03T07:10:57+08:00",
+  "scope": "Run、RunEvent、receipt、Bot 和实体读取的 projectId 强制投影",
+  "implementation": {
+    "runtimeRuns": "list/detail require projectId",
+    "runEvents": "detail requires projectId and validates runtime or continuity ownership",
+    "entities": "projectId required; receipts filter through run/artifact/approval ownership",
+    "botDetails": "detail and patch require projectId; mismatch returns 404",
+    "receiptLinks": "replayRef and eventsRef carry projectId",
+    "workspaceBootstrap": "ui-snapshot remains an explicit workspace bootstrap envelope",
+    "databaseMigration": false
+  },
+  "checks": [
+    {
+      "name": "unscoped_read_rejected",
+      "status": "passed",
+      "evidence": "core runs, entities and bot list/detail writes return project_id_required when scope is omitted"
+    },
+    {
+      "name": "runtime_run_isolation",
+      "status": "passed",
+      "evidence": "project A lists its own run; project B run cannot be read with project A scope"
+    },
+    {
+      "name": "run_event_isolation",
+      "status": "passed",
+      "evidence": "project mismatch returns run_events_not_found and no event content"
+    },
+    {
+      "name": "bot_detail_and_patch_isolation",
+      "status": "passed",
+      "evidence": "same bot is readable and patchable in its project, but returns 404 under another project"
+    },
+    {
+      "name": "receipt_projection",
+      "status": "passed",
+      "evidence": "entities receipt/model receipt list is filtered by run/artifact/approval ownership and links retain projectId"
+    },
+    {
+      "name": "sqlite_restart_isolation",
+      "status": "passed",
+      "evidence": "closing and reopening the SQLite stores preserves A/B separation"
+    },
+    {
+      "name": "typecheck_and_http",
+      "status": "passed",
+      "evidence": "npm run typecheck and HTTP smoke 2/2"
+    }
+  ],
+  "commands": [
+    "npm run typecheck",
+    "node --experimental-strip-types --test apps/server/src/http-smoke.test.ts",
+    "node --experimental-strip-types --test apps/server/src/runtime.test.ts apps/server/src/persistence.test.ts apps/server/src/tool-loop.test.ts apps/server/src/product-builder-continuity.test.ts",
+    "npm run test:all",
+    "npm run build:web",
+    "npm run validate:state",
+    "git diff --check"
+  ],
+  "boundaries": [
+    "ui-snapshot is a workspace bootstrap envelope, not a private project detail endpoint",
+    "projects and skills remain workspace-level resources",
+    "provider_receipts has no new project_id column; projection uses existing ownership joins",
+    "automatic background retry remains a separate design unit"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "validation": "deepseek_product_builder_web_no_key_cua_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "surface": "Computer Use browser",
+  "url": "http://127.0.0.1:5175/?cua-check=deepseek-missing-key",
+  "apiBase": "http://127.0.0.1:4322",
+  "fixture": {
+    "provider": "deepseek-product-builder-draft",
+    "apiKeyPresent": false
+  },
+  "steps": [
+    "打开本地 Web 工作台",
+    "打开新建一次运行",
+    "选择 DeepSeek Product Builder 草稿（真实模型，待审阅）",
+    "提交默认产品想法",
+    "关闭对话框并读取最近运行卡片"
+  ],
+  "observed": {
+    "entryVisible": true,
+    "runRecordVisible": true,
+    "runTitle": "DeepSeek Product Builder 草稿",
+    "status": "failed",
+    "errorCode": "deepseek_api_key_missing",
+    "artifactPromoted": false,
+    "falseSuccess": false
+  },
+  "evidenceBoundary": "验证的是 Web 入口、失败记录和错误可见性；不代表真实模型质量，也不代表 API Key 已配置。"
+}

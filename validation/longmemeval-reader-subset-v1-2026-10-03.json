@@ -1,0 +1,48 @@
+{
+  "validation": "longmemeval_reader_subset_v1",
+  "observedAt": "2026-10-03T05:08:00+08:00",
+  "source": {
+    "dataset": "LongMemEval_S cleaned",
+    "datasetSha256": "d6f21ea9d60a0d56f34a05b609c79c88a451d2ae03597821ea3d5a9678c3a442",
+    "officialRepository": "https://github.com/xiaowu0162/LongMemEval",
+    "officialRepositoryCommit": "9e0b455f4ef0e2ab8f2e582289761153549043fc"
+  },
+  "selectionRule": "按原始数据顺序，每个非 abstention question_type 取 3 题（18 题），再取 2 道 abstention 题；不把答案复制进展示材料。",
+  "questionCount": 20,
+  "questionIds": [
+    { "questionId": "e47becba", "questionType": "single-session-user" },
+    { "questionId": "118b2229", "questionType": "single-session-user" },
+    { "questionId": "51a45a95", "questionType": "single-session-user" },
+    { "questionId": "7161e7e2", "questionType": "single-session-assistant" },
+    { "questionId": "c4f10528", "questionType": "single-session-assistant" },
+    { "questionId": "89527b6b", "questionType": "single-session-assistant" },
+    { "questionId": "8a2466db", "questionType": "single-session-preference" },
+    { "questionId": "06878be2", "questionType": "single-session-preference" },
+    { "questionId": "75832dbd", "questionType": "single-session-preference" },
+    { "questionId": "0a995998", "questionType": "multi-session" },
+    { "questionId": "6d550036", "questionType": "multi-session" },
+    { "questionId": "gpt4_59c863d7", "questionType": "multi-session" },
+    { "questionId": "gpt4_59149c77", "questionType": "temporal-reasoning" },
+    { "questionId": "gpt4_f49edff3", "questionType": "temporal-reasoning" },
+    { "questionId": "71017276", "questionType": "temporal-reasoning" },
+    { "questionId": "6a1eabeb", "questionType": "knowledge-update" },
+    { "questionId": "6aeb4375", "questionType": "knowledge-update" },
+    { "questionId": "830ce83f", "questionType": "knowledge-update" },
+    { "questionId": "0862e8bf_abs", "questionType": "single-session-user", "abstention": true },
+    { "questionId": "88432d0a_abs", "questionType": "multi-session", "abstention": true }
+  ],
+  "readerProjection": {
+    "allowedInput": ["question_id", "question", "question_date", "haystack_dates", "haystack_sessions"],
+    "forbiddenInput": ["answer", "answer_session_ids", "has_answer"],
+    "reason": "避免把参考答案、答案 session 和官方标注的 has_answer 标签泄漏给 reader。"
+  },
+  "officialJudge": {
+    "metricModel": "gpt-4o-2024-08-06",
+    "temperature": 0,
+    "maxTokens": 10,
+    "output": "yes/no",
+    "status": "pending_model_credentials"
+  },
+  "status": "frozen_not_run",
+  "nextAction": "在不泄漏答案/has_answer 的前提下，使用同一 reader prompt 跑 no_compaction、bm25_top5 和 multi_pass_compaction 三条件；没有 reader/judge 凭据时只保留 pending，不生成 QA 分数。"
+}

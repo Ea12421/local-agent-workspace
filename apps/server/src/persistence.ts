@@ -1,7 +1,8 @@
 import { appendFile, mkdir, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
 import path from 'node:path';
-import { createRunEventId, transitionRun } from '../../../packages/core/src/index.ts';
+import { createRunEventId, currentAttemptTerminalEvent, prepareRetryTransition, semanticEventKey, transitionRun } from '../../../packages/core/src/index.ts';
 import type { RunStore } from '../../../packages/core/src/run-store.ts';
 import type { ApprovalRequest, Artifact, BotProfile, ContextSnapshot, CreateRunInput, HandoffEnvelope, JsonObject, MemoryItem, Project, ProviderIdentity, Run, RunAction, RunEvent, RunId, RunSegment, RunTransitionOptions, RunTransitionResult, Skill, Source } from '../../../packages/core/src/types.ts';
 
@@ -110,6 +111,16 @@ export class JsonlEventLog {
   constructor(filePath: string) { this.filePath = filePath; }
 
   async append(event: PersistedEvent): Promise<void> {
+    const existing = await this.readAll();
+    const incoming = event as unknown as RunEvent;
+    const sameRun = existing.filter((item) => item.runId === event.runId);
+    if (sameRun.some((item) => item.id === event.id)) return;
+    const incomingKey = semanticEventKey(incoming);
+    if (incomingKey && sameRun.some((item) => semanticEventKey(item as unknown as RunEvent) === incomingKey)) return;
+    const existingTerminal = currentAttemptTerminalEvent(sameRun as unknown as RunEvent[]);
+    if (existingTerminal && currentAttemptTerminalEvent([incoming])) {
+      throw new Error(`Cannot append terminal event after ${String(existingTerminal.type)}`);
+    }
     await mkdir(path.dirname(this.filePath), { recursive: true });
     await appendFile(this.filePath, `${JSON.stringify(event)}\n`, 'utf8');
   }
@@ -635,7 +646,27 @@ function createSqliteEventLog(db: SqliteDatabase): EventLog {
   return {
     backend: 'sqlite',
     async append(event) {
-      insert.run({ id: event.id, run_id: event.runId, sequence: event.sequence, type: event.type, occurred_at: event.occurredAt, actor_json: JSON.stringify(event.actor), data_json: JSON.stringify(event.data), correlation_id: event.correlationId ?? null });
+      db.exec('BEGIN IMMEDIATE');
+      try {
+        const existing = db.prepare('SELECT * FROM run_events WHERE run_id = @run_id ORDER BY sequence').all({ run_id: event.runId }).map((row) => eventFromRow(row as Record<string, unknown>));
+        const incoming = event as unknown as RunEvent;
+        if (existing.some((item) => item.id === event.id)) {
+          db.exec('COMMIT');
+          return;
+        }
+        const incomingKey = semanticEventKey(incoming);
+        if (incomingKey && existing.some((item) => semanticEventKey(item) === incomingKey)) {
+          db.exec('COMMIT');
+          return;
+        }
+        const existingTerminal = currentAttemptTerminalEvent(existing);
+        if (existingTerminal && currentAttemptTerminalEvent([incoming])) throw new Error(`Cannot append terminal event after ${existingTerminal.type}`);
+        insert.run({ id: event.id, run_id: event.runId, sequence: event.sequence, type: event.type, occurred_at: event.occurredAt, actor_json: JSON.stringify(event.actor), data_json: JSON.stringify(event.data), correlation_id: event.correlationId ?? null });
+        db.exec('COMMIT');
+      } catch (error) {
+        try { db.exec('ROLLBACK'); } catch { /* preserve the append error */ }
+        throw error;
+      }
     },
     readAll,
     async checkpoint(input) {
@@ -881,24 +912,31 @@ export class SqliteRunStore implements RunStore {
     this.transaction(() => {
       const run = this.db.prepare('SELECT id FROM runs WHERE id = @id').get({ id: event.runId });
       if (!run) throw new Error(`Cannot append event for unknown run: ${event.runId}`);
+      const duplicate = this.db.prepare('SELECT id FROM run_events WHERE id = @id').get({ id: event.id });
+      if (duplicate) return;
+      const events = this.db.prepare('SELECT * FROM run_events WHERE run_id = @run_id ORDER BY sequence').all({ run_id: event.runId })
+        .map((item) => eventFromRow(item as Record<string, unknown>));
+      const incomingKey = semanticEventKey(event);
+      if (incomingKey && events.some((existing) => semanticEventKey(existing) === incomingKey)) return;
+      const existingTerminal = currentAttemptTerminalEvent(events);
+      if (existingTerminal && currentAttemptTerminalEvent([event])) {
+        throw new Error(`Cannot append terminal event after ${existingTerminal.type}`);
+      }
       const row = this.db.prepare('SELECT MAX(sequence) AS sequence FROM run_events WHERE run_id = @run_id').get({ run_id: event.runId }) as { sequence?: unknown } | undefined;
       const expected = Number(row?.sequence ?? 0) + 1;
       if (event.sequence !== expected) throw new Error(`Event sequence must be ${expected}, received ${event.sequence}`);
-      const duplicate = this.db.prepare('SELECT id FROM run_events WHERE id = @id').get({ id: event.id });
-      if (duplicate) throw new Error(`Duplicate event id: ${event.id}`);
       this.insertEvent(event);
     });
   }
 
   async transition(runId: RunId, action: RunAction, options: RunTransitionOptions = {}): Promise<RunTransitionResult> {
     return this.transaction(() => {
-      const idempotencyKey = options.idempotencyKey;
-      const storageKey = idempotencyKey ? `${runId}:${idempotencyKey}` : undefined;
-      if (storageKey) {
-        const previous = this.db.prepare('SELECT result_json FROM idempotency_keys WHERE key = @key').get({ key: storageKey }) as { result_json?: unknown } | undefined;
+      const requestedStorageKey = options.idempotencyKey ? `${runId}:${options.idempotencyKey}` : undefined;
+      if (requestedStorageKey) {
+        const previous = this.db.prepare('SELECT result_json FROM idempotency_keys WHERE key = @key').get({ key: requestedStorageKey }) as { result_json?: unknown } | undefined;
         if (previous) {
           const stored = JSON.parse(String(previous.result_json)) as { action: RunAction; result: RunTransitionResult };
-          if (stored.action !== action) throw new Error(`Idempotency key already used for action ${stored.action}: ${idempotencyKey}`);
+          if (stored.action !== action) throw new Error(`Idempotency key already used for action ${stored.action}: ${options.idempotencyKey}`);
           return stored.result;
         }
       }
@@ -906,7 +944,22 @@ export class SqliteRunStore implements RunStore {
       if (!row) throw new Error(`Unknown run: ${runId}`);
       const current = runFromRow(row as Record<string, unknown>);
       const sequenceRow = this.db.prepare('SELECT MAX(sequence) AS sequence FROM run_events WHERE run_id = @run_id').get({ run_id: runId }) as { sequence?: unknown } | undefined;
-      const result = transitionRun(current, action, options, Number(sequenceRow?.sequence ?? 0) + 1);
+      const events = this.db.prepare('SELECT * FROM run_events WHERE run_id = @run_id ORDER BY sequence').all({ run_id: runId })
+        .map((item) => eventFromRow(item as Record<string, unknown>));
+      const transitionOptions = action === 'retry' && current.status === 'failed'
+        ? prepareRetryTransition(current, events, options)
+        : options;
+      const idempotencyKey = transitionOptions.idempotencyKey;
+      const storageKey = idempotencyKey ? `${runId}:${idempotencyKey}` : undefined;
+      if (storageKey && storageKey !== requestedStorageKey) {
+        const previous = this.db.prepare('SELECT result_json FROM idempotency_keys WHERE key = @key').get({ key: storageKey }) as { result_json?: unknown } | undefined;
+        if (previous) {
+          const stored = JSON.parse(String(previous.result_json)) as { action: RunAction; result: RunTransitionResult };
+          if (stored.action !== action) throw new Error(`Idempotency key already used for action ${stored.action}: ${idempotencyKey}`);
+          return stored.result;
+        }
+      }
+      const result = transitionRun(current, action, transitionOptions, Number(sequenceRow?.sequence ?? 0) + 1);
       this.db.prepare(`
         UPDATE runs SET status=@status, version=@version, updated_at=@updated_at,
           started_at=@started_at, completed_at=@completed_at, waiting_reason=@waiting_reason,
@@ -1086,17 +1139,25 @@ export class SqliteEntityStore {
   }
 
   private saveReceiptRow(item: ProviderReceipt): void {
+    const providerJson = JSON.stringify(item.provider);
+    const receiptJson = JSON.stringify(item.receipt);
+    const original = this.db.prepare('SELECT id, provider_json, receipt_json, run_id, segment, created_at FROM provider_receipts WHERE id = @id').get({ id: item.id }) as { id?: unknown; provider_json?: unknown; receipt_json?: unknown } | undefined;
+    if (original) {
+      if (String(original.provider_json) === providerJson && String(original.receipt_json) === receiptJson) return;
+      const digest = createHash('sha256').update(JSON.stringify({ provider: item.provider, receipt: item.receipt, segment: item.segment ?? null }), 'utf8').digest('hex').slice(0, 16);
+      const variantId = `${item.id}:variant:${digest}`;
+      const variant = this.db.prepare('SELECT id FROM provider_receipts WHERE id = @id').get({ id: variantId });
+      if (variant) return;
+      this.db.prepare(`
+        INSERT INTO provider_receipts (id, run_id, segment, provider_json, receipt_json, created_at)
+        VALUES (@id, @run_id, @segment, @provider_json, @receipt_json, @created_at)
+      `).run({ id: variantId, run_id: item.runId, segment: item.segment ?? null, provider_json: providerJson, receipt_json: receiptJson, created_at: item.createdAt });
+      return;
+    }
     this.db.prepare(`
-      INSERT OR REPLACE INTO provider_receipts (id, run_id, segment, provider_json, receipt_json, created_at)
+      INSERT INTO provider_receipts (id, run_id, segment, provider_json, receipt_json, created_at)
       VALUES (@id, @run_id, @segment, @provider_json, @receipt_json, @created_at)
-    `).run({
-      id: item.id,
-      run_id: item.runId,
-      segment: item.segment ?? null,
-      provider_json: JSON.stringify(item.provider),
-      receipt_json: JSON.stringify(item.receipt),
-      created_at: item.createdAt,
-    });
+    `).run({ id: item.id, run_id: item.runId, segment: item.segment ?? null, provider_json: providerJson, receipt_json: receiptJson, created_at: item.createdAt });
   }
 
   saveProject(item: Project): void {
@@ -1222,8 +1283,8 @@ export class SqliteEntityStore {
     }));
   }
 
-  getBotProfile(id: string): BotProfile | undefined {
-    return this.listBotProfiles().find((item) => item.id === id);
+  getBotProfile(id: string, projectId?: string): BotProfile | undefined {
+    return this.listBotProfiles(projectId).find((item) => item.id === id);
   }
 
   resolveApproval(runId: string, status: ApprovalRequest['status'], resolvedBy = 'user', decisionReason?: string): number {
@@ -1233,6 +1294,69 @@ export class SqliteEntityStore {
       WHERE run_id = @run_id AND status = 'pending'
     `).run({ status, resolved_at: new Date().toISOString(), resolved_by: resolvedBy, decision_reason: decisionReason ?? null, run_id: runId }) as { changes?: unknown };
     return Number(result?.changes ?? 0);
+  }
+
+  getApproval(id: string): ApprovalRequest | undefined {
+    return this.listApprovals().find((item) => String(item.id) === id);
+  }
+
+  /** Resolve exactly one approval. Repeating the same decision is idempotent. */
+  resolveApprovalById(
+    id: string,
+    status: Extract<ApprovalRequest['status'], 'approved' | 'rejected'>,
+    resolvedBy = 'user',
+    decisionReason?: string,
+  ): { changed: boolean; approval?: ApprovalRequest; conflict?: 'already_resolved' } {
+    return this.transaction(() => {
+      const existing = this.getApproval(id);
+      if (!existing) return { changed: false };
+      if (existing.status !== 'pending') {
+        return existing.status === status
+          ? { changed: false, approval: existing }
+          : { changed: false, approval: existing, conflict: 'already_resolved' as const };
+      }
+      const result = this.db.prepare(`
+        UPDATE approval_requests
+        SET status = @status, resolved_at = @resolved_at, resolved_by = @resolved_by, decision_reason = @decision_reason
+        WHERE id = @id AND status = 'pending'
+      `).run({ id, status, resolved_at: new Date().toISOString(), resolved_by: resolvedBy, decision_reason: decisionReason ?? null }) as { changes?: unknown };
+      return { changed: Number(result?.changes ?? 0) > 0, approval: this.getApproval(id) };
+    });
+  }
+
+  /** Revoke a pending or approved authorization without rewriting its history. */
+  revokeApprovalById(
+    id: string,
+    revokedBy = 'user',
+    decisionReason = 'Tool authorization revoked',
+  ): { changed: boolean; approval?: ApprovalRequest; conflict?: 'already_revoked' | 'not_revocable' } {
+    return this.transaction(() => {
+      const existing = this.getApproval(id);
+      if (!existing) return { changed: false };
+      if (existing.status === 'cancelled') return { changed: false, approval: existing, conflict: 'already_revoked' as const };
+      if (existing.status !== 'pending' && existing.status !== 'approved') return { changed: false, approval: existing, conflict: 'not_revocable' as const };
+      const result = this.db.prepare(`
+        UPDATE approval_requests
+        SET status = 'cancelled', resolved_at = @resolved_at, resolved_by = @resolved_by, decision_reason = @decision_reason
+        WHERE id = @id AND status IN ('pending', 'approved')
+      `).run({ id, resolved_at: new Date().toISOString(), resolved_by: revokedBy, decision_reason: decisionReason }) as { changes?: unknown };
+      return { changed: Number(result?.changes ?? 0) > 0, approval: this.getApproval(id) };
+    });
+  }
+
+  /** Persist one approval request without requiring a full Product Builder bundle. */
+  saveApprovalRequest(item: ApprovalRequest): void {
+    this.transaction(() => this.saveApprovalRow(item));
+  }
+
+  /** Persist one draft or provider-produced artifact without releasing it. */
+  saveArtifact(item: Artifact): void {
+    this.transaction(() => this.saveArtifactRow(item));
+  }
+
+  /** Persist one project-scoped memory item. The caller supplies an idempotent id. */
+  saveMemory(item: MemoryItem): void {
+    this.transaction(() => this.saveMemoryRow(item));
   }
 
   saveProductBuilderEntities(bundle: ProductBuilderEntityBundle): void {
@@ -1246,8 +1370,21 @@ export class SqliteEntityStore {
     });
   }
 
-  listHandoffs(): HandoffEnvelope[] {
-    return this.db.prepare('SELECT * FROM handoffs ORDER BY created_at, id').all().map((row: any) => ({
+  /** Persist one provider execution receipt without coupling it to Product Builder entities. */
+  saveProviderReceipt(item: ProviderReceipt): void {
+    this.transaction(() => this.saveReceiptRow(item));
+  }
+
+  listHandoffs(projectId?: string): HandoffEnvelope[] {
+    const rows = projectId
+      ? this.db.prepare(`
+        SELECT h.* FROM handoffs h
+        WHERE EXISTS (SELECT 1 FROM bot_profiles b WHERE b.id = h.from_bot_id AND b.project_id = @project_id)
+           OR EXISTS (SELECT 1 FROM bot_profiles b WHERE b.id = h.to_bot_id AND b.project_id = @project_id)
+        ORDER BY h.created_at, h.id
+      `).all({ project_id: projectId })
+      : this.db.prepare('SELECT * FROM handoffs ORDER BY created_at, id').all();
+    return rows.map((row: any) => ({
       id: row.id,
       fromBotId: row.from_bot_id,
       toBotId: row.to_bot_id,
@@ -1301,11 +1438,61 @@ export class SqliteEntityStore {
     }));
   }
 
+  getSource(id: string, projectId?: string): Source | undefined {
+    const row = projectId
+      ? this.db.prepare('SELECT * FROM sources WHERE id = @id AND project_id = @project_id').get({ id, project_id: projectId })
+      : this.db.prepare('SELECT * FROM sources WHERE id = @id').get({ id });
+    if (!row) return undefined;
+    const item = row as any;
+    return {
+      id: item.id,
+      projectId: item.project_id,
+      uri: item.uri,
+      ...(item.title ? { title: item.title } : {}),
+      ...(item.excerpt ? { excerpt: item.excerpt } : {}),
+      retrievedAt: item.retrieved_at,
+      ...(item.metadata_json ? { metadata: JSON.parse(item.metadata_json) } : {}),
+    };
+  }
+
   listArtifacts(projectId?: string): Artifact[] {
     const rows = projectId
       ? this.db.prepare('SELECT * FROM artifacts WHERE project_id = @project_id ORDER BY created_at, id').all({ project_id: projectId })
       : this.db.prepare('SELECT * FROM artifacts ORDER BY created_at, id').all();
     return rows.map((row: any) => ({
+      id: row.id,
+      projectId: row.project_id,
+      runId: row.run_id,
+      kind: row.kind,
+      name: row.name,
+      contentType: row.content_type,
+      content: row.content,
+      sourceRefs: JSON.parse(row.source_refs_json),
+      createdAt: row.created_at,
+    }));
+  }
+
+  getArtifact(id: string, projectId?: string): Artifact | undefined {
+    const row = projectId
+      ? this.db.prepare('SELECT * FROM artifacts WHERE id = @id AND project_id = @project_id').get({ id, project_id: projectId })
+      : this.db.prepare('SELECT * FROM artifacts WHERE id = @id').get({ id });
+    if (!row) return undefined;
+    const item = row as any;
+    return {
+      id: item.id,
+      projectId: item.project_id,
+      runId: item.run_id,
+      kind: item.kind,
+      name: item.name,
+      contentType: item.content_type,
+      content: item.content,
+      sourceRefs: JSON.parse(item.source_refs_json),
+      createdAt: item.created_at,
+    };
+  }
+
+  listArtifactsByRun(runId: string): Artifact[] {
+    return this.db.prepare('SELECT * FROM artifacts WHERE run_id = @run_id ORDER BY created_at, id').all({ run_id: runId }).map((row: any) => ({
       id: row.id,
       projectId: row.project_id,
       runId: row.run_id,
@@ -1333,10 +1520,50 @@ export class SqliteEntityStore {
     }));
   }
 
+  getMemory(id: string, projectId?: string): MemoryItem | undefined {
+    const row = projectId
+      ? this.db.prepare('SELECT * FROM memory_items WHERE id = @id AND project_id = @project_id').get({ id, project_id: projectId })
+      : this.db.prepare('SELECT * FROM memory_items WHERE id = @id').get({ id });
+    if (!row) return undefined;
+    const item = row as any;
+    return {
+      id: item.id,
+      projectId: item.project_id,
+      scope: item.scope,
+      content: item.content,
+      sourceRefs: JSON.parse(item.source_refs_json),
+      createdAt: item.created_at,
+      updatedAt: item.updated_at,
+    };
+  }
+
   listReceipts(runId?: string): ProviderReceipt[] {
     const rows = runId
       ? this.db.prepare('SELECT * FROM provider_receipts WHERE run_id = @run_id ORDER BY created_at, id').all({ run_id: runId })
       : this.db.prepare('SELECT * FROM provider_receipts ORDER BY created_at, id').all();
+    return rows.map((row: any) => ({
+      id: row.id,
+      runId: row.run_id,
+      ...(row.segment === null ? {} : { segment: Number(row.segment) }),
+      provider: JSON.parse(row.provider_json),
+      receipt: JSON.parse(row.receipt_json),
+      createdAt: row.created_at,
+    }));
+  }
+
+  /** Return receipts whose run or persisted Product Builder entities belong to one project. */
+  listReceiptsByProject(projectId: string): ProviderReceipt[] {
+    const rows = this.db.prepare(`
+      SELECT DISTINCT pr.*
+      FROM provider_receipts pr
+      LEFT JOIN runs r ON r.id = pr.run_id
+      LEFT JOIN artifacts a ON a.run_id = pr.run_id
+      LEFT JOIN approval_requests ar ON ar.run_id = pr.run_id
+      WHERE r.project_id = @project_id
+         OR a.project_id = @project_id
+         OR ar.project_id = @project_id
+      ORDER BY pr.created_at, pr.id
+    `).all({ project_id: projectId });
     return rows.map((row: any) => ({
       id: row.id,
       runId: row.run_id,

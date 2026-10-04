@@ -1,0 +1,87 @@
+{
+  "validation": "context_multi_pass_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "passes": [
+    {
+      "pass": 1,
+      "snapshotId": "snapshot-context-multi-pass-1",
+      "parentSnapshotId": null,
+      "covers": {
+        "fromSequence": 1,
+        "toSequence": 4
+      },
+      "tailEventIds": [
+        "event-2",
+        "event-3",
+        "event-4"
+      ],
+      "packetRestoresSameRun": true,
+      "preserved": {
+        "objective": true,
+        "constraints": true,
+        "durableFacts": true,
+        "decisions": true,
+        "unknowns": true,
+        "approvals": true,
+        "handoffs": true,
+        "artifacts": true,
+        "nextAction": true
+      }
+    },
+    {
+      "pass": 2,
+      "snapshotId": "snapshot-context-multi-pass-2",
+      "parentSnapshotId": "snapshot-context-multi-pass-1",
+      "covers": {
+        "fromSequence": 1,
+        "toSequence": 6
+      },
+      "tailEventIds": [
+        "event-4",
+        "event-5",
+        "event-6"
+      ],
+      "packetRestoresSameRun": true,
+      "preserved": {
+        "objective": true,
+        "constraints": true,
+        "durableFacts": true,
+        "decisions": true,
+        "unknowns": true,
+        "approvals": true,
+        "handoffs": true,
+        "artifacts": true,
+        "nextAction": true
+      }
+    },
+    {
+      "pass": 3,
+      "snapshotId": "snapshot-context-multi-pass-3",
+      "parentSnapshotId": "snapshot-context-multi-pass-2",
+      "covers": {
+        "fromSequence": 1,
+        "toSequence": 8
+      },
+      "tailEventIds": [
+        "event-6",
+        "event-7",
+        "event-8"
+      ],
+      "packetRestoresSameRun": true,
+      "preserved": {
+        "objective": true,
+        "constraints": true,
+        "durableFacts": true,
+        "decisions": true,
+        "unknowns": true,
+        "approvals": true,
+        "handoffs": true,
+        "artifacts": true,
+        "nextAction": true
+      }
+    }
+  ],
+  "tamperDetection": "content_hash_mismatch",
+  "result": "passed",
+  "evidenceBoundary": "证明结构化 ContextLedger 在连续三次快照/恢复中保留目标、约束、事实、决定、未知项、审批、交接、Artifact 和下一步；不证明自由文本没有遗漏，也不证明恢复后模型生成质量与未压缩路径相同。"
+}

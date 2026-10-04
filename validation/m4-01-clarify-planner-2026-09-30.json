@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "validation.m4-01.v1",
+  "id": "m4-01-clarify-planner-2026-09-30",
+  "recordedAt": "2026-09-30T18:24:00+08:00",
+  "scope": [
+    "workflow clarification contract",
+    "SQLite continuity projection",
+    "HTTP readback",
+    "Web and Electron visible readback"
+  ],
+  "result": "PASS",
+  "evidence": {
+    "focusedTests": "15/15",
+    "fullTestSuite": "62/62",
+    "typecheck": "passed",
+    "webBuild": "passed",
+    "stateValidation": "passed",
+    "diffCheck": "passed",
+    "desktopBuild": "passed",
+    "computerUse": {
+      "app": "Local Agent Workspace",
+      "url": "127.0.0.1:50472/",
+      "visible": [
+        "Clarify / Planner card",
+        "provided and unknown clarification status",
+        "fixed plan step status",
+        "clarification_pending and approval_pending blocker labels"
+      ]
+    }
+  },
+  "behaviorVerified": [
+    "missing target user is a blocking unknown",
+    "missing primary scenario is a blocking unknown",
+    "unknowns do not create Source entities",
+    "empty idea is rejected before Source creation",
+    "same logical input keeps plan, clarification ids and checkpoint keys stable",
+    "changed release projection appends one idempotent state-sync event without duplicating checkpoints",
+    "SQLite state is readable by HTTP and Web/Electron"
+  ],
+  "limitations": [
+    "Fixture data proves control-plane behavior and UI readback only; it is not real model quality evidence",
+    "real Codex Provider Tool Loop remains blocked by Codex state_5.sqlite/.codex write permissions",
+    "DeepSeek API, provider-reported cache/cost and multi-Bot quality remain unverified",
+    "direct shell server listen on port 4310 is blocked by this execution sandbox; the rebuilt Electron child server was visibly reachable on an ephemeral local port"
+  ]
+}

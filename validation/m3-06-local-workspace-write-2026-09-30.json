@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "validation.m3-06-local-workspace-write.v1",
+  "validatedAt": "2026-09-30T04:45:00+08:00",
+  "scope": "LocalToolRuntime 的 workspace_write 文件写入最小纵向单元",
+  "decision": "PASS_WITH_RUNTIME_SCOPE",
+  "implemented": [
+    "workspace 内相对路径解析，拒绝绝对路径、路径穿越和符号链接逃逸",
+    "仅 workspace_write 权限允许写入；read_only 被拒绝",
+    "policy.approvalRequiredActions 包含 filesystem.write 时必须显式 approvalGranted=true",
+    "覆盖已有文件视为潜在破坏性动作，即使 workspace_write 也必须显式 approvalGranted=true；新文件可按 workspace policy 写入",
+    "UTF-8 字节上限，当前单次写入硬上限 256 KB",
+    "同目录临时文件写入、fsync、原子 rename；失败清理临时文件",
+    "receipt 只记录路径、字节数和内容 hash，不回显文件正文",
+    "requestId 幂等重放不会第二次产生写入"
+  ],
+  "evidence": {
+    "adapterTests": "packages/adapters/src/adapters.test.ts：专项 16/16 PASS（含新文件/覆盖审批分支）",
+    "toolLoopTests": "apps/server/src/tool-loop.test.ts：7/7 PASS（含写入审计脱敏）",
+    "typecheck": "npm run typecheck：PASS",
+    "fullTests": "pnpm test:all：66/66 PASS"
+  },
+  "changedFiles": [
+    "packages/adapters/src/tool-runtime.ts",
+    "packages/adapters/src/adapters.test.ts",
+    "apps/server/src/tool-loop.ts"
+  ],
+  "limitations": [
+    "本证据只证明本地 LocalToolRuntime 的受控写入契约，不证明真实 Provider 的 tool loop 或业务质量",
+    "未实现删除、full_access、任意 shell、项目外路径或凭据访问",
+    "真实运行仍需由控制面先记录审批事件，再把 approvalGranted 传入 runtime"
+  ],
+  "externalActions": "none",
+  "secretsRead": false,
+  "oldWorkbenchModified": false
+}

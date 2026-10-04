@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "deepseek-product-builder-draft.v1",
+  "observedAt": "2026-10-02T16:53:07.875Z",
+  "httpStatus": 200,
+  "status": "succeeded",
+  "runId": "run_mur7c09w",
+  "provider": {
+    "authMode": "api_key",
+    "billingSource": "api",
+    "isMock": false,
+    "harness": "deepseek-http",
+    "provider": "deepseek",
+    "model": "deepseek-chat"
+  },
+  "eventTypes": [
+    "run.created",
+    "run.started",
+    "provider.event",
+    "provider.event",
+    "artifact.created",
+    "run.succeeded"
+  ],
+  "draft": {
+    "user": "AI 产品构建者",
+    "scenario": "在本地优先的 Agent Workspace 中，为 Product Builder 生成一份可审阅的产品草稿，供人工审阅后再决定后续动作。",
+    "pain": "产品草稿的生成与审阅过程缺乏结构化、可追溯的本地工作流；外部事实缺乏来源标注，容易把未验证内容误当作已确认信息；同时存在未经审阅就发布的自动化风险。",
+    "value": "在本地环境中把原始想法转化为结构化、可审阅的草稿，明确区分已知信息与 unknowns，保留 source_refs 追溯链，并强制 approval_required，从而支持人工审阅而非自动发布。",
+    "mvp": {
+      "name": "本地 Agent Workspace 可审阅草稿生成器",
+      "scope": [
+        "接收用户输入与约束",
+        "输出符合固定 schema 的 draft 对象",
+        "标注 source_refs 并隔离未验证内容到 unknowns",
+        "设置 approval_required 为 true"
+      ],
+      "non_goals": [
+        "不自动发布",
+        "不宣称已批准或已发布",
+        "不引入未经来源支持的外部事实"
+      ],
+      "flow": [
+        "读取 workspace://user-input",
+        "生成 draft 草稿",
+        "标记 unknowns",
+        "交由人工审阅"
+      ]
+    },
+    "unknowns": [
+      "Product Builder 目标用户的具体角色与团队规模未在输入中说明",
+      "本地 Agent Workspace 现有技术栈、存储与权限模型的细节未提供",
+      "审阅通过后的下游流程（如归档、导出）未明确",
+      "成功指标的基线数据与采集方式未给出"
+    ],
+    "success_metrics": [
+      "草稿结构与输出 schema 校验通过率",
+      "source_refs 覆盖率（每条外部事实均有来源或进入 unknowns）",
+      "人工审阅所需时间",
+      "审阅后修改率与采纳率"
+    ],
+    "source_refs": [
+      "workspace://user-input"
+    ],
+    "approval_required": true
+  },
+  "artifact": {
+    "id": "run_mur7c09w:artifact:provider-product-builder-draft",
+    "kind": "product_builder_provider_draft",
+    "name": "DeepSeek Product Builder Draft",
+    "contentType": "application/json",
+    "sourceRefs": [
+      "workspace://user-input"
+    ]
+  },
+  "outputReceipt": {
+    "schemaVersion": "provider.output-receipt.v1",
+    "rawOutputSha256": "e5d175c697a5d5ca56e06213b0e4bde02f8af8f41e599e67ce7de177b7d2d287",
+    "status": "parsed",
+    "mode": "exact",
+    "extractedOutputSha256": "e5d175c697a5d5ca56e06213b0e4bde02f8af8f41e599e67ce7de177b7d2d287"
+  },
+  "promotion": {
+    "status": "pending_user_approval",
+    "message": "这是可审阅草稿，尚未替换正式 Product Builder Artifact。"
+  },
+  "error": null,
+  "limitations": [
+    "单次真实 DeepSeek 草稿请求；不代表最终产品质量。",
+    "当前草稿仍需人工审批，未替换 Fixture 正式 Artifact。",
+    "API key 只注入本次进程，未写入项目文件。"
+  ]
+}

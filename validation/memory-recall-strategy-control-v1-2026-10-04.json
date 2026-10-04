@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "validation.memory-recall-strategy-control.v1",
+  "observedAt": "2026-10-04T15:37:43+08:00",
+  "status": "passed",
+  "scope": "把 lexical/hybrid 记忆召回策略接入 RSI 单次运行参数，并保留可回放的实际选择",
+  "defaultStrategy": "lexical",
+  "allowedStrategies": ["lexical", "hybrid"],
+  "behavior": {
+    "hybridRequest": "accepted",
+    "proposalReadback": "hybrid",
+    "runStartedEventReadback": "hybrid",
+    "invalidStrategy": "rejected_with_http_400",
+    "idempotency": "preserved",
+    "highRiskApprovalBoundary": "preserved"
+  },
+  "userSurface": {
+    "selector": "Web RSI card",
+    "options": ["关键词模式（默认）", "混合模式（关键词 + 短语 + 新鲜度）"],
+    "strategyIsPerRun": true,
+    "globalDefaultChanged": false,
+    "visualComputerUse": "not_run_in_this_unit",
+    "buildVerified": true
+  },
+  "verification": {
+    "specializedTests": "5/5",
+    "fullTests": "105/105",
+    "typecheck": "passed",
+    "webBuild": "passed",
+    "stateValidation": "passed",
+    "diffCheck": "passed"
+  },
+  "decision": "keep_lexical_as_default_and_allow_hybrid_for_controlled_comparison",
+  "notProven": [
+    "semantic_vector_retrieval_quality",
+    "real_model_quality_improvement",
+    "real_user_productivity_improvement",
+    "hybrid_should_become_global_default"
+  ]
+}

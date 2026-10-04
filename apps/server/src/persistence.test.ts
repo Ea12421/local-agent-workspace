@@ -4,9 +4,9 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
-import type { ContextLedger, RunEvent } from '../../../packages/core/src/types.ts';
+import type { ApprovalRequest, ContextLedger, RunEvent } from '../../../packages/core/src/types.ts';
 import { buildContextSnapshot } from '../../../packages/core/src/context.ts';
-import { JsonlContextSnapshotStore, JsonlEventLog, inspectSqliteSchema, openContextSnapshotStore, openEventLog, openSqliteRunStore, SQLITE_SCHEMA_VERSION, SqliteRunStore } from './persistence.ts';
+import { JsonlContextSnapshotStore, JsonlEventLog, inspectSqliteSchema, openContextSnapshotStore, openEventLog, openSqliteProductBuilderContinuity, openSqliteRunStore, SQLITE_SCHEMA_VERSION, SqliteRunStore } from './persistence.ts';
 
 test('persistence exposes SQLite boundary with a clean-checkout fallback', async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-'));
@@ -290,6 +290,73 @@ test('SQLite RunStore recovers committed state after a killed worker is reopened
   const reopened = openSqliteRunStore(filePath);
   assert.equal((await reopened.store.getRun('run-kill-restart' as any))?.status, 'running');
   assert.equal((await reopened.store.listEvents('run-kill-restart' as any)).length, 2);
+  reopened.close();
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('SQLite bounded retry attempts survive close and reopen', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-retry-reopen-'));
+  const filePath = path.join(dir, 'workspace.db');
+  const first = openSqliteRunStore(filePath);
+  const run = await first.store.createRun({
+    id: 'run-retry-reopen' as any,
+    projectId: 'project-retry-reopen' as any,
+    botId: 'bot-retry-reopen' as any,
+    request: { objective: 'bounded retry restart', input: {}, retryPolicy: { maxRetries: 2 } },
+  });
+  await first.store.transition(run.id, 'start');
+  await first.store.transition(run.id, 'fail', { error: { code: 'TEMP', message: 'temporary', retryable: true } });
+  const retry = await first.store.transition(run.id, 'retry', { retry: { attempt: 1, maxRetries: 2, mode: 'manual', reasonClass: 'manual' } });
+  assert.equal((retry.event.data.retry as any)?.attempt, 1);
+  first.close();
+
+  const reopened = openSqliteRunStore(filePath);
+  const recovered = await reopened.store.getRun(run.id);
+  assert.equal(recovered?.status, 'queued');
+  const events = await reopened.store.listEvents(run.id);
+  const retryEvents = events.filter((event) => event.type === 'run.retry_requested');
+  assert.equal(retryEvents.length, 1);
+  assert.equal((retryEvents[0].data.retry as any)?.attempt, 1);
+  assert.equal((retryEvents[0].data.retry as any)?.maxRetries, 2);
+  reopened.close();
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('SQLite approval resolution is precise, idempotent, and survives reopen', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-approval-resolution-'));
+  const filePath = path.join(dir, 'workspace.db');
+  const first = openSqliteProductBuilderContinuity(filePath);
+  if (!first) {
+    await rm(dir, { recursive: true, force: true });
+    return;
+  }
+  const approval = {
+    id: 'run-approval-1:approval:call-1' as any,
+    projectId: 'project-approval-1' as any,
+    runId: 'run-approval-1' as any,
+    action: 'filesystem.write',
+    description: '允许写入',
+    permissionTier: 'workspace_write',
+    status: 'pending',
+    requestedAt: '2026-09-30T00:00:00.000Z',
+    metadata: { callId: 'call-1' },
+  } satisfies ApprovalRequest;
+  const other = { ...approval, id: 'run-approval-1:approval:call-2' as any, metadata: { callId: 'call-2' } } satisfies ApprovalRequest;
+  first.entityStore.saveApprovalRequest(approval);
+  first.entityStore.saveApprovalRequest(other);
+  const resolved = first.entityStore.resolveApprovalById(approval.id, 'approved', 'test', 'approved once');
+  assert.equal(resolved.changed, true);
+  assert.equal(resolved.approval?.status, 'approved');
+  assert.equal(first.entityStore.getApproval(other.id)?.status, 'pending');
+  const replay = first.entityStore.resolveApprovalById(approval.id, 'approved', 'test', 'replay');
+  assert.equal(replay.changed, false);
+  assert.equal(replay.approval?.status, 'approved');
+  assert.equal(first.entityStore.resolveApprovalById(approval.id, 'rejected').conflict, 'already_resolved');
+  first.close();
+  const reopened = openSqliteProductBuilderContinuity(filePath)!;
+  assert.equal(reopened.entityStore.getApproval(approval.id)?.metadata?.callId, 'call-1');
+  assert.equal(reopened.entityStore.getApproval(approval.id)?.status, 'approved');
+  assert.equal(reopened.entityStore.getApproval(other.id)?.status, 'pending');
   reopened.close();
   await rm(dir, { recursive: true, force: true });
 });

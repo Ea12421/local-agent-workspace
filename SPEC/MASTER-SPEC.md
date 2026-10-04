@@ -81,7 +81,7 @@ ChatGPT 长对话
 
 输入：项目名称、描述、工作区路径。
 
-结果：生成 `Project`，绑定默认 Product Builder Bot，默认权限为 `workspace_write` 但工具白名单为空。
+结果：生成 `Project`，绑定默认 Product Builder Bot，默认权限为 `read_only`；需要工作区写入时必须显式升级权限并逐次审批。
 
 验收：重启 Server 后项目仍可读取；项目之间的 Run、Artifact 和 Memory 不串线。
 

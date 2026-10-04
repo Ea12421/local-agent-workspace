@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "validation.m3-07d-local-tool-loop.v1",
+  "validatedAt": "2026-09-30T04:48:34+08:00",
+  "scope": "显式 local ToolRuntime 模式下的 Provider-neutral 本地只读 Tool Loop",
+  "decision": "PASS_WITH_RUNTIME_SCOPE",
+  "implemented": [
+    "runToolLoop 默认保持 fixture；只有调用者显式传 toolRuntimeMode=local 才会生成 local ToolExecutionRequest",
+    "LocalToolRuntime 在 read_only + filesystem allowlist 下读取当前 workspace 内的真实普通文件",
+    "模型 ToolCall → schema/policy → tool.invoked → 本地读取 → tool.completed → 下一模型段 → artifact.created 的事件顺序可回放",
+    "结果继续使用 callId/requestId 幂等语义；本单元没有新增写入副作用"
+  ],
+  "evidence": {
+    "focusedTest": "apps/server/src/tool-loop.test.ts：8/8 PASS",
+    "localReadAssertion": "实际读取 fixtures/demo-project.json，tool.completed.output.mode=local、relativePath 正确且内容包含 AI Product Builder Demo",
+    "fullTests": "npm run test:all：69/69 PASS",
+    "typecheck": "npm run typecheck：PASS",
+    "stateValidation": "node scripts/validate-state.mjs：PASS",
+    "diffCheck": "git diff --check：PASS"
+  },
+  "limits": [
+    "这不是 DeepSeek 或 Codex 真实模型 Tool Loop 证据；Provider 仍是 FixtureToolLoopProvider",
+    "没有开放 Web 新入口、workspace_write、删除、任意 Shell、full_access 或项目外路径",
+    "不证明模型质量、成本、缓存命中或真人提效"
+  ],
+  "externalActions": "none",
+  "secretsRead": false,
+  "oldWorkbenchModified": false
+}

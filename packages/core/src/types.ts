@@ -72,19 +72,28 @@ export type RunEventType =
   | "tool.invoked"
   | "tool.completed"
   | "tool.failed"
+  | "tool.authorization_revoked"
   | "approval.requested"
   | "approval.resolved"
   | "handoff.created"
   | "handoff.completed"
   | "handoff.failed"
   | "artifact.created"
+  | "product_builder.state_checkpoint"
   | "context.compaction_started"
   | "context.snapshot_created"
   | "context.compaction_failed"
   | "run.segment_started"
   | "run.segment_completed"
   | "run.resume_requested"
-  | "run.resume_failed";
+  | "run.resume_failed"
+  | "improvement.run_started"
+  | "improvement.proposal_created"
+  | "improvement.evaluation_completed"
+  | "improvement.approval_requested"
+  | "improvement.published"
+  | "improvement.rolled_back"
+  | "improvement.failed";
 
 export type EventActor =
   | { type: "system" }
@@ -118,6 +127,8 @@ export interface ToolPolicy {
   allowedTools: string[];
   allowedCommands?: string[];
   allowedPaths?: string[];
+  /** Monotonic control-plane revision. A stale tool call must be rechecked. */
+  policyVersion?: number;
   /** Actions that always require a one-off user approval. */
   approvalRequiredActions: string[];
 }
@@ -166,7 +177,16 @@ export interface RunRequest {
   inputRefs?: string[];
   constraints?: string[];
   outputSchema?: JsonObject;
+  /** Optional bounded retry policy. The runtime applies a hard safety cap. */
+  retryPolicy?: RetryPolicy;
+  /** Verified local recovery context; adapters must explicitly inject it into their request. */
+  context?: ContextPacket;
   metadata?: JsonObject;
+}
+
+export interface RetryPolicy {
+  /** Number of additional attempts allowed after the initial attempt. */
+  maxRetries: number;
 }
 
 export interface Run {
@@ -226,6 +246,19 @@ export interface RunTransitionOptions {
   correlationId?: string;
   /** Replaying the same key must return the original transition without a second event. */
   idempotencyKey?: string;
+  /** Explicit audit metadata for a bounded retry attempt. */
+  retry?: RetryAttemptMetadata;
+}
+
+export type RetryMode = "manual" | "automatic";
+export type RetryReasonClass = "manual" | "provider_transient" | "provider_limit" | "tool_transient" | "unknown";
+
+export interface RetryAttemptMetadata {
+  attempt: number;
+  maxRetries: number;
+  mode: RetryMode;
+  reasonClass: RetryReasonClass;
+  previousFailureCode?: string;
 }
 
 export interface RunTransitionResult {
@@ -246,6 +279,10 @@ export interface ProviderCapabilities {
   streaming: boolean;
   toolCalling: boolean;
   structuredOutput: boolean;
+  /** Concrete structured-output modes the adapter has actually implemented. */
+  structuredOutputModes?: Array<"json_object" | "json_schema">;
+  /** Prompt caching is optional and provider-reported; unknown is different from unsupported. */
+  promptCaching?: "unsupported" | "unknown" | "reported";
   cancellation: boolean;
   resume: boolean;
   reasoningContentPassthrough?: boolean;
@@ -271,6 +308,106 @@ export interface ProviderAdapter {
   resume(handle: RunHandle): Promise<void>;
 }
 
+/**
+ * Provider-neutral message and tool contracts.
+ *
+ * These types are the seam between the control plane and a model/API adapter.
+ * They are intentionally additive: the current Run-based adapters are still
+ * the production path until each adapter consumes this envelope.
+ */
+export type ProviderMessageRole = "system" | "developer" | "user" | "assistant" | "tool";
+
+export interface ProviderMessage {
+  role: ProviderMessageRole;
+  content: string;
+  name?: string;
+  toolCallId?: string;
+  /** Assistant tool proposals are kept separate from the textual content. */
+  toolCalls?: ToolCallEnvelope[];
+  /** Provider-specific replay fields (for example DeepSeek reasoning_content). */
+  providerFields?: JsonObject;
+}
+
+export interface ToolDefinition {
+  name: string;
+  description: string;
+  inputSchema: JsonObject;
+  permissionTier: PermissionTier;
+}
+
+export type ToolCallStatus = "requested" | "approved" | "running" | "succeeded" | "failed" | "denied";
+
+export interface ToolCallEnvelope {
+  callId: string;
+  name: string;
+  arguments: JsonObject;
+  status: ToolCallStatus;
+  approvalRequestId?: ApprovalRequestId;
+  resultRef?: string;
+  errorCode?: string;
+}
+
+export interface UsageSummary {
+  inputTokens?: number;
+  outputTokens?: number;
+  totalTokens?: number;
+  cachedInputTokens?: number;
+  estimatedCostCents?: number;
+  source: "provider" | "estimated" | "unknown";
+}
+
+export type PromptCacheMode = "disabled" | "opportunistic" | "required";
+
+export interface PromptCachePolicy {
+  mode: PromptCacheMode;
+  /** Hash of the stable prefix only; never store the prompt text in this receipt. */
+  stablePrefixSha256?: string;
+  maxAgeMs?: number;
+}
+
+export type PromptCacheStatus = "not_requested" | "unknown" | "unsupported" | "miss" | "hit" | "written";
+
+export interface PromptCacheReceipt {
+  schemaVersion: "provider.prompt-cache-receipt.v1";
+  status: PromptCacheStatus;
+  providerReported: boolean;
+  stablePrefixSha256?: string;
+  cachedInputTokens?: number;
+}
+
+export interface ModelRequestEnvelope {
+  schemaVersion: "provider.model-request.v1";
+  requestId: string;
+  runId: RunId;
+  objective: string;
+  messages: ProviderMessage[];
+  input?: JsonValue;
+  inputRefs?: string[];
+  constraints?: string[];
+  outputSchema?: JsonObject;
+  tools: ToolDefinition[];
+  context?: ContextPacket;
+  cachePolicy: PromptCachePolicy;
+  metadata?: JsonObject;
+}
+
+export interface ProviderResponseEnvelope {
+  schemaVersion: "provider.model-response.v1";
+  requestId: string;
+  provider: ProviderIdentity;
+  /** Stable hash reference for the raw provider payload; raw text is not stored here. */
+  rawResponseRef?: string;
+  outputText?: string;
+  structuredOutput?: JsonValue;
+  toolCalls: ToolCallEnvelope[];
+  usage: UsageSummary;
+  promptCache: PromptCacheReceipt;
+  finishReason?: string;
+  error?: RunError;
+  /** Provider-specific fields are preserved for audit, not interpreted by the control plane. */
+  providerFields?: JsonObject;
+}
+
 export type HandoffStatus = "queued" | "running" | "succeeded" | "failed";
 
 export interface HandoffEnvelope {
@@ -292,6 +429,14 @@ export interface HandoffEnvelope {
 }
 
 export type ApprovalStatus = "pending" | "approved" | "rejected" | "expired" | "cancelled";
+
+export type ToolAuthorizationStatus = "not_required" | "approved" | "revoked" | "expired" | "cancelled";
+
+export interface ToolAuthorizationSnapshot {
+  policyVersion: number;
+  status: ToolAuthorizationStatus;
+  approvalId?: ApprovalRequestId;
+}
 
 export interface ApprovalRequest {
   id: ApprovalRequestId;

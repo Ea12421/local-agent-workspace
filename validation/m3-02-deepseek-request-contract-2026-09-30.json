@@ -1,0 +1,32 @@
+{
+  "unit": "M3-02 DeepSeek request contract",
+  "generatedAt": "2026-09-30",
+  "decision": "PASS_OFFLINE_CONTRACT_ONLY",
+  "scope": "fake-fetch contract tests only; no real API key or network request",
+  "evidence": {
+    "command": "npm run test:all",
+    "testsPassed": 73,
+    "focusedTests": [
+      "DeepSeek request preserves RunRequest fields and normalizes provider usage",
+      "DeepSeek request failures remain explicit without retrying or exposing secrets"
+    ],
+    "typecheck": "PASS",
+    "diffCheck": "PASS"
+  },
+  "verified": [
+    "input, inputRefs, constraints and outputSchema are rendered into the provider request",
+    "verified recovery context remains a separate system message",
+    "provider usage is marked source=provider when present",
+    "non-2xx responses remain explicit failures",
+    "invalid JSON responses remain explicit failures",
+    "reasoning_content and raw tool-call payloads remain available to the neutral envelope",
+    "toolCalling remains false because this adapter is still one-shot"
+  ],
+  "notVerified": [
+    "real DeepSeek authentication or network reachability",
+    "real provider quality, latency, cost or prompt-cache hit rate",
+    "DeepSeek model-driven Tool Loop",
+    "automatic retry policy"
+  ],
+  "nextGate": "If the user later supplies a DeepSeek key, run one bounded one-shot smoke and compare the receipt; do not treat this offline contract as a real-provider pass."
+}

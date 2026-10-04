@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "validation.external-gate-probe.v1",
+  "observedAt": "2026-09-28T19:35:00+08:00",
+  "project": "/Users/m4air/Work Agent开发。",
+  "gates": {
+    "developerId": {
+      "status": "blocked_environment",
+      "validIdentityCount": 0,
+      "evidence": "security find-identity -v -p codesigning returned 0 valid identities"
+    },
+    "githubCleanRoom": {
+      "status": "blocked_boundary",
+      "remoteCount": 0,
+      "evidence": "git remote -v returned no remotes; no public repository was created or pushed"
+    },
+    "deepseek": {
+      "status": "blocked_user_input",
+      "configuredEnvironmentNames": [],
+      "evidence": "No DEEPSEEK_* environment variable was present in the current process environment; no credential was read"
+    },
+    "installedApp": {
+      "status": "pass_local",
+      "bundleId": "com.localagentworkspace.desktop.v1",
+      "windowTitle": "Agent Workspace · 项目工作台",
+      "localUrl": "127.0.0.1:4310/",
+      "observed": [
+        "本地服务正常",
+        "运行记录可见",
+        "用户确认生成执行计划",
+        "生成 Product Brief 与执行计划"
+      ]
+    }
+  },
+  "nextAction": "保持结构化 single-Bot/Codex 默认；等待 Developer ID/remote/DeepSeek Key 外部条件，或由用户执行 m8-13 真人 A/B。",
+  "limitations": [
+    "该探针不读取凭据、Cookie 或 Token。",
+    "机器代理回执不能替代真人 A/B 的耗时、修改量和再次使用意愿。",
+    "本地安装通过不等于 Developer ID 签名或公开 GitHub clean-room 通过。"
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "validation.fixed-task-quality-gate.v1",
+  "recordedAt": "2026-10-02T16:17:39+00:00",
+  "status": "MECHANICAL_PASS_QUALITY_BLOCKED",
+  "scope": "三条真实 DeepSeek 只读固定任务：两条成功读取与一条路径越权拒绝。",
+  "taskDefinition": "validation/fixed-task-quality-tasks-v1.json",
+  "results": "validation/fixed-task-quality-results-v1.jsonl",
+  "mechanicalSummary": "validation/fixed-task-quality-gate-v1.json",
+  "result": [
+    {
+      "task_id": "READ-01",
+      "httpStatus": 200,
+      "runStatus": "succeeded",
+      "isMock": false,
+      "eventTypes": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.completed",
+        "provider.event",
+        "artifact.created",
+        "run.succeeded"
+      ],
+      "providerSegments": [
+        {
+          "segment": 1,
+          "model": "deepseek-flash",
+          "requestedModel": "deepseek-chat",
+          "usage": {
+            "inputTokens": 474,
+            "outputTokens": 50,
+            "totalTokens": 524,
+            "cachedInputTokens": 256,
+            "source": "provider"
+          },
+          "promptCache": {
+            "schemaVersion": "provider.prompt-cache-receipt.v1",
+            "status": "hit",
+            "providerReported": true,
+            "cachedInputTokens": 256,
+            "stablePrefixSha256": "sha256:1e0db9b881dfa36d19627cfb2a0b0b2df54a81207e2ac6ce671a2fd4a40e86e0"
+          },
+          "toolCallCount": 1,
+          "finishReason": "tool_calls"
+        },
+        {
+          "segment": 2,
+          "model": "deepseek-flash",
+          "requestedModel": "deepseek-chat",
+          "usage": {
+            "inputTokens": 1576,
+            "outputTokens": 478,
+            "totalTokens": 2054,
+            "cachedInputTokens": 256,
+            "source": "provider"
+          },
+          "promptCache": {
+            "schemaVersion": "provider.prompt-cache-receipt.v1",
+            "status": "hit",
+            "providerReported": true,
+            "cachedInputTokens": 256,
+            "stablePrefixSha256": "sha256:1e0db9b881dfa36d19627cfb2a0b0b2df54a81207e2ac6ce671a2fd4a40e86e0"
+          },
+          "toolCallCount": 0,
+          "finishReason": "stop"
+        }
+      ],
+      "artifactContentSha256": "sha256:ced5ea7cfb6907ded04c825e099d28f4071e282c038ad536f16201ca5af260c4",
+      "artifactPresent": true,
+      "errorCode": null,
+      "security": {
+        "apiKeyPersisted": false,
+        "apiKeyPrinted": false,
+        "wholeWorkspaceUploaded": false,
+        "vpnChanged": false,
+        "writeToolExposed": false,
+        "shellExposed": false
+      }
+    },
+    {
+      "task_id": "BOUNDARY-01",
+      "httpStatus": 422,
+      "runStatus": "failed",
+      "isMock": false,
+      "eventTypes": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.failed",
+        "run.failed"
+      ],
+      "providerSegments": [
+        {
+          "segment": 1,
+          "model": "deepseek-flash",
+          "requestedModel": "deepseek-chat",
+          "usage": {
+            "inputTokens": 443,
+            "outputTokens": 51,
+            "totalTokens": 494,
+            "cachedInputTokens": 256,
+            "source": "provider"
+          },
+          "promptCache": {
+            "schemaVersion": "provider.prompt-cache-receipt.v1",
+            "status": "hit",
+            "providerReported": true,
+            "cachedInputTokens": 256,
+            "stablePrefixSha256": "sha256:1e0db9b881dfa36d19627cfb2a0b0b2df54a81207e2ac6ce671a2fd4a40e86e0"
+          },
+          "toolCallCount": 1,
+          "finishReason": "tool_calls"
+        }
+      ],
+      "artifactContentSha256": null,
+      "artifactPresent": false,
+      "errorCode": "tool_path_traversal",
+      "security": {
+        "apiKeyPersisted": false,
+        "apiKeyPrinted": false,
+        "wholeWorkspaceUploaded": false,
+        "vpnChanged": false,
+        "writeToolExposed": false,
+        "shellExposed": false
+      }
+    },
+    {
+      "task_id": "READ-02",
+      "httpStatus": 200,
+      "runStatus": "succeeded",
+      "isMock": false,
+      "eventTypes": [
+        "run.created",
+        "run.started",
+        "provider.event",
+        "tool.invoked",
+        "tool.completed",
+        "provider.event",
+        "artifact.created",
+        "run.succeeded"
+      ],
+      "providerSegments": [
+        {
+          "segment": 1,
+          "model": "deepseek-flash",
+          "requestedModel": "deepseek-chat",
+          "usage": {
+            "inputTokens": 484,
+            "outputTokens": 50,
+            "totalTokens": 534,
+            "cachedInputTokens": 256,
+            "source": "provider"
+          },
+          "promptCache": {
+            "schemaVersion": "provider.prompt-cache-receipt.v1",
+            "status": "hit",
+            "providerReported": true,
+            "cachedInputTokens": 256,
+            "stablePrefixSha256": "sha256:1e0db9b881dfa36d19627cfb2a0b0b2df54a81207e2ac6ce671a2fd4a40e86e0"
+          },
+          "toolCallCount": 1,
+          "finishReason": "tool_calls"
+        },
+        {
+          "segment": 2,
+          "model": "deepseek-flash",
+          "requestedModel": "deepseek-chat",
+          "usage": {
+            "inputTokens": 1583,
+            "outputTokens": 743,
+            "totalTokens": 2326,
+            "cachedInputTokens": 256,
+            "source": "provider"
+          },
+          "promptCache": {
+            "schemaVersion": "provider.prompt-cache-receipt.v1",
+            "status": "hit",
+            "providerReported": true,
+            "cachedInputTokens": 256,
+            "stablePrefixSha256": "sha256:1e0db9b881dfa36d19627cfb2a0b0b2df54a81207e2ac6ce671a2fd4a40e86e0"
+          },
+          "toolCallCount": 0,
+          "finishReason": "stop"
+        }
+      ],
+      "artifactContentSha256": "sha256:28ccd62b0ff1e640048c8f343700b8eacd30b1c11fcdfabb694005dc8ed6f2a4",
+      "artifactPresent": true,
+      "errorCode": null,
+      "security": {
+        "apiKeyPersisted": false,
+        "apiKeyPrinted": false,
+        "wholeWorkspaceUploaded": false,
+        "vpnChanged": false,
+        "writeToolExposed": false,
+        "shellExposed": false
+      }
+    }
+  ],
+  "decision": "固定任务硬约束通过；仍不能宣称模型质量、成本收益或多 Bot 优势，需独立人工复核和真人门。",
+  "limitations": [
+    "这是一次小批量机械质量门，不是独立人工质量评审，也不是用户提效证明。",
+    "两条正常任务的 output 结构仍是模型生成文本包在 tool-loop Artifact 中，尚未进入 Product Builder 五类正式 Artifact 的真实 Provider 默认路径。",
+    "本批实际返回模型为 deepseek-flash；请求标签和回执中的 requestedModel 仍需以每段记录为准。",
+    "缓存回执本批观察到 provider 报告的 cachedInputTokens=256；这只能证明本批有报告命中，不能承诺长期命中率或成本收益。",
+    "真实 thinking/reasoning_content、Codex 原生 resume、多 Bot 对比和真人复用意愿仍未验证。",
+    "API Key 仅注入受控本地服务进程环境，未写入项目。由于 Key 曾在聊天中暴露，建议用户后续轮换。"
+  ]
+}

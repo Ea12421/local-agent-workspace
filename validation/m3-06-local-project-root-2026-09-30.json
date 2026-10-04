@@ -1,0 +1,23 @@
+{
+  "unit": "M3-06 local project workspace binding",
+  "generatedAt": "2026-09-30",
+  "decision": "PASS",
+  "scope": "local synthetic workspace only",
+  "evidence": {
+    "test": "local file reads use the persisted project workspace root",
+    "command": "node --experimental-strip-types --test apps/server/src/runtime.test.ts",
+    "testsPassed": 4,
+    "typecheck": "PASS",
+    "webBuild": "PASS",
+    "diffCheck": "PASS"
+  },
+  "verified": [
+    "executeLocalFileReadRun resolves the project workspace root before LocalToolRuntime execution",
+    "a file present only in the configured project workspace is read successfully",
+    "the read remains bounded and read-only"
+  ],
+  "notVerified": [
+    "user-supplied external project paths",
+    "workspace_write or full_access behavior through the default Product Builder UI"
+  ]
+}

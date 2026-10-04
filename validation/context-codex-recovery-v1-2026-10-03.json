@@ -1,0 +1,197 @@
+{
+  "validation": "context_codex_recovery_v1",
+  "observedAt": "2026-10-03T14:36:18.388Z",
+  "objective": "只验证本项目 ContextSnapshot/ContextPacket 交给同一个 Codex 执行器后，关键状态是否可恢复；不比较不同模型或 Harness。",
+  "methodology": {
+    "executor": "CodexExternalAdapter → codex exec --json",
+    "modelSource": "当前 Codex 订阅执行通道（CLI 0.155.1；billingSource 仍由 CLI 保持 unknown）",
+    "workingDirectory": "/private/tmp",
+    "cases": [
+      "full_context",
+      "verified_context_packet"
+    ],
+    "promptShared": true,
+    "fixedLedger": true,
+    "internalCodexCompressionMeasured": false,
+    "note": "Codex 自身的内部压缩/缓存没有稳定公开指标；本验证只测本项目生成的恢复包能否被同一执行器正确读取。"
+  },
+  "contextSize": {
+    "fullContextTokensEstimated": 4195,
+    "recoveryPacketTokensEstimated": 774,
+    "estimatedReduction": 0.8155,
+    "snapshotId": "snapshot-context-codex-validation",
+    "snapshotSha256": "66ffba06c2ae013a3cd7a067fecef2270c5444a1d39fd78b4a6bdc19d3941f75"
+  },
+  "cases": [
+    {
+      "name": "full_context",
+      "runId": "d8cb8369-13cf-45af-889a-f757df23ebdf",
+      "startedAt": "2026-10-03T14:36:18.389Z",
+      "elapsedMs": 22131,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "providerCompleted": true,
+      "eventCount": 5,
+      "usage": {
+        "input_tokens": 29880,
+        "cached_input_tokens": 12032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 291,
+        "reasoning_output_tokens": 42
+      },
+      "outputSha256": "896f8b922c10de4ba3e30e277ca1ed6eda5967ed99b49b0773c4d263dc654aff",
+      "parsedOutput": {
+        "objective": "把产品想法推进成可审阅的执行计划",
+        "constraints": [
+          "不外发",
+          "保留人工审批",
+          "只读项目文件"
+        ],
+        "durableFacts": [
+          {
+            "id": "fact-user",
+            "text": "目标用户是独立开发者",
+            "eventRefs": [
+              "event-1"
+            ],
+            "sourceRefs": [
+              "source-1"
+            ],
+            "priority": "critical"
+          },
+          {
+            "id": "fact-provider",
+            "text": "本轮只验证结构化上下文恢复，不比较不同模型或 Harness",
+            "eventRefs": [
+              "event-2"
+            ],
+            "sourceRefs": [
+              "source-2"
+            ],
+            "priority": "critical"
+          }
+        ],
+        "decisions": [
+          {
+            "id": "decision-local-first",
+            "text": "先完成本地恢复验证，再决定是否接入额外 API",
+            "status": "accepted",
+            "actor": "user",
+            "eventRefs": [
+              "event-3"
+            ]
+          }
+        ],
+        "unknowns": [
+          "真实用户提效尚未验证"
+        ],
+        "pendingApprovalRefs": [
+          "approval-42"
+        ],
+        "activeHandoffRefs": [
+          "handoff-architecture"
+        ],
+        "artifactRefs": [
+          "artifact-execution-plan-v1"
+        ],
+        "nextAction": "用同一个 Codex 执行器读取恢复包，检查关键事实是否仍然可用",
+        "do_not_repeat": "不重复已经完成的工具或 Artifact 工作"
+      },
+      "requiredMarkers": 12,
+      "missingMarkers": [],
+      "structuralPass": true
+    },
+    {
+      "name": "verified_context_packet",
+      "runId": "7227a871-a45a-4027-bcba-120af6617772",
+      "startedAt": "2026-10-03T14:36:40.520Z",
+      "elapsedMs": 30940,
+      "provider": {
+        "authMode": "subscription",
+        "billingSource": "unknown",
+        "isMock": false,
+        "harness": "codex-cli",
+        "provider": "openai-codex",
+        "model": "codex-managed-session"
+      },
+      "providerCompleted": true,
+      "eventCount": 5,
+      "usage": {
+        "input_tokens": 24616,
+        "cached_input_tokens": 12032,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 309,
+        "reasoning_output_tokens": 60
+      },
+      "outputSha256": "896f8b922c10de4ba3e30e277ca1ed6eda5967ed99b49b0773c4d263dc654aff",
+      "parsedOutput": {
+        "objective": "把产品想法推进成可审阅的执行计划",
+        "constraints": [
+          "不外发",
+          "保留人工审批",
+          "只读项目文件"
+        ],
+        "durableFacts": [
+          {
+            "id": "fact-user",
+            "text": "目标用户是独立开发者",
+            "eventRefs": [
+              "event-1"
+            ],
+            "sourceRefs": [
+              "source-1"
+            ],
+            "priority": "critical"
+          },
+          {
+            "id": "fact-provider",
+            "text": "本轮只验证结构化上下文恢复，不比较不同模型或 Harness",
+            "eventRefs": [
+              "event-2"
+            ],
+            "sourceRefs": [
+              "source-2"
+            ],
+            "priority": "critical"
+          }
+        ],
+        "decisions": [
+          {
+            "id": "decision-local-first",
+            "text": "先完成本地恢复验证，再决定是否接入额外 API",
+            "status": "accepted",
+            "actor": "user",
+            "eventRefs": [
+              "event-3"
+            ]
+          }
+        ],
+        "unknowns": [
+          "真实用户提效尚未验证"
+        ],
+        "pendingApprovalRefs": [
+          "approval-42"
+        ],
+        "activeHandoffRefs": [
+          "handoff-architecture"
+        ],
+        "artifactRefs": [
+          "artifact-execution-plan-v1"
+        ],
+        "nextAction": "用同一个 Codex 执行器读取恢复包，检查关键事实是否仍然可用",
+        "do_not_repeat": "不重复已经完成的工具或 Artifact 工作"
+      },
+      "requiredMarkers": 12,
+      "missingMarkers": [],
+      "structuralPass": true
+    }
+  ],
+  "result": "passed",
+  "evidenceBoundary": "同一个 Codex 执行器在完整状态和本项目恢复包两种输入下均找回固定关键字段；这不证明自由聊天全文无损、不证明 Codex 原生 resume 已接通，也不证明提示词缓存带来成本下降。"
+}

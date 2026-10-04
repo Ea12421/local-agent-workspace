@@ -10,5 +10,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["src/main.ts"]
+  "include": ["src/main.ts", "src/server-process.cts"]
 }

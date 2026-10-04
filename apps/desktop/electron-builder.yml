@@ -1,4 +1,4 @@
-appId: com.localagentworkspace.desktop
+appId: com.localagentworkspace.desktop.v1
 productName: Local Agent Workspace
 directories:
   output: release
@@ -9,8 +9,14 @@ files:
   - apps/web/dist/**
   - fixtures/**
   - package.json
+asarUnpack:
+  - apps/server/src/**
+  - packages/**
+  - apps/web/dist/**
+  - fixtures/**
 extraMetadata:
   main: apps/desktop/dist/main.cjs
 mac:
   target: dmg
   category: public.app-category.developer-tools
+  icon: apps/desktop/assets/icon.icns

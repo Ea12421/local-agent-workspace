@@ -1,0 +1,69 @@
+{
+  "validation": "public_benchmark_matrix_v1",
+  "observedAt": "2026-10-03T04:45:00+08:00",
+  "project": "Local Agent Workspace",
+  "comparisonRule": "only compare harnesses when dataset hash, subset, model, prompt, judge, retry, tools, permissions, and receipt fields are identical",
+  "protocols": [
+    {
+      "name": "LongMemEval",
+      "role": "primary_long_term_memory",
+      "officialRepository": "https://github.com/xiaowu0162/LongMemEval",
+      "status": "retrieval_run_complete",
+      "dataset": "LongMemEval_S cleaned",
+      "datasetSha256": "d6f21ea9d60a0d56f34a05b609c79c88a451d2ae03597821ea3d5a9678c3a442",
+      "officialRepoCommit": "9e0b455f4ef0e2ab8f2e582289761153549043fc",
+      "questionCount": 500,
+      "evaluatedQuestionCount": 470,
+      "excludedAbstentionCount": 30,
+      "method": "official flat-bm25-compatible session retrieval plus recency baseline and oracle upper bound",
+      "modelCalls": 0,
+      "evidence": [
+        "validation/longmemeval-retrieval-v1-2026-10-03.json",
+        "validation/longmemeval-retrieval-v1-2026-10-03.md",
+        "validation/longmemeval-retrieval-v1-2026-10-03.svg",
+        "validation/longmemeval-reader-subset-v1-2026-10-03.json"
+      ],
+      "boundary": "retrieval evidence only; not final QA accuracy or harness quality"
+    },
+    {
+      "name": "LoCoMo",
+      "role": "secondary_long_conversation_memory",
+      "officialRepository": "https://github.com/snap-research/LoCoMo",
+      "status": "evidence_retrieval_diagnostic_complete",
+      "dataset": "locomo10.json",
+      "datasetSha256": "79fa87e90f04081343b8c8debecb80a9a6842b76a7aa537dc9fdf651ea698ff4",
+      "conversationCount": 10,
+      "evidenceQaCount": 1982,
+      "modelCalls": 0,
+      "evidence": [
+        "validation/locomo-evidence-retrieval-v1-2026-10-03.json",
+        "validation/locomo-evidence-retrieval-v1-2026-10-03.md",
+        "validation/locomo-evidence-retrieval-v1-2026-10-03.svg"
+      ],
+      "boundary": "official evidence-label retrieval diagnostic only; not LoCoMo official QA/F1 and not comparable with LongMemEval score"
+    },
+    {
+      "name": "LongBench",
+      "role": "multi_task_long_context",
+      "officialRepository": "https://github.com/THUDM/LongBench",
+      "status": "protocol_audited_not_run",
+      "boundary": "task/category/model configuration must be fixed before comparison"
+    },
+    {
+      "name": "RULER",
+      "role": "synthetic_effective_context_stress",
+      "officialRepository": "https://github.com/NVIDIA/RULER",
+      "status": "protocol_audited_not_run",
+      "boundary": "synthetic stress evidence is not real workflow productivity"
+    },
+    {
+      "name": "NoLiMa",
+      "role": "associative_long_context_retrieval",
+      "officialRepository": "https://arxiv.org/abs/2502.05167",
+      "status": "protocol_audited_not_run",
+      "boundary": "not a replacement for multi-session QA evaluation"
+    }
+  ],
+  "nextAction": "Implement a bounded 20-question LongMemEval reader/QA protocol with the same receipt fields, then compare no-compaction versus one/multi-pass compaction.",
+  "result": "matrix_frozen_and_first_retrieval_baseline_complete"
+}

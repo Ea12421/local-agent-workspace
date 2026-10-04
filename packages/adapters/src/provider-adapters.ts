@@ -2,8 +2,10 @@ import { randomUUID } from 'node:crypto';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import type {
-  ProviderAdapter, ProviderCapabilities, ProviderIdentity, RunEvent, RunHandle, RunRequest,
+  ProviderAdapter, ProviderCapabilities, ProviderIdentity, RunEvent, RunHandle, RunRequest, RunId,
 } from '../../core/src/index.ts';
+import { buildModelRequestEnvelope, renderModelRequestEnvelope, renderProviderRequestContent } from './provider-request.ts';
+import { normalizeDeepSeekChatResponse } from './provider-envelope.ts';
 
 function identity(partial: Partial<ProviderIdentity> & Pick<ProviderIdentity, 'harness' | 'provider' | 'model'>): ProviderIdentity {
   return {
@@ -47,14 +49,21 @@ export class DeepSeekApiAdapter implements ProviderAdapter {
   private readonly requests = new Map<string, RunRequest>();
 
   constructor(config: DeepSeekConfig = {}) {
-    this.config = { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat', ...config };
+    // Runtime callers commonly pass optional environment values explicitly;
+    // keep the documented defaults when those values are undefined.
+    this.config = { ...config, baseUrl: config.baseUrl ?? 'https://api.deepseek.com', model: config.model ?? 'deepseek-chat' };
   }
 
   async probeCapabilities(): Promise<ProviderCapabilities> {
     return {
-      streaming: true,
-      toolCalling: true,
+      // The current adapter makes one non-streaming chat/completions request.
+      // Preserve the provider fields in the receipt, but do not claim that a
+      // generic tool loop is implemented until the control-plane bridge exists.
+      streaming: false,
+      toolCalling: false,
       structuredOutput: true,
+      structuredOutputModes: ['json_object'],
+      promptCaching: 'unknown',
       cancellation: false,
       resume: false,
       reasoningContentPassthrough: true,
@@ -73,26 +82,49 @@ export class DeepSeekApiAdapter implements ProviderAdapter {
     if (!request) throw new Error(`Unknown DeepSeek handle ${handle.id}`);
     if (!this.config.apiKey) throw new Error('DeepSeek API key is not configured');
     const fetchImpl = this.config.fetchImpl ?? fetch;
+    const envelope = buildModelRequestEnvelope({
+      requestId: handle.id,
+      runId: (String(request.metadata?.runId ?? handle.id) as RunId),
+      request,
+    });
+    const providerMessages = envelope.context
+      ? [
+          envelope.messages[0],
+          { role: 'user' as const, content: renderProviderRequestContent(envelope) },
+        ]
+      : [{ role: 'user' as const, content: renderProviderRequestContent(envelope) }];
     const response = await fetchImpl(`${this.config.baseUrl}/chat/completions`, {
       method: 'POST',
       headers: { authorization: `Bearer ${this.config.apiKey}`, 'content-type': 'application/json' },
       body: JSON.stringify({
         model: this.config.model,
-        messages: [{ role: 'user', content: request.objective }],
+        messages: providerMessages,
         response_format: request.outputSchema ? { type: 'json_object' } : undefined,
       }),
     });
     if (!response.ok) throw new Error(`DeepSeek request failed (${response.status})`);
-    const payload = await response.json() as any;
-    // Keep provider-specific reasoning_content/tool fields in the receipt rather than
-    // pretending that an OpenAI-compatible response is provider-identical.
+    let payload: any;
+    try {
+      payload = await response.json() as any;
+    } catch (error) {
+      throw new Error(`DeepSeek response JSON invalid: ${error instanceof Error ? error.message : String(error)}`);
+    }
+    const normalized = normalizeDeepSeekChatResponse({
+      requestId: handle.id,
+      provider: handle.provider.provider === 'deepseek' ? handle.provider : (await this.probeCapabilities()).identity,
+      payload,
+    });
+    // Keep the legacy top-level fields for diagnostics while also exposing the
+    // provider-neutral envelope used by future controlled tool-loop consumers.
     yield event(handle, {
+      phase: 'model.response',
       model: payload.model ?? this.config.model,
       content: payload.choices?.[0]?.message?.content ?? null,
       reasoning_content: payload.choices?.[0]?.message?.reasoning_content ?? null,
       tool_calls: payload.choices?.[0]?.message?.tool_calls ?? [],
       usage: payload.usage ?? null,
       providerSpecificFieldsPreserved: true,
+      envelope: normalized,
     });
   }
 
@@ -253,17 +285,11 @@ export class CodexExternalAdapter implements ProviderAdapter {
   }
 
   private promptFor(request: RunRequest): string {
-    const input = JSON.stringify(request.input);
-    const constraints = request.constraints?.length ? request.constraints.join('\n- ') : '(none)';
-    const schema = request.outputSchema ? JSON.stringify(request.outputSchema) : '(not specified)';
-    return [
-      'You are the execution agent for a local Agent Workspace.',
-      'Respect the requested sandbox and do not access credentials, cookies, tokens, or paths outside the workspace.',
-      `Objective:\n${request.objective}`,
-      `Input JSON:\n${input}`,
-      `Constraints:\n- ${constraints}`,
-      `Output schema:\n${schema}`,
-      'Return a concise, structured result. If a required fact is unavailable, say so explicitly.',
-    ].join('\n\n');
+    const envelope = buildModelRequestEnvelope({
+      requestId: `codex-${randomUUID()}`,
+      runId: (String(request.metadata?.runId ?? 'external-codex-run') as RunId),
+      request,
+    });
+    return renderModelRequestEnvelope(envelope);
   }
 }

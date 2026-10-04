@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "validation.failure-recovery-gate.v1",
+  "recordedAt": "2026-10-03T00:22:00+08:00",
+  "status": "PASS_CONTRACT_ONLY",
+  "scope": "本地控制面失败、取消、重试、幂等、越权和上下文恢复门；不是 Provider 原生 resume 或长期可用性证明。",
+  "command": "npm run test:all",
+  "testResult": { "passed": 75, "failed": 0 },
+  "checks": [
+    { "id": "provider_http_failure", "status": "PASS", "evidence": "packages/adapters/src/adapters.test.ts · DeepSeek request failures remain explicit without retrying or exposing secrets", "meaning": "503 和非法 JSON 显式失败，错误不吞掉，测试 Key 不泄漏。" },
+    { "id": "schema_and_tool_failure", "status": "PASS", "evidence": "apps/server/src/tool-loop.test.ts · schema-invalid tool call / tool failure / max loop", "meaning": "工具参数错误在执行前失败；工具失败和循环上限不会生成 Artifact。" },
+    { "id": "path_boundary", "status": "PASS", "evidence": "packages/adapters/src/adapters.test.ts · LocalToolRuntime path traversal", "meaning": "项目外路径返回 tool_path_traversal，真实工具不执行。" },
+    { "id": "duplicate_call_id", "status": "PASS", "evidence": "apps/server/src/tool-loop.test.ts · duplicate callId", "meaning": "同一 callId 只产生一次工具副作用，后续使用回放结果。" },
+    { "id": "approval_rejection", "status": "PASS", "evidence": "apps/server/src/tool-loop.test.ts · approval-required write", "meaning": "写入在审批前不执行；拒绝后失败且没有工具副作用。" },
+    { "id": "same_run_recovery", "status": "PASS", "evidence": "apps/server/src/tool-loop.test.ts · recovery replays a completed callId once", "meaning": "中断后用同一 Run 重试，已完成的工具调用不重复，最终只生成一个 Artifact。" },
+    { "id": "context_segment_recovery", "status": "PASS", "evidence": "apps/server/src/runtime.test.ts · same logical run in a new segment", "meaning": "上下文快照和 tail 事件传入新 segment，Run ID 保持不变。" },
+    { "id": "cancel_race", "status": "PASS", "evidence": "apps/server/src/runtime.test.ts · cancels active Codex run", "meaning": "取消竞态下不会再补写 run.succeeded。" },
+    { "id": "http_retry_idempotency", "status": "PASS", "evidence": "apps/server/src/http-smoke.test.ts · retry route", "meaning": "重复 retry 请求回同一个事件，不重复追加。" },
+    { "id": "sqlite_reopen", "status": "PASS", "evidence": "apps/server/src/persistence.test.ts and validation/m10-06-recovery-scale-results.json", "meaning": "已提交事件在重启、跨进程和规模边界下可回读。" }
+  ],
+  "limitations": [
+    "DeepSeek 真实 API 的 429/5xx/超时没有在本批再次消耗额度做 live 注入；当前是 adapter fake-fetch 和控制面契约证据。",
+    "没有把 Codex 订阅的原生 resume 写成已完成；当前验证的是本项目控制面的 fallback/context recovery。",
+    "没有做长时间运行、断电、磁盘满或网络抖动 soak test。",
+    "这只能证明失败可见、可诊断、可幂等和可恢复，不证明 Provider 内容质量或真人体验。"
+  ],
+  "next": "进入 Provider 互换边界：核对 Fixture、DeepSeek 和 Codex 的 identity、billing source、actual model、usage/cache 和 capability，不改变业务状态机。"
+}

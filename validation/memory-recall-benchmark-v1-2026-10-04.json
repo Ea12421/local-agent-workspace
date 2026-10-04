@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "validation.memory-recall-benchmark.v1",
+  "observedAt": "2026-10-04T00:00:00.000Z",
+  "status": "passed",
+  "fixtureCount": 11,
+  "caseCount": 6,
+  "formula": "0.7 * lexicalScore + 0.2 * phraseScore + 0.1 * recencyScore",
+  "defaultStrategy": "lexical",
+  "metrics": {
+    "lexical": {
+      "cases": 6,
+      "hitAt1": 2,
+      "hitAt3": 6,
+      "mrr": 0.638889,
+      "averageRank": 1.8333
+    },
+    "hybrid": {
+      "cases": 6,
+      "hitAt1": 4,
+      "hitAt3": 6,
+      "mrr": 0.833333,
+      "averageRank": 1.3333
+    }
+  },
+  "rows": {
+    "lexical": [
+      {
+        "id": "approval-contiguous-phrase",
+        "query": "approval review passed",
+        "strategy": "lexical",
+        "rank": 3,
+        "topId": "memory:590ee818af417f58e45c1c45b6e51745dbe47477598966e7d7cded6fa222c9c5",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.9677419354838709
+        }
+      },
+      {
+        "id": "context-contiguous-phrase",
+        "query": "context snapshot source refs",
+        "strategy": "lexical",
+        "rank": 2,
+        "topId": "memory:dc68a6ef0195e1c2d9c7dedaa11bf1a7dc07fc76179df99c3bb9ed4c8bf6b1a5",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 0,
+          "recencyScore": 0.9375
+        }
+      },
+      {
+        "id": "provider-contiguous-phrase",
+        "query": "provider cache receipt",
+        "strategy": "lexical",
+        "rank": 2,
+        "topId": "memory:33a7f337f77a7ea2333281c7e99b97fa46e520a38df7bf7ac2ef4364e92ab238",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 0,
+          "recencyScore": 0.9090909090909091
+        }
+      },
+      {
+        "id": "release-coverage",
+        "query": "approval release gate",
+        "strategy": "lexical",
+        "rank": 1,
+        "topId": "memory:3a7eb2ea839699f1b9af3cbd3ec5da0d0ebcf49702b939fc893200e2809d4104",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.47619047619047616
+        }
+      },
+      {
+        "id": "chinese-substring-compatibility",
+        "query": "固定评测通过",
+        "strategy": "lexical",
+        "rank": 1,
+        "topId": "memory:559be37e9516b7129d9ee1ec9c9566c61a6a5bdb923871d81196e2a054dc1ff1",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.48387096774193555
+        }
+      },
+      {
+        "id": "scope-isolation",
+        "query": "approval review passed",
+        "strategy": "lexical",
+        "rank": 2,
+        "topId": "memory:e98db9de8d2552d899fb6dd5db89d153edb7a3b9626e8c9f42b8a58a524c0124",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 0,
+          "recencyScore": 0.9677419354838709
+        }
+      }
+    ],
+    "hybrid": [
+      {
+        "id": "approval-contiguous-phrase",
+        "query": "approval review passed",
+        "strategy": "hybrid",
+        "rank": 2,
+        "topId": "memory:590ee818af417f58e45c1c45b6e51745dbe47477598966e7d7cded6fa222c9c5",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.9677419354838709
+        }
+      },
+      {
+        "id": "context-contiguous-phrase",
+        "query": "context snapshot source refs",
+        "strategy": "hybrid",
+        "rank": 2,
+        "topId": "memory:dc68a6ef0195e1c2d9c7dedaa11bf1a7dc07fc76179df99c3bb9ed4c8bf6b1a5",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 0,
+          "recencyScore": 0.9375
+        }
+      },
+      {
+        "id": "provider-contiguous-phrase",
+        "query": "provider cache receipt",
+        "strategy": "hybrid",
+        "rank": 1,
+        "topId": "memory:d6975352a86f1698ba9e05b102198a84704f02ead726b70184d87485cc31954a",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.3448275862068966
+        }
+      },
+      {
+        "id": "release-coverage",
+        "query": "approval release gate",
+        "strategy": "hybrid",
+        "rank": 1,
+        "topId": "memory:3a7eb2ea839699f1b9af3cbd3ec5da0d0ebcf49702b939fc893200e2809d4104",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.47619047619047616
+        }
+      },
+      {
+        "id": "chinese-substring-compatibility",
+        "query": "固定评测通过",
+        "strategy": "hybrid",
+        "rank": 1,
+        "topId": "memory:559be37e9516b7129d9ee1ec9c9566c61a6a5bdb923871d81196e2a054dc1ff1",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.48387096774193555
+        }
+      },
+      {
+        "id": "scope-isolation",
+        "query": "approval review passed",
+        "strategy": "hybrid",
+        "rank": 1,
+        "topId": "memory:e4cb4767e4172426d2d88c3b4c8a1c1eaf8071339f982c42e5bc0e9991da0588",
+        "topBreakdown": {
+          "lexicalScore": 1,
+          "phraseScore": 1,
+          "recencyScore": 0.3191489361702128
+        }
+      }
+    ]
+  },
+  "decision": "hybrid_is_better_on_this_fixed_benchmark_but_requires_real_project_sample_before_default_switch",
+  "notProven": [
+    "semantic vector retrieval quality",
+    "real model quality improvement",
+    "real user productivity improvement"
+  ]
+}

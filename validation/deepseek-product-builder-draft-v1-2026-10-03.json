@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "deepseek-product-builder-draft.v1",
+  "observedAt": "2026-10-02T16:56:13.801Z",
+  "httpStatus": 200,
+  "status": "succeeded",
+  "runId": "run_mur7fyoc",
+  "provider": {
+    "authMode": "api_key",
+    "billingSource": "api",
+    "isMock": false,
+    "harness": "deepseek-http",
+    "provider": "deepseek",
+    "model": "deepseek-chat"
+  },
+  "eventTypes": [
+    "run.created",
+    "run.started",
+    "provider.event",
+    "provider.event",
+    "artifact.created",
+    "run.succeeded"
+  ],
+  "draft": {
+    "user": "AI 产品构建者",
+    "scenario": "在本地的 Agent Workspace 中，产品构建者需要为某个本地 Agent 场景起草一份可审阅的产品草稿；草稿先在本地生成并展示给构建者审阅，保持本地优先、不自动发布，等待人工批准后再决定后续动作。",
+    "pain": "产品构建者当前缺少一个在本地就能生成、审阅并迭代的草稿载体：从想法到可评审材料之间缺少结构化草稿，且容易误触发自动发布，导致审阅权与控制权不清晰。",
+    "value": "为 Product Builder 提供本地优先的可审阅草稿：一次输入即可得到结构化的产品草稿（用户、场景、痛点、价值、MVP、未知项、成功指标、来源引用与审批要求），全部在本地生成与保留，不自动发布，构建者保留最终审阅与批准权。",
+    "mvp": {
+      "scope": "本地 Agent Workspace 内的草稿生成与审阅闭环",
+      "in_scope": [
+        "接收输入 JSON（idea、user、constraints）并在本地生成结构化产品草稿",
+        "按固定 schema 输出：user、scenario、pain、value、mvp、unknowns、success_metrics、source_refs、approval_required",
+        "将无来源的外部事实放入 unknowns，不臆造事实",
+        "source_refs 仅引用 workspace://user-input 或明确已知来源",
+        "approval_required 始终为 true，草稿仅标记为 draft，不宣称已批准或已发布",
+        "在本地展示草稿供人工审阅，不自动发布"
+      ],
+      "out_of_scope": [
+        "自动发布草稿",
+        "自动批准草稿",
+        "未经审阅就同步到外部系统",
+        "联网抓取或推断无来源的外部事实"
+      ],
+      "flow": [
+        "输入 JSON（idea、user、constraints）",
+        "本地 Agent 生成结构化草稿",
+        "在 Workspace 本地展示草稿",
+        "人工审阅与迭代",
+        "等待人工批准（approval_required=true），默认不发布"
+      ]
+    },
+    "unknowns": [
+      "未指定本地 Agent Workspace 的目标运行平台与界面形态",
+      "未指定草稿输出的持久化位置与版本策略",
+      "未指定人工审阅与批准的具体流程与角色",
+      "未指定草稿需要支持的语言或本地化要求",
+      "未指定除 workspace://user-input 之外的可用已知来源",
+      "未指定成功指标的量化目标与观测周期"
+    ],
+    "success_metrics": [
+      "草稿生成后完整覆盖 schema 必填字段的比例",
+      "草稿中无来源外部事实被放入 unknowns 的合规率",
+      "source_refs 中引用 workspace://user-input 或明确已知来源的合规率",
+      "approval_required 为 true 的比例（不自动发布）",
+      "构建者审阅后对草稿可用性的主观评分",
+      "从输入到生成草稿的本地处理时延"
+    ],
+    "source_refs": [
+      "workspace://user-input"
+    ],
+    "approval_required": true
+  },
+  "artifact": {
+    "id": "run_mur7fyoc:artifact:provider-product-builder-draft",
+    "kind": "product_builder_provider_draft",
+    "name": "DeepSeek Product Builder Draft",
+    "contentType": "application/json",
+    "sourceRefs": [
+      "workspace://user-input"
+    ]
+  },
+  "providerReceipt": {
+    "schemaVersion": "provider.model-response.v1",
+    "requestId": "76ac24c8-3f9c-445e-b1d2-59daed7ec318",
+    "provider": {
+      "authMode": "api_key",
+      "billingSource": "api",
+      "isMock": false,
+      "harness": "deepseek-http",
+      "provider": "deepseek",
+      "model": "deepseek-chat"
+    },
+    "rawResponseRef": "sha256:36fca302e0e961dc33ab953c696e36c9d008de6e86c56d13f73f4abd5aa49c5e",
+    "toolCalls": [],
+    "usage": {
+      "inputTokens": 294,
+      "outputTokens": 709,
+      "totalTokens": 1003,
+      "cachedInputTokens": 128,
+      "source": "provider"
+    },
+    "promptCache": {
+      "schemaVersion": "provider.prompt-cache-receipt.v1",
+      "status": "hit",
+      "providerReported": true,
+      "cachedInputTokens": 128
+    },
+    "finishReason": "stop",
+    "providerFields": {
+      "providerFormat": "deepseek-chat-completions",
+      "actualModel": "deepseek-flash",
+      "rawUsage": {
+        "prompt_tokens": 294,
+        "completion_tokens": 709,
+        "total_tokens": 1003,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 166
+      },
+      "outputTextSha256": "sha256:b2306085965d42bcb2bcb244925016b67f3e31d3060acbc31f192ccf04e80a50",
+      "outputTextRedacted": true
+    }
+  },
+  "outputReceipt": {
+    "schemaVersion": "provider.output-receipt.v1",
+    "rawOutputSha256": "b2306085965d42bcb2bcb244925016b67f3e31d3060acbc31f192ccf04e80a50",
+    "status": "parsed",
+    "mode": "exact",
+    "extractedOutputSha256": "b2306085965d42bcb2bcb244925016b67f3e31d3060acbc31f192ccf04e80a50"
+  },
+  "promotion": {
+    "status": "pending_user_approval",
+    "message": "这是可审阅草稿，尚未替换正式 Product Builder Artifact。"
+  },
+  "error": null,
+  "limitations": [
+    "单次真实 DeepSeek 草稿请求；不代表最终产品质量。",
+    "当前草稿仍需人工审批，未替换 Fixture 正式 Artifact。",
+    "API key 只注入本次进程，未写入项目文件。"
+  ]
+}

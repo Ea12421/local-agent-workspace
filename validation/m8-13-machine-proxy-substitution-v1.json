@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "validation.m8-13.machine-proxy-substitution.v1",
+  "reviewedAt": "2026-09-28T00:00:00+08:00",
+  "fixedInput": "validation/m8-13-fixed-input-v1.md",
+  "operator": {
+    "kind": "controller_agent_machine_proxy",
+    "substitutesFor": "user_execution_only_for_machine_observable_steps",
+    "humanExperienceClaim": false
+  },
+  "task": "为 personal-knowledge-mcp-mvp 设计 fixture-only、localhost-only、只读的可重复离线验证报告下一步计划。",
+  "arms": {
+    "A_direct_baseline": {
+      "source": "validation/m8-13-baseline-a-single-call-raw.json",
+      "model": "gpt-5.6-luna",
+      "authMode": "subscription",
+      "providerRouteNote": "默认路由因 selected model at capacity 失败后有界回退；不是与 B 完全相同的模型路由。",
+      "elapsedMs": 103033,
+      "outputMode": "freeform_markdown",
+      "normalization": {
+        "required": true,
+        "operatorSteps": 4,
+        "source": "validation/m8-13-baseline-a-manual-normalization.json"
+      },
+      "traceability": "partial",
+      "recovery": "not_available_as_project_run",
+      "receipt": "raw CLI JSONL plus local saved artifact"
+    },
+    "B_workspace": {
+      "source": "validation/m8-13-workspace-run-mukr3edw.json",
+      "runId": "run_mukr3edw",
+      "provider": "openai-codex",
+      "authMode": "subscription",
+      "isMock": false,
+      "elapsedMs": 83194,
+      "outputMode": "strict_json_object",
+      "normalization": {
+        "required": false,
+        "operatorSteps": 0,
+        "reason": "固定 schema 直接进入 Run/Artifact 链"
+      },
+      "traceability": "pass_for_machine_chain",
+      "recovery": "pass_for_refresh_replay",
+      "receipt": "run_mukr3edw:codex:segment:1"
+    }
+  },
+  "machine_observable_comparison": {
+    "input_same": true,
+    "schema_completeness": "B stronger: exact JSON; A required post-hoc normalization",
+    "receipt_and_event_trace": "B stronger: RunEvent plus provider receipt; A has CLI JSONL but no project Run state",
+    "interruption_or_refresh_recovery": "B verified; A not provided by direct single-call path",
+    "readability": "A more natural freeform Markdown; B more auditable and deterministic",
+    "latency": "Not a fair model-quality comparison because A and B used different provider/model routes; machine wall-clock A=103033ms, B=83194ms",
+    "content_quality": "Undecided: no blinded independent content rubric was run for this pair"
+  },
+  "proxy_metrics": {
+    "A_operator_normalization_steps": 4,
+    "B_operator_normalization_steps": 0,
+    "A_manual_edits": "unobservable_as_user_metric",
+    "B_manual_edits": "unobservable_as_user_metric",
+    "rework_count": "unobservable",
+    "artifact_traceability": {
+      "A": "partial",
+      "B": "pass_for_machine_chain"
+    },
+    "interruption_recovery": {
+      "A": "not_measured",
+      "B": "verified_refresh_replay"
+    },
+    "willing_to_reuse": "not_observable_from_controller_proxy"
+  },
+  "decision": {
+    "status": "MACHINE_PROXY_PARTIAL",
+    "default_candidate": "Workspace structured single-Bot/Codex execution",
+    "why": "它把模型结果纳入 SQLite Run、append-only RunEvent、provider receipt、结构化 Artifact 和刷新恢复链；直接调用更轻量，但需要额外规范化和另行保存。",
+    "not_proven": [
+      "Workspace 内容质量优于直接调用",
+      "多 Bot 优于结构化 single_bot",
+      "真实用户手工时间下降",
+      "真实用户愿意再次使用"
+    ],
+    "next_action": "保留这份机器代理对照；不重复同一任务调用。若要升级为现实提效结论，仍需真人查看同一产物并记录接受/修改/复用意愿。"
+  }
+}

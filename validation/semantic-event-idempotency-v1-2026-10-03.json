@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "validation.semantic-event-idempotency.v1",
+  "runAt": "2026-10-03T06:50:47+08:00",
+  "scope": "Provider and RunEvent semantic replay protection",
+  "implementation": {
+    "semanticKeyStorage": "event.data.semanticKey",
+    "eventIdRemainsRandomStorageIdentity": true,
+    "terminalProtection": "current_retry_attempt_only",
+    "receiptConflict": "preserve_original_and_write_stable_variant",
+    "databaseMigration": false
+  },
+  "checks": [
+    { "name": "provider_replay_same_attempt", "status": "passed", "evidence": "same semantic provider event with a new random event id remains one stored event" },
+    { "name": "provider_replay_distinct_attempt", "status": "passed", "evidence": "same source id in a different segment/attempt remains a separate event" },
+    { "name": "provider_arrival_order", "status": "passed", "evidence": "source arrival order is preserved independently from provider source sequence" },
+    { "name": "terminal_protection", "status": "passed", "evidence": "same final replays are dropped; a different final in the same attempt is rejected; retry starts a new attempt" },
+    { "name": "tool_and_artifact_replay", "status": "passed", "evidence": "tool invocation and artifact creation do not duplicate on replay" },
+    { "name": "sqlite_restart_replay", "status": "passed", "evidence": "SQLite close/reopen keeps the first event and first terminal" },
+    { "name": "receipt_conflict_preservation", "status": "passed", "evidence": "identical receipt is ignored; changed receipt becomes a deterministic variant" },
+    { "name": "jsonl_fallback_replay", "status": "passed", "evidence": "JSONL event log does not append a semantic duplicate" }
+  ],
+  "commands": [
+    "node --experimental-strip-types --test apps/server/src/semantic-idempotency.test.ts",
+    "node --experimental-strip-types --test apps/server/src/semantic-idempotency.test.ts apps/server/src/persistence.test.ts apps/server/src/tool-loop.test.ts",
+    "node --experimental-strip-types --test apps/server/src/http-smoke.test.ts apps/server/src/runtime.test.ts",
+    "npm run test:all (87/87)",
+    "npm run typecheck",
+    "npm run build:web",
+    "npm run validate:state",
+    "git diff --check"
+  ],
+  "boundaries": [
+    "Does not claim Provider exactly-once delivery.",
+    "Does not implement dynamic permission revoke or automatic background retry.",
+    "Does not compare context compression across models or harnesses."
+  ]
+}

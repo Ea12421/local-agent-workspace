@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "validation.provider-boundary.v1",
+  "recordedAt": "2026-10-03T00:28:00+08:00",
+  "status": "PASS_CONTRACT_WITH_CODEX_BLOCKED",
+  "scope": "核对 Fixture、DeepSeek ModelProvider、DeepSeek 只读 Tool Loop 和 Codex ExecutionAgent 的身份、计费来源、能力与降级语义。",
+  "matrix": [
+    {
+      "lane": "fixture",
+      "role": "demo_provider",
+      "harness": "fixture",
+      "provider": "fixture",
+      "authMode": "local",
+      "billingSource": "local",
+      "isMock": true,
+      "capabilities": { "streaming": true, "toolCalling": false, "structuredOutput": true, "cancellation": true, "resume": true },
+      "evidence": "packages/adapters/src/provider-boundary.test.ts"
+    },
+    {
+      "lane": "deepseek-api",
+      "role": "model_provider_one_shot",
+      "harness": "deepseek-http",
+      "provider": "deepseek",
+      "modelRequested": "deepseek-chat",
+      "modelObservedInLiveRun": "deepseek-flash",
+      "authMode": "api_key",
+      "billingSource": "api",
+      "isMock": false,
+      "capabilities": { "streaming": false, "toolCalling": false, "structuredOutput": true, "promptCaching": "unknown", "cancellation": false, "resume": false, "reasoningContentPassthrough": true },
+      "evidence": "packages/adapters/src/adapters.test.ts; validation/deepseek-one-shot-smoke-v1-2026-10-02.json"
+    },
+    {
+      "lane": "deepseek-tool-loop",
+      "role": "controlled_read_only_tool_loop",
+      "harness": "deepseek-http",
+      "provider": "deepseek",
+      "authMode": "api_key",
+      "billingSource": "api",
+      "isMock": false,
+      "capabilities": { "filesystemRead": true, "filesystemWrite": false, "shell": false, "externalMessage": false },
+      "evidence": "packages/adapters/src/provider-boundary.test.ts; validation/fixed-task-quality-gate-v1-2026-10-03.json"
+    },
+    {
+      "lane": "codex",
+      "role": "execution_agent",
+      "harness": "codex-cli",
+      "provider": "openai-codex",
+      "authMode": "subscription_when_public_login_status_confirms",
+      "billingSource": "unknown",
+      "isMock": false,
+      "capabilities": { "execJson": true, "resumePublicEntry": true, "appServerPublicEntry": true, "nativeResumeInThisAdapter": false },
+      "environmentStatus": "blocked_environment",
+      "evidence": "validation/m3-07e-codex-environment-diagnostic-2026-09-30.json"
+    }
+  ],
+  "invariants": [
+    "Fixture isMock=true and billingSource=local; it cannot be used as real model quality evidence.",
+    "DeepSeek lanes use billingSource=api; they are not ChatGPT subscription quota.",
+    "Codex is kept as an ExecutionAgent lane; authMode may identify subscription login, but billingSource stays unknown because the public CLI exposes no billing proof.",
+    "The business Run/RunEvent/Artifact state machine does not change when a lane changes.",
+    "Unsupported capabilities are recorded as false/unknown or blocked; they are not silently inferred from model names."
+  ],
+  "verification": {
+    "command": "node --experimental-strip-types --test packages/adapters/src/provider-boundary.test.ts",
+    "passed": 1,
+    "failed": 0,
+    "typecheck": "PASS"
+  },
+  "limitations": [
+    "Codex state_5.sqlite and .codex directory remain unwritable in the current environment; no new live Codex smoke was attempted.",
+    "DeepSeek actual model and cache fields are observed from a small batch, not a routing guarantee or cost estimate.",
+    "This matrix checks identity/capability semantics, not output quality."
+  ],
+  "next": "评估 Product Builder 是否可以在不改变 Handoff/Approval/Artifact 契约的前提下接入受控真实 Provider；默认先保留 Fixture 路径。"
+}

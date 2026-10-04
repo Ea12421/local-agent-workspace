@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "spec-gap-and-ux.v1",
+  "recordedAt": "2026-10-02T15:58:00+08:00",
+  "phase": "spec-gap-and-ux-v1",
+  "scope": [
+    "SPEC and implementation traceability",
+    "Web information hierarchy",
+    "unimplemented control labeling",
+    "user-visible Web regression"
+  ],
+  "artifacts": {
+    "traceability": "SPEC/TRACEABILITY-2026-10-02.md",
+    "historical_traceability_notice": "SPEC/TRACEABILITY.md",
+    "progress_notice": "SPEC/PROGRESS.md"
+  },
+  "changes": [
+    {
+      "area": "overview",
+      "result": "added a human-readable next-step strip derived from approval and run state"
+    },
+    {
+      "area": "unimplemented_controls",
+      "result": "Bots and Artifacts search placeholders now render as explicit coming-soon notices instead of disabled input-like controls"
+    },
+    {
+      "area": "visual_hierarchy",
+      "result": "increased contrast for primary explanatory text and technical details without changing business behavior"
+    }
+  ],
+  "verification": {
+    "typecheck": "PASS",
+    "test_all": { "status": "PASS", "passed": 73, "failed": 0 },
+    "web_build": "PASS",
+    "state_validation": "PASS",
+    "git_diff_check": "PASS",
+    "computer_use": {
+      "status": "PASS",
+      "observed": [
+        "overview next-step text",
+        "Bots search coming-soon notice",
+        "Artifacts search and view coming-soon notices",
+        "existing approval, clarification, run, provider and artifact surfaces"
+      ],
+      "server": "127.0.0.1:5182 temporary local verification listener"
+    }
+  },
+  "limits": [
+    "The installed Electron window previously observed by Computer Use was an older build; the latest source was verified through a fresh local Web listener.",
+    "This does not verify DeepSeek quality, Codex native resume, prompt-cache hit rate, signed DMG packaging, or real user productivity."
+  ]
+}

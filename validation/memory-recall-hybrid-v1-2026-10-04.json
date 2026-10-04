@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "validation.memory-recall-hybrid.v1",
+  "observedAt": "2026-10-04T00:00:00.000Z",
+  "status": "passed",
+  "formula": "0.7 * lexicalScore + 0.2 * phraseScore + 0.1 * recencyScore",
+  "defaultStrategy": "lexical",
+  "cases": [
+    {
+      "id": "contiguous-phrase",
+      "query": "approval review passed",
+      "expected": "hybrid top=memory:8bfaa04c8afe15fa895d58501d08d3feaeb1b42a59eac86d4161f88625f8c0f1",
+      "lexicalTop": "memory:10321df0b896c1a986a64227da3d36630a0476a13ca2d3ba7f4e96845c86ad34",
+      "hybridTop": "memory:8bfaa04c8afe15fa895d58501d08d3feaeb1b42a59eac86d4161f88625f8c0f1",
+      "hybridBreakdown": {
+        "lexicalScore": 1,
+        "phraseScore": 1,
+        "recencyScore": 0.3191489361702128
+      },
+      "status": "passed"
+    },
+    {
+      "id": "project-isolation",
+      "expected": "no result from another project",
+      "returnedProjectIds": [
+        "project-memory-baseline"
+      ],
+      "status": "passed"
+    }
+  ],
+  "conclusion": "hybrid improves phrase ordering on the fixed case; keep lexical as the default until a larger benchmark confirms the trade-off.",
+  "notProven": [
+    "semantic vector retrieval quality",
+    "real model quality improvement",
+    "real user productivity improvement"
+  ]
+}

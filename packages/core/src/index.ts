@@ -3,3 +3,8 @@ export * from "./ids.ts";
 export * from "./state-machine.ts";
 export * from "./run-store.ts";
 export * from "./context.ts";
+export * from "./retry-policy.ts";
+export * from "./semantic-events.ts";
+export * from "./improvement.ts";
+export * from "./evaluation.ts";
+export * from "./memory.ts";

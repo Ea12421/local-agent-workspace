@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "validation.m8-20-install-preflight.v1",
+  "observedAt": "2026-09-28T15:10:00+08:00",
+  "sourceRoot": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing",
+  "targetRoot": "/Users/m4air/.codex/pets/sha-wujing",
+  "targetExists": true,
+  "files": [
+    {
+      "name": "pet.json",
+      "source": {
+        "path": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/pet.json",
+        "exists": true,
+        "sha256": "4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94",
+        "bytes": 175,
+        "mode": "0o644"
+      },
+      "target": {
+        "path": "/Users/m4air/.codex/pets/sha-wujing/pet.json",
+        "exists": true,
+        "sha256": "4f86aa0ce18977f452404fd1638ec25fcd67f55c2b4536c9d914e6366d76ac94",
+        "bytes": 175,
+        "mode": "0o644"
+      },
+      "identical": true
+    },
+    {
+      "name": "spritesheet.webp",
+      "source": {
+        "path": "/Users/m4air/总控/projects/codex-pet-studio/outputs/package/sha-wujing/spritesheet.webp",
+        "exists": true,
+        "sha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48",
+        "bytes": 9920,
+        "mode": "0o644"
+      },
+      "target": {
+        "path": "/Users/m4air/.codex/pets/sha-wujing/spritesheet.webp",
+        "exists": true,
+        "sha256": "90792e4a7932070f26d287ee285becb9ced3f6fae02918138f291a2686c28d48",
+        "bytes": 9920,
+        "mode": "0o644"
+      },
+      "identical": true
+    }
+  ],
+  "allIdentical": true,
+  "plannedAction": "no-op-existing-identical",
+  "writePerformed": false,
+  "networkAccess": false,
+  "secretAccess": false
+}

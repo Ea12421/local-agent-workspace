@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "validation.m8-13-baseline-a-capacity-failure.v1",
+  "observedAt": "2026-09-28T06:05:03Z",
+  "path": "direct-codex-cli-single-call",
+  "mode": "subscription",
+  "command": "codex exec --skip-git-repo-check --cd /Users/m4air/Work Agent开发。 --sandbox read-only --ephemeral --json --ignore-user-config <prompt>",
+  "stdin": "DEVNULL after first bounded retry",
+  "returncode": 1,
+  "stdoutEvents": [
+    "thread.started",
+    "turn.started",
+    "error",
+    "turn.failed"
+  ],
+  "error": "Selected model is at capacity. Please try a different model.",
+  "impact": "没有产生基线正文；未修改项目文件。",
+  "boundedRecovery": "同一固定提示改用 gpt-5.6-luna 完成一次只读、临时调用；回退原因和模型已记录在 validation/m8-13-baseline-a-single-call-raw.json。",
+  "doesNotMean": "这不是周限额耗尽的证明，也不是 Workspace Run 失败；它是本次直接 CLI 默认模型路由的容量回执。"
+}

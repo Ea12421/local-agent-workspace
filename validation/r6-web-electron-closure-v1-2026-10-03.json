@@ -1,0 +1,20 @@
+{
+  "validation": "r6_web_electron_closure_v1",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "web": {
+    "build": "passed",
+    "computerUse": "passed",
+    "realProviderFailureRefreshReadback": true,
+    "fixtureMainFlow": "waiting_for_user_clarification",
+    "providerAndPermissionLabels": "visible"
+  },
+  "electron": {
+    "directoryBuild": "passed",
+    "serverProcessTest": "2/2 passed",
+    "ownChildPortBinding": true,
+    "restartUsesNewChild": true,
+    "occupiedPortCannotMasquerade": true
+  },
+  "remainingBoundary": "signed DMG, clean-room clone/install, and real user value remain separate delivery/reality gates.",
+  "evidenceBoundary": "验证本地 Web/Electron 控制面和用户可见语义，不代表签名安装或真人提效。"
+}

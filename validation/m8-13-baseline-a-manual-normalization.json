@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "validation.m8-13-baseline-a-normalized.v1",
+  "source": {
+    "kind": "direct-single-call-machine-baseline",
+    "model": "gpt-5.6-luna",
+    "authMode": "subscription",
+    "isMock": false,
+    "rawOutput": "validation/m8-13-baseline-a-single-call-raw.json",
+    "rawMarkdown": "validation/m8-13-baseline-a-single-call.md",
+    "sameFixedInput": "validation/m8-13-fixed-input-v1.md",
+    "fallbackReason": "默认 Codex 路由返回 Selected model is at capacity，因此使用较轻公开 Codex 模型；这不是默认路由的结果。"
+  },
+  "machineMetrics": {
+    "elapsedMs": 103033,
+    "jsonlEventLines": 4,
+    "agentMessageCount": 1,
+    "toolCalls": 0,
+    "projectFilesReadByBaseline": false,
+    "projectFilesModifiedByBaseline": false,
+    "networkAccessRequestedByBaseline": false
+  },
+  "humanMetricsKnown": false,
+  "humanMetricsNote": "没有真人完成这条路径；耗时是 CLI 进程墙钟时间，不能写成用户手工耗时、人工修改量、返工次数或再次使用意愿。",
+  "manualSteps": [
+    {
+      "step": "把固定输入整理成直接 CLI 的自然语言提示",
+      "evidence": "/private/tmp/m8-13-baseline-a-prompt.txt"
+    },
+    {
+      "step": "从 Codex JSONL 中提取 agent_message",
+      "evidence": "validation/m8-13-baseline-a-single-call-raw.json"
+    },
+    {
+      "step": "将自由格式 Markdown 映射到固定验证字段",
+      "evidence": "本文件的 normalizedOutput"
+    },
+    {
+      "step": "保留人工指标未知，不用机器耗时代替",
+      "evidence": "humanMetricsKnown=false"
+    }
+  ],
+  "normalizedOutput": {
+    "summary": "为 personal-knowledge-mcp-mvp 建立 fixture-only、localhost-only、只读的可重复离线验证报告计划；本次单次调用只生成计划，没有执行候选项目验证。",
+    "evidence": [
+      {
+        "source": "固定输入",
+        "fact": "项目只搜索 fixtures/notes/ 下三份 synthetic Markdown，并通过 16 位 note_id 再读取正文。",
+        "confidence": "high"
+      },
+      {
+        "source": "固定输入",
+        "fact": "历史记录包含 2026-07-17 的 9 项 npm test PASS 和一次 ChatGPT Web 工具调用，但不是本轮复核。",
+        "confidence": "high"
+      },
+      {
+        "source": "固定输入",
+        "fact": "当前服务和临时 tunnel 已停止，默认只监听 127.0.0.1；不读取真实资料、不写入、不上传。",
+        "confidence": "high"
+      }
+    ],
+    "unknowns": [
+      "当前项目是否仍能通过历史 9 项机械检查。",
+      "三份 fixture 的具体文件名、关键词和预期命中关系。",
+      "note_id 是否跨运行稳定。",
+      "当前搜索来源字段和错误响应的具体格式。",
+      "当前是否有固定验证输入表或可访问后端。",
+      "真实资料接入、生产鉴权、长期 tunnel、GPT-Live 和真实用户效果。"
+    ],
+    "boundary": [
+      "只使用三份 synthetic Markdown fixture。",
+      "仅验证 localhost 或离线场景，默认 127.0.0.1。",
+      "只验证 search_knowledge、read_knowledge 及错误边界。",
+      "不访问真实 Obsidian、用户目录、其他项目、账号、secret 或公网。",
+      "不写入、删除、上传资料或保存请求正文。",
+      "不把 fixture 结果外推为真实用户、生产鉴权或 GPT-Live 证明。"
+    ],
+    "plan": [
+      {
+        "step": "冻结验证范围和排除项",
+        "why": "避免把历史结果或 fixture 结果误写成真实能力。",
+        "acceptance": "报告明确写出 fixture-only、localhost-only、只读和所有排除项。"
+      },
+      {
+        "step": "建立三份 fixture 的固定验证输入集和 manifest",
+        "why": "让关键词、预期结果、来源和哈希可以重复核对。",
+        "acceptance": "三份 fixture 均有相对路径、哈希、关键词、预期结果和允许变化项；不包含真实资料。"
+      },
+      {
+        "step": "重新执行本地机械检查，并区分历史与本轮结果",
+        "why": "历史 PASS 不能代替本轮证据。",
+        "acceptance": "报告分别记录本轮 PASS、历史记录和未验证项。"
+      },
+      {
+        "step": "验证搜索到 note_id 再到读取正文的闭环",
+        "why": "证明来源链和按 ID 读取约束。",
+        "acceptance": "搜索只返回 fixtures 范围结果；读取只接受 note_id；来源可核对；路径输入不能越界。"
+      },
+      {
+        "step": "验证只读和路径边界",
+        "why": "发现任意路径、写入、上传或请求正文持久化风险。",
+        "acceptance": "边界检查不修改数据、不访问 fixtures 之外路径、不启动公网服务。"
+      },
+      {
+        "step": "生成带 PASS、FAIL、NOT VERIFIED 的离线报告",
+        "why": "让另一位执行者可以按固定输入复核。",
+        "acceptance": "报告包含日期、范围、输入、预期、实际结果、来源核对、限制、停止条件和风险。"
+      }
+    ],
+    "next_action": "在不修改候选项目的前提下，准备固定 fixture 验证表；如果没有可访问后端，则把端到端项目检查标记为 NOT VERIFIED。",
+    "stop_conditions": [
+      "需要访问 fixtures/notes/ 之外的文件。",
+      "需要真实知识库、用户目录、账号、secret、写入、删除、上传或请求正文保存。",
+      "需要监听非 127.0.0.1、启动公网服务或长期 tunnel。",
+      "无法区分本轮结果与历史结果，或无法确认输入输出。"
+    ],
+    "risks": [
+      {
+        "risk": "历史 PASS 被误写成本轮结果。",
+        "mitigation": "报告分开记录历史、本轮和未验证。"
+      },
+      {
+        "risk": "note_id 跨运行不稳定。",
+        "mitigation": "比较结构和映射关系，先记录 ID 有效范围。"
+      },
+      {
+        "risk": "fixture 通过被误解为真实效果或生产安全。",
+        "mitigation": "在摘要、结论和限制中重复标出验证边界。"
+      }
+    ]
+  }
+}

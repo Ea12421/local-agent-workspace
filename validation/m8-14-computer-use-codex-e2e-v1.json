@@ -1,0 +1,35 @@
+{
+  "schema_version": "m8-14.v1",
+  "status": "partial",
+  "date": "2026-09-28",
+  "web": {
+    "url": "http://localhost:5173/",
+    "computer_use": "chrome",
+    "source": "local",
+    "fixture_flow": "passed",
+    "approval_click": "passed",
+    "runs_view": "passed",
+    "artifacts_view": "passed"
+  },
+  "codex_probe": {
+    "status": "available",
+    "version": "codex-cli 0.155.1",
+    "auth_mode": "subscription",
+    "is_mock": false
+  },
+  "codex_runs": [
+    {"run_id":"run_mukpml8l","status":"succeeded","event_count":41,"input_tokens":189946,"output_tokens":2189},
+    {"run_id":"run_mukpnxhl","status":"succeeded","event_count":49,"input_tokens":243386,"output_tokens":1933},
+    {"run_id":"run_mukpy6pf","status":"succeeded","event_count":5,"receipt_id":"run_mukpy6pf:codex:segment:1","input_tokens":23299,"output_tokens":144}
+  ],
+  "provider_receipt": {"status":"passed","run_id":"run_mukpy6pf","segment":1,"schema_version":"provider.execution-receipt.v1","raw_text_persisted":false},
+  "code_checks": {"typecheck": "passed", "tests": {"passed": 29, "failed": 0}},
+  "known_gaps": [
+    "Web 新建运行按钮尚未接入 Codex endpoint",
+    "未完成真人质量/提效基线",
+    "Codex billingSource 仍为 unknown"
+  ],
+  "vpn_changed": false,
+  "external_send": false,
+  "next_action": "接入 Web Provider 选择、Codex Run 创建与 provider receipt，再以固定任务重跑浏览器联调"
+}

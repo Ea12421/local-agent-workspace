@@ -4,6 +4,8 @@
 
 Local Agent Workspace is a local-first workspace for projects and configurable Bots. A Bot has a responsibility, input/output schemas, tools, permission tier, provider policy, memory policy and observable Runs. The first built-in Bot is Product Builder.
 
+A candidate longer-term model under evaluation is capability packaging: a versioned Skill defines a runnable Workflow, while a project-bound Bot selects and executes that Skill under its own tools, permissions, provider and memory policies. This candidate does not change the current v1 acceptance scope. See `SPEC/PRODUCT-MODEL-CLARIFICATION-V1.md` for the proposed boundary between Project, Skill, Workflow, Bot and Agent.
+
 ## Primary user and job
 
 Primary user: an AI builder or AI product manager working alone. Job: turn a product idea into a traceable research packet, product brief, technical proposal, evaluation plan and executable next steps.

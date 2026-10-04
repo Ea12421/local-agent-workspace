@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "validation.local-eval-memory-rsi.v1",
+  "observedAt": "2026-10-04T01:00:00+08:00",
+  "status": "passed",
+  "scope": [
+    "EvalTask contract",
+    "Score and FeedbackEvent contract",
+    "SQLite MemoryAdapter retain/recall/reflect",
+    "RSI evaluation artifact and memory integration"
+  ],
+  "checks": [
+    { "id": "typecheck", "status": "passed", "command": "npm run typecheck" },
+    { "id": "memory-adapter", "status": "passed", "tests": 1 },
+    { "id": "rsi-runtime", "status": "passed", "tests": 2 },
+    { "id": "core-improvement-projection", "status": "passed", "tests": 3 },
+    { "id": "full-suite", "status": "passed", "tests": 104, "passed": 104, "failed": 0 }
+  ],
+  "persistence": {
+    "backend": "SQLite",
+    "schemaVersion": 2,
+    "migrationAdded": false,
+    "projectIsolation": true,
+    "idempotentRetain": true,
+    "restartReadback": true
+  },
+  "qualityBoundary": {
+    "claims": [
+      "本地评测结构和评分可保存",
+      "反馈可写入项目记忆并在下一次 RSI 运行中召回引用",
+      "RSI 评测产物可由 RunEvent/Artifact 回放"
+    ],
+    "notProven": [
+      "语义向量检索质量",
+      "真实模型质量提升",
+      "真人使用提效"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "deepseek-product-builder-draft.v1",
+  "observedAt": "2026-10-02T16:48:33.133Z",
+  "httpStatus": 422,
+  "status": "failed",
+  "runId": "run_mur766vn",
+  "provider": {
+    "authMode": "api_key",
+    "billingSource": "api",
+    "isMock": false,
+    "harness": "deepseek-http",
+    "provider": "deepseek"
+  },
+  "eventTypes": [
+    "run.created",
+    "run.started",
+    "run.failed"
+  ],
+  "draft": null,
+  "artifact": null,
+  "outputReceipt": null,
+  "promotion": {
+    "status": "pending_user_approval",
+    "message": "这是可审阅草稿，尚未替换正式 Product Builder Artifact。"
+  },
+  "error": {
+    "code": "provider_draft_request_failed",
+    "message": "Failed to parse URL from undefined/chat/completions",
+    "retryable": true
+  },
+  "limitations": [
+    "单次真实 DeepSeek 草稿请求；不代表最终产品质量。",
+    "当前草稿仍需人工审批，未替换 Fixture 正式 Artifact。",
+    "API key 只注入本次进程，未写入项目文件。"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "validation.controlled-command-adapter.v1",
+  "generatedAt": "2026-10-03T19:45:02+08:00",
+  "scope": "adapter-http-ui-desktop",
+  "decision": "PASS_INTEGRATED_DESKTOP",
+  "profiles": [
+    {
+      "id": "project.test",
+      "argv": [
+        "npm",
+        "run",
+        "test"
+      ],
+      "declaredEffects": [
+        "read_workspace"
+      ]
+    },
+    {
+      "id": "project.build_web",
+      "argv": [
+        "npm",
+        "run",
+        "build:web"
+      ],
+      "declaredEffects": [
+        "read_workspace",
+        "write_build_output"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "focused-command-tests",
+      "status": "passed",
+      "command": "node --experimental-strip-types --test packages/adapters/src/command-runtime.test.ts",
+      "evidence": "6/6"
+    },
+    {
+      "name": "typecheck",
+      "status": "passed",
+      "command": "npm run typecheck"
+    },
+    {
+      "name": "real-controlled-project-test",
+      "status": "passed",
+      "command": "ControlledCommandRuntime(project.test, approvalGranted=true)",
+      "evidence": "npm run test; core tests 7/7; exitCode=0; requestId=controlled-command-real-test-2026-10-03"
+    },
+    {
+      "name": "build-profile-dry-run",
+      "status": "passed",
+      "command": "ControlledCommandRuntime(project.build_web, mode=dry_run)",
+      "evidence": "exact argv and declared write_build_output effect"
+    },
+    {
+      "name": "controlled-command-http-ui",
+      "status": "passed",
+      "command": "node --experimental-strip-types --test apps/server/src/controlled-command-http.test.ts",
+      "evidence": "1/1; preview, pending approval, idempotent submit, approve execution, duplicate approval, cancel, reject and replay"
+    },
+    {
+      "name": "controlled-command-desktop-computer-use",
+      "status": "passed",
+      "command": "release/mac-arm64/Local Agent Workspace.app via Computer Use",
+      "evidence": "从 Web 选择受控测试/构建命令 → 选择 project.test（npm run test）→ 看到一次性审批卡 → 确认并继续 → 刷新运行记录；用户可见事件为 run.waiting_user、用户确认继续、run.resumed、controlled-command · run · recorded、tool · operation · succeeded、运行完成。"
+    }
+  ],
+  "securityCases": [
+    "missing approval",
+    "workspace_write/full_access policy",
+    "command tool not allowlisted",
+    "argv mismatch",
+    "non-empty path scope",
+    "authorization revoked",
+    "timeout",
+    "AbortSignal cancellation",
+    "output cap and secret redaction",
+    "requestId idempotent replay"
+  ],
+  "notProven": [
+    "arbitrary HTTP/UI command execution",
+    "generic shell execution",
+    "Codex native context compaction",
+    "provider quality or cost improvement",
+    "new signed DMG or Developer ID notarization"
+  ],
+  "nextAction": "受控命令适配器本阶段已收口；后续只在 Codex/Text app-server 的 Operation not permitted 环境条件变化后，按 RUN_STATE.json 重新判断是否恢复同一 Codex/Text 上下文验证。"
+}

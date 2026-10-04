@@ -1,0 +1,27 @@
+{
+  "validation": "deepseek_product_builder_web_no_key_cua_v2",
+  "observedAt": "2026-10-03T00:00:00+08:00",
+  "surface": "Computer Use browser",
+  "webUrl": "http://127.0.0.1:5175/?cua-check=deepseek-missing-key",
+  "apiUrl": "http://127.0.0.1:4322",
+  "dataDir": "/tmp/local-agent-workspace-cua-data",
+  "steps": [
+    "选择 DeepSeek Product Builder 草稿（真实模型，待审阅）",
+    "提交无 Key 请求",
+    "观察失败 toast 与失败运行卡片",
+    "关闭对话框",
+    "刷新页面",
+    "回读同一失败运行"
+  ],
+  "observed": {
+    "runTitleAfterRefresh": "DeepSeek Product Builder 草稿",
+    "statusAfterRefresh": "失败",
+    "errorAfterRefresh": "DeepSeek API key is not configured for this local server.",
+    "providerIdentityAfterRefresh": "deepseek-product-builder-draft",
+    "falseSuccess": false,
+    "artifactPromoted": false,
+    "failurePersisted": true
+  },
+  "fix": "无 Key 请求现在创建并持久化失败 Run；Web 回读同时读取 runtime Run，避免用 Fixture 标题或 Provider 覆盖真实失败。",
+  "evidenceBoundary": "验证的是本地失败记录、SQLite 回读和 UI 语义；不代表 DeepSeek API Key 已配置或真实模型质量。"
+}

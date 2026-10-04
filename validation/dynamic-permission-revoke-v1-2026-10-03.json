@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "validation.dynamic-permission-revoke.v1",
+  "runAt": "2026-10-03T07:03:53+08:00",
+  "scope": "调用前动态权限撤销、审批版本校验与撤销事件审计",
+  "implementation": {
+    "policyVersion": "ToolPolicy.policyVersion, default 1",
+    "approvalState": "pending_or_approved_to_cancelled",
+    "verificationPoint": "immediately_before_tool_runtime_execute",
+    "failureMode": "fail_closed_without_tool_side_effect",
+    "storage": "SQLite operational continuity store",
+    "databaseMigration": false,
+    "globalListener": false,
+    "inFlightProcessKill": false
+  },
+  "checks": [
+    {
+      "name": "tool_loop_verifier_blocks_revoked_approval",
+      "status": "passed",
+      "evidence": "approved decision followed by verifier denial produces tool.authorization_revoked and zero ToolRuntime executions"
+    },
+    {
+      "name": "fixture_runtime_fails_closed",
+      "status": "passed",
+      "evidence": "revoked authorization snapshot returns tool_authorization_revoked before fixture side effect"
+    },
+    {
+      "name": "sqlite_revoke_persists",
+      "status": "passed",
+      "evidence": "approved approval becomes cancelled and remains cancelled after SQLite close/reopen"
+    },
+    {
+      "name": "revoke_is_idempotent",
+      "status": "passed",
+      "evidence": "repeating revoke returns changed=false and conflict=already_revoked without a second state mutation"
+    },
+    {
+      "name": "http_route_and_event",
+      "status": "passed",
+      "evidence": "HTTP revoke route returns cancelled approval, one tool.authorization_revoked event, and idempotent replay"
+    },
+    {
+      "name": "typecheck",
+      "status": "passed",
+      "evidence": "TypeScript syntax and workspace type checks passed"
+    },
+    {
+      "name": "full_test_suite",
+      "status": "passed",
+      "evidence": "npm run test:all: 90/90"
+    },
+    {
+      "name": "http_smoke",
+      "status": "passed",
+      "evidence": "apps/server/src/http-smoke.test.ts: 2/2"
+    }
+  ],
+  "commands": [
+    "npm run typecheck",
+    "node --experimental-strip-types --test apps/server/src/tool-loop.test.ts apps/server/src/product-builder-continuity.test.ts packages/adapters/src/adapters.test.ts",
+    "node --experimental-strip-types --test apps/server/src/http-smoke.test.ts",
+    "npm run test:all",
+    "npm run build:web",
+    "npm run validate:state",
+    "git diff --check"
+  ],
+  "boundaries": [
+    "Does not kill an already started operating-system process.",
+    "Does not add a global listener or background task.",
+    "Does not compare providers or claim real-model quality.",
+    "Does not implement automatic background retry or full project-scoped projection."
+  ]
+}

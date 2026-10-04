@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Agent Workspace｜简历与面试掌握包 v1</title>
+  <style>
+    :root { --ink:#20212b; --muted:#686a78; --line:#e7e7ef; --paper:#fff; --wash:#f6f6fb; --brand:#4c4ac8; --good:#197a5a; --warn:#9a641b; --bad:#9a4141; --code:#20212b; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--wash); font:15px/1.72 -apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif; }
+    .page { max-width:1120px; margin:0 auto; padding:42px 24px 72px; }
+    header { padding:32px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(135deg,#fff,#f8f8ff); box-shadow:0 12px 32px #39396d0d; }
+    .eyebrow { color:var(--brand); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    h1 { margin:8px 0 10px; font-size:clamp(28px,4vw,44px); line-height:1.18; letter-spacing:-.03em; }
+    h2 { margin:0 0 16px; font-size:24px; line-height:1.3; }
+    h3 { margin:24px 0 8px; font-size:17px; line-height:1.4; }
+    p { margin:10px 0; }
+    .lead { max-width:780px; color:#4f5060; font-size:17px; }
+    .meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+    .tag { display:inline-flex; padding:4px 9px; border:1px solid #dcdcf0; border-radius:999px; color:#5555a4; background:#f4f3ff; font-size:12px; }
+    nav { position:sticky; top:0; z-index:2; display:flex; flex-wrap:wrap; gap:7px; margin:18px 0; padding:10px; border:1px solid var(--line); border-radius:12px; background:#fffffff2; backdrop-filter:blur(10px); }
+    nav a { padding:5px 9px; border-radius:7px; color:#55566a; font-size:12px; text-decoration:none; }
+    nav a:hover { color:var(--brand); background:#f0efff; }
+    section { margin-top:18px; padding:28px 30px; border:1px solid var(--line); border-radius:16px; background:var(--paper); }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .card { padding:16px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .card h3 { margin-top:0; }
+    .label { margin-bottom:5px; color:#8a8b9a; font-size:11px; font-weight:700; letter-spacing:.04em; }
+    .claim { border-left:4px solid var(--brand); padding:12px 16px; background:#f8f7ff; }
+    .good { border-left-color:var(--good); background:#f3fbf7; }
+    .warn { border-left-color:#c0842e; background:#fffaf0; }
+    .bad { border-left-color:var(--bad); background:#fff6f6; }
+    .resume { padding:20px; border:1px solid #d9d8f1; border-radius:12px; background:#fbfaff; }
+    .resume strong { color:#3b3a9f; }
+    pre, code { font-family:"SF Mono",Menlo,monospace; }
+    pre { overflow:auto; margin:12px 0; padding:16px; border-radius:10px; color:#f5f5fb; background:var(--code); font-size:12px; line-height:1.6; }
+    code { padding:2px 5px; border-radius:4px; color:#41425b; background:#f0f0f5; font-size:.9em; }
+    .flow { display:flex; flex-wrap:wrap; align-items:stretch; gap:8px; margin:18px 0; }
+    .flow .node { flex:1 1 150px; min-width:130px; padding:13px; border:1px solid #dcdcf0; border-radius:10px; background:#fafaff; text-align:center; }
+    .flow .arrow { align-self:center; color:#8889a0; font-weight:700; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th, td { padding:10px 9px; border-bottom:1px solid var(--line); vertical-align:top; text-align:left; }
+    th { color:#5b5c6d; background:#fafafd; font-size:12px; }
+    ul, ol { padding-left:22px; }
+    li { margin:5px 0; }
+    .q { margin-top:18px; padding:16px 18px; border:1px solid var(--line); border-radius:11px; }
+    .q h3 { margin:0 0 8px; }
+    .q .answer { padding:11px 13px; border-radius:8px; background:#f7f7fb; }
+    .q .evidence { margin-top:8px; color:#656676; font-size:13px; }
+    .small { color:var(--muted); font-size:13px; }
+    .evidence-list li::marker { color:var(--good); }
+    .footer { margin-top:22px; color:#777887; font-size:12px; }
+    @media (max-width:760px) { .page { padding:20px 12px 48px; } header, section { padding:20px; } .grid, .grid.three { grid-template-columns:1fr; } nav { position:static; } table { display:block; overflow:auto; white-space:normal; } .flow .arrow { display:none; } }
+    @media print { body { background:#fff; } .page { max-width:none; padding:0; } nav { display:none; } section, header { break-inside:avoid; box-shadow:none; } }
+  </style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <div class="eyebrow">个人项目｜简历与面试掌握包 v1</div>
+    <h1>Local Agent Workspace</h1>
+    <p class="lead">一个本地优先的 Agent 工作台：按项目管理 Bot，让每次运行都留下状态、事件、工具回执、审批、上下文恢复和产物。首个流程 Product Builder 用来把一个产品想法推进为结构化的研究、产品定义、技术方案、评测和执行计划。</p>
+    <div class="meta"><span class="tag">TypeScript monorepo</span><span class="tag">React + Vite</span><span class="tag">Node.js</span><span class="tag">SQLite-first</span><span class="tag">Electron</span><span class="tag">Agent control plane</span></div>
+    <p class="small">使用方法：先看“简历可用版本”，再看“30 秒 / 2 分钟 / 5 分钟”，最后用问题卡随机口述。本文只使用当前仓库已经落盘的实现与验证，不把未验证的模型质量或真人提效写成事实。</p>
+  </header>
+
+  <nav aria-label="目录">
+    <a href="#resume">简历版本</a><a href="#story">项目讲法</a><a href="#architecture">架构</a><a href="#evidence">证据</a><a href="#questions">追问</a><a href="#practice">学习顺序</a><a href="#boundaries">边界</a>
+  </nav>
+
+  <section id="resume">
+    <h2>一、可以放进简历的版本</h2>
+    <div class="claim warn"><strong>事实口径：</strong>这是一个已经能在本地运行、能回放和能继续开发的 Alpha / 本地交付版。不要写成生产 SaaS，也不要写成“多 Bot 已证明更快”或“模型效果已证明提升”。</div>
+    <h3>项目标题</h3>
+    <div class="resume"><strong>Local Agent Workspace｜本地优先的 Agent 工作台</strong><br>产品架构与全栈实现｜个人项目｜时间按正式简历统一补充</div>
+    <h3>简历短版（推荐，3 条）</h3>
+    <div class="resume">
+      <p>• 从 0 设计并实现本地优先 Agent Workspace，将 Project、Bot、Run、审批、工具回执、上下文恢复和 Artifact 统一到一个可回放的本地 control plane（控制面），首个 Product Builder 流程支持从产品想法到结构化执行计划。</p>
+      <p>• 采用 TypeScript monorepo、React/Vite、Node.js、SQLite-first 和 Electron 薄壳；以显式 Run 状态机和 append-only RunEvent（只追加运行事件）作为业务事实源，补齐幂等、失败恢复、权限边界、项目隔离和工具调用审计。</p>
+      <p>• 设计 Fixture、DeepSeek ModelProvider 和 Codex CLI ExecutionAgent 的统一适配边界；实现受控只读文件/Git 工具、审批和结构化回执，完成 105/105 全量工程测试、Web 构建与本地交付验证。</p>
+    </div>
+    <h3>简历长版（项目经历栏空间足够时）</h3>
+    <div class="resume">
+      <p><strong>项目背景：</strong>传统“聊天式” AI 产品容易把状态、权限、失败恢复和上下文交接藏在对话里，难以追踪和复用。我把它拆成一个本地工作台，让模型负责候选输出，项目自身负责运行状态、审批、工具和产物。</p>
+      <p><strong>核心工作：</strong>设计 Project / Bot / Run / RunEvent / Handoff / Approval / Artifact / Memory 契约；以 SQLite 保存运行事实；实现 Product Builder 的澄清、规划、结构化交接、评测和用户确认；建立 Provider 与 ExecutionAgent 的身份和计费来源边界；补齐只读工具、路径与符号链接防越权、命令白名单、脱敏、取消、幂等和恢复。</p>
+      <p><strong>结果：</strong>形成可从 Git 复现的本地 Web/Electron 交付版；Fixture 无 Key 可运行；真实 DeepSeek 只读 Tool Loop 和 Codex CLI 能力探针有独立回执；全量工程测试 105/105 通过。模型质量、多 Bot 提效、真人效率和签名发布仍单独标为未验证。</p>
+    </div>
+    <h3>英文项目描述（需要英文简历时）</h3>
+    <div class="resume"><p><strong>Local Agent Workspace — Local-first Agent control plane</strong><br>Designed and built a local-first workspace for project-scoped Bots, traceable Runs, approvals, tools, context recovery and artifacts. Implemented a SQLite-first runtime with an explicit state machine and append-only RunEvents, plus provider boundaries for Fixture, DeepSeek API and Codex CLI execution. Added read-only filesystem/Git tools, path and symlink guards, command allowlists, idempotent replay and structured receipts. Delivered a runnable Web/Electron alpha with 105/105 engineering tests passing; real model quality and productivity gains remain explicitly unclaimed.</p></div>
+  </section>
+
+  <section id="story">
+    <h2>二、你要怎么讲这个项目</h2>
+    <h3>30 秒版本</h3>
+    <div class="claim"><p>我做的是一个本地优先的 Agent 工作台。它不是把几个 Prompt 串起来，而是把项目、Bot、运行状态、工具权限、审批和产物放进一个可追踪的控制面。用户输入一个产品想法后，Product Builder 会按结构化流程推进，模型只负责生成候选，系统自己负责状态、回放、失败恢复和权限边界。现在已经有 Web/Electron 本地交付版，Fixture 流程可直接运行，真实 Provider 也有独立适配和回执。</p></div>
+    <h3>2 分钟版本</h3>
+    <div class="claim"><p>我做这个项目，是因为普通 AI 对话在短任务里很方便，但长任务会出现三个问题：第一，状态藏在聊天里，换窗口或中断后很难恢复；第二，模型到底读了什么、调用了什么工具、为什么能发布，通常不透明；第三，模型通道和本地执行混在一起，容易把 API、订阅和本地权限混淆。</p><p>所以我把它设计成一个本地 control plane。核心状态由项目自己的 TypeScript core 和 SQLite 控制，每次 Run 都有明确状态和 append-only RunEvent。Provider 只是模型或执行桥，不能直接成为业务事实源。工具调用要经过权限策略，危险动作逐次审批，产物只有通过固定检查并经过相应审批才能晋级。</p><p>第一个可见流程是 Product Builder：想法先澄清未知项，再规划、生成结构化产物、评测、冲突检查，最后由用户确认。现在我证明的是这条控制链路可运行、可回放、可恢复；没有把 Fixture 或单次真实模型调用说成模型质量或生产力证明。</p></div>
+    <h3>5 分钟版本的顺序</h3>
+    <ol>
+      <li><strong>先说问题：</strong>长任务需要状态、权限、恢复和证据，而不是只要一段文本。</li>
+      <li><strong>再说核心判断：</strong>模型不是系统事实源；模型输出是候选，项目控制面才记录状态和决定能否继续。</li>
+      <li><strong>展示主流程：</strong>输入想法 → 澄清未知项 → 规划 → Bot 交接 → 评测 → 用户确认 → Artifact。</li>
+      <li><strong>展示一条事件：</strong><code>run.created → run.started → provider.event → tool.invoked → tool.completed → artifact.created → run.succeeded</code>。</li>
+      <li><strong>讲安全边界：</strong>只读、工作区写入、完全访问分档；外发、删除、敏感路径、生产配置、支付/发布和凭据读取始终逐次审批。</li>
+      <li><strong>主动讲边界：</strong>当前证明了工程控制面和本地交付，不证明多 Bot 一定更快、模型一定更好或真人一定节省时间。</li>
+    </ol>
+  </section>
+
+  <section id="architecture">
+    <h2>三、项目到底怎么工作</h2>
+    <div class="flow" aria-label="项目流程">
+      <div class="node"><strong>用户想法</strong><br><span class="small">自然语言目标</span></div><div class="arrow">→</div>
+      <div class="node"><strong>Product Builder</strong><br><span class="small">澄清与规划</span></div><div class="arrow">→</div>
+      <div class="node"><strong>Provider / Agent</strong><br><span class="small">生成候选或执行</span></div><div class="arrow">→</div>
+      <div class="node"><strong>Tool Policy</strong><br><span class="small">权限与审批</span></div><div class="arrow">→</div>
+      <div class="node"><strong>RunEvent + SQLite</strong><br><span class="small">记录、恢复、回放</span></div><div class="arrow">→</div>
+      <div class="node"><strong>Artifact</strong><br><span class="small">可审阅产物</span></div>
+    </div>
+    <h3>四层结构</h3>
+    <table>
+      <thead><tr><th>层</th><th>负责什么</th><th>你面试时怎么解释</th></tr></thead>
+      <tbody>
+        <tr><td>Core（核心契约）</td><td>类型、状态机、事件投影、幂等</td><td>把“运行发生了什么”定义成可以回放的契约。</td></tr>
+        <tr><td>Control plane（控制面）</td><td>本地 HTTP Server、SQLite、审批、Artifact、恢复</td><td>把模型候选变成受约束的运行流程。</td></tr>
+        <tr><td>Adapter（适配层）</td><td>Fixture、DeepSeek、Codex CLI、ToolRuntime</td><td>换模型或执行桥，不换业务状态机；身份和计费来源分开记录。</td></tr>
+        <tr><td>Web / Electron</td><td>同一套 Web UI 的浏览器和桌面入口</td><td>桌面只是壳，不复制第二套业务逻辑。</td></tr>
+      </tbody>
+    </table>
+    <h3>一次运行发生什么</h3>
+    <pre>1. 创建 Run，状态 queued → running
+2. 记录目标、项目范围、Bot 和 Provider 身份
+3. 模型提出结构化结果或工具调用
+4. Tool Policy 检查路径、命令、权限和审批
+5. 每个动作追加 RunEvent 和 receipt（回执）
+6. 产物写入 SQLite，失败也留下可诊断事件
+7. 需要时生成 ContextSnapshot，重启后恢复同一逻辑 Run
+8. 高风险候选停在 waiting_user，不能自动发布</pre>
+  </section>
+
+  <section id="evidence">
+    <h2>四、哪些话有证据，哪些话不能说</h2>
+    <div class="grid">
+      <div class="card"><h3>可以说</h3><ul class="evidence-list"><li>本地 Web/Electron 交付版可运行。</li><li>SQLite-first 是运行时事实源。</li><li>RunEvent、审批、工具回执和 Artifact 可回放。</li><li>路径穿越、符号链接逃逸和非法命令会被拒绝。</li><li>Fixture 无 Key 可演示完整流程。</li><li>混合记忆策略可以按单次 RSI 运行选择并记录。</li><li>全量工程测试 105/105 通过。</li></ul></div>
+      <div class="card"><h3>不能说成已证明</h3><ul><li>多 Bot 已经比单 Bot 更快或更好。</li><li>DeepSeek 或 Codex 一定比其他模型强。</li><li>用户已经节省了固定比例的时间。</li><li>Codex 原生 resume 已经完全接通。</li><li>DMG 已通过 Developer ID 签名和公证。</li><li>系统可以无人审批自我扩张。</li></ul></div>
+    </div>
+    <h3>证据入口</h3>
+    <table>
+      <thead><tr><th>面试说法</th><th>仓库证据</th></tr></thead>
+      <tbody>
+        <tr><td>项目定位和边界</td><td><code>SPEC/00-product-contract.md</code>、<code>README.md</code></td></tr>
+        <tr><td>状态、事件和恢复</td><td><code>packages/core/src/state-machine.ts</code>、<code>packages/core/src/run-store.ts</code>、<code>SPEC/07-context-compaction-and-recovery.md</code></td></tr>
+        <tr><td>Provider 身份边界</td><td><code>SPEC/02-provider-and-tool-adapters.md</code>、<code>validation/provider-boundary-v1.json</code></td></tr>
+        <tr><td>工具权限与审批</td><td><code>packages/adapters/src/tool-runtime.ts</code>、<code>packages/adapters/src/sandbox.ts</code></td></tr>
+        <tr><td>Product Builder 演示</td><td><code>docs/INTERVIEW-DEMO-PACK-V1-2026-10-03.md</code>、<code>docs/USER-GUIDE.md</code></td></tr>
+        <tr><td>RSI 记忆策略</td><td><code>SPEC/24-memory-recall-hybrid-v1-2026-10-04.md</code>、<code>validation/memory-recall-strategy-control-v1-2026-10-04.json</code></td></tr>
+        <tr><td>当前状态与恢复</td><td><code>RUN_STATE.json</code>、<code>HANDOFF.md</code>、<code>DEVLOG.md</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="questions">
+    <h2>五、面试官可能怎么问</h2>
+    <p class="small">回答顺序：先给判断，再给项目里的具体机制，最后主动说验证边界。不要把下面的文字机械背成目录。</p>
+    <div class="q"><h3>1. 这不就是几个 Prompt 串起来吗？</h3><div class="answer">如果只是 Prompt 串联，我同意它没有太大产品价值。这个项目的核心是控制复杂任务：谁负责、读什么、能不能调用工具、失败如何恢复、产物能不能发布。Prompt 只是产生候选，状态机、权限策略、RunEvent 和审批才决定流程是否继续。</div><div class="evidence">证据：Core 状态机、ToolRuntime policy、approval route、RunEvent replay。</div></div>
+    <div class="q"><h3>2. 为什么不直接用一个强模型？</h3><div class="answer">不一定需要多个 Bot。不同职责只有在输入、评价标准或权限明显不同，并且固定任务证明收益时才值得拆开。当前我先把结构化单流程和专门角色做成可比较路径，没有把“多 Bot”当成天然优势。</div><div class="evidence">边界：当前没有真人效率或多 Bot 质量优势证据。</div></div>
+    <div class="q"><h3>3. 你怎么避免模型胡编？</h3><div class="answer">我把外部事实、结构化输出和评测分开处理：需要来源的结果必须带 Source；进入正式 Artifact 前要过 Schema 和固定检查；未知项必须保留，不能被模型补成事实；高风险候选停在审批边界。模型自评只能作为反馈，不能单独当作产品质量证明。</div><div class="evidence">证据：Product Builder unknowns、Artifact release gate、RSI evaluation。</div></div>
+    <div class="q"><h3>4. DeepSeek、Codex 和 Fixture 分别是什么？</h3><div class="answer">Fixture 是无 Key 的确定性控制面演示；DeepSeek 是 ModelProvider（模型提供方），负责模型响应；Codex CLI 是 ExecutionAgent（执行代理），负责在本机按权限执行。三者的认证方式、计费来源、模型身份和 mock 标记分开记录，不能把订阅额度写成 API 额度。</div><div class="evidence">证据：ProviderIdentity、provider receipt、Codex capability probe。</div></div>
+    <div class="q"><h3>5. 你为什么选 SQLite？</h3><div class="answer">这是本地优先产品，第一阶段更需要事务、一致性、重启回读和单机可复现，而不是先引入云端多用户复杂度。SQLite 作为运行时唯一事实源，JSONL 只承担导出、演示和灾备；Web 和 Electron 共享同一 control plane。</div><div class="evidence">证据：persistence adapter、schema migration、reopen/recovery tests。</div></div>
+    <div class="q"><h3>6. 上下文窗口满了怎么办？</h3><div class="answer">不把整段聊天当唯一状态。系统按阈值生成带 hash 的 ContextSnapshot，保留长期事实、决策、未知项、来源、审批和最近事件尾部；恢复时开启新的 segment，继续同一逻辑 Run。事件缺口、哈希不一致或跨项目恢复会失败。</div><div class="evidence">边界：这验证的是项目恢复包，不等于证明 Codex 内部原生压缩或缓存命中。</div></div>
+    <div class="q"><h3>7. 你的 Tool Calling 怎么保证安全？</h3><div class="answer">工具调用先过结构化参数校验，再过项目范围、路径、符号链接、命令白名单和权限层级检查。只读工具可以直接执行；写入、删除、外发、敏感路径和生产动作逐次审批。审计事件只记录必要元数据，不把文件正文或凭据写进回执。</div><div class="evidence">证据：sandbox、ToolRuntime、approval 和脱敏测试。</div></div>
+    <div class="q"><h3>8. 你怎么证明它有效？</h3><div class="answer">我把“工程能跑”“模型质量”“真人提效”分成三道门。当前已完成工程控制面、固定任务、Provider 边界、失败恢复、Web/Electron 和本地交付验证；固定记忆基准里混合召回排序更好，但还没有把它升级成真实生产提效结论。下一步要用非敏感真实项目和固定问题做对照。</div><div class="evidence">证据：RUN_STATE、validation/、docs/DELIVERY-REPORT-V0.1.md。</div></div>
+    <div class="q"><h3>9. RSI（自动评测和改进）会不会自己乱改？</h3><div class="answer">不会默认自我扩张。RSI 只能生成候选、记录评测和反馈；低风险 Prompt 候选也有固定检查和可回滚记录；Provider、Tool Policy、代码、Bot 和 Routine 等高风险目标必须逐次审批。当前混合记忆策略也是单次可选，不会自动改全局默认。</div><div class="evidence">证据：<code>ImprovementProposal</code>、approval boundary、memory strategy validation。</div></div>
+    <div class="q"><h3>10. 你本人到底做了什么？</h3><div class="answer">我负责产品问题定义、边界取舍、领域对象和工作流设计、Provider/权限/评测契约、验证标准和交付路线，并用 Codex 把方案落成可运行代码，再通过测试和回执核对结果。面试时不把“我设计了”和“代码由 AI 协助完成”混在一起说。</div><div class="evidence">口径：强调产品判断、架构取舍、验收和风险控制；不要冒充纯手写工程实现。</div></div>
+    <div class="q"><h3>11. 这个项目最大的风险是什么？</h3><div class="answer">最大的风险是控制面做得很完整，但真实模型质量和真实生产力还没有被充分证明。所以我把 Fixture、真实 Provider、固定评测和真人使用分开记录；当前交付目标是本地可运行和可追踪，后续再用固定真实任务决定哪些能力值得默认启用。</div></div>
+    <div class="q"><h3>12. 如果重做一次，你会先改什么？</h3><div class="answer">我会先做一个真实、非敏感任务的单次模型基线，然后只增加一个可测的增量，例如策略选择、工具调用或恢复包，再比较质量、延迟、成本和人工修改量。只有增量在固定门槛下成立，才继续扩大 Agent 或自动化范围。</div></div>
+  </section>
+
+  <section id="practice">
+    <h2>六、你怎么真正学会，而不是背稿</h2>
+    <div class="grid three">
+      <div class="card"><h3>第 1 层：讲清问题</h3><p>不看代码，回答“为什么做、给谁用、解决什么、为什么不是聊天框”。目标是 30 秒说清。</p></div>
+      <div class="card"><h3>第 2 层：讲清机制</h3><p>打开四个文件：<code>state-machine.ts</code>、<code>run-store.ts</code>、<code>tool-runtime.ts</code>、<code>improvement-runtime.ts</code>。每个文件只回答“输入、输出、失败怎么处理”。</p></div>
+      <div class="card"><h3>第 3 层：讲清证据</h3><p>每个结论配一个验证文件。被追问时先说事实，再说限制，不用“应该”“大概”“已经证明”填空。</p></div>
+    </div>
+    <h3>建议的 7 天掌握顺序</h3>
+    <table>
+      <thead><tr><th>天数</th><th>主题</th><th>输出</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>产品问题和用户流程</td><td>30 秒介绍 + 一张流程图</td></tr>
+        <tr><td>2</td><td>Run、事件和 SQLite</td><td>解释一次运行如何创建、失败、恢复</td></tr>
+        <tr><td>3</td><td>Provider 与 Codex 边界</td><td>回答“API、订阅和执行代理有什么不同”</td></tr>
+        <tr><td>4</td><td>工具和权限</td><td>讲清只读、工作区写入、完全访问和逐次审批</td></tr>
+        <tr><td>5</td><td>Product Builder</td><td>不看稿讲完整输入→产物流程</td></tr>
+        <tr><td>6</td><td>评测与 RSI</td><td>解释为什么候选不能自动发布</td></tr>
+        <tr><td>7</td><td>随机追问</td><td>随机抽 10 题，每题先在 20 秒内说出第一句</td></tr>
+      </tbody>
+    </table>
+    <h3>每次口述后的自检</h3>
+    <ul><li>我有没有先回答问题，而不是直接背项目全貌？</li><li>我有没有说清自己的动作、取舍和证据？</li><li>我有没有把 Fixture、真实 Provider 和用户效果混为一谈？</li><li>我有没有把未验证内容说成已完成？</li><li>我能不能指出一个具体文件或回执来支撑这句话？</li></ul>
+  </section>
+
+  <section id="boundaries">
+    <h2>七、必须记住的边界</h2>
+    <div class="claim bad"><strong>不要这样说：</strong>“我做了一个可以自动管理所有 Agent、自己学习、自己发布的生产级平台。”<br><strong>要这样说：</strong>“我先把 Agent 工作流里最容易失控的状态、权限、工具和恢复问题做成了一个本地可运行控制面；自动迭代目前只生成受控候选，高风险动作仍需审批。”</div>
+    <div class="claim good"><strong>最稳的项目定位：</strong>这是一个能体现 AI 产品架构、Workflow 设计、模型边界、评测意识和工程协作能力的本地 Agent Workspace Alpha。它已经能演示和继续开发，但真实质量和真人提效仍需要单独验证。</div>
+    <h3>本项目当前状态</h3>
+    <pre>阶段：memory-recall-strategy-control-v1
+状态：complete（本阶段完成）
+已验证：工程控制面、Provider 边界、权限、恢复、Web/Electron、本地交付
+未证明：多 Bot 提效、真实模型质量、真人效率、Codex 原生 resume、签名发布
+当前默认：lexical（关键词模式）
+可选策略：hybrid（混合模式，仅本次运行）</pre>
+  </section>
+
+  <p class="footer">材料版本：v1｜生成依据：当前仓库的 README、SPEC、RUN_STATE、validation 和 docs；个人简历与面试总控资料仅用于事实边界校准，未复制私人联系方式或公司材料。</p>
+</main>
+</body>
+</html>
