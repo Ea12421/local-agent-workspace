@@ -1,0 +1,48 @@
+{
+  "name": "local-agent-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-first Agent Workspace with project Bots, traceable Runs, approvals, and artifacts.",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "demo": "node --experimental-strip-types scripts/demo.ts",
+    "dev": "node --experimental-strip-types apps/server/src/index.ts",
+    "test": "node --experimental-strip-types --test packages/core/src/*.test.ts",
+    "pretest:all": "pnpm run build:desktop",
+    "test:all": "node --experimental-strip-types --test packages/core/src/*.test.ts packages/adapters/src/*.test.ts packages/workflow/src/*.test.ts apps/server/src/*.test.ts apps/desktop/test/*.test.cjs scripts/import-export/*.test.mjs",
+    "typecheck": "node scripts/typecheck.mjs",
+    "dev:web": "vite apps/web --config apps/web/vite.config.ts",
+    "build:web": "vite build apps/web --config apps/web/vite.config.ts",
+    "build:desktop": "tsc -p apps/desktop/tsconfig.json && node scripts/build-desktop-entry.mjs",
+    "package:mac": "pnpm run build:desktop && electron-builder --config apps/desktop/electron-builder.yml --mac",
+    "diagnose:network": "node scripts/network-diagnose.mjs",
+    "quality:fixed": "node scripts/fixed-task-quality-gate.mjs",
+    "context:benchmark": "node scripts/context-benchmark.mjs",
+    "context:multi-pass": "node scripts/context-multi-pass-validation.mjs",
+    "context:deep-recovery": "node scripts/context-deep-recovery-validation.mjs",
+    "memory:baseline": "node --experimental-strip-types scripts/memory-recall-baseline.ts",
+    "memory:benchmark": "node --experimental-strip-types scripts/memory-recall-benchmark.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "^34.3.3",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

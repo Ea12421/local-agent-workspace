@@ -1,0 +1,46 @@
+{
+  "version": "local-delivery-v1",
+  "verifiedAt": "2026-10-07",
+  "source": "clean-room public release snapshot",
+  "checks": {
+    "regressionTests": {
+      "status": "passed",
+      "count": "127/127"
+    },
+    "typecheck": {
+      "status": "passed"
+    },
+    "webBuild": {
+      "status": "passed"
+    },
+    "desktopBuild": {
+      "status": "passed"
+    },
+    "dmgBuild": {
+      "status": "passed",
+      "artifact": "release/Local Agent Workspace-0.1.0-arm64.dmg",
+      "sha256": "d3386b8e10af5309bf397c40d542f0a6f28a8c29c26fcefe4f09d26eb1b241f7",
+      "signed": false,
+      "imageVerify": "passed"
+    },
+    "codexSession": {
+      "status": "passed",
+      "mock": false,
+      "scope": "read-only fixed task",
+      "evidence": "provider identity, RunEvent receipt, assistant message persistence and restart readback"
+    },
+    "cleanRoomInstall": {
+      "status": "blocked_environment",
+      "reason": "npm registry DNS unavailable in the restricted environment; dependency-complete offline verification passed with the existing local pnpm cache copy"
+    },
+    "secretsScan": {
+      "status": "passed",
+      "scope": "public snapshot; no API keys, tokens or private keys found"
+    }
+  },
+  "knownLimits": [
+    "真实模型质量、成本收益和长期真人提效尚未由本摘要证明。",
+    "DMG 未使用 Apple Developer ID 签名。",
+    "真实 DeepSeek 调用需要使用者自己的 API Key。"
+  ]
+}
