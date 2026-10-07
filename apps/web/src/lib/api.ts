@@ -204,6 +204,8 @@ export type WorkspaceSnapshot = {
   providerConnections?: ProviderConnectionRecord[]
   providerBindings?: ProviderBindingRecord[]
   sessions?: SessionRecord[]
+  plans?: ExecutionPlanRecord[]
+  planAnswers?: PlanAnswerRecord[]
 }
 
 export type ProviderConnectionRecord = {
@@ -280,6 +282,8 @@ export type ExecutionPlanStepRecord = {
   toolId?: string
   outputRefs: string[]
   error?: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export type ExecutionPlanRecord = {
@@ -293,6 +297,17 @@ export type ExecutionPlanRecord = {
   steps: ExecutionPlanStepRecord[]
   waitingReason?: string
   error?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type PlanAnswerRecord = {
+  planId: string
+  content: string
+  sourceRefs: string[]
+  unknowns: string[]
+  nextSteps: string[]
+  isModelGenerated: false
 }
 
 /** 总控计划生成与执行的显式模式。默认使用离线 Fixture，避免误触真实额度或工具。 */
@@ -622,8 +637,8 @@ export interface WorkspaceApi {
   appendSessionMessage(input: { sessionId: string; projectId: string; sequence: number; role: 'user' | 'assistant' | 'system' | 'tool'; content: string }): Promise<SessionMessageRecord>
   runSessionMessage(input: { sessionId: string; projectId: string; content: string; messageId?: string; provider?: 'fixture' | 'bound'; scenario?: 'normal' | 'failure' | 'approval' }): Promise<SessionRunResult>
   planSessionMessage(input: { sessionId: string; projectId: string; content: string; messageId?: string; providerMode?: OrchestratorProviderMode }): Promise<SessionPlanResult>
-  runExecutionPlan(input: { planId: string; projectId: string; executionMode?: OrchestratorExecutionMode }): Promise<{ plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>>; waitingReason?: string }>
-  resumeExecutionPlan(input: { planId: string; projectId: string; stepId: string; decision: 'approved' | 'rejected'; executionMode?: OrchestratorExecutionMode }): Promise<{ plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>> }>
+  runExecutionPlan(input: { planId: string; projectId: string; executionMode?: OrchestratorExecutionMode }): Promise<{ plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>>; waitingReason?: string; answer?: PlanAnswerRecord }>
+  resumeExecutionPlan(input: { planId: string; projectId: string; stepId: string; decision: 'approved' | 'rejected'; executionMode?: OrchestratorExecutionMode }): Promise<{ plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>>; answer?: PlanAnswerRecord }>
   createBot(input: BotCreateInput): Promise<BotProfileRecord>
   duplicateBot(id: string, projectId: string): Promise<BotProfileRecord>
   disableBot(id: string, projectId: string): Promise<BotProfileRecord>
@@ -778,6 +793,8 @@ export const workspaceApi: WorkspaceApi = {
           providerConnections?: ProviderConnectionRecord[]
           providerBindings?: ProviderBindingRecord[]
           sessions?: SessionRecord[]
+          executionPlans?: ExecutionPlanRecord[]
+          planAnswers?: PlanAnswerRecord[]
         }
           const persistedProject = (entities.projects ?? []).find((item) => String(item.id) === String(snapshot.projects[0]?.id))
           const projects = snapshot.projects.map((item) => item.id === snapshot.projects[0]?.id && persistedProject?.workspacePath
@@ -980,6 +997,8 @@ export const workspaceApi: WorkspaceApi = {
             providerConnections: entities.providerConnections ?? [],
             providerBindings: entities.providerBindings ?? [],
             sessions: entities.sessions ?? [],
+          plans: entities.executionPlans ?? [],
+          planAnswers: entities.planAnswers ?? [],
           }
         }
       } catch (error) {
@@ -1323,13 +1342,13 @@ export const workspaceApi: WorkspaceApi = {
   },
   async runExecutionPlan(input) {
     const response = await fetch(`${localApiBase}/api/persistence/plans/${encodeURIComponent(input.planId)}/run`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ projectId: input.projectId, executionMode: input.executionMode ?? 'fixture' }) })
-    const result = await response.json() as { plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>>; waitingReason?: string; error?: string }
+    const result = await response.json() as { plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>>; waitingReason?: string; answer?: PlanAnswerRecord; error?: string }
     if (!response.ok && response.status !== 202) throw new Error(String(result.error ?? `execution_plan_run_failed_${response.status}`))
     return result
   },
   async resumeExecutionPlan(input) {
     const response = await fetch(`${localApiBase}/api/persistence/plans/${encodeURIComponent(input.planId)}/resume`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ projectId: input.projectId, stepId: input.stepId, decision: input.decision, executionMode: input.executionMode ?? 'fixture' }) })
-    const result = await response.json() as { plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>>; error?: string }
+    const result = await response.json() as { plan: ExecutionPlanRecord; events?: Array<Record<string, unknown>>; answer?: PlanAnswerRecord; error?: string }
     if (!response.ok) throw new Error(String(result.error ?? `execution_plan_resume_failed_${response.status}`))
     return result
   },

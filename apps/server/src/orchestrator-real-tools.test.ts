@@ -47,6 +47,9 @@ test('orchestrator plan can execute real filesystem and git read-only tools', as
   assert.equal(executed.body.plan.status, 'succeeded');
   assert.ok(executed.body.plan.steps.every((step: any) => step.outputRefs.some((ref: string) => ref.startsWith('receipt:'))));
   assert.ok(executed.body.events.some((event: any) => event.type === 'plan.step_completed' && event.data?.isMock === false));
+  assert.equal(executed.body.answer.isModelGenerated, false);
+  assert.ok(executed.body.answer.sourceRefs.some((ref: string) => ref.startsWith('receipt:')));
+  assert.match(executed.body.answer.content, /执行结果/);
   const replay = await call('POST', `/api/persistence/plans/${planned.body.plan.id}/run`, { projectId: 'orchestrator-real-project', executionMode: 'real' });
   assert.equal(replay.status, 200);
   assert.equal(replay.body.events.filter((event: any) => event.type === 'plan.step_started').length, 2);

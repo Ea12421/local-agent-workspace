@@ -98,6 +98,7 @@ export type RunEventType =
   | "plan.succeeded"
   | "plan.failed"
   | "plan.cancelled"
+  | "plan.answer_created"
   | "artifact.created"
   | "product_builder.state_checkpoint"
   | "context.compaction_started"

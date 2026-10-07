@@ -5,7 +5,7 @@ import {
   FolderKanban, History, LayoutDashboard, Menu, MoreHorizontal, Play, Plus, RefreshCcw, Search,
   Settings2, ShieldCheck, Sparkles, Terminal, UserRound, X,
 } from 'lucide-react'
-import { workspaceApi, type ArtifactDetail, type Bot as BotData, type BotProfileRecord, type CodexProbe, type ExecutionPlanRecord, type ImprovementRunResponse, type MemoryRecallStrategy, type OrchestratorExecutionMode, type OrchestratorProviderMetadata, type OrchestratorProviderMode, type ProductBuilderProjection, type Project, type ProviderChoice, type ProviderModelReceipt, type RunEvent, type SessionMessageRecord, type SkillRecord, type SourceDetail, type StartRunResult, type WorkspaceSnapshot } from './lib/api'
+import { workspaceApi, type ArtifactDetail, type Bot as BotData, type BotProfileRecord, type CodexProbe, type ExecutionPlanRecord, type ImprovementRunResponse, type MemoryRecallStrategy, type OrchestratorExecutionMode, type OrchestratorProviderMetadata, type OrchestratorProviderMode, type PlanAnswerRecord, type ProductBuilderProjection, type Project, type ProviderChoice, type ProviderModelReceipt, type RunEvent, type SessionMessageRecord, type SkillRecord, type SourceDetail, type StartRunResult, type WorkspaceSnapshot } from './lib/api'
 
 type View = 'overview' | 'bots' | 'runs' | 'artifacts'
 
@@ -235,6 +235,11 @@ function PageHeader({ view, project, onNewRun }: { view: View; project: Workspac
 }
 
 function Overview({ snapshot, project, approvalOpen, busy, onAction, onResolveClarification, onNavigate, latestExecution, onToast, onRefresh }: { snapshot: WorkspaceSnapshot; project: WorkspaceSnapshot['projects'][number]; approvalOpen: boolean; busy: boolean; onAction: (action: 'approve' | 'retry') => Promise<void>; onResolveClarification: (clarificationId: string, value: string) => Promise<void>; onNavigate: (view: View) => void; latestExecution: StartRunResult | null; onToast: (message: string) => void; onRefresh: () => void }) {
+  const sessions = snapshot.sessions ?? []
+  const [selectedSessionId, setSelectedSessionId] = useState(sessions[0]?.id ?? '')
+  useEffect(() => {
+    setSelectedSessionId((current) => sessions.some((item) => item.id === current) ? current : (sessions[0]?.id ?? ''))
+  }, [sessions])
   const isFixture = /fixture/i.test(snapshot.provider.name) || snapshot.source === 'fixture'
   const providerLabel = isFixture ? '本地演示' : snapshot.provider.name
   const responseValue = isFixture ? '本地演示' : snapshot.provider.latency
@@ -252,8 +257,8 @@ function Overview({ snapshot, project, approvalOpen, busy, onAction, onResolveCl
     <div className="metric-grid"><Metric label="进行中的运行" value={activeRunCount} meta={snapshot.run.status} tone="purple" icon={Activity} /><Metric label="活跃 Bots" value={`${activeBotCount} / ${snapshot.bots.length}`} meta="当前项目" tone="green" icon={Bot} /><Metric label="当前产物" value={String(currentArtifacts.length)} meta="本次运行的输出" tone="orange" icon={FileText} /><Metric label="最近运行" value={responseValue} meta={providerLabel} tone="blue" icon={Clock3} /></div>
     <div className="next-step-note"><Sparkles size={15} /><strong>下一步</strong><span>{nextStep}</span></div>
     <ProviderSetupCard project={project} bots={snapshot.bots} connections={snapshot.providerConnections ?? []} bindings={snapshot.providerBindings ?? []} onToast={onToast} onRefresh={onRefresh} />
-    <SessionCard project={project} bots={snapshot.bots} sessions={snapshot.sessions ?? []} providerConnections={snapshot.providerConnections ?? []} providerBindings={snapshot.providerBindings ?? []} onToast={onToast} onRefresh={onRefresh} />
-    <OrchestratorCard project={project} sessions={snapshot.sessions ?? []} onToast={onToast} onRefresh={onRefresh} />
+    <SessionCard project={project} bots={snapshot.bots} sessions={sessions} selectedId={selectedSessionId} onSelect={setSelectedSessionId} providerConnections={snapshot.providerConnections ?? []} providerBindings={snapshot.providerBindings ?? []} onToast={onToast} onRefresh={onRefresh} />
+    <OrchestratorCard project={project} sessions={sessions} selectedSessionId={selectedSessionId} plans={snapshot.plans ?? []} planAnswers={snapshot.planAnswers ?? []} onToast={onToast} onRefresh={onRefresh} />
     <ProjectBindingCard project={project} />
     <BuilderContractCard productBuilder={snapshot.productBuilder} busy={busy} onResolve={onResolveClarification} />
     <ImprovementCard projectId={project.id} onToast={onToast} />
@@ -263,10 +268,9 @@ function Overview({ snapshot, project, approvalOpen, busy, onAction, onResolveCl
   </>
 }
 
-function SessionCard({ project, bots, sessions, providerConnections, providerBindings, onToast, onRefresh }: { project: WorkspaceSnapshot['projects'][number]; bots: BotData[]; sessions: NonNullable<WorkspaceSnapshot['sessions']>; providerConnections: NonNullable<WorkspaceSnapshot['providerConnections']>; providerBindings: NonNullable<WorkspaceSnapshot['providerBindings']>; onToast: (message: string) => void; onRefresh: () => void }) {
+function SessionCard({ project, bots, sessions, selectedId, onSelect, providerConnections, providerBindings, onToast, onRefresh }: { project: WorkspaceSnapshot['projects'][number]; bots: BotData[]; sessions: NonNullable<WorkspaceSnapshot['sessions']>; selectedId: string; onSelect: (id: string) => void; providerConnections: NonNullable<WorkspaceSnapshot['providerConnections']>; providerBindings: NonNullable<WorkspaceSnapshot['providerBindings']>; onToast: (message: string) => void; onRefresh: () => void }) {
   const [title, setTitle] = useState('新的 Product Builder 会话')
   const [message, setMessage] = useState('')
-  const [selectedId, setSelectedId] = useState(sessions[0]?.id ?? '')
   const [messages, setMessages] = useState<SessionMessageRecord[]>([])
   const [busy, setBusy] = useState(false)
   const selected = sessions.find((item) => item.id === selectedId)
@@ -279,9 +283,6 @@ function SessionCard({ project, bots, sessions, providerConnections, providerBin
       ? '当前绑定的是 DeepSeek；它用于 Product Builder 草稿，通用会话暂时使用本地演示。'
       : '没有 Codex 绑定时，通用会话使用本地演示。'
   useEffect(() => {
-    setSelectedId((current) => sessions.some((item) => item.id === current) ? current : (sessions[0]?.id ?? ''))
-  }, [sessions])
-  useEffect(() => {
     if (!selectedId) { setMessages([]); return }
     workspaceApi.listSessionMessages(selectedId, project.id).then(setMessages).catch((error) => onToast(`读取会话失败：${error instanceof Error ? error.message : '未知错误'}`))
   }, [project.id, selectedId, onToast])
@@ -290,7 +291,7 @@ function SessionCard({ project, bots, sessions, providerConnections, providerBin
     setBusy(true)
     try {
       const session = await workspaceApi.createSession({ projectId: project.id, botId: bots[0].id, title: title.trim() || '新的会话' })
-      setSelectedId(session.id)
+      onSelect(session.id)
       setTitle('新的 Product Builder 会话')
       onToast('会话已保存到当前项目。')
       onRefresh()
@@ -308,18 +309,26 @@ function SessionCard({ project, bots, sessions, providerConnections, providerBin
       onRefresh()
     } catch (error) { onToast(`保存消息失败：${error instanceof Error ? error.message : '未知错误'}`) } finally { setBusy(false) }
   }
-  return <section className="card session-card"><div className="card-heading compact"><div><span className="card-kicker">项目会话</span><h2>{selected?.title ?? '还没有项目会话'}</h2></div><span className="muted">{sessions.length} 个会话</span></div><p className="card-copy">会话、消息和运行记录属于当前项目，保存在 SQLite。{sessionProviderNote}助手结果会写回当前会话。</p>{sessions.length > 0 && <div className="session-switcher">{sessions.map((item) => <button key={item.id} className={item.id === selectedId ? 'session-chip active' : 'session-chip'} onClick={() => setSelectedId(item.id)}>{item.title}</button>)}</div>}{!selected && <div className="session-create-row"><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="会话名称" disabled={busy} /><button className="secondary-button small" onClick={() => void create()} disabled={busy || !bots[0]}>{busy ? '保存中…' : '创建会话'}</button></div>}{selected && <><div className="session-messages">{messages.length === 0 ? <span className="muted">还没有消息。先写一句，运行一次当前项目会话。</span> : messages.map((item) => <div className={`session-message ${item.role}`} key={item.id}><span>{item.role === 'user' ? '你' : item.role}</span><p>{item.content}</p></div>)}</div><div className="session-compose"><input value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void send() }} placeholder="给当前会话输入任务" disabled={busy} /><button className="primary-button small" onClick={() => void send()} disabled={busy || !message.trim()}>{busy ? '运行中…' : '发送并运行'}</button></div></>}</section>
+  return <section className="card session-card"><div className="card-heading compact"><div><span className="card-kicker">项目会话</span><h2>{selected?.title ?? '还没有项目会话'}</h2></div><span className="muted">{sessions.length} 个会话</span></div><p className="card-copy">会话、消息和运行记录属于当前项目，保存在 SQLite。{sessionProviderNote}助手结果会写回当前会话。</p>{sessions.length > 0 && <div className="session-switcher">{sessions.map((item) => <button key={item.id} className={item.id === selectedId ? 'session-chip active' : 'session-chip'} onClick={() => onSelect(item.id)}>{item.title}</button>)}</div>}{!selected && <div className="session-create-row"><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="会话名称" disabled={busy} /><button className="secondary-button small" onClick={() => void create()} disabled={busy || !bots[0]}>{busy ? '保存中…' : '创建会话'}</button></div>}{selected && <><div className="session-messages">{messages.length === 0 ? <span className="muted">还没有消息。先写一句，运行一次当前项目会话。</span> : messages.map((item) => <div className={`session-message ${item.role}`} key={item.id}><span>{item.role === 'user' ? '你' : item.role}</span><p>{item.content}</p></div>)}</div><div className="session-compose"><input value={message} onChange={(event) => setMessage(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void send() }} placeholder="给当前会话输入任务" disabled={busy} /><button className="primary-button small" onClick={() => void send()} disabled={busy || !message.trim()}>{busy ? '运行中…' : '发送并运行'}</button></div></>}</section>
 }
 
-function OrchestratorCard({ project, sessions, onToast, onRefresh }: { project: WorkspaceSnapshot['projects'][number]; sessions: NonNullable<WorkspaceSnapshot['sessions']>; onToast: (message: string) => void; onRefresh: () => void }) {
+function OrchestratorCard({ project, sessions, selectedSessionId, plans, planAnswers, onToast, onRefresh }: { project: WorkspaceSnapshot['projects'][number]; sessions: NonNullable<WorkspaceSnapshot['sessions']>; selectedSessionId: string; plans: ExecutionPlanRecord[]; planAnswers: PlanAnswerRecord[]; onToast: (message: string) => void; onRefresh: () => void }) {
   const [objective, setObjective] = useState('检查项目结构和 Git 状态')
   const [providerMode, setProviderMode] = useState<OrchestratorProviderMode>('fixture')
   const [executionMode, setExecutionMode] = useState<OrchestratorExecutionMode>('fixture')
   const [provider, setProvider] = useState<OrchestratorProviderMetadata | null>(null)
   const [plan, setPlan] = useState<ExecutionPlanRecord | null>(null)
+  const [answer, setAnswer] = useState<PlanAnswerRecord | null>(null)
   const [clarification, setClarification] = useState<{ question: string; reason: string } | null>(null)
   const [busy, setBusy] = useState(false)
-  const session = sessions[0]
+  const session = sessions.find((item) => item.id === selectedSessionId)
+  useEffect(() => {
+    const candidates = plans.filter((item) => String(item.sessionId ?? '') === String(selectedSessionId))
+    const latest = [...candidates].sort((left, right) => String(right.updatedAt ?? right.createdAt ?? '').localeCompare(String(left.updatedAt ?? left.createdAt ?? '')))[0]
+    setPlan(latest ?? null)
+    setAnswer(latest ? (planAnswers.find((item) => String(item.planId) === String(latest.id)) ?? null) : null)
+    setClarification(null)
+  }, [plans, planAnswers, selectedSessionId])
   const planGoal = async () => {
     if (!session || busy || !objective.trim()) return
     setBusy(true)
@@ -343,6 +352,7 @@ function OrchestratorCard({ project, sessions, onToast, onRefresh }: { project: 
     try {
       const result = await workspaceApi.runExecutionPlan({ planId: plan.id, projectId: project.id, executionMode })
       setPlan(result.plan)
+      setAnswer(result.answer ?? null)
       onToast(result.plan.status === 'waiting_user' ? '计划已停在审批点。' : result.plan.status === 'succeeded' ? '计划已完成。' : '计划已更新。')
       onRefresh()
     } catch (error) { onToast(`计划执行失败：${error instanceof Error ? error.message : '未知错误'}`) } finally { setBusy(false) }
@@ -354,11 +364,12 @@ function OrchestratorCard({ project, sessions, onToast, onRefresh }: { project: 
     try {
       const result = await workspaceApi.resumeExecutionPlan({ planId: plan.id, projectId: project.id, stepId: step.id, decision, executionMode })
       setPlan(result.plan)
+      setAnswer(result.answer ?? null)
       onToast(decision === 'approved' ? '已批准当前步骤，计划继续执行。' : '已拒绝当前步骤，计划已取消。')
       onRefresh()
     } catch (error) { onToast(`审批处理失败：${error instanceof Error ? error.message : '未知错误'}`) } finally { setBusy(false) }
   }
-  return <section className="card orchestrator-card"><div className="card-heading compact"><div><span className="card-kicker"><Sparkles size={13} /> 有界总控</span><h2>用一句话先生成执行计划</h2></div><span className="muted">只使用项目白名单能力</span></div><p className="card-copy">总控会先理解目标，再列出步骤。只读步骤可以执行；写入、命令和其他高风险步骤会停下来逐次询问。</p>{!session ? <div className="empty-state compact-empty">先在上方“项目会话”创建一个会话，再试运行总控。</div> : <><div className="orchestrator-modes"><label>规划模型<select value={providerMode} onChange={(event) => { setProviderMode(event.target.value as OrchestratorProviderMode); setPlan(null); setClarification(null) }} disabled={busy}><option value="fixture">本地演示（不消耗额度）</option><option value="bound">项目绑定的真实 Codex</option></select></label><label>执行方式<select value={executionMode} onChange={(event) => setExecutionMode(event.target.value as OrchestratorExecutionMode)} disabled={busy}><option value="fixture">演示执行</option><option value="real">真实只读工具</option></select></label></div><div className="session-compose"><input value={objective} onChange={(event) => setObjective(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void planGoal() }} placeholder="例如：检查项目结构和 Git 状态" disabled={busy} /><button className="primary-button small" onClick={() => void planGoal()} disabled={busy || !objective.trim()}>{busy ? '处理中…' : '生成计划'}</button></div>{provider && <div className="orchestrator-provider-note">本次规划：{provider.isMock ? '本地演示' : `${provider.provider ?? '真实 Provider'} · ${provider.model ?? '已绑定模型'}`} {provider.isMock ? '（不会调用真实模型）' : '（已记录真实运行回执）'}</div>}{clarification && <div className="clarification-card"><strong>需要你补充</strong><p>{clarification.question}</p><small>{clarification.reason}</small></div>}{plan && <div className="plan-timeline"><div className="plan-summary"><strong>{plan.objective}</strong><span className={`status-pill ${plan.status === 'succeeded' ? 'success' : plan.status === 'waiting_user' ? 'waiting' : ''}`}><span />{plan.status === 'queued' ? '待执行' : plan.status === 'running' ? '执行中' : plan.status === 'waiting_user' ? '等待确认' : plan.status === 'succeeded' ? '已完成' : plan.status === 'cancelled' ? '已取消' : '失败'}</span></div>{plan.steps.map((step) => <div className="plan-step" key={step.id}><span className={`plan-step-dot ${step.status}`} /> <div><strong>{step.order}. {step.objective}</strong><small>{step.approvalRequired ? '需要逐次审批' : step.toolId ?? step.skillId ?? '受控能力'} · {step.status === 'queued' ? '待执行' : step.status === 'waiting_user' ? '等待确认' : step.status === 'succeeded' ? '已完成' : step.status === 'running' ? '执行中' : step.status}</small></div></div>)}{plan.status === 'queued' && <button className="primary-button small" onClick={() => void runPlan()} disabled={busy}>执行这个计划</button>}{plan.status === 'waiting_user' && <div className="dialog-actions"><button className="secondary-button small" onClick={() => void approve('rejected')} disabled={busy}>拒绝</button><button className="primary-button small" onClick={() => void approve('approved')} disabled={busy}>批准当前步骤</button></div>}</div>}</>}</section>
+  return <section className="card orchestrator-card"><div className="card-heading compact"><div><span className="card-kicker"><Sparkles size={13} /> 有界总控</span><h2>用一句话先生成执行计划</h2></div><span className="muted">只使用项目白名单能力</span></div><p className="card-copy">总控会先理解目标，再列出步骤。只读步骤可以执行；写入、命令和其他高风险步骤会停下来逐次询问。</p>{!session ? <div className="empty-state compact-empty">先在上方“项目会话”创建一个会话，再试运行总控。</div> : <><div className="orchestrator-modes"><label>规划模型<select value={providerMode} onChange={(event) => { setProviderMode(event.target.value as OrchestratorProviderMode); setPlan(null); setAnswer(null); setClarification(null) }} disabled={busy}><option value="fixture">本地演示（不消耗额度）</option><option value="bound">项目绑定的真实 Codex</option></select></label><label>执行方式<select value={executionMode} onChange={(event) => setExecutionMode(event.target.value as OrchestratorExecutionMode)} disabled={busy}><option value="fixture">演示执行</option><option value="real">真实只读工具</option></select></label></div><div className="session-compose"><input value={objective} onChange={(event) => setObjective(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void planGoal() }} placeholder="例如：检查项目结构和 Git 状态" disabled={busy} /><button className="primary-button small" onClick={() => void planGoal()} disabled={busy || !objective.trim()}>{busy ? '处理中…' : '生成计划'}</button></div>{provider && <div className="orchestrator-provider-note">本次规划：{provider.isMock ? '本地演示' : `${provider.provider ?? '真实 Provider'} · ${provider.model ?? '已绑定模型'}`} {provider.isMock ? '（不会调用真实模型）' : '（已记录真实运行回执）'}</div>}{clarification && <div className="clarification-card"><strong>需要你补充</strong><p>{clarification.question}</p><small>{clarification.reason}</small></div>}{plan && <div className="plan-timeline"><div className="plan-summary"><strong>{plan.objective}</strong><span className={`status-pill ${plan.status === 'succeeded' ? 'success' : plan.status === 'waiting_user' ? 'waiting' : ''}`}><span />{plan.status === 'queued' ? '待执行' : plan.status === 'running' ? '执行中' : plan.status === 'waiting_user' ? '等待确认' : plan.status === 'succeeded' ? '已完成' : plan.status === 'cancelled' ? '已取消' : '失败'}</span></div>{plan.steps.map((step) => <div className="plan-step" key={step.id}><span className={`plan-step-dot ${step.status}`} /> <div><strong>{step.order}. {step.objective}</strong><small>{step.approvalRequired ? '需要逐次审批' : step.toolId ?? step.skillId ?? '受控能力'} · {step.status === 'queued' ? '待执行' : step.status === 'waiting_user' ? '等待确认' : step.status === 'succeeded' ? '已完成' : step.status === 'running' ? '执行中' : step.status}</small></div></div>)}{plan.status === 'queued' && <button className="primary-button small" onClick={() => void runPlan()} disabled={busy}>执行这个计划</button>}{plan.status === 'waiting_user' && <div className="dialog-actions"><button className="secondary-button small" onClick={() => void approve('rejected')} disabled={busy}>拒绝</button><button className="primary-button small" onClick={() => void approve('approved')} disabled={busy}>批准当前步骤</button></div>}{answer && <div className="orchestrator-answer"><div className="card-kicker">执行结果 · 已落盘</div><pre>{answer.content}</pre><small>这里是本地确定性汇总，不是模型生成；来源和未知项已写入运行事件。</small></div>}</div>}</>}</section>
 }
 
 function ProviderSetupCard({ project, bots, connections, bindings, onToast, onRefresh }: { project: WorkspaceSnapshot['projects'][number]; bots: BotData[]; connections: NonNullable<WorkspaceSnapshot['providerConnections']>; bindings: NonNullable<WorkspaceSnapshot['providerBindings']>; onToast: (message: string) => void; onRefresh: () => void }) {

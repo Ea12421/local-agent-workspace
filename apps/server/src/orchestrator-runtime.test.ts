@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, rm } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { createExecutionPlan } from '../../../packages/core/src/orchestrator.ts';
+import { createExecutionPlan, transitionExecutionPlan, transitionExecutionPlanStep } from '../../../packages/core/src/orchestrator.ts';
 import { executeExecutionPlan } from './orchestrator-runtime.ts';
 import { openSqliteProductBuilderContinuity } from './persistence.ts';
 
@@ -75,6 +75,58 @@ test('orchestrator runtime stops before an approval-required step', async () => 
   assert.equal(resumed.plan.status, 'succeeded');
   assert.equal(resumed.plan.steps[0]?.status, 'succeeded');
   assert.deepEqual((await handle.eventLog.readAll()).filter((event) => String(event.runId) === 'run-runtime-approval').map((event) => event.type), ['plan.created', 'plan.started', 'plan.step_blocked', 'plan.waiting_user', 'plan.resumed', 'plan.step_started', 'plan.step_completed', 'plan.succeeded']);
+  handle.close();
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('orchestrator runtime succeeds when the final step uses the max step budget', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-orchestrator-max-steps-'));
+  const handle = openSqliteProductBuilderContinuity(path.join(dir, 'workspace.db'))!;
+  const plan = createExecutionPlan({
+    id: 'plan-runtime-max-steps' as any,
+    projectId: 'project-runtime-max-steps' as any,
+    runId: 'run-runtime-max-steps' as any,
+    objective: '执行刚好达到上限的计划',
+    intent: 'inspect_project',
+    maxSteps: 1,
+    steps: [{ id: 'step-runtime-max-steps' as any, order: 1, objective: '读取一个文件', toolId: 'filesystem.read' }],
+  });
+  handle.entityStore.saveExecutionPlan(plan);
+  const result = await executeExecutionPlan({
+    planStore: handle.entityStore,
+    eventLog: handle.eventLog,
+    executeStep: async () => ({ status: 'succeeded' as const, outputRefs: ['artifact:max-steps'] }),
+  }, plan);
+  assert.equal(result.plan.status, 'succeeded');
+  assert.equal(result.plan.error, undefined);
+  handle.close();
+  await rm(dir, { recursive: true, force: true });
+});
+
+test('orchestrator runtime pauses an interrupted running step instead of rerunning an unknown side effect', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'agent-workspace-orchestrator-interrupted-'));
+  const handle = openSqliteProductBuilderContinuity(path.join(dir, 'workspace.db'))!;
+  let plan = createExecutionPlan({
+    id: 'plan-runtime-interrupted' as any,
+    projectId: 'project-runtime-interrupted' as any,
+    runId: 'run-runtime-interrupted' as any,
+    objective: '恢复中断的计划',
+    intent: 'controlled_task',
+    steps: [{ id: 'step-runtime-interrupted' as any, order: 1, objective: '执行受控命令', toolId: 'command.project.test', approvalRequired: true }],
+  });
+  plan = transitionExecutionPlan(plan, 'start');
+  plan = transitionExecutionPlanStep(plan, plan.steps[0]!.id, 'start');
+  handle.entityStore.saveExecutionPlan(plan);
+  let executed = false;
+  const result = await executeExecutionPlan({
+    planStore: handle.entityStore,
+    eventLog: handle.eventLog,
+    executeStep: async () => { executed = true; return { status: 'succeeded' as const }; },
+  }, plan);
+  assert.equal(result.plan.status, 'waiting_user');
+  assert.equal(result.plan.steps[0]!.status, 'waiting_user');
+  assert.equal(executed, false);
+  assert.match(result.waitingReason ?? '', /无法确认外部动作/);
   handle.close();
   await rm(dir, { recursive: true, force: true });
 });

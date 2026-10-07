@@ -61,6 +61,20 @@ export async function executeExecutionPlan(runtime: ExecutionPlanRuntime, initia
   await appendExecutionPlanCreated(runtime.eventLog, plan);
 
   if (plan.status === 'succeeded' || plan.status === 'cancelled') return { plan, executedStepIds, skippedStepIds };
+  const interrupted = plan.steps.filter((step) => step.status === 'running');
+  if (interrupted.length) {
+    const reason = `上次运行在步骤“${interrupted.map((step) => step.objective).join('、')}”执行中断，无法确认外部动作是否已经发生，请先决定是否重试。`;
+    for (const step of interrupted) {
+      plan = transitionExecutionPlanStep(plan, step.id, 'wait_user', { ...transitionOptions(runtime), reason });
+    }
+    if (plan.status === 'running') plan = transitionExecutionPlan(plan, 'wait_user', { ...transitionOptions(runtime), reason });
+    runtime.planStore.saveExecutionPlan(plan);
+    for (const step of plan.steps.filter((candidate) => interrupted.some((item) => String(item.id) === String(candidate.id)))) {
+      await appendExecutionPlanStepEvent(runtime.eventLog, plan, 'plan.step_blocked', step, { reason, recovery: 'interrupted' });
+    }
+    await appendExecutionPlanEvent(runtime.eventLog, plan, 'plan.waiting_user', { data: { reason, recovery: 'interrupted' } });
+    return { plan, executedStepIds, skippedStepIds, waitingReason: reason };
+  }
   if (plan.status === 'waiting_user') {
     const approved = plan.steps.filter((step) => step.status === 'waiting_user' && runtime.approvedStepIds?.has(String(step.id)));
     if (!approved.length) {
@@ -119,6 +133,12 @@ export async function executeExecutionPlan(runtime: ExecutionPlanRuntime, initia
       runtime.planStore.saveExecutionPlan(plan);
       const completedStep = plan.steps.find((candidate) => String(candidate.id) === String(step.id))!;
       await appendExecutionPlanStepEvent(runtime.eventLog, plan, 'plan.step_completed', completedStep, result.data as any);
+      if (plan.steps.every((candidate) => candidate.status === 'succeeded')) {
+        plan = transitionExecutionPlan(plan, 'succeed', transitionOptions(runtime));
+        runtime.planStore.saveExecutionPlan(plan);
+        await appendExecutionPlanEvent(runtime.eventLog, plan, 'plan.succeeded');
+        return { plan, executedStepIds, skippedStepIds };
+      }
       continue;
     }
     if (result.status === 'waiting_user') {

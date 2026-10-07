@@ -62,3 +62,17 @@ export async function appendExecutionPlanStarted(eventLog: EventLog, plan: Execu
 export async function appendExecutionPlanStepEvent(eventLog: EventLog, plan: ExecutionPlan, type: Extract<RunEventType, `plan.step_${string}`>, step: ExecutionPlanStep, data?: ExecutionPlanEventData): Promise<RunEvent> {
   return appendExecutionPlanEvent(eventLog, plan, type, { step, data });
 }
+
+export async function appendExecutionPlanAnswer(eventLog: EventLog, plan: ExecutionPlan, answer: { content: string; sourceRefs: string[]; unknowns: string[]; nextSteps: string[]; isModelGenerated: false }): Promise<RunEvent> {
+  return appendExecutionPlanEvent(eventLog, plan, 'plan.answer_created', {
+    idempotencyKey: `execution-plan:${String(plan.id)}:answer`,
+    data: {
+      planId: String(plan.id),
+      content: answer.content,
+      sourceRefs: answer.sourceRefs,
+      unknowns: answer.unknowns,
+      nextSteps: answer.nextSteps,
+      isModelGenerated: answer.isModelGenerated,
+    } as any,
+  });
+}

@@ -13,7 +13,8 @@ import type { ProviderReceipt } from './persistence.ts';
 import { improvementApprovals, improvementArtifacts, improvementEvaluationBundle, readImprovementProjection, rollbackImprovement, startImprovementRun } from './improvement-runtime.ts';
 import { SqliteMemoryAdapter } from './memory-adapter.ts';
 import { ProviderResolverError, resolveProviderBinding } from './provider-resolver.ts';
-import { appendExecutionPlanCreated, appendExecutionPlanEvent, appendExecutionPlanStepEvent } from './orchestrator-events.ts';
+import { appendExecutionPlanAnswer, appendExecutionPlanCreated, appendExecutionPlanEvent, appendExecutionPlanStepEvent } from './orchestrator-events.ts';
+import { buildOrchestratorAnswer, planAnswerFromEvent, type OrchestratorAnswer } from './orchestrator-answer.ts';
 import { buildPlannerCapabilityCatalog } from './orchestrator-service.ts';
 import { executeExecutionPlan } from './orchestrator-runtime.ts';
 import { executeCodexPlanner, plannerFailureData } from './orchestrator-provider.ts';
@@ -118,6 +119,29 @@ function send(res: ResponseLike, status: number, body: Json) {
     : body;
   res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'access-control-allow-origin': '*', ...(correlationId ? { 'x-correlation-id': correlationId } : {}) });
   res.end(JSON.stringify(responseBody));
+}
+
+async function persistOrchestratorAnswer(stores: Awaited<ReturnType<typeof defaultProductBuilderContinuityStores>>, plan: import('../../../packages/core/src/orchestrator.ts').ExecutionPlan, events: RunEvent[]): Promise<OrchestratorAnswer | undefined> {
+  if (plan.status !== 'succeeded') return undefined;
+  const existing = events.find((event) => event.type === 'plan.answer_created');
+  if (existing) return planAnswerFromEvent(existing);
+  const answer = await buildOrchestratorAnswer(plan, events);
+  await appendExecutionPlanAnswer(stores.eventLog, plan, answer);
+  if (stores.entityStore && plan.sessionId) {
+    const messages = stores.entityStore.listSessionMessages(String(plan.sessionId), String(plan.projectId));
+    const messageId = `plan-answer:${String(plan.id)}`;
+    if (!messages.some((message) => String(message.id) === messageId)) {
+      stores.entityStore.appendSessionMessage({
+        id: messageId as any,
+        sessionId: plan.sessionId as any,
+        sequence: messages.reduce((max, message) => Math.max(max, message.sequence), 0) + 1,
+        role: 'assistant',
+        content: answer.content,
+        createdAt: new Date().toISOString(),
+      });
+    }
+  }
+  return answer;
 }
 
 function requestCorrelationId(value: string | undefined): string {
@@ -666,8 +690,10 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
             return executeRealOrchestratorStep(step, currentPlan, { projectId: projectId as ProjectId, botId: planSession.botId as BotId, sessionId: planSession.id as any }, { oneOffApprovedStepId: stepId, entityStore: stores.entityStore, toolPolicy: planBot.toolPolicy });
           },
         }, plan);
-        const events = (await stores.eventLog.readAll()).filter((event) => String(event.runId) === String(result.plan.runId));
-        return send(res, result.plan.status === 'succeeded' ? 200 : 202, { idempotent: false, plan: result.plan, decision, events });
+        let events = (await stores.eventLog.readAll()).filter((event) => String(event.runId) === String(result.plan.runId));
+        const answer = await persistOrchestratorAnswer(stores, result.plan, events as unknown as RunEvent[]);
+        if (answer) events = (await stores.eventLog.readAll()).filter((event) => String(event.runId) === String(result.plan.runId));
+        return send(res, result.plan.status === 'succeeded' ? 200 : 202, { idempotent: false, plan: result.plan, decision, events, ...(answer ? { answer } : {}) });
       } finally { stores.close?.(); }
     }
 
@@ -697,8 +723,10 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
             return executeRealOrchestratorStep(step, currentPlan, { projectId: projectId as ProjectId, botId: planSession.botId as BotId, sessionId: planSession.id as any }, { entityStore: stores.entityStore, toolPolicy: planBot.toolPolicy });
           },
         }, plan);
-        const events = (await stores.eventLog.readAll()).filter((event) => String(event.runId) === String(result.plan.runId));
-        return send(res, result.plan.status === 'succeeded' ? 200 : result.plan.status === 'waiting_user' ? 202 : 422, { idempotent: false, plan: result.plan, events, ...(result.waitingReason ? { waitingReason: result.waitingReason } : {}) });
+        let events = (await stores.eventLog.readAll()).filter((event) => String(event.runId) === String(result.plan.runId));
+        const answer = await persistOrchestratorAnswer(stores, result.plan, events as unknown as RunEvent[]);
+        if (answer) events = (await stores.eventLog.readAll()).filter((event) => String(event.runId) === String(result.plan.runId));
+        return send(res, result.plan.status === 'succeeded' ? 200 : result.plan.status === 'waiting_user' ? 202 : 422, { idempotent: false, plan: result.plan, events, ...(answer ? { answer } : {}), ...(result.waitingReason ? { waitingReason: result.waitingReason } : {}) });
       } finally { stores.close?.(); }
     }
 
@@ -725,6 +753,19 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
         const runId = String(input.runId ?? `run-plan-${stableSuffix}`);
         const existingPlan = stores.entityStore.getExecutionPlan(planId, projectId);
         if (existingPlan) return send(res, 200, { idempotent: true, session, plan: existingPlan, kind: 'plan' });
+        const sessionMessages = stores.entityStore.listSessionMessages(sessionId, projectId);
+        const existingMessage = sessionMessages.find((item) => String(item.id) === messageId);
+        if (existingMessage && existingMessage.content !== content) return send(res, 409, { error: 'session_message_conflict', messageId, sessionId });
+        if (!existingMessage) {
+          stores.entityStore.appendSessionMessage({
+            id: messageId as any,
+            sessionId: sessionId as any,
+            sequence: sessionMessages.reduce((max, item) => Math.max(max, item.sequence), 0) + 1,
+            role: 'user',
+            content,
+            createdAt: new Date().toISOString(),
+          });
+        }
         const catalog = buildPlannerCapabilityCatalog(sessionBot, stores.entityStore.listSkills());
         const requestedProviderMode = input.providerMode === undefined ? 'fixture' : String(input.providerMode);
         if (!['fixture', 'bound'].includes(requestedProviderMode)) return send(res, 422, { error: 'invalid_planner_provider_mode', providerMode: requestedProviderMode });
@@ -751,7 +792,9 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
             maxSteps: Number.isInteger(input.maxSteps) ? Number(input.maxSteps) : 8,
             cwd: projectWorkspaceRoot(projectId),
             model: bound.binding.model,
-            scope: { projectId: projectId as ProjectId, botId: session.botId as BotId, sessionId: session.id as any, sessionMessageId: messageId },
+            // The planner run is an internal planning operation. The user-facing
+            // assistant message is written only after the plan has a result.
+            scope: { projectId: projectId as ProjectId, botId: session.botId as BotId, sessionId: session.id as any },
           });
           plannerProvider = { ...plannerFailureData(realPlanner), model: bound.binding.model };
           if (realPlanner.run.status !== 'succeeded' || !realPlanner.output) {
@@ -1085,6 +1128,11 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
           .filter((runId, index, all) => all.indexOf(runId) === index)
           .map((runId) => readLatestProductBuilderState(continuityEvents.filter((item) => String(item.runId) === runId) as any, runId))
           .filter((state) => state && (!projectId || state.projectId === projectId));
+        const planAnswers = continuityEvents
+          .filter((item) => item.type === 'plan.answer_created' && String((item.data as any)?.projectId ?? '') === projectId)
+          .map((event) => planAnswerFromEvent(event as unknown as RunEvent))
+          .filter((answer): answer is OrchestratorAnswer => Boolean(answer))
+          .filter((answer, index, all) => all.findIndex((candidate) => candidate.planId === answer.planId) === index);
         return send(res, 200, {
           projects: stores.entityStore?.listProjects() ?? [],
           bots: stores.entityStore?.listBotProfiles(projectId) ?? [],
@@ -1095,6 +1143,8 @@ export async function handleRequest(req: RequestLike, res: ResponseLike) {
           policyAudit: stores.entityStore?.listPolicyAudit(projectId) ?? [],
           handoffs: stores.entityStore?.listHandoffs(projectId) ?? [],
           approvals: stores.entityStore?.listApprovals(projectId) ?? [],
+          executionPlans: stores.entityStore?.listExecutionPlans(projectId) ?? [],
+          planAnswers,
           sources: stores.entityStore?.listSources(projectId) ?? [],
           artifacts: stores.entityStore?.listArtifacts(projectId) ?? [],
           memories: stores.entityStore?.listMemories(projectId) ?? [],
